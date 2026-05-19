@@ -2,7 +2,15 @@
 
 A structured, portable skill library for repository-aware coding agents such as Claude Code, Codex-style agents and other assistants that can read repository guidance and `SKILL.md` files.
 
-The library separates agentic workflow patterns, agent control patterns and engineering delivery practices so that skills can be loaded selectively rather than treated as one large monolithic instruction set.
+The library separates agentic workflow patterns, agent control patterns, engineering delivery practices, user experience, reliability, event-driven data, business architecture and data architecture so that skills can be loaded selectively rather than treated as one large monolithic instruction set.
+
+## Current status
+
+This repository currently contains 70 `SKILL.md` files across eight skill categories.
+
+- `skills/agentic-patterns/` and `skills/agent-control-patterns/` provide the agent workflow and control patterns.
+- `skills/engineering-practices/`, `skills/user-experience/`, `skills/reliability-and-delivery/`, `skills/event-driven-and-real-time-data/`, `skills/business-architecture/` and `skills/data-architecture/` are fully populated.
+- `skills/MANIFEST.md` is the canonical inventory for the full library.
 
 ## Recommended directory structure
 
@@ -54,15 +62,50 @@ coding-agent-skill-library/
     │   ├── design-system-practice/
     │   ├── user-research-and-usability-testing/
     │   └── agentic-ux-patterns/
-    └── reliability-and-delivery/
+    ├── reliability-and-delivery/
+    │   ├── MANIFEST.md
+    │   ├── sre-practice/
+    │   ├── slo-error-budget-management/
+    │   ├── incident-response-and-postmortems/
+    │   ├── observability-and-telemetry/
+    │   ├── toil-reduction-and-automation/
+    │   ├── release-engineering-and-progressive-delivery/
+    │   └── dora-four-keys/
+    ├── event-driven-and-real-time-data/
+    │   ├── MANIFEST.md
+    │   ├── event-driven-architecture/
+    │   ├── event-modelling/
+    │   ├── event-streaming-platform-design/
+    │   ├── schema-registry-and-contracts/
+    │   ├── cdc-and-source-to-stream-ingestion/
+    │   ├── stream-processing-patterns/
+    │   ├── event-governance-and-lineage/
+    │   └── real-time-operability/
+    ├── business-architecture/
+    │   ├── MANIFEST.md
+    │   ├── business-capability-modelling/
+    │   ├── value-stream-modelling/
+    │   ├── process-modelling/
+    │   ├── operating-model-design/
+    │   ├── strategy-to-execution-traceability/
+    │   ├── capability-maturity-assessment/
+    │   ├── business-information-concept-modelling/
+    │   └── organisation-and-role-design/
+    └── data-architecture/
         ├── MANIFEST.md
-        ├── sre-practice/
-        ├── slo-error-budget-management/
-        ├── incident-response-and-postmortems/
-        ├── observability-and-telemetry/
-        ├── toil-reduction-and-automation/
-        ├── release-engineering-and-progressive-delivery/
-        └── dora-four-keys/
+        ├── conceptual-data-modelling/
+        ├── logical-data-modelling/
+        ├── data-product-design/
+        ├── data-contract-design/
+        ├── metadata-management/
+        ├── data-governance-and-quality/
+        ├── data-security-and-privacy-architecture/
+        ├── data-lifecycle-and-retention-management/
+        ├── data-integration-and-interoperability/
+        ├── lakehouse-and-medallion-architecture/
+        ├── master-and-reference-data-management/
+        ├── ontology-and-knowledge-graph-modelling/
+        └── data-lineage-and-provenance/
 ```
 
 ## Installation into a project
@@ -79,7 +122,10 @@ my-project/
 │   ├── agent-control-patterns/
 │   ├── engineering-practices/
 │   ├── user-experience/
-│   └── reliability-and-delivery/
+│   ├── reliability-and-delivery/
+│   ├── event-driven-and-real-time-data/
+│   ├── business-architecture/
+│   └── data-architecture/
 └── <project files>
 ```
 
@@ -129,4 +175,4 @@ find skills -name "SKILL.md" | sort
 find skills -name "MANIFEST.md" | sort
 ```
 
-With the agentic, control, engineering, user-experience and reliability-and-delivery categories installed, the library should contain **41 skills**.
+With all eight categories installed, the library should contain **70 skills**.
