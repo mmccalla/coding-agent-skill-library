@@ -1,0 +1,44 @@
+---
+name: value-stream-modelling
+description: Model value creation from trigger to outcome across stakeholders, stages, capabilities, data and systems.
+---
+
+# Value Stream Modelling
+
+## When to use
+Use when mapping how value flows through the business.
+
+## Objective
+Produce a practical, concise, traceable architecture artefact that a coding agent can use to guide implementation or review.
+
+## Procedure
+1. Identify value recipient.
+2. Define trigger and outcome.
+3. Map stages.
+4. Link capabilities and actors.
+5. Identify information, events and decisions.
+6. Identify pain, delay, rework and controls.
+7. Define measures.
+8. Validate with stakeholders.
+
+## Required outputs
+- Trigger/outcome
+- Stages
+- Stakeholders
+- Capability links
+- Data/events
+- Pain points and metrics
+
+## Best-practice alignment
+Keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
+
+## Quality checks
+- Value recipient is explicit.
+- Stages are outcome-oriented.
+- Flow metrics exist.
+
+## Avoid
+Do not turn value streams into detailed process maps.
+
+## Completion report
+State artefacts produced, decisions made, assumptions, risks, validation performed and files changed.

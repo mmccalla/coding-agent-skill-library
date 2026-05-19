@@ -24,6 +24,38 @@ Use these skills when the task shape matches:
 - `solid-principles` when refactoring modules, services, classes, tools, agents or dependency boundaries.
 - `dry-principle` when repeated knowledge, rules, schemas or validation create maintenance risk.
 - Agentic workflow and control skills when building or modifying agents, tools, MCP servers, A2A integrations, RAG systems, guardrails, memory, evaluation, recovery or monitoring.
+- Architecture skills when working on capabilities, value streams, processes, operating models, data models, data products, data contracts, metadata, governance, quality, lineage, event-driven architecture, CDC, streams or real-time data.
+
+## Business, data and event-driven architecture guidance
+
+When a task involves business architecture, data architecture, event-driven architecture or real-time data, load the smallest relevant skill from:
+
+```text
+skills/business-architecture/
+skills/data-architecture/
+skills/event-driven-and-real-time-data/
+```
+
+Use business architecture skills to clarify capabilities, value streams, processes, operating models, maturity, organisation design and strategy-to-execution traceability.
+
+Use data architecture skills to define conceptual/logical models, data products, contracts, metadata, governance, quality, security/privacy, lifecycle/retention, integration/interoperability, lakehouse layers, MDM/RDM, ontologies, knowledge graphs and lineage.
+
+For data architecture, apply DAMA-DMBOK2-style discipline across governance, architecture, modelling, security, integration/interoperability, master/reference data, metadata and quality. For cloud or shared data, apply CDMC-style expectations: ownership, classification, entitlement/access evidence, lineage/provenance, lifecycle/retention, quality controls and auditable evidence.
+
+Use event-driven and real-time data skills to define business events, event schemas, streaming platforms, CDC, stream processing, event governance, lineage and real-time operability.
+
+Before implementation, preserve traceability:
+
+```text
+business outcome
+→ capability/value stream/process
+→ information concept
+→ data model/data product/data contract
+→ event/stream where needed
+→ metadata, quality, security, lifecycle and lineage evidence
+```
+
+Keep artefacts practical and concise. Prefer useful decision records, matrices, schemas, diagrams and checklists over long narrative. Do not turn business artefacts directly into physical code or schemas without preserving business meaning, ownership, quality rules and traceability.
 
 ## User experience and interface design guidance
 

@@ -14,7 +14,10 @@ skills/
 ├── agent-control-patterns/
 ├── engineering-practices/
 ├── user-experience/
-└── reliability-and-delivery/
+├── reliability-and-delivery/
+├── event-driven-and-real-time-data/
+├── business-architecture/
+└── data-architecture/
 ```
 
 Do not assume a skill from its name alone. Open and read the relevant `SKILL.md` before applying it.
@@ -78,6 +81,69 @@ Do not assume a skill from its name alone. Open and read the relevant `SKILL.md`
 - Use `bdd-practice` to express business-readable behaviour, acceptance criteria and user-facing scenarios.
 - Use `ddd-practice` to model complex domains using bounded contexts, ubiquitous language, aggregates, value objects, domain events and protected invariants.
 
+### Business, data and event-driven architecture
+
+For architecture work, load the smallest relevant skill from:
+
+```text
+skills/business-architecture/
+skills/data-architecture/
+skills/event-driven-and-real-time-data/
+```
+
+Use business architecture skills to clarify capabilities, value streams, processes, operating models, maturity, organisation design and strategy-to-execution traceability:
+
+- Use `business-capability-modelling` for stable business abilities, capability maps, decomposition, ownership and heatmaps.
+- Use `value-stream-modelling` for trigger-to-outcome value flow across stakeholders, capabilities, data and systems.
+- Use `process-modelling` for operational steps, decisions, hand-offs, controls, exceptions and automation opportunities.
+- Use `operating-model-design` for people, process, technology, data, governance, funding and delivery alignment.
+- Use `strategy-to-execution-traceability` for linking objectives, outcomes, capabilities, initiatives, metrics and evidence.
+- Use `capability-maturity-assessment` for current/target maturity, gaps, risks and roadmap priorities.
+- Use `business-information-concept-modelling` for deriving business concepts and relationships from business architecture artefacts.
+- Use `organisation-and-role-design` for roles, decision rights, accountabilities and team boundaries.
+
+Use data architecture skills to define conceptual/logical models, data products, contracts, metadata, governance, quality, security/privacy, lifecycle/retention, integration/interoperability, lakehouse layers, MDM/RDM, ontologies, knowledge graphs and lineage. For data architecture, apply DAMA-DMBOK2-style separation of data management concerns across governance, architecture, modelling, security, integration/interoperability, master/reference data, metadata and quality. For cloud or shared data, apply CDMC-style control expectations: ownership, classification, entitlement/access evidence, lineage/provenance, lifecycle/retention, quality controls and auditable evidence.
+
+- Use `conceptual-data-modelling` for implementation-independent business concepts and relationships.
+- Use `logical-data-modelling` for logical entities, attributes, identifiers, keys, relationships and constraints.
+- Use `data-product-design` for domain-owned, governed, discoverable and reusable data products.
+- Use `data-contract-design` for producer-consumer schema, semantics, quality, compatibility and operational obligations.
+- Use `metadata-management` for business, technical, operational, governance, quality and lineage metadata.
+- Use `data-governance-and-quality` for ownership, policy, quality rules, controls, monitoring and remediation.
+- Use `data-security-and-privacy-architecture` for classification, access, masking, privacy and entitlement controls.
+- Use `data-lifecycle-and-retention-management` for retention, archival, deletion, legal hold and lifecycle controls.
+- Use `data-integration-and-interoperability` for batch, API, event, CDC and semantic interoperability patterns.
+- Use `lakehouse-and-medallion-architecture` for raw, quarantine, cleansed, refined and serving-layer design.
+- Use `master-and-reference-data-management` for golden records, controlled values, identifiers, hierarchies and survivorship.
+- Use `ontology-and-knowledge-graph-modelling` for semantic models, ontologies, knowledge graphs and inference-ready structures.
+- Use `data-lineage-and-provenance` for source-to-target lineage, transformation evidence and provenance.
+
+Use event-driven and real-time data skills to define business events, event schemas, streaming platforms, CDC, stream processing, event governance, lineage and real-time operability:
+
+- Use `event-driven-architecture` for asynchronous event-first system design.
+- Use `event-modelling` for business events, commands, decisions and event timelines.
+- Use `event-streaming-platform-design` for Kafka/Pulsar/Event Hubs-style shared streaming platforms.
+- Use `schema-registry-and-contracts` for event schemas, compatibility, versioning and contracts.
+- Use `cdc-and-source-to-stream-ingestion` for change-data-capture and streaming ingestion.
+- Use `stream-processing-patterns` for enrichment, joins, windows, stateful processing and event-time logic.
+- Use `event-governance-and-lineage` for event ownership, metadata, classification, lineage and discoverability.
+- Use `real-time-operability` for lag, freshness, replay, back-pressure, SLOs and streaming operations.
+
+For architecture work, preserve traceability:
+
+```text
+strategy/outcome
+→ capability
+→ value stream/process
+→ business information concept
+→ conceptual/logical data model
+→ data product/data contract
+→ event/schema/stream where relevant
+→ metadata, quality, security, lifecycle and lineage controls
+```
+
+Do not collapse business architecture, data architecture and event-driven architecture into one undifferentiated design. Keep capability, value stream, process, conceptual data, logical data, data product, contract, event and stream-processing concerns distinct, then link them explicitly.
+
 ### User experience and interface design
 
 - Use `ux-design-principles` for user journeys, workflows, forms, navigation, information architecture and low-cognitive-load interfaces.
@@ -111,7 +177,7 @@ In this repository, DORA means DevOps Research and Assessment delivery-performan
 
 ## Trade-off rule
 
-When KISS, SOLID, DRY, TDD, BDD, DDD, UX and SRE/DORA practices conflict, prefer correctness, safety, accessibility, user impact and externally visible business behaviour first, then reliability, testability, maintainability and reuse. A small amount of explicit duplication is acceptable when it avoids premature or misleading abstraction. Do not add domain layers, interfaces, frameworks, agents, memory or learning mechanisms where a simpler verified implementation is sufficient.
+When KISS, SOLID, DRY, TDD, BDD, DDD, UX, SRE/DORA and architecture practices conflict, prefer correctness, safety, accessibility, user impact, regulatory/control evidence and externally visible business behaviour first, then reliability, data/architecture traceability, testability, maintainability and reuse. A small amount of explicit duplication is acceptable when it avoids premature or misleading abstraction. Do not add domain layers, interfaces, frameworks, agents, memory or learning mechanisms where a simpler verified implementation is sufficient.
 
 ## Safety and approval rules
 

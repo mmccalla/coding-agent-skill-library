@@ -1,0 +1,45 @@
+---
+name: real-time-operability
+description: Design operational controls for streaming systems: lag, freshness, replay, back-pressure, SLOs and incidents.
+---
+
+# Real-Time Operability
+
+## When to use
+Use when operating real-time pipelines or event streams.
+
+## Objective
+Produce a practical, concise, traceable architecture artefact that a coding agent can use to guide implementation or review.
+
+## Procedure
+1. Define user impact.
+2. Define SLIs for lag, freshness, throughput and error rate.
+3. Define alerts and runbooks.
+4. Define back-pressure behaviour.
+5. Define replay/catch-up process.
+6. Define dead-letter handling.
+7. Define capacity and scaling.
+8. Test operational scenarios.
+
+## Required outputs
+- SLIs/SLOs
+- Dashboards/alerts
+- Replay plan
+- Back-pressure policy
+- Dead-letter process
+- Runbook
+
+## Best-practice alignment
+Apply event-driven best practice: business event semantics, producer/consumer ownership, schema contracts, compatibility, ordering, partitioning, idempotency, replay, retention, lineage, observability and operational SLOs.
+
+## Quality checks
+- Alerts are actionable.
+- Replay is safe.
+- Lag/freshness are visible.
+- Capacity assumptions are explicit.
+
+## Avoid
+Do not equate broker health with pipeline health.
+
+## Completion report
+State artefacts produced, decisions made, assumptions, risks, validation performed and files changed.
