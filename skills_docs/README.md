@@ -4,14 +4,11 @@ A structured, portable skill library for repository-aware coding agents such as 
 
 The library separates agentic workflow patterns, agent control patterns, engineering delivery practices, user experience, reliability, event-driven data, business architecture and data architecture so that skills can be loaded selectively rather than treated as one large monolithic instruction set.
 
-This repository stays skill-centric and domain-broad; new workflow skills are added only where they close clear gaps in the local structure and intent.
-
 ## Current status
 
-This repository currently contains 85 `SKILL.md` files across eight fully populated skill categories.
+This repository currently contains 70 `SKILL.md` files across eight skill categories.
 
-- `skills/agentic-patterns/` now includes the workflow spine from session discovery through spec, implementation, source grounding and doubt checking.
-- `skills/agent-control-patterns/` provides the control, recovery and governance patterns.
+- `skills/agentic-patterns/` and `skills/agent-control-patterns/` provide the agent workflow and control patterns.
 - `skills/engineering-practices/`, `skills/user-experience/`, `skills/reliability-and-delivery/`, `skills/event-driven-and-real-time-data/`, `skills/business-architecture/` and `skills/data-architecture/` are fully populated.
 - `skills/MANIFEST.md` is the canonical inventory for the full library.
 
@@ -22,36 +19,22 @@ coding-agent-skill-library/
 ├── AGENTS.md
 ├── CLAUDE.md
 ├── README.md
-├── AGENTIC_CODING_GLOBAL_SAFETY.md
-├── SECURE_AGENTIC_DEVELOPMENT.md
 ├── docs/
 │   └── DIRECTORY_PLACEMENT.md
-├── skills_docs/
-│   └── README.md
 └── skills/
     ├── MANIFEST.md
     ├── agentic-patterns/
-    │   ├── MANIFEST.md
-    │   ├── using-agent-skills/
-    │   ├── interview-me/
-    │   ├── idea-refine/
     │   ├── prompt-chaining/
     │   ├── routing/
     │   ├── parallelisation/
     │   ├── reflection-and-verification/
-    │   ├── planning-and-task-decomposition/
-    │   ├── spec-driven-development/
-    │   ├── incremental-implementation/
-    │   ├── context-engineering/
-    │   ├── source-driven-development/
-    │   ├── doubt-driven-development/
     │   ├── tool-use-function-calling/
+    │   ├── planning-and-task-decomposition/
     │   ├── multi-agent-collaboration/
     │   ├── memory-management/
     │   ├── learning-and-adaptation/
     │   └── mcp-server-design/
     ├── agent-control-patterns/
-    │   ├── MANIFEST.md
     │   ├── goal-setting-and-monitoring/
     │   ├── exception-handling-and-recovery/
     │   ├── human-in-the-loop/
@@ -68,9 +51,7 @@ coding-agent-skill-library/
     │   ├── dry-principle/
     │   ├── tdd-practice/
     │   ├── bdd-practice/
-    │   ├── ddd-practice/
-    │   ├── code-review-and-quality/
-    │   └── git-workflow-and-versioning/
+    │   └── ddd-practice/
     ├── user-experience/
     │   ├── MANIFEST.md
     │   ├── ux-design-principles/
@@ -87,14 +68,9 @@ coding-agent-skill-library/
     │   ├── slo-error-budget-management/
     │   ├── incident-response-and-postmortems/
     │   ├── observability-and-telemetry/
-    │   ├── browser-testing-with-devtools/
     │   ├── toil-reduction-and-automation/
     │   ├── release-engineering-and-progressive-delivery/
-    │   ├── dora-four-keys/
-    │   ├── ci-cd-and-automation/
-    │   ├── deprecation-and-migration/
-    │   ├── documentation-and-adrs/
-    │   └── shipping-and-launch/
+    │   └── dora-four-keys/
     ├── event-driven-and-real-time-data/
     │   ├── MANIFEST.md
     │   ├── event-driven-architecture/
@@ -184,14 +160,9 @@ DORA means **DevOps Research and Assessment** in this library, not financial-ser
 | `slo-error-budget-management` | SLIs, SLOs, error budgets, burn rates and release gating. |
 | `incident-response-and-postmortems` | Incident handling, recovery, postmortems and corrective actions. |
 | `observability-and-telemetry` | Logs, metrics, traces, dashboards, alerts and telemetry standards. |
-| `browser-testing-with-devtools` | Browser runtime verification, console/network inspection and frontend evidence. |
 | `toil-reduction-and-automation` | Safe reduction of repetitive operational work. |
 | `release-engineering-and-progressive-delivery` | Canary releases, rollback, blue/green deployment, feature flags and release safety. |
 | `dora-four-keys` | Deployment frequency, lead time for changes, change failure rate and failed deployment recovery time. |
-| `ci-cd-and-automation` | Build, test and deployment pipeline safety and automation. |
-| `deprecation-and-migration` | Retiring old paths and moving users safely to replacements. |
-| `documentation-and-adrs` | Durable documentation and architecture decision records. |
-| `shipping-and-launch` | Release preparation, launch checks and post-launch monitoring. |
 
 For reliability or delivery work, coding agents should connect changes to user impact, service objectives, telemetry evidence, rollback path, operational ownership and residual risk. Reliability must not be treated as monitoring alone.
 
@@ -204,4 +175,4 @@ find skills -name "SKILL.md" | sort
 find skills -name "MANIFEST.md" | sort
 ```
 
-With all eight categories installed, the library should contain **85 skills**.
+With all eight categories installed, the library should contain **70 skills**.

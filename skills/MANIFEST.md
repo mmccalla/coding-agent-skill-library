@@ -8,17 +8,57 @@ Use this command to list installed skills:
 find skills -name "SKILL.md" | sort
 ```
 
-After the existing agentic, control, engineering, user-experience, reliability-and-delivery, event-driven, business-architecture and data-architecture skills are installed, the library should contain 70 skills.
+After the agentic, control, engineering, user-experience, reliability-and-delivery, event-driven, business-architecture and data-architecture skills are installed, the library should contain 85 skills.
+
+## Gap coverage map
+
+The local library keeps its broader domain focus. The following map records where the new workflow spine was added and where existing local skills already covered an adjacent need.
+
+This is a local library, not a replica of any external skill pack.
+
+### Added in this pass
+
+- `using-agent-skills`
+- `interview-me`
+- `idea-refine`
+- `spec-driven-development`
+- `incremental-implementation`
+- `context-engineering`
+- `source-driven-development`
+- `doubt-driven-development`
+- `browser-testing-with-devtools`
+- `code-review-and-quality`
+- `git-workflow-and-versioning`
+- `ci-cd-and-automation`
+- `deprecation-and-migration`
+- `documentation-and-adrs`
+- `shipping-and-launch`
+
+### Already covered by existing local skills
+
+- `prompt-chaining`, `routing`, `parallelisation`, `reflection-and-verification`, `tool-use-function-calling`, `planning-and-task-decomposition`, `multi-agent-collaboration`, `memory-management`, `learning-and-adaptation` and `mcp-server-design`.
+- `tdd-practice` for `test-driven-development`.
+- `guardrails-safety-patterns` for safety and policy controls.
+- `resource-aware-optimisation` for cost, latency, context and compute tradeoffs.
+- `kiss-principle` and `dry-principle` for code simplification and over-complexity removal.
+- `exception-handling-and-recovery` and `reflection-and-verification` for debugging and recovery-oriented review.
+
+### Intentionally broader local equivalents
+
+- `frontend-ui-engineering` is represented by the local UX skill set: `ux-design-principles`, `accessibility-wcag`, `ui-component-design` and `frontend-state-and-interaction-design`.
+- `api-and-interface-design` is represented by `data-contract-design`, `ui-component-design` and `solid-principles`.
+- `security-and-hardening` is represented by `guardrails-safety-patterns` plus `data-security-and-privacy-architecture`.
+- `performance-optimization` is represented by `resource-aware-optimisation` plus `observability-and-telemetry`.
 
 ## Directory model
 
 | Directory | Contents | Status in this package |
 |---|---|---|
-| `skills/agentic-patterns/` | Core agent workflow patterns from Chapters 1-10. | Directory provided; drop existing skills here. |
-| `skills/agent-control-patterns/` | Advanced agent control patterns from Chapters 11-20. | Directory provided; drop existing skills here. |
-| `skills/engineering-practices/` | KISS, SOLID, DRY, TDD, BDD and DDD. | Fully populated. |
+| `skills/agentic-patterns/` | Core agent workflow patterns from Chapters 1-10 and the local session/spec/implementation spine. | Fully populated. |
+| `skills/agent-control-patterns/` | Advanced agent control patterns from Chapters 11-20. | Fully populated. |
+| `skills/engineering-practices/` | KISS, SOLID, DRY, TDD, BDD, DDD, code review and Git workflow skills. | Fully populated. |
 | `skills/user-experience/` | UX, accessibility, UI component, frontend-state, dashboard, design-system, usability-testing and agentic-UX skills. | Fully populated. |
-| `skills/reliability-and-delivery/` | SRE, SLO/error-budget, incident, observability, toil-reduction, progressive-delivery and DORA Four Keys skills. | Fully populated. |
+| `skills/reliability-and-delivery/` | SRE, SLO/error-budget, incident, observability, browser verification, CI/CD, deprecation, documentation, launch, toil-reduction, progressive-delivery and DORA Four Keys skills. | Fully populated. |
 | `skills/event-driven-and-real-time-data/` | Event-driven architecture, event modelling, streaming platform, schema contract, CDC, stream processing, event governance and real-time operability skills. | Fully populated. |
 | `skills/business-architecture/` | Capability, value-stream, process, operating-model, strategy traceability, maturity, business concept and organisation design skills. | Fully populated. |
 | `skills/data-architecture/` | DAMA-DMBOK2-aligned and CDMC-aware data modelling, products, contracts, metadata, governance, quality, security, lifecycle, integration, lakehouse, MDM/RDM, ontology and lineage skills. | Fully populated. |

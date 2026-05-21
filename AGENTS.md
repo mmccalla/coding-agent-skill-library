@@ -48,6 +48,7 @@ Do not assume a skill from its name alone. Open and read the relevant `SKILL.md`
 - Use `reflection-and-verification` for critique, repair, tests, review loops and quality gates.
 - Use `planning-and-task-decomposition` when a complex objective must become an executable, ordered plan.
 - Use `multi-agent-collaboration` only when specialised roles and explicit hand-offs materially improve the outcome.
+- Use `using-agent-skills`, `interview-me`, `idea-refine`, `spec-driven-development`, `incremental-implementation`, `context-engineering`, `source-driven-development` and `doubt-driven-development` when the work needs the local discovery/spec/implementation spine.
 
 ### Tooling, integration and knowledge access
 
@@ -64,6 +65,7 @@ Do not assume a skill from its name alone. Open and read the relevant `SKILL.md`
 - Use `human-in-the-loop` for human approval, review, judgement or escalation.
 - Use `guardrails-safety-patterns` for input validation, output checks, tool restrictions, safety policies and secure defaults.
 - Use `evaluation-and-monitoring` for metrics, baselines, regression tests, observability, drift detection and operational monitoring.
+- Use `browser-testing-with-devtools`, `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs`, `shipping-and-launch`, `code-review-and-quality` and `git-workflow-and-versioning` when browser evidence, release discipline, durable documentation or source-control hygiene are part of the task.
 
 ### Optimisation and advanced intelligence
 

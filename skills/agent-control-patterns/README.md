@@ -1,6 +1,6 @@
 # Agent Control Patterns
 
-Place the existing Chapters 11-20 advanced control skill folders here.
+This category contains the advanced control skills for decision making, safety, recovery and monitoring.
 
 Expected folders:
 

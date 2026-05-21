@@ -8,5 +8,7 @@ This category contains fully populated engineering delivery and design skills:
 - `tdd-practice/`
 - `bdd-practice/`
 - `ddd-practice/`
+- `code-review-and-quality/`
+- `git-workflow-and-versioning/`
 
 Use these skills to guide code design, testing, domain modelling and refactoring.
