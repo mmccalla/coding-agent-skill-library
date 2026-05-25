@@ -26,7 +26,7 @@ Do not over-plan routine one-file changes.
 - Keep the plan actionable, not aspirational.
 - Prefer a shallow plan with clear checkpoints.
 - Avoid speculative architecture unless justified by the requirement.
-- Use TODOs only for work intentionally deferred and disclosed.
+- Use explicit deferred-work notes only for work intentionally postponed and disclosed.
 
 ## Output checklist
 
