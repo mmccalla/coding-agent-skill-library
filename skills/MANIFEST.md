@@ -8,7 +8,7 @@ Use this command to list installed skills:
 find skills -name "SKILL.md" | sort
 ```
 
-After the agentic, control, engineering, user-experience, reliability-and-delivery, event-driven, business-architecture and data-architecture skills are installed, the library should contain 85 skills.
+After the agentic, control, engineering, user-experience, reliability-and-delivery, event-driven, business-architecture and data-architecture skills are installed, the library should contain 86 skills.
 
 ## Gap coverage map
 
@@ -18,6 +18,7 @@ This is a local library, not a replica of any external skill pack.
 
 ### Added in this pass
 
+- `kg-enabled-rag`
 - `using-agent-skills`
 - `interview-me`
 - `idea-refine`
@@ -49,6 +50,7 @@ This is a local library, not a replica of any external skill pack.
 - `api-and-interface-design` is represented by `data-contract-design`, `ui-component-design` and `solid-principles`.
 - `security-and-hardening` is represented by `guardrails-safety-patterns` plus `data-security-and-privacy-architecture`.
 - `performance-optimization` is represented by `resource-aware-optimisation` plus `observability-and-telemetry`.
+- `graph-enabled-rag` is represented by the specialist `kg-enabled-rag` skill plus the existing `knowledge-retrieval-rag`, `ontology-and-knowledge-graph-modelling` and `data-lineage-and-provenance` skills.
 
 ## Directory model
 
@@ -89,7 +91,7 @@ Place these existing skill folders under `skills/agent-control-patterns/`.
 | `goal-setting-and-monitoring` | Objectives, success criteria, stop conditions or progress tracking are needed. | The task has a simple one-shot outcome. |
 | `exception-handling-and-recovery` | Workflows need retries, fallbacks, rollback, graceful degradation or escalation. | Failure has no material impact and normal exceptions are enough. |
 | `human-in-the-loop` | Human judgement, approval, review or escalation is required. | Fully automated execution is safe, tested and reversible. |
-| `knowledge-retrieval-rag` | Answers or actions must be grounded in repository, document or knowledge-base content. | The task does not need external grounding. |
+| `knowledge-retrieval-rag` | Answers or actions must be grounded in repository, document or knowledge-base content. Use `kg-enabled-rag` when retrieval must be graph-native, Neo4j-backed or provenance-first. | The task does not need external grounding. |
 | `inter-agent-communication-a2a` | Agents need task exchange, agent cards, messages or artefacts. | Direct function calls or simple orchestration are enough. |
 | `resource-aware-optimisation` | Cost, latency, context, model, compute or token budgets matter. | There is no meaningful resource constraint. |
 | `reasoning-techniques` | Complex analysis, debugging, ReAct, code-aided reasoning or alternatives are needed. | Deterministic implementation or tests are enough. |
@@ -224,6 +226,7 @@ The data architecture skills apply DAMA-DMBOK2-style separation of data manageme
 | `lakehouse-and-medallion-architecture` | Designing raw, quarantine, cleansed, refined and serving layers. | A simple transactional store is sufficient. |
 | `master-and-reference-data-management` | Designing golden records, controlled values, identifiers, hierarchies, survivorship and stewardship. | There is no shared identity or controlled vocabulary problem. |
 | `ontology-and-knowledge-graph-modelling` | Designing ontologies, semantic models, knowledge graphs, inference-ready structures or RDF/OWL-style models. | A relational/logical model is sufficient. |
+| `kg-enabled-rag` | Building Neo4j-native GraphRAG or KG-enabled RAG with text-to-Cypher, provenance, conceptual schema control and hybrid graph/vector retrieval. | Generic document RAG or ontology-only work is sufficient. |
 | `data-lineage-and-provenance` | Tracking source-to-target lineage, transformation history, evidence, ownership and provenance. | The data is local, disposable and not reused. |
 
 ### Data architecture rules
@@ -242,6 +245,7 @@ The data architecture skills apply DAMA-DMBOK2-style separation of data manageme
 | Refactor | `tdd-practice` safety net → `kiss-principle` → `solid-principles` where boundaries are weak → `dry-principle` where duplication is harmful |
 | Agent tool integration | `tool-use-function-calling` → `guardrails-safety-patterns` → `exception-handling-and-recovery` → `evaluation-and-monitoring` |
 | RAG feature | `knowledge-retrieval-rag` → `guardrails-safety-patterns` → `evaluation-and-monitoring` → `resource-aware-optimisation` |
+| GraphRAG feature | `kg-enabled-rag` → `knowledge-retrieval-rag` → `guardrails-safety-patterns` → `evaluation-and-monitoring` |
 | MCP feature | `mcp-server-design` → `tool-use-function-calling` → `guardrails-safety-patterns` → `exception-handling-and-recovery` |
 | Multi-agent workflow | `planning-and-task-decomposition` → `routing` → `multi-agent-collaboration` → `inter-agent-communication-a2a` where interoperability is needed |
 | User-facing feature | `ux-design-principles` → `accessibility-wcag` → `frontend-state-and-interaction-design` → `ui-component-design` → `tdd-practice` |

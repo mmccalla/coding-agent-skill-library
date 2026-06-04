@@ -2,7 +2,7 @@
 
 This repository uses a **hierarchical coding-agent skills library**.
 
-Use `skills/MANIFEST.md` as the main index. Search recursively under `skills/` for the relevant `SKILL.md`. Load only the smallest relevant skill or combination of skills for the task.
+Use `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` as the routing guide, `skills/README.md` as the subtree index, and `skills/MANIFEST.md` as the full inventory. Load only the smallest relevant skill or combination of skills for the task.
 
 ## Default behaviour
 
@@ -40,7 +40,7 @@ skills/event-driven-and-real-time-data/
 
 Use business architecture skills to clarify capabilities, value streams, processes, operating models, maturity, organisation design and strategy-to-execution traceability.
 
-Use data architecture skills to define conceptual/logical models, data products, contracts, metadata, governance, quality, security/privacy, lifecycle/retention, integration/interoperability, lakehouse layers, MDM/RDM, ontologies, knowledge graphs and lineage.
+Use data architecture skills to define conceptual/logical models, data products, contracts, metadata, governance, quality, security/privacy, lifecycle/retention, integration/interoperability, lakehouse layers, MDM/RDM, ontologies, knowledge graphs, KG-enabled RAG and lineage.
 
 For data architecture, apply DAMA-DMBOK2-style discipline across governance, architecture, modelling, security, integration/interoperability, master/reference data, metadata and quality. For cloud or shared data, apply CDMC-style expectations: ownership, classification, entitlement/access evidence, lineage/provenance, lifecycle/retention, quality controls and auditable evidence.
 

@@ -8,6 +8,8 @@ description: Track source-to-target lineage, transformation history, evidence, o
 ## When to use
 Use when data must be trusted, audited, explained, replayed, governed or traced.
 
+For KG-enabled RAG or GraphRAG systems, use this alongside `skills/data-architecture/kg-enabled-rag/SKILL.md` so graph facts, retrieval evidence and generated answers remain source-traceable.
+
 ## Objective
 Produce a practical, concise, traceable architecture artefact that a coding agent can use to guide implementation or review.
 

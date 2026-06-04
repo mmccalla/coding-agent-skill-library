@@ -1,12 +1,14 @@
 ---
 name: ontology-kg-krag
-summary: Design, validate and use ontology-driven knowledge graphs for explainable KG-RAG/KRAG.
+description: Design, validate and use ontology-driven knowledge graphs for explainable KG-RAG/KRAG.
 ---
 
 # Ontology, Knowledge Graph and KRAG
 
-## Use when
+## When to use
 Use for ontology design, semantic modelling, RDF/OWL/SHACL/SKOS, property-graph schemas, knowledge-graph population, graph validation, entity resolution, provenance, inference, semantic search, KG-RAG/KRAG or GraphRAG.
+
+When the task moves from graph design into Neo4j-native retrieval, text-to-Cypher, ingestion safety, or GraphRAG implementation guidance, also load `skills/data-architecture/kg-enabled-rag/SKILL.md`.
 
 Do not use for ordinary diagrams, generic vector-only RAG, or simple entity extraction unless semantic governance or graph retrieval is required.
 

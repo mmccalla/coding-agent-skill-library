@@ -9,6 +9,8 @@ description: Use when implementing retrieval-augmented generation, document-grou
 
 Use this skill when an agent needs facts from external documents, code repositories, wikis, tickets, logs, APIs, or other knowledge stores before answering or modifying code.
 
+For GraphRAG, Neo4j-native retrieval, text-to-Cypher, provenance-first graph ingestion, or KG-backed answer generation, pair this skill with `skills/data-architecture/kg-enabled-rag/SKILL.md`.
+
 ## Core pattern
 
 1. Ingest documents or code into clean text.
@@ -49,4 +51,3 @@ Add retrieval tests with known questions and expected source files. Measure reca
 - [ ] Metadata and permissions are retained.
 - [ ] Retrieval quality is tested.
 - [ ] Generated output cites supporting sources.
-

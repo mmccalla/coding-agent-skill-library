@@ -1,19 +1,23 @@
 # Coding Agent Skill Library
 
-A structured, portable skill library for repository-aware coding agents such as Claude Code, Codex-style agents and other assistants that can read repository guidance and `SKILL.md` files.
+A portable default reference library for repository-aware coding agents.
 
-The library separates agentic workflow patterns, agent control patterns, engineering delivery practices, user experience, reliability, event-driven data, business architecture and data architecture so that skills can be loaded selectively rather than treated as one large monolithic instruction set.
+This repository is designed to be dropped into another repo and provide one coherent startup path, one skills inventory, and one layered documentation model:
 
-This repository stays skill-centric and domain-broad; new workflow skills are added only where they close clear gaps in the local structure and intent.
+- repository entrypoint: `AGENTS.md`
+- routing guide: `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`
+- skills subtree index: `skills/README.md`
+- full inventory: `skills/MANIFEST.md`
+- execution guidance: the smallest relevant `SKILL.md`
 
-## Current status
+## Portable bootstrap
 
-This repository currently contains 85 `SKILL.md` files across eight fully populated skill categories.
+For a drop-in install, start with:
 
-- `skills/agentic-patterns/` now includes the workflow spine from session discovery through spec, implementation, source grounding and doubt checking.
-- `skills/agent-control-patterns/` provides the control, recovery and governance patterns.
-- `skills/engineering-practices/`, `skills/user-experience/`, `skills/reliability-and-delivery/`, `skills/event-driven-and-real-time-data/`, `skills/business-architecture/` and `skills/data-architecture/` are fully populated.
-- `skills/MANIFEST.md` is the canonical inventory for the full library.
+- `skills_docs/DROP_IN_BOOTSTRAP.md`
+- `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`
+
+The library currently contains 86 `SKILL.md` files across eight categories.
 
 ## Recommended directory structure
 
@@ -24,12 +28,14 @@ coding-agent-skill-library/
 ├── README.md
 ├── AGENTIC_CODING_GLOBAL_SAFETY.md
 ├── SECURE_AGENTIC_DEVELOPMENT.md
-├── docs/
-│   └── DIRECTORY_PLACEMENT.md
+├── skills/
+│   ├── README.md
+│   └── MANIFEST.md
 ├── skills_docs/
-│   └── README.md
+│   ├── README.md
+│   ├── HOW_TO_FIND_THE_RIGHT_SKILL.md
+│   └── DROP_IN_BOOTSTRAP.md
 └── skills/
-    ├── MANIFEST.md
     ├── agentic-patterns/
     │   ├── MANIFEST.md
     │   ├── using-agent-skills/
@@ -129,6 +135,7 @@ coding-agent-skill-library/
         ├── lakehouse-and-medallion-architecture/
         ├── master-and-reference-data-management/
         ├── ontology-and-knowledge-graph-modelling/
+        ├── kg-enabled-rag/
         └── data-lineage-and-provenance/
 ```
 
@@ -140,7 +147,10 @@ For a new project, copy the contents of this directory into the root of the targ
 my-project/
 ├── AGENTS.md
 ├── CLAUDE.md
+├── AGENTIC_CODING_GLOBAL_SAFETY.md
+├── SECURE_AGENTIC_DEVELOPMENT.md
 ├── skills/
+│   ├── README.md
 │   ├── MANIFEST.md
 │   ├── agentic-patterns/
 │   ├── agent-control-patterns/
@@ -150,58 +160,32 @@ my-project/
 │   ├── event-driven-and-real-time-data/
 │   ├── business-architecture/
 │   └── data-architecture/
+├── skills_docs/
+│   ├── README.md
+│   ├── HOW_TO_FIND_THE_RIGHT_SKILL.md
+│   └── DROP_IN_BOOTSTRAP.md
 └── <project files>
 ```
 
 If the target repository already has its own `README.md`, do not overwrite it. Keep this file as `docs/coding-agent-skill-library/README.md` or `AGENT_SKILLS_README.md`.
 
-## User experience skills
+## Documentation model
 
-This library includes a `skills/user-experience/` category for user-facing design and frontend implementation work.
-
-| Skill | Purpose |
-|---|---|
-| `ux-design-principles` | User journeys, task flows, forms, navigation and low-cognitive-load workflows. |
-| `accessibility-wcag` | WCAG-aligned accessibility checks for all user-facing work. |
-| `ui-component-design` | Reusable, accessible and consistent UI components. |
-| `frontend-state-and-interaction-design` | Loading, empty, error, disabled, partial-success, long-running and approval states. |
-| `data-product-dashboard-design` | Data quality, profiling, validation, quarantine, refined dataset, lineage, audit and operations dashboards. |
-| `design-system-practice` | Tokens, variants, typography, spacing, interaction patterns and UI consistency. |
-| `user-research-and-usability-testing` | Lightweight validation that users can complete important tasks. |
-| `agentic-ux-patterns` | Supervision, approval, evidence, uncertainty and audit interfaces for AI/agent workflows. |
-
-For user-facing work, coding agents should start from the user task, decision, evidence required, risk, states and accessibility requirements. For agentic interfaces, agents must surface plans, tool use, evidence, uncertainty, consequences and approval controls rather than making autonomous actions invisible.
-
-## Reliability and delivery skills
-
-This library includes a `skills/reliability-and-delivery/` category for SRE and DORA Four Keys delivery-performance work.
-
-DORA means **DevOps Research and Assessment** in this library, not financial-services regulation.
-
-| Skill | Purpose |
-|---|---|
-| `sre-practice` | Production reliability, operability, resilience and service ownership. |
-| `slo-error-budget-management` | SLIs, SLOs, error budgets, burn rates and release gating. |
-| `incident-response-and-postmortems` | Incident handling, recovery, postmortems and corrective actions. |
-| `observability-and-telemetry` | Logs, metrics, traces, dashboards, alerts and telemetry standards. |
-| `browser-testing-with-devtools` | Browser runtime verification, console/network inspection and frontend evidence. |
-| `toil-reduction-and-automation` | Safe reduction of repetitive operational work. |
-| `release-engineering-and-progressive-delivery` | Canary releases, rollback, blue/green deployment, feature flags and release safety. |
-| `dora-four-keys` | Deployment frequency, lead time for changes, change failure rate and failed deployment recovery time. |
-| `ci-cd-and-automation` | Build, test and deployment pipeline safety and automation. |
-| `deprecation-and-migration` | Retiring old paths and moving users safely to replacements. |
-| `documentation-and-adrs` | Durable documentation and architecture decision records. |
-| `shipping-and-launch` | Release preparation, launch checks and post-launch monitoring. |
-
-For reliability or delivery work, coding agents should connect changes to user impact, service objectives, telemetry evidence, rollback path, operational ownership and residual risk. Reliability must not be treated as monitoring alone.
+- `AGENTS.md` is the required repository entrypoint.
+- `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` is the canonical routing guide.
+- `skills/README.md` explains how to traverse the portable `skills/` subtree.
+- Category `README.md` files are quick routing pages.
+- Category `MANIFEST.md` files are fuller inventories.
+- `SKILL.md` files are the actual operating procedures.
 
 ## Validation
 
 After installing all categories, validate the library with:
 
 ```bash
+find skills -maxdepth 2 -name "README.md" | sort
 find skills -name "SKILL.md" | sort
 find skills -name "MANIFEST.md" | sort
 ```
 
-With all eight categories installed, the library should contain **85 skills**.
+With all eight categories installed, the library should contain **86 skills**.

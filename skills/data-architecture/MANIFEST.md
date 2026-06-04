@@ -16,6 +16,7 @@ Use these skills for DAMA-DMBOK2-aligned and CDMC-aware data architecture.
 | `lakehouse-and-medallion-architecture` | Designing raw, quarantine, cleansed, refined and serving layers. |
 | `master-and-reference-data-management` | Designing golden records, reference values, identifiers, survivorship and stewardship. |
 | `ontology-and-knowledge-graph-modelling` | Designing ontologies, semantic models, knowledge graphs and inference-ready structures. |
+| `kg-enabled-rag` | Designing or implementing Neo4j-native GraphRAG, graph-backed retrieval, text-to-Cypher and provenance-first KG-enabled RAG systems. |
 | `data-lineage-and-provenance` | Tracking source-to-target lineage, transformation evidence and provenance. |
 
 Required checks: ownership, classification, access/entitlement, metadata, quality rules, lineage/provenance, lifecycle/retention, consumer impact and audit evidence.

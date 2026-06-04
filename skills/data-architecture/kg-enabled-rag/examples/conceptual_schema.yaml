@@ -1,0 +1,35 @@
+skip:
+  classes:
+    - Chunk
+    - ParentChunk
+    - ChildChunk
+    - Document
+    - ExtractionRun
+    - Answer
+  properties:
+    - id
+    - embedding
+    - createdAt
+    - updatedAt
+    - checksum
+    - traceId
+
+descriptions:
+  classes:
+    Person: "A human actor, customer, employee, author, or named individual."
+    Organisation: "A legal or organisational entity such as a company, charity, regulator, supplier, or business unit."
+    Product: "A product, service, platform, or commercial offering."
+  relationships:
+    OWNS: "Ownership or control relationship between an actor and an asset or organisation."
+    WORKS_FOR: "Employment or formal role relationship between a person and an organisation."
+    MENTIONS: "Evidence relationship from a source chunk to an extracted entity."
+
+terminology:
+  customer:
+    - client
+    - account holder
+    - party
+  supplier:
+    - vendor
+    - third party
+    - provider

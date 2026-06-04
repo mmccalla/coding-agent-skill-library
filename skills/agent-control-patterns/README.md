@@ -1,8 +1,14 @@
 # Agent Control Patterns
 
-This category contains the advanced control skills for decision making, safety, recovery and monitoring.
+Use this category when the task is mainly about safety, approval, recovery, evaluation, prioritisation or grounded retrieval.
 
-Expected folders:
+## Start here when
+
+- the agent needs explicit control loops, safety policies or approval paths;
+- the task depends on RAG, ranking, evaluation or failure recovery;
+- cost, latency or risk must be constrained deliberately.
+
+## Skills in this category
 
 - `goal-setting-and-monitoring/`
 - `exception-handling-and-recovery/`
@@ -15,4 +21,13 @@ Expected folders:
 - `evaluation-and-monitoring/`
 - `prioritisation/`
 
-Each folder should contain `SKILL.md`.
+## Choose the smallest fit
+
+- Start with `guardrails-safety-patterns` for safety-sensitive behaviour.
+- Use `knowledge-retrieval-rag` for generic grounded retrieval.
+- Use `exception-handling-and-recovery` when retries, rollback or escalation matter.
+- Use `evaluation-and-monitoring` when quality must be measured over time.
+
+## Next step
+
+Open `MANIFEST.md` in this folder, then load the smallest relevant `SKILL.md`.

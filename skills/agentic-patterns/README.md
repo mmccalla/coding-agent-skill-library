@@ -1,8 +1,14 @@
 # Agentic Patterns
 
-This category contains the agent workflow spine: discovery, specification, planning, implementation, context preparation, source grounding and verification.
+Use this category when the task is mainly about how an agent should work through discovery, planning, specification, execution context or verification.
 
-Expected folders:
+## Start here when
+
+- the request is ambiguous and needs shaping before implementation;
+- the work needs a stepwise plan, source grounding or verification loop;
+- the main problem is orchestration rather than domain-specific logic.
+
+## Skills in this category
 
 - `using-agent-skills/`
 - `interview-me/`
@@ -23,4 +29,13 @@ Expected folders:
 - `learning-and-adaptation/`
 - `mcp-server-design/`
 
-Each folder should contain `SKILL.md`.
+## Choose the smallest fit
+
+- Start with `using-agent-skills` when choosing among local skills.
+- Use `planning-and-task-decomposition` for multi-step delivery.
+- Use `spec-driven-development` when the feature needs a decision-complete spec.
+- Use `source-driven-development` when correctness depends on authoritative source material.
+
+## Next step
+
+Open `MANIFEST.md` in this folder, then load the smallest relevant `SKILL.md`.

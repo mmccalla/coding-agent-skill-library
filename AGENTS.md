@@ -2,7 +2,7 @@
 
 This repository uses a **hierarchical `skills/` directory**. Each skill is a reusable operating procedure for a specific type of coding-agent task.
 
-Read `skills/MANIFEST.md` first, then search recursively under `skills/` and load only the smallest relevant `SKILL.md` file or skill combination needed for the task.
+Read `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` first, then `skills/README.md`, then search recursively under `skills/` and load only the smallest relevant `SKILL.md` file or skill combination needed for the task.
 
 ## Skill directory structure
 
@@ -20,7 +20,7 @@ skills/
 └── data-architecture/
 ```
 
-Do not assume a skill from its name alone. Open and read the relevant `SKILL.md` before applying it.
+Do not assume a skill from its name alone. Use category `README.md` files for routing, category `MANIFEST.md` files for fuller inventory, and the relevant `SKILL.md` for execution guidance.
 
 ## Core operating principles
 
@@ -118,6 +118,7 @@ Use data architecture skills to define conceptual/logical models, data products,
 - Use `lakehouse-and-medallion-architecture` for raw, quarantine, cleansed, refined and serving-layer design.
 - Use `master-and-reference-data-management` for golden records, controlled values, identifiers, hierarchies and survivorship.
 - Use `ontology-and-knowledge-graph-modelling` for semantic models, ontologies, knowledge graphs and inference-ready structures.
+- Use `kg-enabled-rag` for Neo4j-native GraphRAG, KG-backed retrieval, text-to-Cypher, graph provenance and graph-grounded answer generation.
 - Use `data-lineage-and-provenance` for source-to-target lineage, transformation evidence and provenance.
 
 Use event-driven and real-time data skills to define business events, event schemas, streaming platforms, CDC, stream processing, event governance, lineage and real-time operability:
