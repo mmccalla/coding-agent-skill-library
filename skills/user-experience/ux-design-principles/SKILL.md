@@ -5,8 +5,7 @@ description: Apply practical UX design principles to create clear, task-centred,
 
 # UX Design Principles
 
-## When to use this skill
-
+## When to use
 Use this skill when designing or changing user journeys, task flows, forms, navigation, information architecture, workflow screens, review and approval flows, onboarding screens, or data-quality user journeys.
 
 ## Objective

@@ -5,8 +5,7 @@ description: Apply test-driven development by writing a failing test first, impl
 
 # Test-Driven Development (TDD)
 
-## When to use this skill
-
+## When to use
 Use this skill when adding behaviour, fixing a defect, refactoring risky code, creating library functions, implementing business rules, or improving code where expected behaviour can be specified with executable tests.
 
 ## Objective

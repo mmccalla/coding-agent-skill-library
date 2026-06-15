@@ -2,6 +2,10 @@
 
 Use this category when the task is mainly about safety, approval, recovery, evaluation, prioritisation or grounded retrieval.
 
+## Mandatory baseline (every session)
+
+Execute **`apply-laws-of-ai/SKILL.md` first** — before routing, planning, edits, or any other skill. It is the immutable safety baseline for all agent reasoning. See `skills_docs/LIBRARY_CONTRACT.md`.
+
 ## Start here when
 
 - the agent needs explicit control loops, safety policies or approval paths;
@@ -10,6 +14,7 @@ Use this category when the task is mainly about safety, approval, recovery, eval
 
 ## Skills in this category
 
+- `apply-laws-of-ai/` — **mandatory first** at every session
 - `goal-setting-and-monitoring/`
 - `exception-handling-and-recovery/`
 - `human-in-the-loop/`

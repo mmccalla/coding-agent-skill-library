@@ -41,5 +41,5 @@ Apply event-driven best practice: business event semantics, producer/consumer ow
 ## Avoid
 Do not treat raw CDC records as business events without translation.
 
-## Completion report
+## Verification
 State artefacts produced, decisions made, assumptions, risks, validation performed and files changed.

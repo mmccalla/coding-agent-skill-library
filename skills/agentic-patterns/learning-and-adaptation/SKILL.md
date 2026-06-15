@@ -29,8 +29,7 @@ Do not allow autonomous self-modification without version control, tests, rollba
 - Require deterministic tests for self-edited code.
 - Record cost, latency and failure rate, not only success rate.
 
-## Output checklist
-
+## Verification
 - [ ] Metric and benchmark are defined.
 - [ ] Improvement data is captured with provenance.
 - [ ] Changes are versioned and reversible.

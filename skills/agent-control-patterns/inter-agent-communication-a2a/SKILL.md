@@ -48,8 +48,7 @@ For coding agents, keep payloads structured:
 - Treat remote agents as untrusted until validated.
 - Use timeouts and cancellation for long-running tasks.
 
-## Output checklist
-
+## Verification
 - [ ] Agent card exists.
 - [ ] Task states are explicit.
 - [ ] Message schema is versioned.

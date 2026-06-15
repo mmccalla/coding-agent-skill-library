@@ -28,8 +28,7 @@ Do not use it for a trivial one-step task.
 - Fail fast on malformed intermediate outputs.
 - Include unit tests for every stage and an integration test for the whole chain.
 
-## Output checklist
-
+## Verification
 - [ ] Pipeline stages are named and documented.
 - [ ] Each stage has a clear input/output contract.
 - [ ] Structured output validation exists between stages.

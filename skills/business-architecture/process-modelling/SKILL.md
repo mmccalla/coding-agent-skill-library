@@ -40,5 +40,5 @@ Keep capabilities, value streams, processes, organisation, information concepts,
 ## Avoid
 Do not use process modelling when capability modelling is needed.
 
-## Completion report
+## Verification
 State artefacts produced, decisions made, assumptions, risks, validation performed and files changed.

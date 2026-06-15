@@ -39,5 +39,5 @@ Apply event-driven best practice: business event semantics, producer/consumer ow
 ## Avoid
 Do not treat syntactic compatibility as sufficient.
 
-## Completion report
+## Verification
 State artefacts produced, decisions made, assumptions, risks, validation performed and files changed.

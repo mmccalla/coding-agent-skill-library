@@ -41,5 +41,5 @@ Apply event-driven best practice: business event semantics, producer/consumer ow
 ## Avoid
 Do not equate broker health with pipeline health.
 
-## Completion report
+## Verification
 State artefacts produced, decisions made, assumptions, risks, validation performed and files changed.

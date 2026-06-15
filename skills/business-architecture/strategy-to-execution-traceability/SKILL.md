@@ -39,5 +39,5 @@ Keep capabilities, value streams, processes, organisation, information concepts,
 ## Avoid
 Do not treat a list of projects as strategy.
 
-## Completion report
+## Verification
 State artefacts produced, decisions made, assumptions, risks, validation performed and files changed.

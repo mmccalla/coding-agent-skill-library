@@ -5,8 +5,7 @@ description: Use when a rough idea needs to be shaped into a concrete, testable 
 
 # Idea Refine
 
-## When to use this skill
-
+## When to use
 Use this skill when the user has an early-stage concept, a loose feature idea, or a partial proposal that needs structured clarification before build work begins.
 
 ## Objective

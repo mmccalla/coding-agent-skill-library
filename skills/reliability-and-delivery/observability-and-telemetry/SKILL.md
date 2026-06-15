@@ -5,8 +5,7 @@ description: Design and implement actionable logs, metrics, traces, dashboards a
 
 # Observability and Telemetry
 
-## When to use this skill
-
+## When to use
 Use this skill when adding or reviewing logs, metrics, traces, dashboards, alerts, telemetry standards, OpenTelemetry instrumentation, service health checks, operational evidence or workflow monitoring.
 
 ## Objective

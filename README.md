@@ -5,10 +5,21 @@ A portable default reference library for repository-aware coding agents.
 This repository is designed to be dropped into another repo and provide one coherent startup path, one skills inventory, and one layered documentation model:
 
 - repository entrypoint: `AGENTS.md`
+- immutable baseline: `skills/agent-control-patterns/apply-laws-of-ai/SKILL.md`
+- portable contract: `skills_docs/LIBRARY_CONTRACT.md`
 - routing guide: `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`
 - skills subtree index: `skills/README.md`
 - full inventory: `skills/MANIFEST.md`
 - execution guidance: the smallest relevant `SKILL.md`
+
+## Mandatory startup order
+
+Every agent session:
+
+1. `AGENTIC_CODING_GLOBAL_SAFETY.md`
+2. `SECURE_AGENTIC_DEVELOPMENT.md`
+3. **`skills/agent-control-patterns/apply-laws-of-ai/SKILL.md`** (immutable baseline)
+4. `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` → smallest relevant `SKILL.md`
 
 ## Portable bootstrap
 
@@ -17,7 +28,7 @@ For a drop-in install, start with:
 - `skills_docs/DROP_IN_BOOTSTRAP.md`
 - `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`
 
-The library currently contains 86 `SKILL.md` files across eight categories.
+The library currently contains 87 `SKILL.md` files across eight categories (including mandatory `apply-laws-of-ai`).
 
 ## Recommended directory structure
 
@@ -30,113 +41,24 @@ coding-agent-skill-library/
 ├── SECURE_AGENTIC_DEVELOPMENT.md
 ├── skills/
 │   ├── README.md
-│   └── MANIFEST.md
-├── skills_docs/
-│   ├── README.md
-│   ├── HOW_TO_FIND_THE_RIGHT_SKILL.md
-│   └── DROP_IN_BOOTSTRAP.md
-└── skills/
-    ├── agentic-patterns/
-    │   ├── MANIFEST.md
-    │   ├── using-agent-skills/
-    │   ├── interview-me/
-    │   ├── idea-refine/
-    │   ├── prompt-chaining/
-    │   ├── routing/
-    │   ├── parallelisation/
-    │   ├── reflection-and-verification/
-    │   ├── planning-and-task-decomposition/
-    │   ├── spec-driven-development/
-    │   ├── incremental-implementation/
-    │   ├── context-engineering/
-    │   ├── source-driven-development/
-    │   ├── doubt-driven-development/
-    │   ├── tool-use-function-calling/
-    │   ├── multi-agent-collaboration/
-    │   ├── memory-management/
-    │   ├── learning-and-adaptation/
-    │   └── mcp-server-design/
-    ├── agent-control-patterns/
-    │   ├── MANIFEST.md
-    │   ├── goal-setting-and-monitoring/
-    │   ├── exception-handling-and-recovery/
-    │   ├── human-in-the-loop/
-    │   ├── knowledge-retrieval-rag/
-    │   ├── inter-agent-communication-a2a/
-    │   ├── resource-aware-optimisation/
-    │   ├── reasoning-techniques/
-    │   ├── guardrails-safety-patterns/
-    │   ├── evaluation-and-monitoring/
-    │   └── prioritisation/
-    ├── engineering-practices/
-    │   ├── kiss-principle/
-    │   ├── solid-principles/
-    │   ├── dry-principle/
-    │   ├── tdd-practice/
-    │   ├── bdd-practice/
-    │   ├── ddd-practice/
-    │   ├── code-review-and-quality/
-    │   └── git-workflow-and-versioning/
-    ├── user-experience/
-    │   ├── MANIFEST.md
-    │   ├── ux-design-principles/
-    │   ├── accessibility-wcag/
-    │   ├── ui-component-design/
-    │   ├── frontend-state-and-interaction-design/
-    │   ├── data-product-dashboard-design/
-    │   ├── design-system-practice/
-    │   ├── user-research-and-usability-testing/
-    │   └── agentic-ux-patterns/
-    ├── reliability-and-delivery/
-    │   ├── MANIFEST.md
-    │   ├── sre-practice/
-    │   ├── slo-error-budget-management/
-    │   ├── incident-response-and-postmortems/
-    │   ├── observability-and-telemetry/
-    │   ├── browser-testing-with-devtools/
-    │   ├── toil-reduction-and-automation/
-    │   ├── release-engineering-and-progressive-delivery/
-    │   ├── dora-four-keys/
-    │   ├── ci-cd-and-automation/
-    │   ├── deprecation-and-migration/
-    │   ├── documentation-and-adrs/
-    │   └── shipping-and-launch/
-    ├── event-driven-and-real-time-data/
-    │   ├── MANIFEST.md
-    │   ├── event-driven-architecture/
-    │   ├── event-modelling/
-    │   ├── event-streaming-platform-design/
-    │   ├── schema-registry-and-contracts/
-    │   ├── cdc-and-source-to-stream-ingestion/
-    │   ├── stream-processing-patterns/
-    │   ├── event-governance-and-lineage/
-    │   └── real-time-operability/
-    ├── business-architecture/
-    │   ├── MANIFEST.md
-    │   ├── business-capability-modelling/
-    │   ├── value-stream-modelling/
-    │   ├── process-modelling/
-    │   ├── operating-model-design/
-    │   ├── strategy-to-execution-traceability/
-    │   ├── capability-maturity-assessment/
-    │   ├── business-information-concept-modelling/
-    │   └── organisation-and-role-design/
-    └── data-architecture/
-        ├── MANIFEST.md
-        ├── conceptual-data-modelling/
-        ├── logical-data-modelling/
-        ├── data-product-design/
-        ├── data-contract-design/
-        ├── metadata-management/
-        ├── data-governance-and-quality/
-        ├── data-security-and-privacy-architecture/
-        ├── data-lifecycle-and-retention-management/
-        ├── data-integration-and-interoperability/
-        ├── lakehouse-and-medallion-architecture/
-        ├── master-and-reference-data-management/
-        ├── ontology-and-knowledge-graph-modelling/
-        ├── kg-enabled-rag/
-        └── data-lineage-and-provenance/
+│   ├── MANIFEST.md
+│   ├── agentic-patterns/
+│   │   └── ...
+│   ├── agent-control-patterns/
+│   │   ├── apply-laws-of-ai/   # mandatory first skill
+│   │   └── ...
+│   ├── engineering-practices/
+│   ├── user-experience/
+│   ├── reliability-and-delivery/
+│   ├── event-driven-and-real-time-data/
+│   ├── business-architecture/
+│   └── data-architecture/
+└── skills_docs/
+    ├── README.md
+    ├── LIBRARY_CONTRACT.md
+    ├── HOW_TO_FIND_THE_RIGHT_SKILL.md
+    ├── DROP_IN_BOOTSTRAP.md
+    └── templates/
 ```
 
 ## Installation into a project
@@ -162,6 +84,7 @@ my-project/
 │   └── data-architecture/
 ├── skills_docs/
 │   ├── README.md
+│   ├── LIBRARY_CONTRACT.md
 │   ├── HOW_TO_FIND_THE_RIGHT_SKILL.md
 │   └── DROP_IN_BOOTSTRAP.md
 └── <project files>
@@ -171,7 +94,9 @@ If the target repository already has its own `README.md`, do not overwrite it. K
 
 ## Documentation model
 
-- `AGENTS.md` is the required repository entrypoint.
+- `AGENTS.md` is the required repository entrypoint with mandatory startup order.
+- `skills/agent-control-patterns/apply-laws-of-ai/SKILL.md` is the immutable baseline skill.
+- `skills_docs/LIBRARY_CONTRACT.md` defines portable consistency rules.
 - `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` is the canonical routing guide.
 - `skills/README.md` explains how to traverse the portable `skills/` subtree.
 - Category `README.md` files are quick routing pages.
@@ -183,9 +108,11 @@ If the target repository already has its own `README.md`, do not overwrite it. K
 After installing all categories, validate the library with:
 
 ```bash
+python3 scripts/validate_skills.py
+./scripts/ci_local.sh
 find skills -maxdepth 2 -name "README.md" | sort
 find skills -name "SKILL.md" | sort
 find skills -name "MANIFEST.md" | sort
 ```
 
-With all eight categories installed, the library should contain **86 skills**.
+With all eight categories installed, the library should contain **87 skills** (including mandatory `apply-laws-of-ai`).

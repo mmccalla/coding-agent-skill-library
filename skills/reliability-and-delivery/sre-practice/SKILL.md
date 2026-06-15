@@ -5,8 +5,7 @@ description: Apply Site Reliability Engineering practices to design, operate and
 
 # SRE Practice
 
-## When to use this skill
-
+## When to use
 Use this skill when working on production service design, operational readiness, reliability reviews, service ownership, resilience improvements, availability, latency, durability, on-call readiness, runbooks, safe automation, incident prevention or operational risk reduction.
 
 ## Objective

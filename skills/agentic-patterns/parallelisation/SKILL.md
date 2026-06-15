@@ -28,8 +28,7 @@ Do not parallelise when tasks depend on each other, share mutable state unsafely
 - Use bounded concurrency to avoid rate-limit or resource exhaustion.
 - Record per-branch timings and errors.
 
-## Output checklist
-
+## Verification
 - [ ] Independence assumptions are documented.
 - [ ] Bounded concurrency is used.
 - [ ] Timeouts and partial failures are handled.

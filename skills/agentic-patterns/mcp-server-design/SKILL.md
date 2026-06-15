@@ -37,8 +37,7 @@ For a small fixed set of functions in one app, direct tool/function calling may 
 - Require confirmation for destructive operations.
 - Prefer local servers for sensitive data and remote servers for shared scalable tools only when access control is mature.
 
-## Output checklist
-
+## Verification
 - [ ] Tool/resource/prompt boundaries are clear.
 - [ ] Schemas are typed and agent-readable.
 - [ ] Discovery works from an MCP client.

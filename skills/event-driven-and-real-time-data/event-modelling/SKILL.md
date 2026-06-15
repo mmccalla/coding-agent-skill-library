@@ -39,5 +39,5 @@ Apply event-driven best practice: business event semantics, producer/consumer ow
 ## Avoid
 Do not name events after database operations.
 
-## Completion report
+## Verification
 State artefacts produced, decisions made, assumptions, risks, validation performed and files changed.

@@ -5,8 +5,7 @@ description: Apply behaviour-driven development by expressing expected behaviour
 
 # Behaviour-Driven Development (BDD)
 
-## When to use this skill
-
+## When to use
 Use this skill when the task involves user journeys, acceptance criteria, cross-role collaboration, product behaviour, APIs, workflows, domain rules, or tests that must be understandable by business and technical stakeholders.
 
 ## Objective

@@ -2,7 +2,17 @@
 
 This repository uses a **hierarchical coding-agent skills library**.
 
-Use `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` as the routing guide, `skills/README.md` as the subtree index, and `skills/MANIFEST.md` as the full inventory. Load only the smallest relevant skill or combination of skills for the task.
+## Mandatory startup order
+
+Before planning, routing, tool use, or edits:
+
+1. Read `AGENTIC_CODING_GLOBAL_SAFETY.md`.
+2. Read `SECURE_AGENTIC_DEVELOPMENT.md`.
+3. **Execute `skills/agent-control-patterns/apply-laws-of-ai/SKILL.md` in full** — immutable baseline for all reasoning.
+4. Use `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` as the routing guide, `skills/README.md` as the subtree index, and `skills/MANIFEST.md` as the full inventory.
+5. Load only the smallest relevant skill or combination of skills for the task.
+
+See `skills_docs/LIBRARY_CONTRACT.md` for portable consistency rules.
 
 ## Default behaviour
 
@@ -24,6 +34,7 @@ Use these skills when the task shape matches:
 - `solid-principles` when refactoring modules, services, classes, tools, agents or dependency boundaries.
 - `dry-principle` when repeated knowledge, rules, schemas or validation create maintenance risk.
 - `using-agent-skills`, `interview-me`, `idea-refine`, `spec-driven-development`, `incremental-implementation`, `context-engineering`, `source-driven-development` and `doubt-driven-development` for the workflow spine from session start through spec and implementation.
+- **`apply-laws-of-ai` first at every session** — mandatory immutable baseline before any other skill.
 - Agentic workflow and control skills when building or modifying agents, tools, MCP servers, A2A integrations, RAG systems, guardrails, memory, evaluation, recovery or monitoring.
 - Architecture skills when working on capabilities, value streams, processes, operating models, data models, data products, data contracts, metadata, governance, quality, lineage, event-driven architecture, CDC, streams or real-time data.
 - `browser-testing-with-devtools`, `code-review-and-quality`, `git-workflow-and-versioning`, `ci-cd-and-automation`, `documentation-and-adrs`, `deprecation-and-migration` and `shipping-and-launch` for browser evidence, review, delivery automation, durable documentation and release readiness.

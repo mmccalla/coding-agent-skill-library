@@ -48,8 +48,7 @@ Never hide failures. Convert raw exceptions into actionable diagnostics and incl
 - Never proceed after failed validation without documenting the risk.
 - Prefer controlled failure over silent corruption.
 
-## Output checklist
-
+## Verification
 - [ ] Failure modes are identified.
 - [ ] Retry and fallback limits are explicit.
 - [ ] Rollback or cleanup path exists.

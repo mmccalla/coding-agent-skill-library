@@ -5,8 +5,7 @@ description: Use when a change should land as a sequence of small, verifiable sl
 
 # Incremental Implementation
 
-## When to use this skill
-
+## When to use
 Use this skill when a change touches multiple files, has rollback risk, or benefits from being delivered in small vertical slices with validation after each step.
 
 ## Objective

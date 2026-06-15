@@ -37,8 +37,7 @@ Represent policies as code where possible. Use schema validation, allowlists, sa
 - Fast, low-cost models may be used as pre-screeners, but deterministic checks should enforce hard rules.
 - Escalate rather than improvise on safety-critical uncertainty.
 
-## Output checklist
-
+## Verification
 - [ ] Input and output validation exist.
 - [ ] Tool permissions are least-privilege.
 - [ ] Sensitive data handling is explicit.

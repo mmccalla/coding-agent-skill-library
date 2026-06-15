@@ -5,8 +5,7 @@ description: Define and use SLIs, SLOs, error budgets, burn rates and release ga
 
 # SLO and Error Budget Management
 
-## When to use this skill
-
+## When to use
 Use this skill when defining or changing SLIs, SLOs, error budgets, burn-rate alerts, reliability targets, release gates, service-level dashboards, reliability acceptance criteria or production readiness checks.
 
 ## Objective

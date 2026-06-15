@@ -5,8 +5,7 @@ description: Use when making code changes that should stay atomic, reversible an
 
 # Git Workflow and Versioning
 
-## When to use this skill
-
+## When to use
 Use this skill when creating commits, branching work, preparing changes for review, or planning version-aware changes and migrations.
 
 ## Objective

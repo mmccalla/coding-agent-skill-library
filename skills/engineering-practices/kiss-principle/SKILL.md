@@ -5,8 +5,7 @@ description: Apply the KISS principle to simplify code, architecture, workflows 
 
 # KISS Principle
 
-## When to use this skill
-
+## When to use
 Use this skill when simplifying code, reviewing design complexity, reducing cognitive load, choosing between alternative implementations, or preventing over-engineering.
 
 ## Objective

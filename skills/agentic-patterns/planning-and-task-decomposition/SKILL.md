@@ -28,8 +28,7 @@ Do not over-plan routine one-file changes.
 - Avoid speculative architecture unless justified by the requirement.
 - Use explicit deferred-work notes only for work intentionally postponed and disclosed.
 
-## Output checklist
-
+## Verification
 - [ ] Objective and acceptance criteria are clear.
 - [ ] Plan steps are executable and ordered.
 - [ ] Unknowns and assumptions are explicit.

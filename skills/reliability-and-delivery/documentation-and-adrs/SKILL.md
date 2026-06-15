@@ -5,8 +5,7 @@ description: Use when a change needs durable documentation, an architecture deci
 
 # Documentation and ADRs
 
-## When to use this skill
-
+## When to use
 Use this skill when a decision needs to be captured for future maintainers, or when the change alters repository conventions, usage guidance or release behaviour.
 
 ## Objective

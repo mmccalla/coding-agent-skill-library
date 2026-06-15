@@ -5,8 +5,7 @@ description: Use when a high-stakes, unfamiliar or overconfident decision should
 
 # Doubt-Driven Development
 
-## When to use this skill
-
+## When to use
 Use this skill when the first answer feels too easy, the codebase is unfamiliar, or the cost of a wrong assumption is high enough to justify adversarial checking.
 
 ## Objective

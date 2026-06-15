@@ -33,8 +33,7 @@ Use this skill only when a single agent becomes a bottleneck because the task ne
 - Keep privileges minimal by role.
 - Make final synthesis grounded only in supplied agent outputs unless external retrieval is explicitly part of the workflow.
 
-## Output checklist
-
+## Verification
 - [ ] Roles and responsibilities are non-overlapping.
 - [ ] Communication schema is explicit.
 - [ ] Orchestration pattern is documented.

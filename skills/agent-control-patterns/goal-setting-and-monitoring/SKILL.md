@@ -42,8 +42,7 @@ For coding agents, update the goal record after each tool action. Store what cha
 - Prefer deterministic checks over LLM judgement where tests, schemas, compilers or linters exist.
 - Escalate when the goal is under-specified, safety-critical, or conflicts with repository constraints.
 
-## Output checklist
-
+## Verification
 - [ ] Goal and non-goals are explicit.
 - [ ] Success criteria are measurable.
 - [ ] Progress evidence is captured.

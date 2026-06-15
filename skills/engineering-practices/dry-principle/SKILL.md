@@ -5,8 +5,7 @@ description: Apply the DRY principle to remove harmful duplication while avoidin
 
 # DRY Principle
 
-## When to use this skill
-
+## When to use
 Use this skill when reviewing repeated code, configuration, schemas, prompts, tests, error handling, validation or business rules.
 
 ## Objective

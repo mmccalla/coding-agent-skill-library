@@ -610,8 +610,7 @@ A KG-enabled RAG task is done only when:
 6. Run tests and fix failures.
 7. Report changed files, commands run, tests passed/failed, and residual risks.
 
-## Completion report
-
+## Verification
 Report:
 
 - files changed;

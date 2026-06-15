@@ -2,6 +2,16 @@
 
 Use this page as the shortest path from a task to the right local skill.
 
+## Mandatory startup order
+
+Before using this routing guide:
+
+1. Read `AGENTIC_CODING_GLOBAL_SAFETY.md` when present.
+2. Read `SECURE_AGENTIC_DEVELOPMENT.md` when present.
+3. **Execute `skills/agent-control-patterns/apply-laws-of-ai/SKILL.md` in full** — immutable baseline for all reasoning.
+
+Then continue with the steps below. See `LIBRARY_CONTRACT.md` for portable consistency rules.
+
 ## Start here
 
 1. Read `skills/README.md` for the structure of the portable subtree.
@@ -16,7 +26,7 @@ Use this page as the shortest path from a task to the right local skill.
 | If the task is mainly about... | Start in |
 |---|---|
 | Session setup, planning, specs, implementation flow, source grounding | `skills/agentic-patterns/` |
-| Safety, approval, recovery, RAG, evaluation, prioritisation | `skills/agent-control-patterns/` |
+| Safety baseline, approval, recovery, RAG, evaluation, prioritisation | `skills/agent-control-patterns/` (`apply-laws-of-ai` first) |
 | Code quality, testing, refactoring, domain modelling, review | `skills/engineering-practices/` |
 | UI, accessibility, dashboards, interaction states, agent supervision | `skills/user-experience/` |
 | Reliability, incidents, observability, CI/CD, release, launch | `skills/reliability-and-delivery/` |
@@ -28,6 +38,7 @@ Use this page as the shortest path from a task to the right local skill.
 
 | Scenario | Recommended starting skill(s) |
 |---|---|
+| Every session | `apply-laws-of-ai` (mandatory first) |
 | Ambiguous request | `using-agent-skills`, then `interview-me` if intent is still unclear |
 | Multi-step implementation | `planning-and-task-decomposition`, then `incremental-implementation` |
 | Generic document-grounded RAG | `knowledge-retrieval-rag` |
@@ -41,6 +52,7 @@ Use this page as the shortest path from a task to the right local skill.
 
 ## Selection rules
 
+- `apply-laws-of-ai` always runs before any other skill.
 - Prefer the smallest useful skill set.
 - Do not load a whole category when one skill is enough.
 - Use category docs for orientation and `SKILL.md` files for actual operating procedure.
@@ -49,6 +61,7 @@ Use this page as the shortest path from a task to the right local skill.
 
 ## Navigation map
 
+- Library contract: `LIBRARY_CONTRACT.md`
 - Portable subtree index: `skills/README.md`
 - Full inventory: `skills/MANIFEST.md`
 - Category entrypoints:

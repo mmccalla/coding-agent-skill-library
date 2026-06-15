@@ -38,8 +38,7 @@ Prefer externally verifiable reasoning over persuasive explanation. For code, th
 - Do not use LLM reasoning where a compiler, linter, parser or test can decide.
 - Do not continue a failing reasoning path without new evidence.
 
-## Output checklist
-
+## Verification
 - [ ] Objective and constraints are clear.
 - [ ] Evidence gathering occurred before major changes.
 - [ ] Reasoning method matches task complexity.

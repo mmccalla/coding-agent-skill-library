@@ -5,8 +5,7 @@ description: Design predictable frontend states and interactions for loading, em
 
 # Frontend State and Interaction Design
 
-## When to use this skill
-
+## When to use
 Use this skill when implementing async flows, long-running jobs, background workflows, forms, dashboards, approval flows, optimistic updates, error recovery, retry actions, partial success states or agent task execution.
 
 ## Objective

@@ -5,8 +5,7 @@ description: Apply SOLID principles to improve modularity, dependency boundaries
 
 # SOLID Principles
 
-## When to use this skill
-
+## When to use
 Use this skill when designing or refactoring classes, modules, services, interfaces, dependency boundaries, plug-ins, tools, agents, MCP servers or A2A components.
 
 ## Objective

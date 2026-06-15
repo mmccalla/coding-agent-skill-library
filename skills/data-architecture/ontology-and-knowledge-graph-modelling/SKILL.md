@@ -78,5 +78,5 @@ Pass only if:
 - Using generic relationships where a domain predicate is needed.
 - Ignoring negative tests, adversarial prompts, stale sources or contradictory evidence.
 
-## Completion report
+## Verification
 Report artefacts produced, key decisions, assumptions, trade-offs, risks, validation performed, unresolved issues and files changed.

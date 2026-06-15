@@ -5,8 +5,7 @@ description: Maintain consistent, accessible and scalable design systems using t
 
 # Design System Practice
 
-## When to use this skill
-
+## When to use
 Use this skill when creating or modifying design tokens, component libraries, shared UI patterns, typography, spacing, colour usage, component variants, interaction standards, layout systems or frontend conventions.
 
 ## Objective

@@ -5,8 +5,7 @@ description: Use when reviewing code before merge to assess correctness, tests, 
 
 # Code Review and Quality
 
-## When to use this skill
-
+## When to use
 Use this skill when reviewing a diff written by yourself, another agent or a human, or when deciding whether a change is ready to merge.
 
 ## Objective

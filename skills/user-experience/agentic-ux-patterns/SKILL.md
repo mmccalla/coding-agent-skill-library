@@ -5,8 +5,7 @@ description: Design user experiences for supervising, approving, steering and au
 
 # Agentic UX Patterns
 
-## When to use this skill
-
+## When to use
 Use this skill when designing interfaces for agent recommendations, generated metadata, generated data-quality rules, approval workflows, tool-call previews, workflow plans, autonomous or semi-autonomous actions, evidence review, exception triage or human-in-the-loop decisions.
 
 ## Objective

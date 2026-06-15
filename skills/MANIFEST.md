@@ -8,7 +8,7 @@ Use this command to list installed skills:
 find skills -name "SKILL.md" | sort
 ```
 
-After the agentic, control, engineering, user-experience, reliability-and-delivery, event-driven, business-architecture and data-architecture skills are installed, the library should contain 86 skills.
+After the agentic, control, engineering, user-experience, reliability-and-delivery, event-driven, business-architecture and data-architecture skills are installed, the library should contain 87 skills (including mandatory `apply-laws-of-ai`).
 
 ## Gap coverage map
 
@@ -88,6 +88,7 @@ Place these existing skill folders under `skills/agent-control-patterns/`.
 
 | Skill | Use when | Avoid when |
 |---|---|---|
+| `apply-laws-of-ai` | **Mandatory first at every session.** Immutable baseline for all reasoning before any other skill, plan, or edit. | Never skip; no substitute or summary is acceptable. |
 | `goal-setting-and-monitoring` | Objectives, success criteria, stop conditions or progress tracking are needed. | The task has a simple one-shot outcome. |
 | `exception-handling-and-recovery` | Workflows need retries, fallbacks, rollback, graceful degradation or escalation. | Failure has no material impact and normal exceptions are enough. |
 | `human-in-the-loop` | Human judgement, approval, review or escalation is required. | Fully automated execution is safe, tested and reversible. |

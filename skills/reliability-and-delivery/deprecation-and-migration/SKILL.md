@@ -5,8 +5,7 @@ description: Use when retiring an old path, replacing a legacy behaviour or movi
 
 # Deprecation and Migration
 
-## When to use this skill
-
+## When to use
 Use this skill when removing or replacing a skill, doc path, workflow, API surface or other user-facing behaviour that still has active dependents.
 
 ## Objective

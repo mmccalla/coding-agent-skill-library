@@ -5,8 +5,7 @@ description: Use when a request is underspecified and the user's actual goal, co
 
 # Interview Me
 
-## When to use this skill
-
+## When to use
 Use this skill when the request is ambiguous, has multiple plausible interpretations, or is missing user, scope, constraint or acceptance details.
 
 ## Objective

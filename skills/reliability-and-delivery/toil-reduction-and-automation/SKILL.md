@@ -5,8 +5,7 @@ description: Identify and reduce repetitive operational work through safe, teste
 
 # Toil Reduction and Automation
 
-## When to use this skill
-
+## When to use
 Use this skill for repetitive manual operations, support tasks, deployments, data-quality remediation, report generation, repeated incident actions, operational scripts, runbook automation and workflow automation.
 
 ## Objective

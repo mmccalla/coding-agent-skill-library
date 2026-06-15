@@ -46,8 +46,7 @@ Log estimates and actuals so future routing decisions improve.
 - Do not exceed user-defined budgets without approval.
 - Prefer graceful degradation over total failure when the user can still receive value.
 
-## Output checklist
-
+## Verification
 - [ ] Resource budgets are explicit.
 - [ ] Complexity estimate is captured.
 - [ ] Model/tool routing is justified.

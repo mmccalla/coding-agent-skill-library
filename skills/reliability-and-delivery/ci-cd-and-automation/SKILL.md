@@ -5,8 +5,7 @@ description: Use when designing or changing build, test or deployment automation
 
 # CI/CD and Automation
 
-## When to use this skill
-
+## When to use
 Use this skill when modifying pipelines, build automation, release jobs, deployment gates or other automation that can change delivery behaviour.
 
 ## Objective

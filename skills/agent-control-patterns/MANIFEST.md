@@ -4,6 +4,7 @@ Use this manifest to select the right skill for a coding agent.
 
 | Skill | Use when |
 |---|---|
+| `apply-laws-of-ai` | **Mandatory first at every session.** Immutable baseline for all reasoning before routing, planning, edits, or any other skill. |
 | `goal-setting-and-monitoring` | Use when implementing agents that need explicit objectives, measurable success criteria, progress tracking, stop conditions, or iterative improvement against goals. |
 | `exception-handling-and-recovery` | Use when building resilient agent workflows that must detect failures, retry safely, degrade gracefully, rollback state, or escalate to a human/operator. |
 | `human-in-the-loop` | Use when a coding agent must request approval, expert judgement, clarification, review, or intervention before proceeding with high-risk or ambiguous work. |

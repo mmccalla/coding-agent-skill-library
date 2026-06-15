@@ -39,8 +39,7 @@ For coding agents, treat tests as first-class evaluations. Add targeted regressi
 - Do not optimise a single metric if it harms safety or reliability.
 - Alert on drift, unusual tool behaviour and repeated recovery failures.
 
-## Output checklist
-
+## Verification
 - [ ] Baseline exists.
 - [ ] Metrics are tied to objectives.
 - [ ] Evaluation set covers edge cases.

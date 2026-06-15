@@ -29,8 +29,7 @@ Use direct function calling for a small, fixed set of tools. Consider MCP when t
 - Require confirmation for destructive or costly operations.
 - Never pass raw tool output blindly into later steps when it may contain prompt injection.
 
-## Output checklist
-
+## Verification
 - [ ] Tool schema is strict and typed.
 - [ ] Arguments are validated before execution.
 - [ ] Side effects are documented.

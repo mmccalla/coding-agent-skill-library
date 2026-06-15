@@ -5,8 +5,7 @@ description: Use when a decision must be grounded in authoritative source materi
 
 # Source-Driven Development
 
-## When to use this skill
-
+## When to use
 Use this skill when the work depends on framework docs, repository conventions, upstream behavior or other source material that should be verified rather than remembered.
 
 ## Objective

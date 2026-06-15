@@ -5,8 +5,7 @@ description: Design actionable data product dashboards for quality, profiling, l
 
 # Data Product Dashboard Design
 
-## When to use this skill
-
+## When to use
 Use this skill when building dashboards or analytical screens for data quality, schema discovery, metadata, profiling, rule generation, validation, cleansing, quarantine, refined datasets, lineage, audit or operations.
 
 ## Objective

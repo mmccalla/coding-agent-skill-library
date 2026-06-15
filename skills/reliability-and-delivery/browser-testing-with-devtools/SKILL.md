@@ -5,8 +5,7 @@ description: Use when verifying browser-based behaviour with Chrome DevTools, in
 
 # Browser Testing With DevTools
 
-## When to use this skill
-
+## When to use
 Use this skill when a change affects a browser-rendered interface and you need runtime evidence from the browser rather than static code inspection alone.
 
 ## Objective

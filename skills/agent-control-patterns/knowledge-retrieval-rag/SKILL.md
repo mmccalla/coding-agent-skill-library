@@ -44,8 +44,7 @@ Add retrieval tests with known questions and expected source files. Measure reca
 - Do not cite chunks that do not support the claim.
 - Do not use raw PDFs or binary files directly if the agent cannot parse them reliably; convert to agent-readable text first.
 
-## Output checklist
-
+## Verification
 - [ ] Sources are parsed into clean text.
 - [ ] Chunking preserves useful context.
 - [ ] Metadata and permissions are retained.

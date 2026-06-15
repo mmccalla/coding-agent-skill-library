@@ -5,8 +5,7 @@ description: Improve deployment safety using release engineering, staged rollout
 
 # Release Engineering and Progressive Delivery
 
-## When to use this skill
-
+## When to use
 Use this skill for deployment pipelines, release gates, rollback, canary releases, blue/green deployments, feature flags, schema or migration releases, production promotion, deployment safety and blast-radius reduction.
 
 ## Objective

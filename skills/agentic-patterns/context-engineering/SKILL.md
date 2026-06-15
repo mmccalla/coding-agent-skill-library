@@ -5,8 +5,7 @@ description: Use when a task needs the right repository, file and document conte
 
 # Context Engineering
 
-## When to use this skill
-
+## When to use
 Use this skill when starting a session, switching tasks, or preparing context for a workflow that depends on the right local files and guidance.
 
 ## Objective

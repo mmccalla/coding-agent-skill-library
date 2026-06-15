@@ -5,8 +5,7 @@ description: Plan and apply lightweight user research and usability testing to v
 
 # User Research and Usability Testing
 
-## When to use this skill
-
+## When to use
 Use this skill when validating journeys, forms, dashboards, onboarding flows, approval flows, quarantine triage, data-quality investigations, metadata review, agent recommendations or high-risk workflows.
 
 ## Objective

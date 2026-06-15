@@ -5,8 +5,7 @@ description: Use when preparing a change for launch, staged rollout or post-laun
 
 # Shipping and Launch
 
-## When to use this skill
-
+## When to use
 Use this skill when a change is ready to leave the repository, reach users or be published as part of a release or rollout.
 
 ## Objective

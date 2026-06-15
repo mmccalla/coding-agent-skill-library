@@ -5,8 +5,7 @@ description: Apply WCAG-aligned accessibility checks to user-facing interfaces, 
 
 # Accessibility and WCAG Practice
 
-## When to use this skill
-
+## When to use
 Use this skill for any user-facing work: pages, forms, dashboards, tables, modals, navigation, charts, notifications, approval workflows, agent supervision interfaces and design-system components.
 
 ## Objective

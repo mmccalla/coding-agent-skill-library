@@ -5,8 +5,7 @@ description: Use DevOps Research and Assessment Four Keys metrics to improve sof
 
 # DORA Four Keys
 
-## When to use this skill
-
+## When to use
 Use this skill when improving or analysing deployment frequency, lead time for changes, change failure rate, failed deployment recovery time, CI/CD flow, release process, delivery bottlenecks, deployment safety or engineering productivity evidence.
 
 ## Objective

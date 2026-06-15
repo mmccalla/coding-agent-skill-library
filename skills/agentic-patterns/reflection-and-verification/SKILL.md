@@ -27,8 +27,7 @@ Reflection must not replace deterministic verification. Run tests, linters, type
 - Record failed checks and fixes.
 - Stop after a bounded number of repair cycles and report unresolved failures.
 
-## Output checklist
-
+## Verification
 - [ ] Acceptance criteria are explicit.
 - [ ] Tests or validation checks were run.
 - [ ] Failures were repaired or reported.

@@ -5,8 +5,7 @@ description: Design and implement reusable, accessible, consistent UI components
 
 # UI Component Design
 
-## When to use this skill
-
+## When to use
 Use this skill when creating or modifying reusable components, forms, tables, cards, modals, drawers, navigation, badges, alerts, charts, approval panels, data-quality result components or quarantine triage components.
 
 ## Objective

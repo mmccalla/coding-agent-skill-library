@@ -5,8 +5,7 @@ description: Apply domain-driven design to model complex business domains using 
 
 # Domain-Driven Design (DDD)
 
-## When to use this skill
-
+## When to use
 Use this skill when modelling complex business behaviour, designing service boundaries, refactoring an anemic domain model, defining aggregates, separating subdomains, aligning code with business language, or implementing domain rules that should not leak into infrastructure code.
 
 ## Objective

@@ -1,0 +1,23 @@
+name: Validate skills library
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630cea73d8afb0186dc0d8ca0 # v4.2.2
+
+      - name: Set up Python
+        uses: actions/setup-python@8d9ed9acfe707f195d7998e90d1a2fb01bfe5ab8 # v5.3.0
+        with:
+          python-version: "3.12"
+
+      - name: Validate skill structure
+        run: ./scripts/ci_local.sh

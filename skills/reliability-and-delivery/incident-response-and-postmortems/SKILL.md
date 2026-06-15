@@ -5,8 +5,7 @@ description: Handle service incidents, operational failures, recovery, postmorte
 
 # Incident Response and Postmortems
 
-## When to use this skill
-
+## When to use
 Use this skill for incidents, outages, degraded service, failed deployments, failed workflows, data-quality pipeline failures, operational recovery, postmortems, corrective actions and incident runbooks.
 
 ## Objective

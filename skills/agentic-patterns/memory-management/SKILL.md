@@ -36,8 +36,7 @@ Do not store sensitive or irrelevant data. Do not add memory when the task can b
 - Treat retrieved memory as context, not truth.
 - Add tests for retrieval, update, deletion and stale-memory handling.
 
-## Output checklist
-
+## Verification
 - [ ] Short-term and long-term memory are separated.
 - [ ] Memory schema and namespace are explicit.
 - [ ] Memory writes are controlled and auditable.

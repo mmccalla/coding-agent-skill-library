@@ -48,8 +48,7 @@ During repository work, prioritise in this order unless instructed otherwise:
 - Do not let an LLM invent priorities without explicit criteria.
 - Escalate conflicts between business value, safety and user instructions.
 
-## Output checklist
-
+## Verification
 - [ ] Candidate actions are listed.
 - [ ] Criteria and weights are explicit.
 - [ ] Dependencies are considered.

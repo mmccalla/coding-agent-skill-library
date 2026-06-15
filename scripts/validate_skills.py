@@ -6,6 +6,7 @@ import itertools
 from collections import Counter
 
 ROOT = "skills"
+BASELINE_SKILL = os.path.join("skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md")
 MIN_WORDS = 140
 SIMILARITY_FAIL = 0.82
 
@@ -33,6 +34,11 @@ def cosine(counter_a: Counter, counter_b: Counter) -> float:
 
 
 def main() -> int:
+    errors = []
+
+    if not os.path.isfile(BASELINE_SKILL):
+        errors.append(f"missing mandatory baseline skill: {BASELINE_SKILL}")
+
     paths = []
     for dirpath, _, files in os.walk(ROOT):
         for name in files:
@@ -40,7 +46,6 @@ def main() -> int:
                 paths.append(os.path.join(dirpath, name))
     paths.sort()
 
-    errors = []
     vectors = {}
 
     for p in paths:
@@ -68,11 +73,17 @@ def main() -> int:
             errors.append(f"{p}: missing level-1 heading")
 
         body_lower = text.lower()
-        if "## when to use" not in body_lower:
-            errors.append(f"{p}: missing 'When to use' section")
+        if not re.search(r"^## When to use\s*$", text, flags=re.M):
+            errors.append(f"{p}: missing canonical '## When to use' section")
+        if re.search(r"^## When to use this skill\s*$", text, flags=re.M):
+            errors.append(f"{p}: use canonical heading '## When to use' (not 'this skill')")
 
-        if "## verification" not in body_lower and "## completion report" not in body_lower and "## output checklist" not in body_lower:
-            errors.append(f"{p}: missing verification/completion section")
+        if not re.search(r"^## Verification\s*$", text, flags=re.M):
+            errors.append(f"{p}: missing canonical '## Verification' section")
+        if re.search(r"^## Completion report\s*$", text, flags=re.M):
+            errors.append(f"{p}: use canonical heading '## Verification' (not 'Completion report')")
+        if re.search(r"^## Output checklist\s*$", text, flags=re.M):
+            errors.append(f"{p}: use canonical heading '## Verification' (not 'Output checklist')")
 
         word_count = len(re.findall(r"\b\w+\b", text))
         if word_count < MIN_WORDS:

@@ -37,8 +37,7 @@ Choose the lightest reliable router:
 - Escalate or ask for clarification when route confidence is low.
 - Keep routing separate from execution so routes are testable.
 
-## Output checklist
-
+## Verification
 - [ ] Route enum exists.
 - [ ] Fallback/clarification route exists.
 - [ ] Route confidence threshold is explicit.
