@@ -1,6 +1,6 @@
 ---
 name: apply-laws-of-ai
-description: Mandatory immutable baseline for all agent reasoning. Applies an Asimov-inspired hierarchy of AI safety laws before any other skill, plan, or edit. Also known as apply_laws_of_AI.
+description: Mandatory immutable baseline applying an Asimov-inspired hierarchy of AI safety laws. Use when at every session start and before any other skill, plan, routing decision, tool use, or material edit. Also known as apply_laws_of_AI.
 ---
 
 # Apply Laws of AI

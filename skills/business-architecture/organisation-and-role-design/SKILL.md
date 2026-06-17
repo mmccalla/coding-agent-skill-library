@@ -1,6 +1,6 @@
 ---
 name: organisation-and-role-design
-description: Define roles, decision rights, accountabilities, team boundaries and ownership.
+description: Defines roles, decision rights, accountabilities, team boundaries and ownership. Use when designing teams, RACI matrices, or architecture governance roles.
 ---
 
 # Organisation and Role Design

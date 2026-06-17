@@ -1,6 +1,6 @@
 ---
 name: incident-response-and-postmortems
-description: Handle service incidents, operational failures, recovery, postmortems and corrective actions using structured, blameless and evidence-led practices.
+description: Handles incidents, recovery, postmortems and corrective actions with blameless, evidence-led practice. Use when responding to outages, writing postmortems, or defining incident runbooks.
 ---
 
 # Incident Response and Postmortems

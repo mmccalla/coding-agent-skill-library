@@ -24,7 +24,7 @@ Steps 1–3 are non-negotiable. No task skill may run before step 3 completes.
 
 | Artefact | Convention |
 |---|---|
-| Skill files | `SKILL.md` only, with YAML frontmatter (`name`, `description`) |
+| Skill files | `SKILL.md` only, with YAML frontmatter (`name`, `description`); `name` must match the parent folder name |
 | Skill sections | Canonical headings: `## When to use` and `## Verification` |
 | Skill folders | One folder per skill under a category directory |
 | Categories | Eight fixed categories under `skills/` |
@@ -44,7 +44,7 @@ Run structural validation after material library changes:
 python3 scripts/validate_skills.py
 ```
 
-The validator checks frontmatter, canonical section headings, minimum length, duplication risk, and presence of the baseline skill.
+The validator checks frontmatter, canonical section headings, minimum length, duplication risk, presence of the baseline skill, description quality (`Use when` trigger, 80–1024 characters), and folder/name alignment.
 
 Run the same checks locally as CI:
 

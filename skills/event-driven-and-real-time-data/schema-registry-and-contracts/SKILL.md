@@ -1,6 +1,6 @@
 ---
 name: schema-registry-and-contracts
-description: Define event schemas, compatibility, versioning and producer/consumer obligations.
+description: Defines event schemas, compatibility, versioning and producer-consumer obligations. Use when governing Avro, JSON, or Protobuf schemas and registry compatibility policies.
 ---
 
 # Schema Registry and Contracts

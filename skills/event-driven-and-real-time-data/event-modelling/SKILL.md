@@ -1,6 +1,6 @@
 ---
 name: event-modelling
-description: Discover and model business events, commands, decisions and state changes.
+description: Discovers and models business events, commands, decisions and state changes. Use when event-storming, designing event timelines, or defining domain events.
 ---
 
 # Event Modelling

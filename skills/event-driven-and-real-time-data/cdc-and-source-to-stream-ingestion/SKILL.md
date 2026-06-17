@@ -1,6 +1,6 @@
 ---
 name: cdc-and-source-to-stream-ingestion
-description: Design CDC and streaming ingestion from operational sources.
+description: Designs CDC and streaming ingestion from operational sources to event streams. Use when capturing database changes, replicating operational data, or building source-to-stream pipelines.
 ---
 
 # CDC and Source-to-Stream Ingestion

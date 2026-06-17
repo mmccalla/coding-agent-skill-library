@@ -1,6 +1,6 @@
 ---
 name: operating-model-design
-description: Design how people, process, technology, data, governance, funding and delivery work together.
+description: Designs how people, process, technology, data, governance and delivery align. Use when defining operating models, ways of working, or organisation-to-technology alignment.
 ---
 
 # Operating Model Design

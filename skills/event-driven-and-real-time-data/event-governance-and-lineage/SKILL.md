@@ -1,6 +1,6 @@
 ---
 name: event-governance-and-lineage
-description: Govern event ownership, classification, metadata, lineage, quality and lifecycle.
+description: Governs event ownership, classification, metadata, lineage, quality and lifecycle. Use when governing shared event catalogues, schemas, or stream ownership.
 ---
 
 # Event Governance and Lineage

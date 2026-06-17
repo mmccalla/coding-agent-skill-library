@@ -1,6 +1,6 @@
 ---
 name: ddd-practice
-description: Apply domain-driven design to model complex business domains using bounded contexts, ubiquitous language, aggregates, entities, value objects and domain services.
+description: Applies domain-driven design with bounded contexts, aggregates, and ubiquitous language. Use when modelling complex business domains, defining boundaries, or protecting invariants.
 ---
 
 # Domain-Driven Design (DDD)

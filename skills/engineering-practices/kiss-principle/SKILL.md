@@ -1,6 +1,6 @@
 ---
 name: kiss-principle
-description: Apply the KISS principle to simplify code, architecture, workflows and agent implementations without reducing required behaviour.
+description: Applies KISS to simplify code, architecture, workflows and agent designs without losing required behaviour. Use when reducing over-engineering, speculative abstractions, or unnecessary agent complexity.
 ---
 
 # KISS Principle

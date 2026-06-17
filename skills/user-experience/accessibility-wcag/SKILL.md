@@ -1,6 +1,6 @@
 ---
 name: accessibility-wcag
-description: Apply WCAG-aligned accessibility checks to user-facing interfaces, forms, dashboards, components and content.
+description: Applies WCAG 2.2 AA-aligned accessibility checks to interfaces, forms, dashboards and components. Use when building or reviewing any user-facing UI, content, or agent supervision screen.
 ---
 
 # Accessibility and WCAG Practice

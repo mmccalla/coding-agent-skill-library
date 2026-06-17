@@ -1,6 +1,6 @@
 ---
 name: conceptual-data-modelling
-description: Identify business concepts, entities and relationships without premature logical or physical design.
+description: Identifies business concepts, entities and relationships without premature physical design. Use when starting data architecture or aligning business language with information models.
 ---
 
 # Conceptual Data Modelling

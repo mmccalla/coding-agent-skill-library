@@ -1,6 +1,6 @@
 ---
 name: sre-practice
-description: Apply Site Reliability Engineering practices to design, operate and improve production services with explicit reliability, operability and resilience objectives.
+description: Applies SRE practices for reliability, operability and resilience objectives. Use when owning production services, defining SLOs, or improving operational maturity.
 ---
 
 # SRE Practice

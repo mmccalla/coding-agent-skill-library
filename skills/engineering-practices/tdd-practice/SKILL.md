@@ -1,6 +1,6 @@
 ---
 name: tdd-practice
-description: Apply test-driven development by writing a failing test first, implementing the smallest passing change, and refactoring under test protection.
+description: Applies TDD: failing test first, smallest passing change, refactor under test protection. Use when adding behaviour, fixing defects, or refactoring with executable expectations.
 ---
 
 # Test-Driven Development (TDD)

@@ -1,6 +1,6 @@
 ---
 name: data-product-dashboard-design
-description: Design actionable data product dashboards for quality, profiling, lineage, validation, quarantine, refined datasets, audit and operations.
+description: Designs actionable data product dashboards for quality, lineage, validation, quarantine and operations. Use when building data-ops, quality, or lineage dashboards.
 ---
 
 # Data Product Dashboard Design

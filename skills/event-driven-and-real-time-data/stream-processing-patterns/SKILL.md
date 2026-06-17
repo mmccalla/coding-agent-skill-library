@@ -1,6 +1,6 @@
 ---
 name: stream-processing-patterns
-description: Design stream filtering, enrichment, joins, windows, aggregation and stateful processing.
+description: Designs stream filtering, enrichment, joins, windows and stateful processing. Use when implementing Flink, Spark Streaming, or kstreams-style processing logic.
 ---
 
 # Stream Processing Patterns

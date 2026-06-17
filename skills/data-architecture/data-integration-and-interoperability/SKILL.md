@@ -1,6 +1,6 @@
 ---
 name: data-integration-and-interoperability
-description: Design batch, API, event, CDC, semantic and file-based integration patterns.
+description: Designs batch, API, event, CDC, semantic and file-based integration patterns. Use when connecting systems, choosing integration styles, or resolving interoperability gaps.
 ---
 
 # Data Integration and Interoperability

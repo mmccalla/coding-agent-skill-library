@@ -1,6 +1,6 @@
 ---
 name: data-contract-design
-description: Define producer-consumer contracts for schema, semantics, quality, compatibility and operations.
+description: Defines producer-consumer contracts for schema, semantics, quality, compatibility and operations. Use when formalising API, event, or dataset agreements between teams.
 ---
 
 # Data Contract Design

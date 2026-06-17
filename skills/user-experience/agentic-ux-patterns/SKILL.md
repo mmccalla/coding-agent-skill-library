@@ -1,6 +1,6 @@
 ---
 name: agentic-ux-patterns
-description: Design user experiences for supervising, approving, steering and auditing AI agent actions with clear evidence, uncertainty and control.
+description: Designs interfaces for supervising, approving, steering and auditing AI agent actions with evidence and uncertainty surfaced. Use when building agent workflows, approval gates, or audit surfaces.
 ---
 
 # Agentic UX Patterns

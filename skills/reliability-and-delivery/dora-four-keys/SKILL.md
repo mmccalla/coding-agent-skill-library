@@ -1,6 +1,6 @@
 ---
 name: dora-four-keys
-description: Use DevOps Research and Assessment Four Keys metrics to improve software delivery performance without gaming metrics or sacrificing reliability.
+description: Uses DevOps Research and Assessment Four Keys to improve delivery performance without gaming metrics. Use when measuring deployment frequency, lead time, change failure rate, or recovery time.
 ---
 
 # DORA Four Keys

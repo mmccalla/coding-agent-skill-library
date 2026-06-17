@@ -1,6 +1,6 @@
 ---
 name: data-lifecycle-and-retention-management
-description: Design lifecycle, retention, archival, deletion, legal hold and disposal controls.
+description: Designs lifecycle, retention, archival, deletion, legal hold and disposal controls. Use when defining data retention policies, archival strategy, or compliant deletion.
 ---
 
 # Data Lifecycle and Retention Management

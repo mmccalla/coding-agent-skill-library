@@ -1,6 +1,6 @@
 ---
 name: slo-error-budget-management
-description: Define and use SLIs, SLOs, error budgets, burn rates and release gates to balance reliability and delivery speed.
+description: Defines SLIs, SLOs, error budgets, burn rates and release gates. Use when setting reliability targets, error budgets, or release gating policies.
 ---
 
 # SLO and Error Budget Management

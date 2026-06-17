@@ -1,6 +1,6 @@
 ---
 name: toil-reduction-and-automation
-description: Identify and reduce repetitive operational work through safe, tested, observable and reversible automation.
+description: Reduces repetitive operational work through safe, tested, observable automation. Use when identifying toil, automating runbooks, or improving operator efficiency.
 ---
 
 # Toil Reduction and Automation

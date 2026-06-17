@@ -1,6 +1,6 @@
 ---
 name: frontend-state-and-interaction-design
-description: Design predictable frontend states and interactions for loading, empty, error, partial, long-running, optimistic and approval-based workflows.
+description: Designs predictable states for loading, empty, error, partial, long-running and approval workflows. Use when implementing async UI, agent tasks, or multi-step forms.
 ---
 
 # Frontend State and Interaction Design

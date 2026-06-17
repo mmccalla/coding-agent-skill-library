@@ -1,6 +1,6 @@
 ---
 name: dry-principle
-description: Apply the DRY principle to remove harmful duplication while avoiding premature or misleading abstraction.
+description: Applies DRY to remove harmful duplication while avoiding misleading abstraction. Use when refactoring repeated knowledge, schemas, validation rules, or agent instructions.
 ---
 
 # DRY Principle

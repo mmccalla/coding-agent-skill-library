@@ -1,6 +1,6 @@
 ---
 name: event-streaming-platform-design
-description: Design shared streaming platforms, topics, partitions, tenancy, retention and replay.
+description: Designs shared streaming platforms, topics, partitions, tenancy, retention and replay. Use when selecting or designing Kafka, Pulsar, or Event Hubs-style platforms.
 ---
 
 # Event Streaming Platform Design

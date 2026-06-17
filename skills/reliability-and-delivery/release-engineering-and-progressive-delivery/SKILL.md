@@ -1,6 +1,6 @@
 ---
 name: release-engineering-and-progressive-delivery
-description: Improve deployment safety using release engineering, staged rollout, canary, blue/green, feature flags, rollback and deployment gates.
+description: Improves deployment safety with canary, blue/green, feature flags and rollback. Use when designing release strategies, progressive delivery, or deployment gates.
 ---
 
 # Release Engineering and Progressive Delivery

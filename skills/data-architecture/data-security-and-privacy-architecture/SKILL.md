@@ -1,6 +1,6 @@
 ---
 name: data-security-and-privacy-architecture
-description: Design classification, access, masking, privacy, entitlement and sensitive-data controls.
+description: Designs classification, access, masking, privacy, entitlement and sensitive-data controls. Use when securing shared data, defining privacy controls, or classifying datasets.
 ---
 
 # Data Security and Privacy Architecture

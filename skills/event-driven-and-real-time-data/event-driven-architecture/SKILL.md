@@ -1,6 +1,6 @@
 ---
 name: event-driven-architecture
-description: Design event-driven systems using asynchronous flows, events, brokers, producers, consumers and contracts.
+description: Designs event-driven systems with asynchronous flows, brokers, producers, consumers and contracts. Use when architecting asynchronous, decoupled, or event-first systems.
 ---
 
 # Event-Driven Architecture

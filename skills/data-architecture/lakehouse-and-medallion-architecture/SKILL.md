@@ -1,6 +1,6 @@
 ---
 name: lakehouse-and-medallion-architecture
-description: Design raw, quarantine, cleansed, refined and serving layers.
+description: Designs raw, quarantine, cleansed, refined and serving lakehouse layers. Use when structuring medallion pipelines, lakehouse zones, or batch and stream serving layers.
 ---
 
 # Lakehouse and Medallion Architecture

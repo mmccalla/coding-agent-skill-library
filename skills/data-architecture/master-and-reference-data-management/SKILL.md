@@ -1,6 +1,6 @@
 ---
 name: master-and-reference-data-management
-description: Design master data, reference data, identifiers, hierarchies, survivorship and stewardship.
+description: Designs master data, reference data, identifiers, hierarchies, survivorship and stewardship. Use when defining golden records, controlled vocabularies, or MDM patterns.
 ---
 
 # Master and Reference Data Management

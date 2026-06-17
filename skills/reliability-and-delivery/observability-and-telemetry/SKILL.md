@@ -1,6 +1,6 @@
 ---
 name: observability-and-telemetry
-description: Design and implement actionable logs, metrics, traces, dashboards and alerts for reliable service operation.
+description: Designs actionable logs, metrics, traces, dashboards and alerts for reliable operations. Use when instrumenting services, defining SLIs, or improving on-call signal quality.
 ---
 
 # Observability and Telemetry

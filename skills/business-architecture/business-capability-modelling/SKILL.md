@@ -1,6 +1,6 @@
 ---
 name: business-capability-modelling
-description: Model stable business capabilities, levels, ownership, maturity and heatmaps.
+description: Models stable business capabilities, levels, ownership, maturity and heatmaps. Use when mapping organisational abilities, decomposing strategy, or assigning capability ownership.
 ---
 
 # Business Capability Modelling

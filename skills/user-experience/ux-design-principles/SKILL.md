@@ -1,6 +1,6 @@
 ---
 name: ux-design-principles
-description: Apply practical UX design principles to create clear, task-centred, low-cognitive-load user journeys, navigation, forms and workflows.
+description: Applies UX principles for clear, task-centred journeys, navigation and forms. Use when designing new screens, workflows, information architecture, or user journeys.
 ---
 
 # UX Design Principles

@@ -1,6 +1,6 @@
 ---
 name: design-system-practice
-description: Maintain consistent, accessible and scalable design systems using tokens, component standards, variants and documented interaction patterns.
+description: Maintains consistent, accessible design systems using tokens, components and documented patterns. Use when creating or evolving a shared UI component library or design tokens.
 ---
 
 # Design System Practice

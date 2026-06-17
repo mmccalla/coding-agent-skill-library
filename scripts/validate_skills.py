@@ -8,7 +8,10 @@ from collections import Counter
 ROOT = "skills"
 BASELINE_SKILL = os.path.join("skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md")
 MIN_WORDS = 140
+MIN_DESC_LEN = 80
+MAX_DESC_LEN = 1024
 SIMILARITY_FAIL = 0.82
+WHEN_TRIGGER = re.compile(r"\buse when\b", re.I)
 
 
 def read(path: str) -> str:
@@ -66,6 +69,29 @@ def main() -> int:
             errors.append(f"{p}: missing or invalid frontmatter name")
         if not re.search(r"^description:\s*.+$", fm, flags=re.M):
             errors.append(f"{p}: missing frontmatter description")
+        else:
+            desc_match = re.search(r"^description:\s*(.+)$", fm, flags=re.M)
+            desc = desc_match.group(1).strip() if desc_match else ""
+            if len(desc) < MIN_DESC_LEN:
+                errors.append(
+                    f"{p}: description too short ({len(desc)} chars < {MIN_DESC_LEN})"
+                )
+            if len(desc) > MAX_DESC_LEN:
+                errors.append(
+                    f"{p}: description too long ({len(desc)} chars > {MAX_DESC_LEN})"
+                )
+            if not WHEN_TRIGGER.search(desc):
+                errors.append(
+                    f"{p}: description must include 'Use when' trigger phrase"
+                )
+
+        folder_name = os.path.basename(os.path.dirname(p))
+        name_match = re.search(r"^name:\s*([-a-z0-9]+)\s*$", fm, flags=re.M)
+        if name_match and name_match.group(1) != folder_name:
+            errors.append(
+                f"{p}: frontmatter name '{name_match.group(1)}' "
+                f"does not match folder '{folder_name}'"
+            )
 
         # Structural checks
         h1_count = sum(1 for ln in lines if ln.startswith("# "))

@@ -1,6 +1,6 @@
 ---
 name: business-information-concept-modelling
-description: Derive business concepts and relationships from capabilities, value streams and processes.
+description: Derives business concepts and relationships from capabilities, value streams and processes. Use when linking business architecture artefacts to information concepts for data modelling.
 ---
 
 # Business Information Concept Modelling

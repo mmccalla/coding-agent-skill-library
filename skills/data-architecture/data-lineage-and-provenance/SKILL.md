@@ -1,6 +1,6 @@
 ---
 name: data-lineage-and-provenance
-description: Track source-to-target lineage, transformation history, evidence, ownership and provenance.
+description: Tracks source-to-target lineage, transformation history, evidence, ownership and provenance. Use when documenting data flows, audit trails, or impact analysis for changes.
 ---
 
 # Data Lineage and Provenance

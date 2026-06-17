@@ -1,6 +1,6 @@
 ---
 name: kg-enabled-rag
-description: Build, refactor, test, and harden an Enterprise-Grade Knowledge Graph-enabled Retrieval-Augmented Generation system using LLMs, Neo4j, LangGraph, Pydantic, hybrid retrieval, text-to-Cypher, local/global GraphRAG search, provenance, and evaluation.
+description: Builds, refactors and hardens Neo4j-native KG-enabled RAG with LangGraph, hybrid retrieval, text-to-Cypher, and provenance. Use when implementing GraphRAG, graph-backed retrieval, or guarded text-to-Cypher pipelines.
 version: 2.0.0
 audience: autonomous-coding-agents
 optimised_for:

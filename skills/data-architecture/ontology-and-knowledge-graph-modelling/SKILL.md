@@ -1,6 +1,6 @@
 ---
-name: ontology-kg-krag
-description: Design, validate and use ontology-driven knowledge graphs for explainable KG-RAG/KRAG.
+name: ontology-and-knowledge-graph-modelling
+description: Designs ontology-driven knowledge graphs for explainable KG-RAG. Use when modelling semantic graphs, ontologies, or graph schemas for retrieval.
 ---
 
 # Ontology, Knowledge Graph and KRAG

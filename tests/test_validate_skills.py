@@ -93,6 +93,139 @@ class ValidateSkillsTests(unittest.TestCase):
         self.assertNotIn("## Completion report", text)
         self.assertNotIn("## Output checklist", text)
 
+    def test_description_requires_use_when_trigger(self) -> None:
+        module = load_validator_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            skill_dir = (
+                Path(tmp)
+                / "skills"
+                / "agent-control-patterns"
+                / "apply-laws-of-ai"
+            )
+            skill_dir.mkdir(parents=True)
+            baseline = skill_dir / "SKILL.md"
+            baseline.write_text(
+                "---\n"
+                "name: apply-laws-of-ai\n"
+                "description: Mandatory baseline without trigger phrase.\n"
+                "---\n\n"
+                "# Apply Laws of AI\n\n"
+                "## When to use\n\n"
+                "Every session.\n\n"
+                "## Verification\n\n"
+                "Report gates.\n" + ("word " * 150),
+                encoding="utf-8",
+            )
+            original_root = module.ROOT
+            original_baseline = module.BASELINE_SKILL
+            try:
+                module.ROOT = "skills"
+                module.BASELINE_SKILL = os.path.join(
+                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                )
+                os.chdir(tmp)
+                rc = module.main()
+            finally:
+                module.ROOT = original_root
+                module.BASELINE_SKILL = original_baseline
+            self.assertEqual(rc, 1)
+
+    def test_description_length_bounds(self) -> None:
+        module = load_validator_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            skill_dir = (
+                Path(tmp)
+                / "skills"
+                / "agent-control-patterns"
+                / "apply-laws-of-ai"
+            )
+            skill_dir.mkdir(parents=True)
+            baseline = skill_dir / "SKILL.md"
+            baseline.write_text(
+                "---\n"
+                "name: apply-laws-of-ai\n"
+                "description: Short. Use when testing.\n"
+                "---\n\n"
+                "# Apply Laws of AI\n\n"
+                "## When to use\n\n"
+                "Every session.\n\n"
+                "## Verification\n\n"
+                "Report gates.\n" + ("word " * 150),
+                encoding="utf-8",
+            )
+            original_root = module.ROOT
+            original_baseline = module.BASELINE_SKILL
+            try:
+                module.ROOT = "skills"
+                module.BASELINE_SKILL = os.path.join(
+                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                )
+                os.chdir(tmp)
+                rc = module.main()
+            finally:
+                module.ROOT = original_root
+                module.BASELINE_SKILL = original_baseline
+            self.assertEqual(rc, 1)
+
+    def test_folder_name_must_match_frontmatter_name(self) -> None:
+        module = load_validator_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            skill_dir = (
+                Path(tmp)
+                / "skills"
+                / "agent-control-patterns"
+                / "wrong-folder-name"
+            )
+            skill_dir.mkdir(parents=True)
+            (skill_dir / "SKILL.md").write_text(
+                "---\n"
+                "name: apply-laws-of-ai\n"
+                "description: "
+                + ("x" * 70)
+                + ". Use when testing validator folder-name rule.\n"
+                "---\n\n"
+                "# Apply Laws of AI\n\n"
+                "## When to use\n\n"
+                "Every session.\n\n"
+                "## Verification\n\n"
+                "Report gates.\n" + ("word " * 150),
+                encoding="utf-8",
+            )
+            baseline_dir = (
+                Path(tmp)
+                / "skills"
+                / "agent-control-patterns"
+                / "apply-laws-of-ai"
+            )
+            baseline_dir.mkdir(parents=True)
+            (baseline_dir / "SKILL.md").write_text(
+                "---\n"
+                "name: apply-laws-of-ai\n"
+                "description: "
+                + ("x" * 70)
+                + ". Use when testing validator baseline presence.\n"
+                "---\n\n"
+                "# Apply Laws of AI\n\n"
+                "## When to use\n\n"
+                "Every session.\n\n"
+                "## Verification\n\n"
+                "Report gates.\n" + ("word " * 150),
+                encoding="utf-8",
+            )
+            original_root = module.ROOT
+            original_baseline = module.BASELINE_SKILL
+            try:
+                module.ROOT = "skills"
+                module.BASELINE_SKILL = os.path.join(
+                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                )
+                os.chdir(tmp)
+                rc = module.main()
+            finally:
+                module.ROOT = original_root
+                module.BASELINE_SKILL = original_baseline
+            self.assertEqual(rc, 1)
+
 
 if __name__ == "__main__":
     unittest.main()

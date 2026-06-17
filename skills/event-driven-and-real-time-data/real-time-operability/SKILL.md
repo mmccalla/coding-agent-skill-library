@@ -1,6 +1,6 @@
 ---
 name: real-time-operability
-description: Design operational controls for streaming systems: lag, freshness, replay, back-pressure, SLOs and incidents.
+description: Designs operational controls for streaming: lag, freshness, replay, back-pressure and SLOs. Use when operating Kafka or streaming platforms or defining stream SLOs.
 ---
 
 # Real-Time Operability

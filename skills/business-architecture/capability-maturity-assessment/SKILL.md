@@ -1,6 +1,6 @@
 ---
 name: capability-maturity-assessment
-description: Assess current and target maturity, gaps, risks and roadmap priorities.
+description: Assesses current and target maturity, gaps, risks and roadmap priorities. Use when prioritising capability improvement or planning architecture roadmaps.
 ---
 
 # Capability Maturity Assessment

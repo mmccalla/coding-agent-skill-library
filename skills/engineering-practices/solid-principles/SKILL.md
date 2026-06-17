@@ -1,6 +1,6 @@
 ---
 name: solid-principles
-description: Apply SOLID principles to improve modularity, dependency boundaries, extensibility and testability without over-engineering.
+description: Applies SOLID for modularity, dependency boundaries and testability without over-engineering. Use when refactoring modules, services, agents, or dependency boundaries.
 ---
 
 # SOLID Principles

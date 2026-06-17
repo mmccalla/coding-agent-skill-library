@@ -1,6 +1,6 @@
 ---
 name: user-research-and-usability-testing
-description: Plan and apply lightweight user research and usability testing to validate workflows, forms, dashboards and agentic approval experiences.
+description: Plans lightweight research and usability testing for workflows and dashboards. Use when validating UX assumptions, forms, or agent approval flows with users.
 ---
 
 # User Research and Usability Testing

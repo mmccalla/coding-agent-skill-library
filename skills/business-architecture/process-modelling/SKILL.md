@@ -1,6 +1,6 @@
 ---
 name: process-modelling
-description: Model operational steps, decisions, hand-offs, controls, exceptions and automation opportunities.
+description: Models operational steps, decisions, hand-offs, controls, exceptions and automation opportunities. Use when documenting processes, BPMN workflows, or automation candidates.
 ---
 
 # Process Modelling

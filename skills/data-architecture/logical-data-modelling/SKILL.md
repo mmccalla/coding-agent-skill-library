@@ -1,6 +1,6 @@
 ---
 name: logical-data-modelling
-description: Define logical entities, attributes, identifiers, relationships, constraints and reference data.
+description: Defines logical entities, attributes, identifiers, relationships and constraints. Use when translating conceptual models to logical schemas or normalising entity designs.
 ---
 
 # Logical Data Modelling

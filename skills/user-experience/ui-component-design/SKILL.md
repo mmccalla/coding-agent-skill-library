@@ -1,6 +1,6 @@
 ---
 name: ui-component-design
-description: Design and implement reusable, accessible, consistent UI components with clear props, states, variants and tests.
+description: Designs reusable, accessible UI components with clear props, states, variants and tests. Use when building tables, forms, modals, cards, or design-system components.
 ---
 
 # UI Component Design

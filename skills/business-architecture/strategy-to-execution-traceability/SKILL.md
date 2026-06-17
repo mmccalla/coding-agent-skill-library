@@ -1,6 +1,6 @@
 ---
 name: strategy-to-execution-traceability
-description: Trace objectives to outcomes, capabilities, value streams, initiatives, metrics and evidence.
+description: Traces objectives to outcomes, capabilities, initiatives, metrics and evidence. Use when linking strategy to delivery, KPIs, or architecture roadmaps.
 ---
 
 # Strategy-to-Execution Traceability

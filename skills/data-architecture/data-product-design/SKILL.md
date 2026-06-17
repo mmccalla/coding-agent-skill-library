@@ -1,6 +1,6 @@
 ---
 name: data-product-design
-description: Design governed, domain-owned, discoverable and reusable data products.
+description: Designs governed, domain-owned, discoverable and reusable data products. Use when packaging datasets as products, defining ownership, or reviewing product readiness.
 ---
 
 # Data Product Design

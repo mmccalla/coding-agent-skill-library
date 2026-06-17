@@ -1,6 +1,6 @@
 ---
 name: metadata-management
-description: Design metadata for discoverability, governance, quality, lineage and operation.
+description: Designs metadata for discoverability, governance, quality, lineage and operations. Use when building catalogues, data discovery, or operational metadata standards.
 ---
 
 # Metadata Management

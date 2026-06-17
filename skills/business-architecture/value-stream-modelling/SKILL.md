@@ -1,6 +1,6 @@
 ---
 name: value-stream-modelling
-description: Model value creation from trigger to outcome across stakeholders, stages, capabilities, data and systems.
+description: Models value from trigger to outcome across stakeholders, capabilities and systems. Use when mapping end-to-end value flow or identifying waste and bottlenecks.
 ---
 
 # Value Stream Modelling

@@ -1,6 +1,6 @@
 ---
 name: data-governance-and-quality
-description: Define ownership, policies, quality rules, controls, monitoring and remediation.
+description: Defines ownership, policies, quality rules, controls, monitoring and remediation. Use when establishing data governance, quality SLAs, or remediation workflows.
 ---
 
 # Data Governance and Quality
