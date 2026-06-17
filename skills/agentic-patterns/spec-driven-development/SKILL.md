@@ -36,6 +36,7 @@ Optional templates: `skills_docs/templates/agile-epic-template.md` and `skills_d
 - `bdd-practice` — business-readable acceptance scenarios
 - `incremental-implementation` — implement spec in verifiable slices
 - `planning-and-task-decomposition` — break large specs into ordered work
+
 ## Verification
 
 - [ ] Final behaviour and acceptance criteria captured.

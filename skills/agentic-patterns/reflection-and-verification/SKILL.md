@@ -32,6 +32,7 @@ Reflection must not replace deterministic verification. Run tests, linters, type
 - `tdd-practice` — executable verification first
 - `code-review-and-quality` — human or agent review loop
 - `apply-laws-of-ai` — safety gates before claiming completion
+
 ## Verification
 - [ ] Acceptance criteria are explicit.
 - [ ] Tests or validation checks were run.

@@ -33,6 +33,7 @@ Do not over-plan routine one-file changes.
 - `incremental-implementation` — execute plan as small slices
 - `spec-driven-development` — decision-complete spec before coding
 - `using-agent-skills` — select supporting skills per step
+
 ## Verification
 - [ ] Objective and acceptance criteria are clear.
 - [ ] Plan steps are executable and ordered.

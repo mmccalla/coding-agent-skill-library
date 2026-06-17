@@ -46,6 +46,7 @@ Create a maintainable domain model that reflects the business language, protects
 - `bdd-practice` — scenarios using ubiquitous language
 - `spec-driven-development` — bounded context in specs
 - `conceptual-data-modelling` — link domain concepts to data models
+
 ## Verification
 
 - [ ] Bounded context and key domain terms stated.

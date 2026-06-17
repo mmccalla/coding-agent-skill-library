@@ -33,6 +33,7 @@ Reduce risk by implementing one coherent slice at a time and verifying each slic
 - `planning-and-task-decomposition` — ordered plan before slicing
 - `tdd-practice` — verify each slice with tests
 - `reflection-and-verification` — quality gate per slice
+
 ## Verification
 
 - [ ] Slice scope and acceptance criteria stated.

@@ -37,6 +37,7 @@ Drive implementation from executable expectations. Produce code that is correct,
 - `code-review-and-quality` — review after tests pass
 - `reflection-and-verification` — repair loop when checks fail
 - `bdd-practice` — acceptance scenarios for external behaviour
+
 ## Verification
 
 - [ ] Failing test added before production change.

@@ -36,6 +36,7 @@ Select the smallest relevant skill or skill combination and explain why it was c
 - `apply-laws-of-ai` — mandatory baseline before routing
 - `planning-and-task-decomposition` — multi-step work decomposition
 - `interview-me` — underspecified requests
+
 ## Verification
 
 - [ ] `apply-laws-of-ai` execution confirmed.

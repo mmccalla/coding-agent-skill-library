@@ -52,6 +52,7 @@ Approval needed: <exact action>
 - `apply-laws-of-ai` — escalation aligned with safety laws
 - `guardrails-safety-patterns` — policy gates before human review
 - `agentic-ux-patterns` — approval and evidence UI patterns
+
 ## Verification
 - [ ] HITL trigger is explicit.
 - [ ] Options are clear and bounded.

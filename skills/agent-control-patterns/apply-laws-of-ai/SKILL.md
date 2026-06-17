@@ -99,6 +99,7 @@ Never optimise a lower-priority objective at the expense of a higher-priority la
 - `using-agent-skills` — route to task skills after baseline gates pass
 - `guardrails-safety-patterns` — layered deterministic controls
 - `human-in-the-loop` — escalation when gates constrain action
+
 ## Verification
 
 - [ ] All six quality gates evaluated (Humanity, Human Safety, Authority, Security, Proportionality, Auditability).

@@ -42,6 +42,7 @@ Represent policies as code where possible. Use schema validation, allowlists, sa
 - `apply-laws-of-ai` — immutable safety baseline
 - `human-in-the-loop` — approval for high-risk actions
 - `tool-use-function-calling` — least-privilege tool execution
+
 ## Verification
 - [ ] Input and output validation exist.
 - [ ] Tool permissions are least-privilege.

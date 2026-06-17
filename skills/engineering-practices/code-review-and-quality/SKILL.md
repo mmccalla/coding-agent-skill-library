@@ -33,6 +33,7 @@ Identify correctness risks, test gaps, maintainability problems, hidden regressi
 - `tdd-practice` — tests as review evidence
 - `git-workflow-and-versioning` — reviewable atomic changes
 - `guardrails-safety-patterns` — security findings in review
+
 ## Verification
 
 - [ ] Findings listed with severity and evidence.

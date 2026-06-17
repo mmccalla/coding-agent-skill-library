@@ -24,7 +24,7 @@ main
 | Phase | Branch | Status | Merged |
 |-------|--------|--------|--------|
 | 1 | `improve/skills-phase-1-descriptions-validator` | Complete | Yes |
-| 2 | `improve/skills-phase-2-verification-related` | Ready for review | — |
+| 2 | `improve/skills-phase-2-verification-related` | Complete | Yes |
 | 3 | `improve/skills-phase-3-boilerplate-normalise` | Pending | — |
 | 4 | `improve/skills-phase-4-dataops-overlay` | Pending | — |
 | 5 | `improve/skills-phase-5-kg-enabled-rag-split` | Pending | — |

@@ -45,6 +45,7 @@ For data-quality and quarantine interfaces, show pass/fail status with text and 
 - `ux-design-principles` — task-centred design before a11y checks
 - `ui-component-design` — accessible component primitives
 - `frontend-state-and-interaction-design` — keyboard and state accessibility
+
 ## Verification
 
 - [ ] Keyboard interaction checked.

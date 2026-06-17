@@ -49,6 +49,7 @@ Feature: <capability>
 - `spec-driven-development` — spec before scenarios
 - `tdd-practice` — executable tests from scenarios
 - `ddd-practice` — domain language in scenarios
+
 ## Verification
 
 - [ ] Scenarios added or updated in business-readable form.
