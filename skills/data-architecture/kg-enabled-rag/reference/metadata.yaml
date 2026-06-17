@@ -1,0 +1,36 @@
+version: 2.0.0
+audience: autonomous-coding-agents
+optimised_for:
+  - OpenAI Codex
+  - Claude Code
+  - Google Antigravity
+  - Cursor
+  - Windsurf
+  - Cline
+  - Continue
+activation_keywords:
+  - GraphRAG
+  - KG-RAG
+  - knowledge graph RAG
+  - graph-enabled RAG
+  - Neo4j RAG
+  - text2cypher
+  - text-to-Cypher
+  - hybrid retrieval
+  - entity extraction
+  - entity resolution
+  - graph retriever
+  - agentic RAG
+  - answer critic
+  - Microsoft GraphRAG
+  - local search
+  - global search
+  - community summarisation
+  - RAG evaluation
+primary_stack:
+  orchestration: langgraph
+  graph_store: neo4j
+  schema_validation: pydantic
+  language: python
+  api: fastapi
+  observability: opentelemetry

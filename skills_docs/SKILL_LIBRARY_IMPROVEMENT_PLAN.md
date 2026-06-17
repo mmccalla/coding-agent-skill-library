@@ -26,8 +26,8 @@ main
 | 1 | `improve/skills-phase-1-descriptions-validator` | Complete | Yes |
 | 2 | `improve/skills-phase-2-verification-related` | Complete | Yes |
 | 3 | `improve/skills-phase-3-boilerplate-normalise` | Complete | Yes |
-| 4 | `improve/skills-phase-4-dataops-overlay` | Ready for review | — |
-| 5 | `improve/skills-phase-5-kg-enabled-rag-split` | Pending | — |
+| 4 | `improve/skills-phase-4-dataops-overlay` | Complete | Yes |
+| 5 | `improve/skills-phase-5-kg-enabled-rag-split` | Ready for review | — |
 | 6 | `improve/skills-phase-6-owasp-asi-mapping` | Pending | — |
 | 7 | `improve/skills-phase-7-thin-skill-enrichment` | Pending | — |
 | 8 | `improve/skills-phase-8-vendor-depth-authoring` | Pending | — |
@@ -149,9 +149,9 @@ main
 
 **Acceptance criteria**
 
-- [ ] `SKILL.md` under 200 lines
-- [ ] Reference files linked one level deep from `SKILL.md`
-- [ ] CI passes
+- [x] `SKILL.md` under 200 lines
+- [x] Reference files linked one level deep from `SKILL.md`
+- [x] CI passes
 
 ---
 

@@ -10,8 +10,11 @@ BASELINE_SKILL = os.path.join("skills", "agent-control-patterns", "apply-laws-of
 MIN_WORDS = 140
 MIN_DESC_LEN = 80
 MAX_DESC_LEN = 1024
+WARN_SKILL_LINES = 500
+MAX_SKILL_LINES = 600
 SIMILARITY_FAIL = 0.82
 WHEN_TRIGGER = re.compile(r"\buse when\b", re.I)
+ALLOWED_FRONTMATTER_KEYS = {"name", "description"}
 
 
 def read(path: str) -> str:
@@ -38,6 +41,7 @@ def cosine(counter_a: Counter, counter_b: Counter) -> float:
 
 def main() -> int:
     errors = []
+    warnings = []
 
     if not os.path.isfile(BASELINE_SKILL):
         errors.append(f"missing mandatory baseline skill: {BASELINE_SKILL}")
@@ -65,6 +69,13 @@ def main() -> int:
             errors.append(f"{p}: missing YAML frontmatter end")
             continue
         fm = text[4:fm_end]
+        frontmatter_keys = {
+            line.split(":", 1)[0].strip()
+            for line in fm.splitlines()
+            if line and not line.startswith(" ") and ":" in line
+        }
+        for key in sorted(frontmatter_keys - ALLOWED_FRONTMATTER_KEYS):
+            errors.append(f"{p}: unsupported frontmatter key '{key}'")
 
         if not re.search(r"^name:\s*[-a-z0-9]+\s*$", fm, flags=re.M):
             errors.append(f"{p}: missing or invalid frontmatter name")
@@ -141,6 +152,10 @@ def main() -> int:
         word_count = len(re.findall(r"\b\w+\b", text))
         if word_count < MIN_WORDS:
             errors.append(f"{p}: too short ({word_count} words < {MIN_WORDS})")
+        if len(lines) > MAX_SKILL_LINES:
+            errors.append(f"{p}: too long ({len(lines)} lines > {MAX_SKILL_LINES})")
+        elif len(lines) > WARN_SKILL_LINES:
+            warnings.append(f"{p}: large skill ({len(lines)} lines > {WARN_SKILL_LINES})")
 
         if "todo" in body_lower:
             errors.append(f"{p}: contains TODO placeholder")
@@ -159,6 +174,8 @@ def main() -> int:
             print(f"- {e}")
         return 1
 
+    for warning in warnings:
+        print(f"WARN: {warning}")
     print(f"PASS: validated {len(paths)} skills; no structural or high-similarity duplication issues.")
     return 0
 

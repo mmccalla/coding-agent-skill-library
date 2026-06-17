@@ -31,7 +31,7 @@ Use this category when the task is mainly about data meaning, governance, exchan
 - Start with `conceptual-data-modelling` or `logical-data-modelling` for core structure.
 - Use `data-product-design` or `data-contract-design` for producer-consumer boundaries.
 - Use `ontology-and-knowledge-graph-modelling` for semantic graph design.
-- Use `kg-enabled-rag` for Neo4j-native GraphRAG, text-to-Cypher and provenance-first graph retrieval.
+- Use `kg-enabled-rag` for Neo4j-native GraphRAG, text-to-Cypher and provenance-first graph retrieval; load its `reference/` files only when detailed implementation guidance is needed.
 
 ## Next step
 

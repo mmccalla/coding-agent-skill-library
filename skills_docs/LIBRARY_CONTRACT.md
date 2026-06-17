@@ -28,6 +28,7 @@ Steps 1–3 are non-negotiable. No task skill may run before step 3 completes.
 | Skill sections | Canonical headings: `## When to use`, `## Objective` and `## Verification`; `## Verification` must include at least one `- [ ]` checklist item |
 | Related skills | Optional `## Related skills` section before `## Verification`; backtick skill names must match installed skill folder names |
 | Product-specific overlays | Product/project-specific guidance belongs under `skills_docs/overlays/`, with core skills linking to the overlay instead of embedding product sections |
+| Progressive disclosure | Keep `SKILL.md` concise; move deep examples, metadata and implementation details to one-level reference files under the skill folder |
 | Skill folders | One folder per skill under a category directory |
 | Categories | Eight fixed categories under `skills/` |
 | Entrypoints | `AGENTS.md` (full), `CLAUDE.md` (summary mirror) |
@@ -46,7 +47,7 @@ Run structural validation after material library changes:
 python3 scripts/validate_skills.py
 ```
 
-The validator checks frontmatter, canonical section headings, minimum length, duplication risk, presence of the baseline skill, description quality (`Use when` trigger, 80–1024 characters), folder/name alignment, Verification checklist items, Related skills references, removal of legacy procedure/generic guidance headings, and product-specific overlay isolation.
+The validator checks frontmatter, canonical section headings, minimum length, duplication risk, presence of the baseline skill, description quality (`Use when` trigger, 80–1024 characters), unsupported frontmatter keys, folder/name alignment, Verification checklist items, Related skills references, removal of legacy procedure/generic guidance headings, product-specific overlay isolation, and `SKILL.md` line limits.
 
 Run the same checks locally as CI:
 

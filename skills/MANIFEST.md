@@ -227,7 +227,7 @@ The data architecture skills apply DAMA-DMBOK2-style separation of data manageme
 | `lakehouse-and-medallion-architecture` | Designing raw, quarantine, cleansed, refined and serving layers. | A simple transactional store is sufficient. |
 | `master-and-reference-data-management` | Designing golden records, controlled values, identifiers, hierarchies, survivorship and stewardship. | There is no shared identity or controlled vocabulary problem. |
 | `ontology-and-knowledge-graph-modelling` | Designing ontologies, semantic models, knowledge graphs, inference-ready structures or RDF/OWL-style models. | A relational/logical model is sufficient. |
-| `kg-enabled-rag` | Building Neo4j-native GraphRAG or KG-enabled RAG with text-to-Cypher, provenance, conceptual schema control and hybrid graph/vector retrieval. | Generic document RAG or ontology-only work is sufficient. |
+| `kg-enabled-rag` | Building Neo4j-native GraphRAG or KG-enabled RAG with text-to-Cypher, provenance, conceptual schema control and hybrid graph/vector retrieval. Load its one-level `reference/` files only when detailed lifecycle, code-pattern or testing guidance is needed. | Generic document RAG or ontology-only work is sufficient. |
 | `data-lineage-and-provenance` | Tracking source-to-target lineage, transformation history, evidence, ownership and provenance. | The data is local, disposable and not reused. |
 
 ### Data architecture rules
