@@ -63,21 +63,9 @@ evidence recorded
 - Do not ignore SLO/error budget state when releasing high-risk changes.
 - Do not treat a successful deployment as a successful release until user-visible signals are healthy.
 
-## MAS DataOps MCP release guidance
+## Optional overlay
 
-Use progressive delivery for new validation rules, generated expectation suites, cleansing rules, quarantine writer changes, refined writer changes, policy changes, source adapter changes and workflow routing changes.
-
-Recommended pattern for new data-quality rules:
-
-```text
-draft
-→ evaluate on sample
-→ approve
-→ shadow mode
-→ warning-only mode
-→ blocking mode for limited scope
-→ broader production rollout
-```
+For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
 ## Verification
 

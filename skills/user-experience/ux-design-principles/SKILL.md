@@ -34,9 +34,9 @@ Create user-facing workflows that help users complete meaningful tasks with mini
 - Do not ask for information the system already knows.
 - Prefer clear task language over implementation terms.
 
-## DataOps-specific guidance
+## Optional overlay
 
-For source-to-refined and quarantine workflows, users must be able to understand which source is being processed, what metadata was generated, which rules were applied, which records passed, which records failed, why records were quarantined, what cleansing was applied, what approvals are required, and what evidence supports the result.
+For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
 ## Verification
 

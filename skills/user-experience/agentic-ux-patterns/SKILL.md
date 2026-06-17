@@ -39,9 +39,9 @@ Agent plan preview, tool-call preview, evidence panel, confidence and uncertaint
 - Do not bury consequences of approval.
 - Do not use dark patterns to encourage acceptance of agent recommendations.
 
-## DataOps-specific guidance
+## Optional overlay
 
-For generated data-quality rules, show rule name, rule type, target table/columns, rationale, profiling evidence, sample impact or aggregate evidence, expected failure rate, severity, approval status, impact on quarantine/refined split, version and reviewer decision.
+For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
 ## Verification
 

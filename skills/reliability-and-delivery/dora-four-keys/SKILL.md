@@ -76,17 +76,9 @@ failed_deployment_recovery_time:
 | High change failure rate | better tests, progressive delivery, smaller changes, observability |
 | Slow recovery | rollback automation, runbooks, incident drills, canaries, feature flags |
 
-## MAS DataOps MCP examples
+## Optional overlay
 
-Use DORA metrics for API/service deployments, validation-rule release process, source adapter changes, workflow engine changes, MCP tool changes, UI/dashboard releases and infrastructure changes.
-
-For data-quality rules, define related metrics:
-
-```text
-rule_lead_time = draft created → approved and safely active
-rule_failure_rate = approved rule changes causing incorrect quarantine/refined routing
-rule_recovery_time = time to disable or correct a faulty rule
-```
+For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
 ## Verification
 

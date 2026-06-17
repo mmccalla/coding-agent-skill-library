@@ -116,6 +116,8 @@ def main() -> int:
             errors.append(f"{p}: use canonical heading '## Procedure' (not 'Implementation pattern')")
         if re.search(r"^## Additional (guidance|guidelines)\s*$", text, flags=re.M):
             errors.append(f"{p}: remove generic Additional guidance/guidelines section")
+        if "MAS DataOps MCP" in text or "DataOps-specific" in text:
+            errors.append(f"{p}: move product-specific DataOps/MCP guidance to overlay docs")
 
         if not re.search(r"^## Verification\s*$", text, flags=re.M):
             errors.append(f"{p}: missing canonical '## Verification' section")

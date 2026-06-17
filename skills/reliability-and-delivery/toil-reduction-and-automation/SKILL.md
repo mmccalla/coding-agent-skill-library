@@ -54,11 +54,9 @@ human approval retained for high-risk actions
 - Do not create unowned background jobs.
 - Do not optimise a rare task at the cost of high complexity.
 
-## MAS DataOps MCP examples
+## Optional overlay
 
-Good candidates include routine validation summaries, quarantine review tasks, re-running validation after approved remediation, collecting evidence bundles, checking stale rule sets, schema-change alerts and runbook diagnostics.
-
-High-risk automation requiring approval includes promoting generated rules, writing to refined production datasets, accepting quarantine exceptions, deleting quarantined records, changing policy and modifying source system records.
+For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
 ## Verification
 

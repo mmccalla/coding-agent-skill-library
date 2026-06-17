@@ -49,28 +49,9 @@ status: "success | failure | partial"
 error_type: "string"
 ```
 
-## Required metrics for MAS DataOps MCP
+## Optional overlay
 
-```text
-source_onboarding_count
-schema_discovery_success_rate
-metadata_generation_success_rate
-profiling_success_rate
-rule_generation_acceptance_rate
-validation_pass_rate
-validation_failure_rate
-cleansing_success_rate
-quarantine_record_count
-quarantine_rate
-refined_record_count
-refined_write_success_rate
-evidence_bundle_completion_rate
-policy_denial_rate
-tool_error_rate
-workflow_success_rate
-workflow_failure_rate
-workflow_duration_seconds
-```
+For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
 ## Alert quality test
 

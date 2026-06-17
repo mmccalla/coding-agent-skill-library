@@ -37,9 +37,9 @@ Task-based usability test, cognitive walkthrough, first-click test, five-second 
 - Do not ignore severe errors because the average score is acceptable.
 - Prefer observed behaviour over stated preference.
 
-## DataOps-specific scenarios
+## Optional overlay
 
-Test whether users can onboard a source, understand schema, review metadata, approve rules, interpret validation failures, identify why records were quarantined, find lineage evidence, approve remediation and understand an agent recommendation.
+For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
 ## Verification
 

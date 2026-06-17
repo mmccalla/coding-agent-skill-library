@@ -25,8 +25,8 @@ main
 |-------|--------|--------|--------|
 | 1 | `improve/skills-phase-1-descriptions-validator` | Complete | Yes |
 | 2 | `improve/skills-phase-2-verification-related` | Complete | Yes |
-| 3 | `improve/skills-phase-3-boilerplate-normalise` | Ready for review | — |
-| 4 | `improve/skills-phase-4-dataops-overlay` | Pending | — |
+| 3 | `improve/skills-phase-3-boilerplate-normalise` | Complete | Yes |
+| 4 | `improve/skills-phase-4-dataops-overlay` | Ready for review | — |
 | 5 | `improve/skills-phase-5-kg-enabled-rag-split` | Pending | — |
 | 6 | `improve/skills-phase-6-owasp-asi-mapping` | Pending | — |
 | 7 | `improve/skills-phase-7-thin-skill-enrichment` | Pending | — |
@@ -124,9 +124,9 @@ main
 
 **Acceptance criteria**
 
-- [ ] Overlay file contains all extracted guidance
-- [ ] No inline MAS DataOps sections in core skills
-- [ ] CI passes
+- [x] Overlay file contains all extracted guidance
+- [x] No inline MAS DataOps sections in core skills
+- [x] CI passes
 
 ---
 

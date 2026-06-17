@@ -36,9 +36,9 @@ Ensure interfaces are perceivable, operable, understandable and robust, with pra
 - Do not create modals that trap users without an escape path.
 - Do not use placeholder text as the only label.
 
-## DataOps-specific guidance
+## Optional overlay
 
-For data-quality and quarantine interfaces, show pass/fail status with text and icon, provide table captions and column headers, make failed rules readable by screen readers, expose long-running job status accessibly, and require confirmation for high-impact actions.
+For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
 ## Related skills
 

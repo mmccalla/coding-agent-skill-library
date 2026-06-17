@@ -69,9 +69,9 @@ policy:
 - Do not change SLOs to hide poor reliability.
 - Do not release high-risk changes when the error budget policy says stop.
 
-## MAS DataOps MCP guidance
+## Optional overlay
 
-Recommended SLO candidates include `source_onboarding_success_rate`, `schema_discovery_success_rate`, `validation_run_success_rate`, `quarantine_write_success_rate`, `refined_write_success_rate`, `evidence_bundle_completion_rate`, `workflow_completion_latency` and `policy_decision_latency`.
+For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
 ## Verification
 

@@ -38,9 +38,9 @@ Consider `idle`, `loading`, `validating`, `submitting`, `running`, `awaiting_app
 - Do not allow double submission unless the action is idempotent.
 - Do not hide partial success where some records, rules or batches failed.
 
-## DataOps-specific guidance
+## Optional overlay
 
-For source-to-refined workflows, show workflow run status, current step, timestamps, records processed, records passed, cleansed and quarantined, rule progress, approval status, retry/cancel options and links to audit, lineage and validation evidence.
+For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
 ## Verification
 

@@ -77,9 +77,9 @@ Owner, due date, priority and validation method.
 - Do not implement risky remediation during an incident unless necessary and approved.
 - Do not skip postmortems for high-impact or repeated incidents.
 
-## MAS DataOps MCP incident examples
+## Optional overlay
 
-Examples include source-to-refined workflows stuck in running state, failed records not written to quarantine, passing records not written to refined, validation rules incorrectly promoted, evidence bundles missing and dashboards showing stale quality status.
+For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
 ## Verification
 

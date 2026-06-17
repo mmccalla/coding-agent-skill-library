@@ -51,9 +51,9 @@ Evidence: What metric, trace, log, test or runbook proves the change?
 
 Prefer bounded retries with timeouts, circuit breakers, idempotent operations, meaningful health checks, graceful degradation, bulkheads, runbooks, clear service ownership and dashboards aligned to SLIs.
 
-## MAS DataOps MCP guidance
+## Optional overlay
 
-For source-to-refined workflows, reliability must cover source connection availability, schema discovery success, profiling completion, validation engine availability, quarantine write reliability, refined write reliability, evidence bundle persistence, workflow replay and idempotency, and alerting on failed or stuck batches.
+For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
 ## Verification
 
