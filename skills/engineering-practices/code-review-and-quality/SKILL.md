@@ -31,3 +31,13 @@ Identify correctness risks, test gaps, maintainability problems, hidden regressi
 ## Verification
 
 Report the findings, their severity, the evidence used, any tests checked, and any remaining risks that still need follow-up.
+
+## Additional guidelines
+
+Improve code review effectiveness by considering the following:
+
+- **Risk‑based triage:** Prioritise review comments based on their severity and potential impact, addressing critical issues before stylistic or minor suggestions.
+- **Small, coherent changes:** Encourage small, coherent pull requests accompanied by clear context so that reviewers can focus on the intended behaviour.
+- **Baseline automation:** Run automated baseline checks—such as linting, unit tests and secret scanning—before human review to offload trivial findings.
+- **Evidence‑based discussion:** When disagreeing with feedback, provide evidence‑based reasoning and suggest alternative solutions constructively.
+- **Review metrics:** Track review metrics (cycle time, number of comments) to identify bottlenecks and continuously improve the review process.

@@ -30,3 +30,13 @@ Keep change history small, coherent and easy to understand while preserving the 
 ## Verification
 
 Report the logical change boundaries, the state of the working tree, and any versioning or compatibility considerations that were part of the change.
+
+## Additional guidelines
+
+Adopt the following practices to enhance your Git workflow:
+
+- **Definition‑of‑Done compliance:** Confirm that all Definition‑of‑Done criteria—including peer reviews, acceptance criteria and non‑functional requirements—are satisfied before merging or closing a branch.
+- **Risk‑based review:** Perform risk‑based code reviews, prioritising high‑impact or security‑sensitive changes and allocating appropriate scrutiny.
+- **Small, focused pull requests:** Keep pull requests small and cohesive to improve review effectiveness and reduce merge conflicts.
+- **Automated quality gates:** Run automated checks (static analysis, secret scanning, test suites) before merging to catch issues early and reduce reviewer burden.
+- **Branch closure and cleanup:** Document the branch closure process and routinely clean up unused branches and worktrees to maintain repository hygiene.

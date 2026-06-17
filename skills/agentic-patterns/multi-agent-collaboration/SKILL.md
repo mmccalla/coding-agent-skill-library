@@ -39,3 +39,12 @@ Use this skill only when a single agent becomes a bottleneck because the task ne
 - [ ] Orchestration pattern is documented.
 - [ ] Failure and retry behaviour is defined.
 - [ ] End-to-end traceability exists.
+
+## Additional guidance
+
+Strengthen multi‑agent collaborations with these recommendations:
+
+- **Explicit roles and protocols:** Define each agent’s responsibilities, goals and allowed operations, and specify communication protocols up front.
+- **Handoff artefacts:** Provide handoff artefacts—such as design documents, test results or logs—to ensure continuity and reduce information loss between agents.
+- **Failure detection and escalation:** Implement automatic failure detection and escalation triggers so persistent issues are surfaced promptly.
+- **Stage metrics:** Record metrics for each collaboration stage to identify bottlenecks and guide process improvements.

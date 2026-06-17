@@ -32,3 +32,13 @@ Turn a vague idea into a focused proposal with a clear problem statement, option
 ## Verification
 
 Report the refined problem statement, options considered, recommended direction, and assumptions that still need confirmation.
+
+## Additional guidelines
+
+Incorporate the following best practices to improve the outcome of idea refinement:
+
+- **Psychological safety and diversity:** Create a psychologically safe environment and involve participants from diverse backgrounds to surface higher‑quality ideas.
+- **Structured ideation:** Use structured brainstorming techniques (e.g., crazy eight, 6–3–5) to explore multiple solution paths and avoid anchoring on the first idea.
+- **Explicit assumptions:** Capture assumptions, user research and constraints before refining ideas to keep the discussion grounded.
+- **Rapid prototypes:** Build quick prototypes of promising ideas and test them with stakeholders to validate requirements.
+- **Visual aids and time‑boxing:** Use collaborative visual tools and time‑boxed sessions to focus the discussion and encourage participation.

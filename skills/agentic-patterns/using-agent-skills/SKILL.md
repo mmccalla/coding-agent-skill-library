@@ -34,3 +34,12 @@ Select the smallest relevant skill or skill combination and explain why it was c
 ## Verification
 
 Report confirmation that `apply-laws-of-ai` was executed, the selected skill or skills, why they were chosen, what was intentionally not loaded, and any remaining ambiguity.
+
+## Additional guidance
+
+Enhance your skill selection process by adopting these practices:
+
+- **Maintain a searchable index:** Keep the skills manifest up to date and searchable, with clear triggers and descriptions for each skill.
+- **Change management:** Define procedures for adding, updating and deprecating skills to maintain consistency and avoid outdated guidance.
+- **Automated discovery:** Implement scripts or tooling that analyse task context and suggest relevant skills to reduce reliance on memory.
+- **Fallback guidance:** When no existing skill applies, document the gap, consider escalating to a human reviewer and propose the creation of a new skill.

@@ -31,3 +31,12 @@ Reduce risk by implementing one coherent slice at a time and verifying each slic
 ## Verification
 
 Report each slice completed, the check performed for that slice, and any remaining risk before the next slice.
+
+## Additional guidelines
+
+To maximise the value of incremental implementation:
+
+- **Regular checkpoints:** Schedule checkpoints to reassess progress and adjust the slice plan when new information or feedback emerges.
+- **Definition of Done:** Define exit criteria aligned with the team’s Definition of Done, including acceptance and quality criteria, before concluding a change.
+- **Progress metrics:** Track metrics such as slices completed, test pass rates and outstanding risks to inform decisions and communicate status.
+- **Contingency planning:** Prepare contingency plans and escalation paths for tasks that encounter persistent blockers or ambiguities.

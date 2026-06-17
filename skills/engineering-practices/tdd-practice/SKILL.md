@@ -35,3 +35,13 @@ Drive implementation from executable expectations. Produce code that is correct,
 ## Verification
 
 Report the failing test added, the production change made, the final test result, any refactor performed, and remaining untested risks.
+
+## Additional guidelines
+
+Apply these guidelines to maximise the benefits of TDD:
+
+- **Team standards:** Establish team standards for test naming, structure and coverage so that tests remain consistent and maintainable.
+- **Fast feedback loops:** Keep tests focused and run them frequently to maintain fast feedback loops and support iterative development.
+- **Risk‑based coverage:** Allocate testing effort based on risk, focusing on high‑impact code paths rather than exhaustive coverage.
+- **Continuous refactoring:** After tests pass, refactor code incrementally to remove duplication and improve design while keeping tests green.
+- **CI and review integration:** Integrate tests into continuous integration pipelines and require tests to run during code review to enforce discipline and catch regressions early.
