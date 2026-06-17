@@ -41,6 +41,10 @@ Apply event-driven best practice: business event semantics, producer/consumer ow
 ## Avoid
 Do not treat raw CDC records as business events without translation.
 
+## Decision template
+
+Use this template before implementation: source system and owner; capture mode; snapshot boundary; primary key and ordering field; update/delete semantics; schema evolution path; reconciliation rule; replay and backfill limit; lag SLI; lineage record. If downstream consumers need business facts, translate raw CDC records into governed events before publishing.
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

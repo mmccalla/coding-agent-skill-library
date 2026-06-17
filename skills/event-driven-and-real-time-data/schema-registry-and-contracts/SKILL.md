@@ -39,6 +39,10 @@ Apply event-driven best practice: business event semantics, producer/consumer ow
 ## Avoid
 Do not treat syntactic compatibility as sufficient.
 
+## Decision template
+
+Before registering a schema, capture event meaning, producer, consumers, required fields, optional fields, compatibility mode, semantic versioning rule, deprecation policy and contract tests. Treat syntactic compatibility as necessary but incomplete: a field can remain valid JSON while its business meaning changes and breaks consumers.
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

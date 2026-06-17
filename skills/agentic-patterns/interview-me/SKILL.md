@@ -28,6 +28,10 @@ Extract enough intent to make the next implementation decision complete and low 
 - Do not assume requirements that were not confirmed.
 - Do not proceed to implementation until the outcome criteria are explicit.
 
+## Example
+
+If the user says `make the agent safer`, ask which risk matters most before planning: tool permissions, prompt injection, data leakage, approval gates or audit evidence. Offer concrete options and recommend the lowest-risk default when enough context exists. Stop interviewing once the next action and acceptance evidence are clear.
+
 ## Verification
 
 - [ ] Clarifying questions asked or assumptions stated explicitly.

@@ -479,6 +479,116 @@ class ValidateSkillsTests(unittest.TestCase):
                 module.BASELINE_SKILL = original_baseline
             self.assertEqual(rc, 1)
 
+    def test_non_baseline_skill_under_200_words_fails(self) -> None:
+        module = load_validator_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            baseline_dir = (
+                Path(tmp)
+                / "skills"
+                / "agent-control-patterns"
+                / "apply-laws-of-ai"
+            )
+            baseline_dir.mkdir(parents=True)
+            (baseline_dir / "SKILL.md").write_text(
+                "---\n"
+                "name: apply-laws-of-ai\n"
+                "description: "
+                + ("x" * 70)
+                + ". Use when testing baseline presence for minimum word validation.\n"
+                "---\n\n"
+                "# Apply Laws of AI\n\n"
+                "## When to use\n\n"
+                "Every session.\n\n"
+                "## Objective\n\n"
+                "Test objective.\n\n"
+                "## Procedure\n\n"
+                "1. Test.\n\n"
+                "## Verification\n\n"
+                "- [ ] Report gates.\n"
+                + ("baselineword " * 210),
+                encoding="utf-8",
+            )
+
+            thin_dir = Path(tmp) / "skills" / "agentic-patterns" / "thin-example"
+            thin_dir.mkdir(parents=True)
+            (thin_dir / "SKILL.md").write_text(
+                "---\n"
+                "name: thin-example\n"
+                "description: "
+                + ("x" * 70)
+                + ". Use when testing non-baseline minimum word validation.\n"
+                "---\n\n"
+                "# Thin Example\n\n"
+                "## When to use\n\n"
+                "Use when testing.\n\n"
+                "## Objective\n\n"
+                "Test objective.\n\n"
+                "## Procedure\n\n"
+                "1. Test.\n\n"
+                "## Verification\n\n"
+                "- [ ] Report gates.\n"
+                + ("thinword " * 150),
+                encoding="utf-8",
+            )
+
+            original_root = module.ROOT
+            original_baseline = module.BASELINE_SKILL
+            try:
+                module.ROOT = "skills"
+                module.BASELINE_SKILL = os.path.join(
+                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                )
+                os.chdir(tmp)
+                rc = module.main()
+            finally:
+                module.ROOT = original_root
+                module.BASELINE_SKILL = original_baseline
+            self.assertEqual(rc, 1)
+
+    def test_baseline_skill_is_exempt_from_minimum_word_count(self) -> None:
+        module = load_validator_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            baseline_dir = (
+                Path(tmp)
+                / "skills"
+                / "agent-control-patterns"
+                / "apply-laws-of-ai"
+            )
+            baseline_dir.mkdir(parents=True)
+            (baseline_dir / "SKILL.md").write_text(
+                "---\n"
+                "name: apply-laws-of-ai\n"
+                "description: "
+                + ("x" * 70)
+                + ". Use when testing baseline minimum word count exemption.\n"
+                "---\n\n"
+                "# Apply Laws of AI\n\n"
+                "## When to use\n\n"
+                "Every session.\n\n"
+                "## Objective\n\n"
+                "Test objective.\n\n"
+                "## Procedure\n\n"
+                "1. Test.\n\n"
+                "## Verification\n\n"
+                "- [ ] Report gates.\n"
+                + ("baselineword " * 80),
+                encoding="utf-8",
+            )
+
+            original_root = module.ROOT
+            original_baseline = module.BASELINE_SKILL
+            try:
+                module.ROOT = "skills"
+                module.BASELINE_SKILL = os.path.join(
+                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                )
+                os.chdir(tmp)
+                rc = module.main()
+            finally:
+                module.ROOT = original_root
+                module.BASELINE_SKILL = original_baseline
+            self.assertEqual(rc, 0)
+
 
 if __name__ == "__main__":
     unittest.main()

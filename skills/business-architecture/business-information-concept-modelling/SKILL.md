@@ -40,6 +40,10 @@ Keep capabilities, value streams, processes, organisation, information concepts,
 ## Avoid
 Do not convert every noun into an entity.
 
+## Mini example
+
+From an onboarding value stream, extract concepts such as `Customer`, `Application`, `Identity Evidence`, `Eligibility Decision` and `Account`. Record synonyms like applicant/customer, define relationships such as customer submits application, and exclude implementation-only terms such as API payload or staging table. Hand the agreed concepts to conceptual data modelling with source traceability.
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

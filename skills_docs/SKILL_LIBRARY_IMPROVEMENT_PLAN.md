@@ -28,8 +28,8 @@ main
 | 3 | `improve/skills-phase-3-boilerplate-normalise` | Complete | Yes |
 | 4 | `improve/skills-phase-4-dataops-overlay` | Complete | Yes |
 | 5 | `improve/skills-phase-5-kg-enabled-rag-split` | Complete | Yes |
-| 6 | `improve/skills-phase-6-owasp-asi-mapping` | Ready for review | — |
-| 7 | `improve/skills-phase-7-thin-skill-enrichment` | Pending | — |
+| 6 | `improve/skills-phase-6-owasp-asi-mapping` | Complete | Yes |
+| 7 | `improve/skills-phase-7-thin-skill-enrichment` | Ready for review | — |
 | 8 | `improve/skills-phase-8-vendor-depth-authoring` | Pending | — |
 
 ---
@@ -192,12 +192,13 @@ main
 2. Enrich all 8 `event-driven-and-real-time-data/` skills with decision trees or templates.
 3. Enrich `doubt-driven-development` with a doubt-log template.
 4. Raise `MIN_WORDS` in validator from 140 to 200 for non-baseline skills (baseline exempt).
+5. Enrich any additional non-baseline skills exposed by the stricter validator so CI remains truthful without broad exemptions.
 
 ### Phase 7 Acceptance Criteria
 
-- [ ] No skill under 200 words (except documented exemptions)
-- [ ] Each enriched skill has at least one concrete example or template
-- [ ] CI passes
+- [x] No skill under 200 words (except documented exemptions)
+- [x] Each enriched skill has at least one concrete example or template
+- [x] CI passes
 
 ---
 

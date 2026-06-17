@@ -39,6 +39,10 @@ Keep capabilities, value streams, processes, organisation, information concepts,
 ## Avoid
 Do not produce only an organisation chart.
 
+## Mini example
+
+For a data-product operating model, define who owns product outcomes, who approves data contracts, how incidents move between domain and platform teams, and how funding supports lifecycle work. Link the model to capabilities, value streams, governance cadence, platform services, data ownership and transition milestones so it is more than an organisation chart.
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

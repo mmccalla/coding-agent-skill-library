@@ -27,6 +27,10 @@ Load enough context to work accurately while avoiding irrelevant material that d
 - Do not mix instructions, evidence and speculation without labelling them.
 - Prefer explicit file references over memory.
 
+## Example
+
+For a validator change, load the validator, its tests, the library contract and only the skill files affected by the new rule. Do not load unrelated UX or reliability skills unless the failing evidence points there. If a later test reveals more affected files, refresh context and record why the scope expanded.
+
 ## Verification
 
 - [ ] Context sources selected and justified.

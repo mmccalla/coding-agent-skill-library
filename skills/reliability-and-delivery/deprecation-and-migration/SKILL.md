@@ -27,6 +27,10 @@ Remove old paths safely by providing a clear replacement, a controlled transitio
 - Do not leave parallel paths undocumented.
 - Do not treat migration as complete until the old path is no longer needed.
 
+## Example
+
+When replacing an old skill path, add the new path first, update references, leave a short deprecation note where users will find the old entry and run a search for dependants. Remove the old path only after consumers have moved or the user explicitly accepts the compatibility break.
+
 ## Verification
 
 - [ ] Deprecated surface and timeline stated.

@@ -39,6 +39,10 @@ Keep capabilities, value streams, processes, organisation, information concepts,
 ## Avoid
 Do not confuse consultation with accountability.
 
+## Mini example
+
+For a shared streaming platform, assign one accountable platform owner, domain event owners, data stewards and support roles. Use RACI only after naming decision rights such as schema approval, access approval and incident escalation. If one role owns too many critical decisions, flag capacity risk and define an escalation path.
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

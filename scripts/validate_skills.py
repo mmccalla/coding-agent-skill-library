@@ -7,7 +7,7 @@ from collections import Counter
 
 ROOT = "skills"
 BASELINE_SKILL = os.path.join("skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md")
-MIN_WORDS = 140
+MIN_WORDS = 200
 MIN_DESC_LEN = 80
 MAX_DESC_LEN = 1024
 WARN_SKILL_LINES = 500
@@ -150,7 +150,7 @@ def main() -> int:
                     errors.append(f"{p}: Related skills references unknown skill '{ref}'")
 
         word_count = len(re.findall(r"\b\w+\b", text))
-        if word_count < MIN_WORDS:
+        if p != BASELINE_SKILL and word_count < MIN_WORDS:
             errors.append(f"{p}: too short ({word_count} words < {MIN_WORDS})")
         if len(lines) > MAX_SKILL_LINES:
             errors.append(f"{p}: too long ({len(lines)} lines > {MAX_SKILL_LINES})")

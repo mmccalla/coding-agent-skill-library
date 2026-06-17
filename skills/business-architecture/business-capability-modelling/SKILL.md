@@ -39,6 +39,10 @@ Keep capabilities, value streams, processes, organisation, information concepts,
 ## Avoid
 Do not mirror the organisation chart.
 
+## Mini example
+
+For a retail returns programme, model `Manage Returns` as the capability and decompose it into `Authorise Return`, `Receive Returned Item`, `Assess Refund Eligibility` and `Recover Inventory Value`. Do not name capabilities after systems such as `Returns Portal`; link the capability to the returns value stream, return request information concept, owner and heatmap criteria.
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

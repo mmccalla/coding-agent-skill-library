@@ -41,6 +41,10 @@ Apply event-driven best practice: business event semantics, producer/consumer ow
 ## Avoid
 Do not allow unowned shared topics.
 
+## Decision template
+
+For each topic family, define naming convention, environment strategy, tenant, owner, partition key, retention, replay expectation, schema subject, access policy, quota, support tier and deprecation route. Reject unowned shared topics because they become hidden integration contracts with unclear cost, lineage and incident accountability.
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

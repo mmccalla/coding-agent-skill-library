@@ -40,6 +40,10 @@ Keep capabilities, value streams, processes, organisation, information concepts,
 ## Avoid
 Do not use process modelling when capability modelling is needed.
 
+## Mini example
+
+For invoice exception handling, map the start event, supplier operations swimlane, finance approval decision, system checks, exception paths and control evidence. Mark automation candidates only where rules are explicit, such as duplicate invoice detection. Keep human judgement steps visible when fraud risk or policy interpretation is involved.
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

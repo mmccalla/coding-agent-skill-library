@@ -39,6 +39,10 @@ Apply event-driven best practice: business event semantics, producer/consumer ow
 ## Avoid
 Do not name events after database operations.
 
+## Decision aid
+
+Start with sticky-note style discovery: commands in imperative form, events in past tense, decisions as policy points and read models as views. If a candidate event is named `UpdateCustomer`, challenge it until the business fact is clear, such as `CustomerAddressChanged`. Capture open questions where language is disputed.
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

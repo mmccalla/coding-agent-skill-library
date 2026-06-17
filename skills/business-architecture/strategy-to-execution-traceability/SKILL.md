@@ -39,6 +39,10 @@ Keep capabilities, value streams, processes, organisation, information concepts,
 ## Avoid
 Do not treat a list of projects as strategy.
 
+## Mini example
+
+If the objective is reduce onboarding abandonment by 15%, trace it to the `Onboard Customer` value stream, `Verify Identity` capability, identity evidence concepts, delivery initiatives and metrics such as completion rate and review time. Mark initiatives with no measurable outcome as orphan work until a clear strategic link is agreed.
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

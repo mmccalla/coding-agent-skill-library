@@ -40,6 +40,10 @@ Keep capabilities, value streams, processes, organisation, information concepts,
 ## Avoid
 Do not turn value streams into detailed process maps.
 
+## Mini example
+
+For loan approval, start with the trigger `customer submits application` and outcome `funds accepted or declined with reason`. Map stages such as apply, verify, decide and fulfil, then attach capabilities, information concepts, events and flow metrics. Do not expand each stage into task-level process detail unless a bottleneck needs separate process modelling.
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

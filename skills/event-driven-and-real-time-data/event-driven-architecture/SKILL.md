@@ -41,6 +41,10 @@ Apply event-driven best practice: business event semantics, producer/consumer ow
 ## Avoid
 Do not use events to disguise tight coupling.
 
+## Decision aid
+
+Choose event-driven architecture when producers and consumers can evolve independently, consumers need replay, or business facts must be observed by multiple domains. Prefer request/response when the caller needs an immediate answer and no other consumer benefits. For each event, record owner, contract, idempotency key, ordering assumption, retry policy and observable failure path.
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

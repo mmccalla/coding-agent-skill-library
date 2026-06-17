@@ -28,6 +28,10 @@ Keep automation safe, observable and least-privilege while still reducing manual
 - Do not bypass quality gates to make the pipeline pass.
 - Do not make deploy steps irreversible without an explicit reason.
 
+## Example
+
+When adding a validation workflow, keep read permissions by default, pin or justify third-party actions, separate test and deploy jobs, and make failures actionable. A safe automation change should show what runs, what credentials it receives, how it reports failure and how maintainers can rerun or roll back the change.
+
 ## Verification
 
 - [ ] Pipeline or automation change scope stated.

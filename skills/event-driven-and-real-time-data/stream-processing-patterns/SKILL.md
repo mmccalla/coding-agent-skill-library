@@ -40,6 +40,10 @@ Apply event-driven best practice: business event semantics, producer/consumer ow
 ## Avoid
 Do not assume events arrive in order unless guaranteed.
 
+## Decision aid
+
+Pick processing-time logic only when late arrival does not change the answer. Use event time for business measures such as sales per trading hour. For every window or join, define lateness tolerance, state retention, duplicate handling, poison-event route, recovery checkpoint and test sequence that proves replay produces the same result.
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

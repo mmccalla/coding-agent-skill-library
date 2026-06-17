@@ -28,6 +28,10 @@ Launch changes with a clear preflight check, a safe rollout path, post-launch mo
 - Do not consider a merge equivalent to a launch.
 - Do not ignore early post-launch evidence.
 
+## Example
+
+Before publishing a skill-library release, confirm the branch is merged, CI passed, release notes describe behaviour changes, and rollback is possible by reverting the merge. For externally consumed packages, define the first signal to monitor, who owns launch follow-up and what condition pauses the rollout.
+
 ## Verification
 
 - [ ] Launch scope and rollout plan stated.

@@ -28,6 +28,10 @@ Capture the reason for the change, the options considered and the consequences s
 - Do not let docs drift away from the actual repo structure.
 - Do not duplicate the same explanation in multiple places without a reason.
 
+## Example
+
+For a validator rule change, document why the rule exists, which files it affects, what alternatives were considered and how maintainers validate compliance. Avoid repeating the implementation details from the script; focus on the decision, consequences and how future contributors should apply the rule.
+
 ## Verification
 
 - [ ] Documentation or ADR artefacts produced listed.

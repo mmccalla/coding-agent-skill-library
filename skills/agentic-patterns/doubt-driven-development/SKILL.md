@@ -28,6 +28,21 @@ Turn confidence into evidence by stress-testing the current hypothesis before co
 - Do not hide uncertainty; surface it before implementation.
 - Prefer explicit evidence over intuitive certainty.
 
+## Doubt log template
+
+Use this lightweight log before committing to a risky assumption:
+
+```markdown
+Hypothesis: <current best answer>
+Depends on: <claims that must be true>
+Falsifying evidence sought: <file, test, source or counterexample>
+Alternative considered: <simpler or safer path>
+Decision: proceed / constrain / escalate
+Residual uncertainty: <what remains unknown>
+```
+
+Keep the log short. Its purpose is to expose decision quality, not to create process theatre.
+
 ## Verification
 
 - [ ] Doubts, assumptions and failure modes logged.

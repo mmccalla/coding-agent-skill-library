@@ -27,6 +27,10 @@ Keep change history small, coherent and easy to understand while preserving the 
 - Do not hide partial work in ambiguous commit messages.
 - Do not change versioning semantics without checking downstream impact.
 
+## Example
+
+For a phased refactor, branch from updated `main`, commit one phase at a time, run validation before hand-off and merge only after approval. If a hook rewrites files, review the resulting diff before committing. Prefer a clear revertable commit over a broad mixed commit that hides documentation, tests and implementation together.
+
 ## Verification
 
 - [ ] Logical change boundaries described.

@@ -40,6 +40,10 @@ Apply event-driven best practice: business event semantics, producer/consumer ow
 ## Avoid
 Do not rely on tribal knowledge for event meaning.
 
+## Governance template
+
+For each shared event, capture owner, business definition, source capability, producer, consumers, schema version, classification, retention, quality checks, lineage links and support contact. A catalogue entry is not complete until consumers can understand meaning, sensitivity, replay constraints and who approves breaking changes.
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.
