@@ -52,10 +52,21 @@ For coding agents, keep payloads structured:
 - Treat remote agents as untrusted until validated.
 - Use timeouts and cancellation for long-running tasks.
 
+## OWASP ASI mapping
+
+Use `skills_docs/security/OWASP_ASI_CROSSWALK.md` for the shared risk map.
+
+| ASI risk | A2A control |
+| --- | --- |
+| ASI04 Agentic Supply Chain Vulnerabilities | Verify agent cards, versions, endpoints and allowed capabilities before delegation. |
+| ASI07 Insecure Inter-Agent Communication | Authenticate peers, version message schemas and treat peer output as untrusted. |
+| ASI08 Cascading Failures | Use fan-out limits, cancellation, bounded retries and explicit failure states. |
+| ASI10 Rogue Agents | Add containment, revocation and audit trails for agents that deviate from declared scope. |
+
 ## Verification
+
 - [ ] Agent card exists.
 - [ ] Task states are explicit.
 - [ ] Message schema is versioned.
 - [ ] Authentication and authorisation are defined.
 - [ ] Failure and cancellation paths are implemented.
-

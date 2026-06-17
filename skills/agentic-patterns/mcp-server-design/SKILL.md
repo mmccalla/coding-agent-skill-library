@@ -41,6 +41,17 @@ Expose external capabilities through narrow, typed, discoverable, least-privileg
 - Require confirmation for destructive operations.
 - Prefer local servers for sensitive data and remote servers for shared scalable tools only when access control is mature.
 
+## OWASP ASI mapping
+
+Use `skills_docs/security/OWASP_ASI_CROSSWALK.md` for the shared risk map.
+
+| ASI risk | MCP control |
+| --- | --- |
+| ASI02 Tool Misuse | Expose narrow tools with strict schemas, typed errors and documented side effects. |
+| ASI03 Identity and Privilege Abuse | Enforce authentication, authorisation, tenant scoping and least-privilege credentials at the server. |
+| ASI04 Agentic Supply Chain Vulnerabilities | Pin and review MCP servers, tools, prompts and dynamic discovery sources. |
+| ASI07 Insecure Inter-Agent Communication | Authenticate clients, restrict discovery and version tool/resource contracts. |
+
 ## Related skills
 
 - `tool-use-function-calling` — direct tool calling when MCP is unnecessary
@@ -48,6 +59,7 @@ Expose external capabilities through narrow, typed, discoverable, least-privileg
 - `knowledge-retrieval-rag` — document grounding alongside tools
 
 ## Verification
+
 - [ ] Tool/resource/prompt boundaries are clear.
 - [ ] Schemas are typed and agent-readable.
 - [ ] Discovery works from an MCP client.

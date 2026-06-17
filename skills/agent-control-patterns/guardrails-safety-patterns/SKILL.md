@@ -41,6 +41,17 @@ Represent policies as code where possible. Use schema validation, allowlists, sa
 - Fast, low-cost models may be used as pre-screeners, but deterministic checks should enforce hard rules.
 - Escalate rather than improvise on safety-critical uncertainty.
 
+## OWASP ASI mapping
+
+Use `skills_docs/security/OWASP_ASI_CROSSWALK.md` for the shared risk map.
+
+| ASI risk | Guardrail control |
+| --- | --- |
+| ASI01 Agent Goal Hijack | Validate requested goals against authorised scope before planning or tool execution. |
+| ASI03 Identity and Privilege Abuse | Enforce task-scoped permissions and deny privileged actions without explicit approval. |
+| ASI05 Unexpected Code Execution | Sandbox generated code and block unreviewed shell, SQL or infrastructure execution. |
+| ASI10 Rogue Agents | Add audit logging, behavioural anomaly checks and containment paths for agents that drift from scope. |
+
 ## Related skills
 
 - `apply-laws-of-ai` — immutable safety baseline
@@ -48,9 +59,9 @@ Represent policies as code where possible. Use schema validation, allowlists, sa
 - `tool-use-function-calling` — least-privilege tool execution
 
 ## Verification
+
 - [ ] Input and output validation exist.
 - [ ] Tool permissions are least-privilege.
 - [ ] Sensitive data handling is explicit.
 - [ ] Unsafe actions require approval.
 - [ ] Audit trail is available.
-

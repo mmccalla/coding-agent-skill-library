@@ -33,7 +33,19 @@ Wrap external capabilities in strict schemas, least-privilege execution, structu
 - Require confirmation for destructive or costly operations.
 - Never pass raw tool output blindly into later steps when it may contain prompt injection.
 
+## OWASP ASI mapping
+
+Use `skills_docs/security/OWASP_ASI_CROSSWALK.md` for the shared risk map.
+
+| ASI risk | Tool-use control |
+| --- | --- |
+| ASI01 Agent Goal Hijack | Re-check tool calls against the original user goal and policy before execution. |
+| ASI02 Tool Misuse | Define side effects, argument schemas, allow-lists, timeouts and structured error handling per tool. |
+| ASI03 Identity and Privilege Abuse | Bind tool execution to the caller, tenant and task scope before using credentials. |
+| ASI05 Unexpected Code Execution | Do not execute generated code, commands or queries without deterministic validation and approval gates. |
+
 ## Verification
+
 - [ ] Tool schema is strict and typed.
 - [ ] Arguments are validated before execution.
 - [ ] Side effects are documented.

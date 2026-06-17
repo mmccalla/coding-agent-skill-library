@@ -51,6 +51,10 @@ Approval needed: <exact action>
 - Do not proceed on implied approval for destructive or privileged operations.
 - Redact secrets and minimise personal data in review packets.
 
+## OWASP ASI09 controls
+
+Use `skills_docs/security/OWASP_ASI_CROSSWALK.md` for the shared risk map. For ASI09 Human-Agent Trust Exploitation, approval requests must include evidence, uncertainty, consequences, alternatives and the exact action being authorised.
+
 ## Related skills
 
 - `apply-laws-of-ai` — escalation aligned with safety laws
@@ -58,9 +62,9 @@ Approval needed: <exact action>
 - `agentic-ux-patterns` — approval and evidence UI patterns
 
 ## Verification
+
 - [ ] HITL trigger is explicit.
 - [ ] Options are clear and bounded.
 - [ ] Recommendation and risk are stated.
 - [ ] Approval action is unambiguous.
 - [ ] Decision is recorded.
-

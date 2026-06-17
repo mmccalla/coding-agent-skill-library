@@ -12,7 +12,7 @@ main
        └── PR → your review → merge → next phase branches from updated main
 ```
 
-**Rules**
+### Rules
 
 - Do not start phase *N+1* until phase *N* is merged to `main`.
 - Do not combine phases on one branch.
@@ -22,13 +22,13 @@ main
 ## Progress
 
 | Phase | Branch | Status | Merged |
-|-------|--------|--------|--------|
+| ------- | -------- | -------- | -------- |
 | 1 | `improve/skills-phase-1-descriptions-validator` | Complete | Yes |
 | 2 | `improve/skills-phase-2-verification-related` | Complete | Yes |
 | 3 | `improve/skills-phase-3-boilerplate-normalise` | Complete | Yes |
 | 4 | `improve/skills-phase-4-dataops-overlay` | Complete | Yes |
-| 5 | `improve/skills-phase-5-kg-enabled-rag-split` | Ready for review | — |
-| 6 | `improve/skills-phase-6-owasp-asi-mapping` | Pending | — |
+| 5 | `improve/skills-phase-5-kg-enabled-rag-split` | Complete | Yes |
+| 6 | `improve/skills-phase-6-owasp-asi-mapping` | Ready for review | — |
 | 7 | `improve/skills-phase-7-thin-skill-enrichment` | Pending | — |
 | 8 | `improve/skills-phase-8-vendor-depth-authoring` | Pending | — |
 
@@ -40,7 +40,7 @@ main
 
 **Goal:** Improve skill discoverability and enforce description quality in CI.
 
-**Scope**
+### Phase 1 Scope
 
 1. Rewrite descriptions for all skills missing explicit `Use when` triggers (52 skills).
 2. Expand descriptions under 80 characters to meet minimum length.
@@ -52,7 +52,7 @@ main
 
 **Out of scope:** Body content changes, section renames, overlays, `kg-enabled-rag` split.
 
-**Acceptance criteria**
+### Phase 1 Acceptance Criteria
 
 - [x] `python3 scripts/ci_local.sh` passes
 - [x] All 87 descriptions include `Use when` and are 80–1024 characters
@@ -68,14 +68,14 @@ main
 
 **Goal:** Standardise completion evidence and improve routing between skills.
 
-**Scope**
+### Phase 2 Scope
 
 1. Standardise `## Verification` sections to checklist format across all 87 skills.
 2. Add `## Related skills` to high-traffic skills (minimum 15): `apply-laws-of-ai`, `using-agent-skills`, `guardrails-safety-patterns`, `spec-driven-development`, `tdd-practice`, `planning-and-task-decomposition`, `incremental-implementation`, `reflection-and-verification`, `mcp-server-design`, `knowledge-retrieval-rag`, `human-in-the-loop`, `code-review-and-quality`, `bdd-practice`, `ddd-practice`, `accessibility-wcag`.
 3. Extend validator to require at least one checklist item in `## Verification`.
 4. Update `LIBRARY_CONTRACT.md` with optional `## Related skills` convention.
 
-**Acceptance criteria**
+### Phase 2 Acceptance Criteria
 
 - [x] Every skill has a checklist-style `## Verification` section
 - [x] Related skills links use valid skill folder names in backticks
@@ -89,7 +89,7 @@ main
 
 **Goal:** Reduce token noise and unify procedure structure.
 
-**Scope**
+### Phase 3 Scope
 
 1. Remove generic `## Additional guidance` / `## Additional guidelines` blocks from 11 skills (replace with actionable items only where needed).
 2. Rename procedure headings to canonical `## Procedure`:
@@ -100,7 +100,7 @@ main
 
 **Affected skills (Additional guidance removal):** `spec-driven-development`, `tdd-practice`, `parallelisation`, `reflection-and-verification`, `code-review-and-quality`, `git-workflow-and-versioning`, `idea-refine`, `planning-and-task-decomposition`, `incremental-implementation`, `multi-agent-collaboration`, `using-agent-skills`.
 
-**Acceptance criteria**
+### Phase 3 Acceptance Criteria
 
 - [x] No generic boilerplate Additional guidance sections remain
 - [x] Procedure heading variance reduced to one canonical name
@@ -114,7 +114,7 @@ main
 
 **Goal:** Decouple portable skills from product-specific MAS DataOps MCP content.
 
-**Scope**
+### Phase 4 Scope
 
 1. Create `skills_docs/overlays/mas-dataops-mcp-overlay.md` with extracted content.
 2. Replace inline `## MAS DataOps MCP …` and `## DataOps-specific …` sections in 12 skills with a short pointer to the overlay.
@@ -122,7 +122,7 @@ main
 
 **Affected skills:** `observability-and-telemetry`, `sre-practice`, `slo-error-budget-management`, `dora-four-keys`, `incident-response-and-postmortems`, `release-engineering-and-progressive-delivery`, `toil-reduction-and-automation`, `accessibility-wcag`, `ux-design-principles`, `frontend-state-and-interaction-design`, `agentic-ux-patterns`, `user-research-and-usability-testing`.
 
-**Acceptance criteria**
+### Phase 4 Acceptance Criteria
 
 - [x] Overlay file contains all extracted guidance
 - [x] No inline MAS DataOps sections in core skills
@@ -136,7 +136,7 @@ main
 
 **Goal:** Align the largest skill with Anthropic progressive-disclosure guidance (&lt;500 lines in `SKILL.md`).
 
-**Scope**
+### Phase 5 Scope
 
 1. Split `skills/data-architecture/kg-enabled-rag/SKILL.md` (620 lines) into:
    - `SKILL.md` — contract, lifecycle summary, links (&lt;200 lines)
@@ -147,7 +147,7 @@ main
 3. Add validator warning at 500 lines, fail at 600 lines.
 4. Update `skills/MANIFEST.md` and any cross-references.
 
-**Acceptance criteria**
+### Phase 5 Acceptance Criteria
 
 - [x] `SKILL.md` under 200 lines
 - [x] Reference files linked one level deep from `SKILL.md`
@@ -161,7 +161,7 @@ main
 
 **Goal:** Align control-pattern skills with [OWASP Top 10 for Agentic Applications (2026)](https://genai.owasp.org/2025/12/09/owasp-top-10-for-agentic-applications-the-benchmark-for-agentic-security-in-the-age-of-autonomous-ai/).
 
-**Scope**
+### Phase 6 Scope
 
 1. Add ASI01–ASI10 mapping tables to:
    - `guardrails-safety-patterns`
@@ -172,11 +172,11 @@ main
 2. Cross-link `human-in-the-loop` for ASI09 controls.
 3. Add `skills_docs/security/OWASP_ASI_CROSSWALK.md` as shared reference.
 
-**Acceptance criteria**
+### Phase 6 Acceptance Criteria
 
-- [ ] Each control skill maps at least 3 ASI risks to concrete mitigations
-- [ ] Crosswalk document links to official OWASP source
-- [ ] CI passes
+- [x] Each control skill maps at least 3 ASI risks to concrete mitigations
+- [x] Crosswalk document links to official OWASP source
+- [x] CI passes
 
 ---
 
@@ -186,14 +186,14 @@ main
 
 **Goal:** Raise business-architecture and event-driven skills from ~150 to 250–350 words with worked examples.
 
-**Scope**
+### Phase 7 Scope
 
 1. Enrich all 8 `business-architecture/` skills with one mini worked example each.
 2. Enrich all 8 `event-driven-and-real-time-data/` skills with decision trees or templates.
 3. Enrich `doubt-driven-development` with a doubt-log template.
 4. Raise `MIN_WORDS` in validator from 140 to 200 for non-baseline skills (baseline exempt).
 
-**Acceptance criteria**
+### Phase 7 Acceptance Criteria
 
 - [ ] No skill under 200 words (except documented exemptions)
 - [ ] Each enriched skill has at least one concrete example or template
@@ -207,7 +207,7 @@ main
 
 **Goal:** Embed vendor-aligned depth and publish authoring standards.
 
-**Scope**
+### Phase 8 Scope
 
 1. Create `skills_docs/SKILL_AUTHORING_GUIDE.md`.
 2. Deepen vendor-specific guidance:
@@ -217,7 +217,7 @@ main
 3. Add `scripts/suggest_skills.py` keyword matcher (optional helper).
 4. Add `skills_docs/CHANGELOG.md` for library version tracking.
 
-**Acceptance criteria**
+### Phase 8 Acceptance Criteria
 
 - [ ] Authoring guide published and linked from `LIBRARY_CONTRACT.md`
 - [ ] Three vendor-depth skills updated with cited controls
@@ -234,7 +234,7 @@ main
 ## References
 
 | Topic | Source |
-|-------|--------|
+| ------- | -------- |
 | Skill authoring | [Anthropic — Agent Skills engineering blog](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills) |
 | Agentic security | [OWASP Top 10 for Agentic Applications](https://genai.owasp.org/2025/12/09/owasp-top-10-for-agentic-applications-the-benchmark-for-agentic-security-in-the-age-of-autonomous-ai/) |
 | MCP | [Model Context Protocol — Build a server](https://modelcontextprotocol.io/docs/develop/build-server) |

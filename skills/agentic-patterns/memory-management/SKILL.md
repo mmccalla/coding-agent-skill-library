@@ -40,7 +40,19 @@ Retain useful agent context while controlling sensitivity, relevance, provenance
 - Treat retrieved memory as context, not truth.
 - Add tests for retrieval, update, deletion and stale-memory handling.
 
+## OWASP ASI mapping
+
+Use `skills_docs/security/OWASP_ASI_CROSSWALK.md` for the shared risk map.
+
+| ASI risk | Memory control |
+| --- | --- |
+| ASI01 Agent Goal Hijack | Do not let retrieved memory override system, developer or authorised user instructions. |
+| ASI06 Memory and Context Poisoning | Validate memory writes, retain provenance, isolate tenants and support forgetting/deletion. |
+| ASI08 Cascading Failures | Prevent poisoned shared memory from propagating by scoping retrieval and re-validating before hand-off. |
+| ASI10 Rogue Agents | Monitor unexpected memory writes, reads and preference changes as behavioural drift signals. |
+
 ## Verification
+
 - [ ] Short-term and long-term memory are separated.
 - [ ] Memory schema and namespace are explicit.
 - [ ] Memory writes are controlled and auditable.
