@@ -12,7 +12,7 @@ Use this skill when the user has an early-stage concept, a loose feature idea, o
 
 Turn a vague idea into a focused proposal with a clear problem statement, options, recommended direction and known tradeoffs.
 
-## Operating procedure
+## Procedure
 
 1. Restate the idea in plain language.
 2. Identify the intended user or stakeholder.
@@ -35,13 +35,3 @@ Turn a vague idea into a focused proposal with a clear problem statement, option
 - [ ] Constraints, assumptions and open questions listed.
 - [ ] Success criteria or falsifiable hypotheses captured.
 - [ ] Recommendation for spec, interview or implementation next step.
-
-## Additional guidelines
-
-Incorporate the following best practices to improve the outcome of idea refinement:
-
-- **Psychological safety and diversity:** Create a psychologically safe environment and involve participants from diverse backgrounds to surface higher‑quality ideas.
-- **Structured ideation:** Use structured brainstorming techniques (e.g., crazy eight, 6–3–5) to explore multiple solution paths and avoid anchoring on the first idea.
-- **Explicit assumptions:** Capture assumptions, user research and constraints before refining ideas to keep the discussion grounded.
-- **Rapid prototypes:** Build quick prototypes of promising ideas and test them with stakeholders to validate requirements.
-- **Visual aids and time‑boxing:** Use collaborative visual tools and time‑boxed sessions to focus the discussion and encourage participation.

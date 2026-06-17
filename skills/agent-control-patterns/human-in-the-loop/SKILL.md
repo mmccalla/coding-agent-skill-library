@@ -9,6 +9,10 @@ description: Use when a coding agent must request approval, expert judgement, cl
 
 Use this skill when automation alone is insufficient because the task is ambiguous, high-impact, irreversible, privacy-sensitive, legally/materially significant, or requires domain judgement.
 
+## Objective
+
+Introduce human judgement at the right decision points without slowing safe, reversible work unnecessarily.
+
 ## Intervention points
 
 Ask for human input before:

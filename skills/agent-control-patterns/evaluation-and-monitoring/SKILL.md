@@ -9,6 +9,10 @@ description: Use when measuring coding-agent quality, regression risk, latency, 
 
 Use this skill when an agent or generated system must be measured objectively before, during or after deployment. Apply it to coding-agent changes, RAG systems, tool-use workflows, multi-agent systems and production assistants.
 
+## Objective
+
+Measure agent or system quality with explicit metrics, representative scenarios, and actionable monitoring evidence.
+
 ## Core pattern
 
 1. Define measurable objectives and indicators.

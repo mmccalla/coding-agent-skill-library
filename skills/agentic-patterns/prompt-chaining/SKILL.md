@@ -11,7 +11,11 @@ Use this skill when a single prompt or function is overloaded with multiple resp
 
 Do not use it for a trivial one-step task.
 
-## Implementation pattern
+## Objective
+
+Decompose overloaded prompts into validated, single-purpose stages with testable hand-offs.
+
+## Procedure
 
 1. Identify each logically independent transformation.
 2. Define a narrow contract for each step: input schema, output schema, success criteria and error case.

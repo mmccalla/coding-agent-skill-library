@@ -11,7 +11,11 @@ Use this skill when an agent should improve over time based on measured outcomes
 
 Do not allow autonomous self-modification without version control, tests, rollback and human-review boundaries.
 
-## Implementation pattern
+## Objective
+
+Improve agent behaviour through measured, versioned, reversible changes rather than unbounded self-modification.
+
+## Procedure
 
 1. Define the performance objective and metric.
 2. Capture task trajectories: prompt/input, selected tools, code changes, tests, errors, outputs and user feedback.

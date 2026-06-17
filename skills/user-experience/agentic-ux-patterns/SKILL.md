@@ -12,7 +12,7 @@ Use this skill when designing interfaces for agent recommendations, generated me
 
 Help users understand, supervise and control agent behaviour safely, with clear visibility of intent, evidence, uncertainty, consequences and approval requirements.
 
-## Operating procedure
+## Procedure
 
 1. Identify the agent action or recommendation.
 2. Classify the action risk: low, medium, high or critical.

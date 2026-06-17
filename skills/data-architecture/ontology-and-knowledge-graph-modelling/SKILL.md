@@ -12,7 +12,7 @@ When the task moves from graph design into Neo4j-native retrieval, text-to-Cyphe
 
 Do not use for ordinary diagrams, generic vector-only RAG, or simple entity extraction unless semantic governance or graph retrieval is required.
 
-## Goal
+## Objective
 Produce a small, implementable semantic design that answers defined competency questions, validates graph data, preserves provenance, and supports explainable retrieval for LLM grounding.
 
 ## Operating rules

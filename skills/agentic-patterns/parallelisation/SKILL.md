@@ -11,7 +11,11 @@ Use this skill only when tasks are independent and the result can be merged dete
 
 Do not parallelise when tasks depend on each other, share mutable state unsafely, or when debugging simplicity is more important than latency.
 
-## Implementation pattern
+## Objective
+
+Run only independent work concurrently and merge results deterministically with bounded resource use.
+
+## Procedure
 
 1. Identify independent tasks and their inputs.
 2. Define per-task timeout, retry and error semantics.
@@ -34,13 +38,3 @@ Do not parallelise when tasks depend on each other, share mutable state unsafely
 - [ ] Timeouts and partial failures are handled.
 - [ ] Merge step is deterministic and tested.
 - [ ] Logs identify each parallel branch.
-
-## Additional guidance
-
-Enhance parallel execution robustness with these practices:
-
-- **Dependency mapping:** Document task dependencies to ensure only truly independent tasks are run concurrently.
-- **Risk‑based prioritisation:** Allocate concurrency resources based on risk and business impact, giving high‑impact tasks appropriate attention.
-- **Explicit task contracts:** Provide clear descriptions, expected outputs and failure‑handling instructions for each parallel branch.
-- **Retry and error handling:** Incorporate retry logic and error‑handling strategies so that branch failures can be recovered gracefully.
-- **Consistent integration:** Use standard naming conventions and interfaces when merging results to simplify integration and reduce confusion.

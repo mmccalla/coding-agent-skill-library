@@ -12,7 +12,7 @@ Use this skill when designing or refactoring classes, modules, services, interfa
 
 Improve maintainability and testability by ensuring code has clear responsibilities, stable boundaries, substitutable components, focused interfaces and explicit dependencies.
 
-## Operating procedure
+## Procedure
 
 1. Identify the unit under change: class, module, service, tool, agent or workflow.
 2. Check Single Responsibility: each unit should have one reason to change.

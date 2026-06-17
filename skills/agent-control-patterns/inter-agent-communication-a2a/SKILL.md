@@ -9,6 +9,10 @@ description: Use when designing agent-to-agent communication, delegation protoco
 
 Use this skill when multiple agents must collaborate across process, service, framework, repository or organisation boundaries. Apply it for delegation, capability discovery, task status tracking, streaming results and standardised hand-offs.
 
+## Objective
+
+Define safe, interoperable contracts for agent identity, delegation, task exchange, and result hand-off.
+
 ## Core pattern
 
 1. Define each agent as an opaque service with a clear public contract.

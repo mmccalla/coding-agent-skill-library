@@ -12,7 +12,7 @@ Use this skill when building dashboards or analytical screens for data quality, 
 
 Create dashboards that help users make decisions, investigate issues and take action without confusing operational metrics, quality evidence and governance evidence.
 
-## Operating procedure
+## Procedure
 
 1. Identify the dashboard user and decision.
 2. Define the primary question the dashboard must answer.

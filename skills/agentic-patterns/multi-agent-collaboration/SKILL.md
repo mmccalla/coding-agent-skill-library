@@ -9,6 +9,10 @@ description: Use when designing or implementing systems with multiple specialise
 
 Use this skill only when a single agent becomes a bottleneck because the task needs distinct expertise, tools, permissions, workstreams or review roles. Prefer a single agent plus tools for simple workflows.
 
+## Objective
+
+Coordinate specialised agents with explicit roles, schemas, orchestration, and traceability.
+
 ## Collaboration patterns
 
 - Sequential hand-off: one specialist produces an output for the next.
@@ -17,7 +21,7 @@ Use this skill only when a single agent becomes a bottleneck because the task ne
 - Debate/review: agents critique alternatives before a decision.
 - Agent as tool: a specialist agent is exposed behind a narrow callable interface.
 
-## Implementation pattern
+## Procedure
 
 1. Define each agent's role, goal, allowed tools and boundaries.
 2. Define message schemas and hand-off contracts.
@@ -39,12 +43,3 @@ Use this skill only when a single agent becomes a bottleneck because the task ne
 - [ ] Orchestration pattern is documented.
 - [ ] Failure and retry behaviour is defined.
 - [ ] End-to-end traceability exists.
-
-## Additional guidance
-
-Strengthen multi‑agent collaborations with these recommendations:
-
-- **Explicit roles and protocols:** Define each agent’s responsibilities, goals and allowed operations, and specify communication protocols up front.
-- **Handoff artefacts:** Provide handoff artefacts—such as design documents, test results or logs—to ensure continuity and reduce information loss between agents.
-- **Failure detection and escalation:** Implement automatic failure detection and escalation triggers so persistent issues are surfaced promptly.
-- **Stage metrics:** Record metrics for each collaboration stage to identify bottlenecks and guide process improvements.

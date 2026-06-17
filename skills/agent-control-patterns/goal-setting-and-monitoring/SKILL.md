@@ -9,6 +9,10 @@ description: Use when implementing agents that need explicit objectives, measura
 
 Use this skill when an agent must work towards a defined outcome rather than simply respond once. Apply it for coding tasks that need acceptance criteria, progress tracking, quality gates, iteration limits, or measurable completion.
 
+## Objective
+
+Define observable goals, measurable success criteria, stop conditions, and progress evidence for agent workflows.
+
 ## Core pattern
 
 1. Define the goal state in observable terms.

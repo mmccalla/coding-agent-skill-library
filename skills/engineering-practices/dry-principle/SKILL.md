@@ -12,7 +12,7 @@ Use this skill when reviewing repeated code, configuration, schemas, prompts, te
 
 Remove duplication of knowledge and behaviour where it creates maintenance risk, while preserving clarity and avoiding premature abstraction.
 
-## Operating procedure
+## Procedure
 
 1. Identify the duplicated elements.
 2. Classify the duplication as harmless coincidence, repeated syntax, repeated business rule, repeated validation, repeated integration logic, repeated configuration, repeated prompt or repeated agent instruction.

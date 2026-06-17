@@ -47,6 +47,10 @@ Use this skill when building, refactoring, reviewing or hardening Neo4j-native G
 
 Do not use it for generic document RAG, vector-only retrieval, or ontology-only design work where the existing `knowledge-retrieval-rag` or `ontology-and-knowledge-graph-modelling` skills are sufficient.
 
+## Objective
+
+Implement Neo4j-native KG-enabled RAG with provenance-first ingestion, guarded retrieval, grounded answers, and tests.
+
 ## 0. Agent Execution Contract
 
 You are an autonomous coding agent. Optimise for safe, verifiable repository changes, not explanatory prose.

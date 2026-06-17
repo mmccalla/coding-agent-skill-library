@@ -11,6 +11,10 @@ Use this skill when an agent needs facts from external documents, code repositor
 
 For GraphRAG, Neo4j-native retrieval, text-to-Cypher, provenance-first graph ingestion, or KG-backed answer generation, pair this skill with `skills/data-architecture/kg-enabled-rag/SKILL.md`.
 
+## Objective
+
+Ground agent answers and changes in retrievable, permission-aware source evidence with inspectable citations.
+
 ## Core pattern
 
 1. Ingest documents or code into clean text.

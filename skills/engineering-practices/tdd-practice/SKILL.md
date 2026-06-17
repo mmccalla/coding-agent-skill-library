@@ -12,7 +12,7 @@ Use this skill when adding behaviour, fixing a defect, refactoring risky code, c
 
 Drive implementation from executable expectations. Produce code that is correct, minimal, refactorable and protected by targeted tests.
 
-## Operating procedure
+## Procedure
 
 1. Identify the behaviour, edge cases and observable outcome.
 2. Write the smallest failing test that proves the behaviour is missing or broken.
@@ -44,13 +44,3 @@ Drive implementation from executable expectations. Produce code that is correct,
 - [ ] Production change made and targeted tests pass.
 - [ ] Refactor performed only with tests green.
 - [ ] Remaining untested risks stated.
-
-## Additional guidelines
-
-Apply these guidelines to maximise the benefits of TDD:
-
-- **Team standards:** Establish team standards for test naming, structure and coverage so that tests remain consistent and maintainable.
-- **Fast feedback loops:** Keep tests focused and run them frequently to maintain fast feedback loops and support iterative development.
-- **Risk‑based coverage:** Allocate testing effort based on risk, focusing on high‑impact code paths rather than exhaustive coverage.
-- **Continuous refactoring:** After tests pass, refactor code incrementally to remove duplication and improve design while keeping tests green.
-- **CI and review integration:** Integrate tests into continuous integration pipelines and require tests to run during code review to enforce discipline and catch regressions early.

@@ -25,7 +25,7 @@ main
 |-------|--------|--------|--------|
 | 1 | `improve/skills-phase-1-descriptions-validator` | Complete | Yes |
 | 2 | `improve/skills-phase-2-verification-related` | Complete | Yes |
-| 3 | `improve/skills-phase-3-boilerplate-normalise` | Pending | — |
+| 3 | `improve/skills-phase-3-boilerplate-normalise` | Ready for review | — |
 | 4 | `improve/skills-phase-4-dataops-overlay` | Pending | — |
 | 5 | `improve/skills-phase-5-kg-enabled-rag-split` | Pending | — |
 | 6 | `improve/skills-phase-6-owasp-asi-mapping` | Pending | — |
@@ -102,9 +102,9 @@ main
 
 **Acceptance criteria**
 
-- [ ] No generic boilerplate Additional guidance sections remain
-- [ ] Procedure heading variance reduced to one canonical name
-- [ ] CI passes
+- [x] No generic boilerplate Additional guidance sections remain
+- [x] Procedure heading variance reduced to one canonical name
+- [x] CI passes
 
 ---
 

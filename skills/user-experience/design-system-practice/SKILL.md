@@ -12,7 +12,7 @@ Use this skill when creating or modifying design tokens, component libraries, sh
 
 Create a coherent design system that reduces UI inconsistency, improves accessibility, speeds delivery and avoids one-off interface decisions.
 
-## Operating procedure
+## Procedure
 
 1. Identify whether the change belongs in the design system or a feature-specific component.
 2. Use existing tokens, components and patterns before adding new ones.

@@ -12,7 +12,7 @@ Use this skill when the request is ambiguous, has multiple plausible interpretat
 
 Extract enough intent to make the next implementation decision complete and low risk.
 
-## Operating procedure
+## Procedure
 
 1. State the current understanding of the request.
 2. Identify the highest-impact unknown.

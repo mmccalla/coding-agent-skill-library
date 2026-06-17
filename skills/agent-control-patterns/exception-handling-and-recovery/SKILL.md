@@ -9,6 +9,10 @@ description: Use when building resilient agent workflows that must detect failur
 
 Use this skill when an agent calls tools, edits files, executes code, uses network services, invokes models, or performs any multi-step workflow where failures are likely.
 
+## Objective
+
+Make failures explicit, recover safely where possible, and preserve enough evidence to repair or escalate.
+
 ## Core pattern
 
 1. Detect errors early: tool exceptions, malformed outputs, timeout, unavailable service, failed tests, invalid schema, unexpected state.

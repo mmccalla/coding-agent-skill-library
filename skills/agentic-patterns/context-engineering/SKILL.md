@@ -12,7 +12,7 @@ Use this skill when starting a session, switching tasks, or preparing context fo
 
 Load enough context to work accurately while avoiding irrelevant material that dilutes attention or exceeds the useful scope.
 
-## Operating procedure
+## Procedure
 
 1. Identify the authoritative sources for the task.
 2. Load the smallest relevant docs, manifests and files.

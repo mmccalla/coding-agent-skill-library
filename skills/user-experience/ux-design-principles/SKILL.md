@@ -12,7 +12,7 @@ Use this skill when designing or changing user journeys, task flows, forms, navi
 
 Create user-facing workflows that help users complete meaningful tasks with minimal cognitive load, clear feedback, visible system status, and explicit evidence for decisions.
 
-## Operating procedure
+## Procedure
 
 1. Identify the primary user role.
 2. State the task the user is trying to complete.

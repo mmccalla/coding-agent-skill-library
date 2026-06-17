@@ -12,7 +12,7 @@ Use this skill when defining or changing SLIs, SLOs, error budgets, burn-rate al
 
 Create measurable reliability objectives that reflect user experience and guide engineering trade-offs between reliability, feature delivery and operational risk.
 
-## Operating procedure
+## Procedure
 
 1. Identify the user journey or service capability.
 2. Define the service boundary.

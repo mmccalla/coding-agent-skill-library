@@ -12,7 +12,7 @@ Use this skill when removing or replacing a skill, doc path, workflow, API surfa
 
 Remove old paths safely by providing a clear replacement, a controlled transition period and a verified end state.
 
-## Operating procedure
+## Procedure
 
 1. Identify what is being replaced and why.
 2. Define the replacement path and compatibility expectations.

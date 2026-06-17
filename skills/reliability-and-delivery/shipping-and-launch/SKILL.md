@@ -12,7 +12,7 @@ Use this skill when a change is ready to leave the repository, reach users or be
 
 Launch changes with a clear preflight check, a safe rollout path, post-launch monitoring and an understood rollback option.
 
-## Operating procedure
+## Procedure
 
 1. Confirm the release scope and launch owner.
 2. Check that the change is ready for release.

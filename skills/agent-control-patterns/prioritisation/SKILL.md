@@ -9,6 +9,10 @@ description: Use when an agent must rank tasks, goals, files, bugs, actions, ale
 
 Use this skill when there are multiple possible actions and not all can or should be done immediately. Apply it to backlog triage, bug fixing, test selection, refactoring, incident response, tool calls, dependency upgrades and implementation sequencing.
 
+## Objective
+
+Rank candidate actions consistently using explicit criteria, dependencies, safety impact, and reversibility.
+
 ## Core pattern
 
 1. List candidate tasks or actions.

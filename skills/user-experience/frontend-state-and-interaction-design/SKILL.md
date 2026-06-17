@@ -12,7 +12,7 @@ Use this skill when implementing async flows, long-running jobs, background work
 
 Make frontend behaviour predictable, recoverable and transparent across all meaningful states.
 
-## Operating procedure
+## Procedure
 
 1. Identify all relevant states.
 2. Define state transitions explicitly.

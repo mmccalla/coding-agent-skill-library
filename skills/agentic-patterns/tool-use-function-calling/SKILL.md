@@ -11,7 +11,11 @@ Use this skill when an agent must retrieve current data, call APIs, query databa
 
 Use direct function calling for a small, fixed set of tools. Consider MCP when the tool ecosystem must be reusable, discoverable or shared across agents.
 
-## Implementation pattern
+## Objective
+
+Wrap external capabilities in strict schemas, least-privilege execution, structured observations, and tests.
+
+## Procedure
 
 1. Define each tool's purpose, parameters, return type, side effects and failure modes.
 2. Express the input contract as a strict schema.

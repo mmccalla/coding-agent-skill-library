@@ -9,6 +9,10 @@ description: Use when an agent must balance quality, cost, latency, compute, mem
 
 Use this skill when a coding agent must operate within budgets: time, tokens, memory, CPU/GPU, API cost, context window, rate limits, latency, energy, or human review capacity.
 
+## Objective
+
+Balance quality, cost, latency, model choice, context budget, and fallback paths without compromising correctness.
+
 ## Core pattern
 
 1. Identify resource constraints and service limits.

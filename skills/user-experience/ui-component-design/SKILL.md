@@ -12,7 +12,7 @@ Use this skill when creating or modifying reusable components, forms, tables, ca
 
 Build components that are reusable, accessible, predictable, composable, visually consistent and easy to test.
 
-## Operating procedure
+## Procedure
 
 1. Identify the component's purpose and user-facing responsibility.
 2. Define the component API with clear props and typed contracts.

@@ -21,7 +21,7 @@ Improve software delivery performance using the DORA Four Keys while preserving 
 | Change failure rate | Percentage of deployments causing degraded service, incidents, rollback or hotfix. |
 | Failed deployment recovery time | Time to restore service after a deployment failure. |
 
-## Operating procedure
+## Procedure
 
 1. Identify the delivery workflow being measured.
 2. Define what counts as a deployment.

@@ -12,7 +12,7 @@ Use this skill when starting a new task, resuming context, or choosing among ove
 
 Select the smallest relevant skill or skill combination and explain why it was chosen.
 
-## Operating procedure
+## Procedure
 
 1. Confirm `skills/agent-control-patterns/apply-laws-of-ai/SKILL.md` has been executed in full for this session.
 2. Read `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` for routing by task shape.
@@ -43,12 +43,3 @@ Select the smallest relevant skill or skill combination and explain why it was c
 - [ ] Selected skill(s) and selection rationale reported.
 - [ ] Intentionally excluded skills noted.
 - [ ] Remaining ambiguity or re-check triggers stated.
-
-## Additional guidance
-
-Enhance your skill selection process by adopting these practices:
-
-- **Maintain a searchable index:** Keep the skills manifest up to date and searchable, with clear triggers and descriptions for each skill.
-- **Change management:** Define procedures for adding, updating and deprecating skills to maintain consistency and avoid outdated guidance.
-- **Automated discovery:** Implement scripts or tooling that analyse task context and suggest relevant skills to reduce reliance on memory.
-- **Fallback guidance:** When no existing skill applies, document the gap, consider escalating to a human reviewer and propose the creation of a new skill.

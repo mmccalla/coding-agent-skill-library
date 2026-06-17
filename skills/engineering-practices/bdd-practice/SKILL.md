@@ -12,7 +12,7 @@ Use this skill when the task involves user journeys, acceptance criteria, cross-
 
 Translate requirements into clear, testable behaviour using examples. Ensure implementation satisfies externally visible outcomes rather than internal design assumptions.
 
-## Operating procedure
+## Procedure
 
 1. Identify the actor, goal, business rule, preconditions and expected outcome.
 2. Express behaviour as concrete examples, preferably in Given/When/Then form.

@@ -12,7 +12,7 @@ Use this skill when adding or reviewing logs, metrics, traces, dashboards, alert
 
 Make service behaviour understandable from the outside so operators can detect, diagnose and respond to user-impacting issues quickly.
 
-## Operating procedure
+## Procedure
 
 1. Identify the user journey or service behaviour to observe.
 2. Define the key questions operators need to answer.

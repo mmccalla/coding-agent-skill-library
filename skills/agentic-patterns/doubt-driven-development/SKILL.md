@@ -12,7 +12,7 @@ Use this skill when the first answer feels too easy, the codebase is unfamiliar,
 
 Turn confidence into evidence by stress-testing the current hypothesis before committing to it.
 
-## Operating procedure
+## Procedure
 
 1. State the leading hypothesis.
 2. Identify the claims that hypothesis depends on.

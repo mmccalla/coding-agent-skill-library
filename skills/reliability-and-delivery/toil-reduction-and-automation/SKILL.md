@@ -16,7 +16,7 @@ Reduce toil without increasing operational risk, hiding judgement, weakening app
 
 Treat work as toil when it is manual, repetitive, automatable, tactical, interrupt-driven, linearly scaling with service growth and low in enduring value.
 
-## Operating procedure
+## Procedure
 
 1. Identify the repeated manual task.
 2. Estimate frequency, duration, error rate and operational risk.

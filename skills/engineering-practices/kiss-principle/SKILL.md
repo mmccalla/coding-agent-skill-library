@@ -12,7 +12,7 @@ Use this skill when simplifying code, reviewing design complexity, reducing cogn
 
 Deliver the simplest maintainable solution that satisfies the current requirement, preserves required behaviour, and remains testable.
 
-## Operating procedure
+## Procedure
 
 1. State the required behaviour and constraints.
 2. Identify accidental complexity: unused layers, speculative abstractions, redundant configuration, excessive indirection, unclear control flow, and unnecessary dependencies.

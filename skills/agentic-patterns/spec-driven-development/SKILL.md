@@ -12,7 +12,7 @@ Use this skill when starting a new feature, changing externally visible behaviou
 
 Write a small, decision-complete spec that makes the implementation path obvious and testable.
 
-## Operating procedure
+## Procedure
 
 1. Define the problem and desired outcome.
 2. Name the user, operator or maintainer affected.
@@ -43,13 +43,3 @@ Optional templates: `skills_docs/templates/agile-epic-template.md` and `skills_d
 - [ ] Edge cases and constraints documented.
 - [ ] Out-of-scope behaviour stated.
 - [ ] Compatibility or rollout concerns noted where relevant.
-
-## Additional guidance
-
-To improve specification quality:
-
-- **Inclusive language:** Use plain, inclusive language and define technical terms so the spec is accessible to a broad audience.
-- **Illustrative examples:** Provide illustrative scenarios or templates to make requirements tangible and clarify expected behaviour.
-- **Version history:** Record version history and update notes within the specification to track changes over time.
-- **Peer review:** Subject the specification to peer or editorial review to ensure completeness and consistency before implementation.
-- **Regular audit:** Periodically audit and refactor specifications to remove redundancy, update outdated sections and incorporate new understanding.

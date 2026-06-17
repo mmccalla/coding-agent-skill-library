@@ -12,7 +12,7 @@ Use this skill when a decision needs to be captured for future maintainers, or w
 
 Capture the reason for the change, the options considered and the consequences so future work remains coherent.
 
-## Operating procedure
+## Procedure
 
 1. State the decision or guidance that needs recording.
 2. Summarise the context and constraints.

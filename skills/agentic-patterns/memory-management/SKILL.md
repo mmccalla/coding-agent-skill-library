@@ -11,6 +11,10 @@ Use this skill when an agent must retain context across steps, resume conversati
 
 Do not store sensitive or irrelevant data. Do not add memory when the task can be solved statelessly.
 
+## Objective
+
+Retain useful agent context while controlling sensitivity, relevance, provenance, retention, and deletion.
+
 ## Memory types
 
 - Short-term memory: current thread/session state, recent messages, tool observations and working variables.
@@ -18,7 +22,7 @@ Do not store sensitive or irrelevant data. Do not add memory when the task can b
 - Episodic memory: examples of past tasks, decisions and successful workflows.
 - Procedural memory: instructions, rules and behaviours used to perform tasks.
 
-## Implementation pattern
+## Procedure
 
 1. Classify the information by retention need and sensitivity.
 2. Define memory schemas and namespaces.

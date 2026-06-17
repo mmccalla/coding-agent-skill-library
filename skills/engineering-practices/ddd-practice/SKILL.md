@@ -12,7 +12,7 @@ Use this skill when modelling complex business behaviour, designing service boun
 
 Create a maintainable domain model that reflects the business language, protects invariants, isolates bounded contexts and separates domain logic from technical plumbing.
 
-## Operating procedure
+## Procedure
 
 1. Identify the business capability, subdomain and stakeholders.
 2. Capture the ubiquitous language: key terms, events, commands, policies, invariants and ambiguous words.

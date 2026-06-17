@@ -105,6 +105,18 @@ def main() -> int:
         if re.search(r"^## When to use this skill\s*$", text, flags=re.M):
             errors.append(f"{p}: use canonical heading '## When to use' (not 'this skill')")
 
+        if not re.search(r"^## Objective\s*$", text, flags=re.M):
+            errors.append(f"{p}: missing canonical '## Objective' section")
+        if re.search(r"^## Goal\s*$", text, flags=re.M):
+            errors.append(f"{p}: use canonical heading '## Objective' (not 'Goal')")
+
+        if re.search(r"^## Operating procedure\s*$", text, flags=re.M):
+            errors.append(f"{p}: use canonical heading '## Procedure' (not 'Operating procedure')")
+        if re.search(r"^## Implementation pattern\s*$", text, flags=re.M):
+            errors.append(f"{p}: use canonical heading '## Procedure' (not 'Implementation pattern')")
+        if re.search(r"^## Additional (guidance|guidelines)\s*$", text, flags=re.M):
+            errors.append(f"{p}: remove generic Additional guidance/guidelines section")
+
         if not re.search(r"^## Verification\s*$", text, flags=re.M):
             errors.append(f"{p}: missing canonical '## Verification' section")
         if re.search(r"^## Completion report\s*$", text, flags=re.M):

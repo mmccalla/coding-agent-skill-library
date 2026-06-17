@@ -12,7 +12,7 @@ Use this skill when creating commits, branching work, preparing changes for revi
 
 Keep change history small, coherent and easy to understand while preserving the ability to revert or bisect if needed.
 
-## Operating procedure
+## Procedure
 
 1. Keep each commit or change slice focused on one logical purpose.
 2. Avoid mixing unrelated fixes, refactors and documentation changes.
@@ -33,13 +33,3 @@ Keep change history small, coherent and easy to understand while preserving the 
 - [ ] Working tree state reported.
 - [ ] Versioning or compatibility considerations noted.
 - [ ] Reversibility of the change confirmed.
-
-## Additional guidelines
-
-Adopt the following practices to enhance your Git workflow:
-
-- **Definition‑of‑Done compliance:** Confirm that all Definition‑of‑Done criteria—including peer reviews, acceptance criteria and non‑functional requirements—are satisfied before merging or closing a branch.
-- **Risk‑based review:** Perform risk‑based code reviews, prioritising high‑impact or security‑sensitive changes and allocating appropriate scrutiny.
-- **Small, focused pull requests:** Keep pull requests small and cohesive to improve review effectiveness and reduce merge conflicts.
-- **Automated quality gates:** Run automated checks (static analysis, secret scanning, test suites) before merging to catch issues early and reduce reviewer burden.
-- **Branch closure and cleanup:** Document the branch closure process and routinely clean up unused branches and worktrees to maintain repository hygiene.

@@ -12,7 +12,7 @@ Use this skill for any user-facing work: pages, forms, dashboards, tables, modal
 
 Ensure interfaces are perceivable, operable, understandable and robust, with practical alignment to WCAG 2.2 AA expectations.
 
-## Operating procedure
+## Procedure
 
 1. Use semantic HTML or accessible component primitives.
 2. Ensure all interactive controls are keyboard reachable.

@@ -11,6 +11,10 @@ Use this skill when external capabilities should be exposed to agents through a 
 
 For a small fixed set of functions in one app, direct tool/function calling may be simpler.
 
+## Objective
+
+Expose external capabilities through narrow, typed, discoverable, least-privilege MCP interfaces.
+
 ## Design principles
 
 - Expose agent-friendly capabilities, not raw legacy APIs.
@@ -19,7 +23,7 @@ For a small fixed set of functions in one app, direct tool/function calling may 
 - Separate resources, tools and prompts clearly.
 - Use least privilege for every server and tool.
 
-## Implementation pattern
+## Procedure
 
 1. Identify the external system capability to expose.
 2. Decide whether it is a resource, tool or prompt.

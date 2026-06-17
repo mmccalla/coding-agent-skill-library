@@ -12,7 +12,7 @@ Use this skill when working on production service design, operational readiness,
 
 Improve service reliability by connecting user impact, service objectives, operational evidence, automation, incident learning and safe release practices.
 
-## Operating procedure
+## Procedure
 
 1. Identify the service and its users.
 2. Define the user-visible capability being protected.

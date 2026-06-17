@@ -12,7 +12,7 @@ Use this skill when validating journeys, forms, dashboards, onboarding flows, ap
 
 Validate whether target users can understand and complete the intended task safely, accurately and efficiently.
 
-## Operating procedure
+## Procedure
 
 1. Identify target user roles.
 2. Define the task to test.

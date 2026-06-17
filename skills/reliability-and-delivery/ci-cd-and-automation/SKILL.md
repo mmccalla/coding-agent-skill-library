@@ -12,7 +12,7 @@ Use this skill when modifying pipelines, build automation, release jobs, deploym
 
 Keep automation safe, observable and least-privilege while still reducing manual effort and release risk.
 
-## Operating procedure
+## Procedure
 
 1. Identify the pipeline stage and purpose.
 2. List required inputs, secrets, permissions and outputs.

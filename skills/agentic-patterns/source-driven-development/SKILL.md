@@ -12,7 +12,7 @@ Use this skill when the work depends on framework docs, repository conventions, 
 
 Base the implementation or guidance on the most authoritative available source and make unverified assumptions explicit.
 
-## Operating procedure
+## Procedure
 
 1. Identify the source of truth.
 2. Verify version-specific or repo-specific behavior directly from that source.

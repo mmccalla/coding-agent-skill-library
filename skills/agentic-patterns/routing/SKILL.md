@@ -11,6 +11,10 @@ Use this skill when an agent must decide between multiple possible paths based o
 
 Use deterministic routing first when criteria are explicit. Use LLM routing only when semantic judgement is genuinely required.
 
+## Objective
+
+Select execution paths predictably using constrained route definitions, confidence thresholds, and safe fallbacks.
+
 ## Routing methods
 
 Choose the lightest reliable router:
@@ -21,7 +25,7 @@ Choose the lightest reliable router:
 4. LLM router: nuanced classification with constrained labels.
 5. Trained classifier: repeated high-volume routing with labelled examples.
 
-## Implementation pattern
+## Procedure
 
 1. Define the allowed routes as an enum.
 2. Define route descriptions, entry conditions and prohibited cases.

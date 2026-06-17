@@ -12,7 +12,7 @@ Use this skill when a change affects a browser-rendered interface and you need r
 
 Verify user-facing behaviour with DevTools evidence so frontend or browser issues are reproduced, localized and confirmed with the actual runtime state.
 
-## Operating procedure
+## Procedure
 
 1. Reproduce the issue or feature in the browser.
 2. Inspect the DOM, console and network activity.

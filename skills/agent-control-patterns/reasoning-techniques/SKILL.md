@@ -9,6 +9,10 @@ description: Use when a coding agent needs robust problem solving, explicit deco
 
 Use this skill for non-trivial coding and analysis tasks where a direct answer is likely to be brittle: debugging, architecture design, algorithm selection, test failure diagnosis, migration planning, security review or multi-step repository changes.
 
+## Objective
+
+Select a reasoning approach that matches task complexity and produces externally verifiable engineering evidence.
+
 ## Technique selection
 
 - Use decomposition for most engineering tasks: break the problem into inspect, plan, edit, test and summarise.

@@ -12,7 +12,7 @@ Use this skill when a change touches multiple files, has rollback risk, or benef
 
 Reduce risk by implementing one coherent slice at a time and verifying each slice before moving on.
 
-## Operating procedure
+## Procedure
 
 1. Choose the smallest meaningful slice of the overall change.
 2. Make that slice self-contained.
@@ -40,12 +40,3 @@ Reduce risk by implementing one coherent slice at a time and verifying each slic
 - [ ] Validation run for the completed slice.
 - [ ] Behaviour change and rollback path described.
 - [ ] Next slice or residual risks noted.
-
-## Additional guidelines
-
-To maximise the value of incremental implementation:
-
-- **Regular checkpoints:** Schedule checkpoints to reassess progress and adjust the slice plan when new information or feedback emerges.
-- **Definition of Done:** Define exit criteria aligned with the team’s Definition of Done, including acceptance and quality criteria, before concluding a change.
-- **Progress metrics:** Track metrics such as slices completed, test pass rates and outstanding risks to inform decisions and communicate status.
-- **Contingency planning:** Prepare contingency plans and escalation paths for tasks that encounter persistent blockers or ambiguities.

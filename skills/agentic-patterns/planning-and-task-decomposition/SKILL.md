@@ -11,7 +11,11 @@ Use this skill for multi-step implementation, refactoring, migration, debugging,
 
 Do not over-plan routine one-file changes.
 
-## Implementation pattern
+## Objective
+
+Turn complex objectives into ordered, dependency-aware steps with explicit validation checkpoints.
+
+## Procedure
 
 1. State the objective and acceptance criteria.
 2. Inspect the repository or available artefacts.
@@ -40,13 +44,3 @@ Do not over-plan routine one-file changes.
 - [ ] Unknowns and assumptions are explicit.
 - [ ] Verification steps are included.
 - [ ] Plan was updated if implementation evidence changed it.
-
-## Additional guidance
-
-Strengthen planning and task decomposition by applying these guidelines:
-
-- **Dependency and unknowns mapping:** Identify and document dependencies and unknowns early to inform the ordering of tasks and reduce surprises.
-- **Periodic checkpoints:** Include periodic checkpoints to revisit assumptions and adjust the plan based on evidence gathered during execution.
-- **Definition‑of‑Done criteria:** Establish clear exit criteria aligned with the Definition of Done for each plan segment to avoid premature closure.
-- **Progress metrics:** Measure plan execution using metrics such as tasks completed and verification steps performed to provide objective feedback.
-- **Contingency plans:** Define escalation and contingency paths for tasks that encounter persistent blockers or high uncertainty.

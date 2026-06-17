@@ -12,7 +12,7 @@ Use this skill for deployment pipelines, release gates, rollback, canary release
 
 Ship changes safely by reducing blast radius, validating progressively, enabling fast rollback and linking deployment decisions to evidence.
 
-## Operating procedure
+## Procedure
 
 1. Identify the change and production risk.
 2. Classify the release type: code, config, schema, policy, model, rule, infrastructure or data pipeline.
