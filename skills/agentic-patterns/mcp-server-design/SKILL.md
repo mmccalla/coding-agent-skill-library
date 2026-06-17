@@ -23,6 +23,14 @@ Expose external capabilities through narrow, typed, discoverable, least-privileg
 - Separate resources, tools and prompts clearly.
 - Use least privilege for every server and tool.
 
+## MCP source-aligned guidance
+
+The MCP server guide distinguishes resources, tools and prompts as the three main server capability types. For stdio transports, never write logs or diagnostics to stdout because stdout carries JSON-RPC messages; send logs to stderr or files instead. Tool inputs should use explicit schemas such as JSON Schema or SDK schema helpers, with clear descriptions and examples so clients can discover and call tools safely.
+
+When reviewing an MCP server, check capability discovery, schema clarity, transport-specific logging, least-privilege authentication, and whether the exposed operation is agent-friendly rather than a raw legacy API wrapper.
+
+Source: [Model Context Protocol — Build a server](https://modelcontextprotocol.io/docs/develop/build-server).
+
 ## Procedure
 
 1. Identify the external system capability to expose.

@@ -6,6 +6,7 @@ description: Applies WCAG 2.2 AA-aligned accessibility checks to interfaces, for
 # Accessibility and WCAG Practice
 
 ## When to use
+
 Use this skill for any user-facing work: pages, forms, dashboards, tables, modals, navigation, charts, notifications, approval workflows, agent supervision interfaces and design-system components.
 
 ## Objective
@@ -26,6 +27,19 @@ Ensure interfaces are perceivable, operable, understandable and robust, with pra
 10. Provide accessible alternatives for charts and diagrams.
 11. Ensure dynamic updates are announced where appropriate.
 12. Test common flows using keyboard-only interaction.
+
+## WCAG 2.2 AA focus areas
+
+For WCAG 2.2 AA alignment, explicitly check the newer AA success criteria as well as the long-standing basics:
+
+- `2.4.11 Focus Not Obscured (Minimum)`: author-created content must not fully hide the focused component.
+- `2.5.7 Dragging Movements`: functionality using dragging should also support a single-pointer alternative unless dragging is essential.
+- `2.5.8 Target Size (Minimum)`: pointer targets must meet the minimum target-size expectation or a documented exception.
+- `3.3.8 Accessible Authentication (Minimum)`: authentication should not require a cognitive-function test unless an accessible alternative or assistance mechanism exists.
+
+Also check `3.3.7 Redundant Entry` because it is Level A and reduces repeated data entry burden in forms and approval workflows.
+
+Source: [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/).
 
 ## Rules
 
@@ -53,4 +67,3 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 - [ ] Colour-only meaning avoided.
 - [ ] Table or chart accessibility considered.
 - [ ] Tests or manual checks performed and residual risks stated.
-

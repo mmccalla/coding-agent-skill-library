@@ -6,6 +6,7 @@ description: Applies TDD: failing test first, smallest passing change, refactor 
 # Test-Driven Development (TDD)
 
 ## When to use
+
 Use this skill when adding behaviour, fixing a defect, refactoring risky code, creating library functions, implementing business rules, or improving code where expected behaviour can be specified with executable tests.
 
 ## Objective
@@ -22,6 +23,14 @@ Drive implementation from executable expectations. Produce code that is correct,
 6. Refactor for clarity, KISS, SOLID or DRY only while tests remain green.
 7. Add additional tests for meaningful edge cases, error paths, invariants and regression risks.
 8. Run the narrowest relevant test suite before finishing.
+
+## Pytest source-aligned guidance
+
+For Python projects, pytest recommends isolated development environments, package installation in editable mode for development, and conventional discovery using `test_*.py` or `*_test.py`. New projects should prefer a `src/` layout with `--import-mode=importlib` to avoid surprising import-path behaviour. When a repository uses `pyproject.toml`, keep pytest configuration there or in a dedicated pytest config file and prefer strict options such as `strict_config` and `strict_markers` where compatible with the pinned pytest version.
+
+Do not use `python setup.py test` or `pytest-runner`; pytest documents that setuptools test integration is deprecated and can bypass modern packaging/security mechanisms.
+
+Source: [pytest — Good Integration Practices](https://docs.pytest.org/en/latest/explanation/goodpractices.html).
 
 ## Rules
 
