@@ -1,3 +1,6 @@
 .DS_Store
 __pycache__/
 *.pyc
+skills_docs/CHANGELOG.md
+skills_docs/SKILL_LIBRARY_IMPROVEMENT_PLAN.md
+tests/test_suggest_skills.py

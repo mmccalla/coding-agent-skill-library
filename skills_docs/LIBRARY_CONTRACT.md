@@ -56,6 +56,8 @@ Run the same checks locally as CI:
 ./scripts/ci_local.sh
 ```
 
+For authoring standards, examples and progressive-disclosure guidance, see `skills_docs/SKILL_AUTHORING_GUIDE.md`.
+
 ## Upgrading from the 86-skill library
 
 If a target repository installed an earlier drop-in without `apply-laws-of-ai`:

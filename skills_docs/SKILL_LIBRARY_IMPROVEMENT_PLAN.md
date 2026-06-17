@@ -29,8 +29,8 @@ main
 | 4 | `improve/skills-phase-4-dataops-overlay` | Complete | Yes |
 | 5 | `improve/skills-phase-5-kg-enabled-rag-split` | Complete | Yes |
 | 6 | `improve/skills-phase-6-owasp-asi-mapping` | Complete | Yes |
-| 7 | `improve/skills-phase-7-thin-skill-enrichment` | Ready for review | — |
-| 8 | `improve/skills-phase-8-vendor-depth-authoring` | Pending | — |
+| 7 | `improve/skills-phase-7-thin-skill-enrichment` | Complete | Yes |
+| 8 | `improve/skills-phase-8-vendor-depth-authoring` | Ready for review | — |
 
 ---
 
@@ -220,9 +220,9 @@ main
 
 ### Phase 8 Acceptance Criteria
 
-- [ ] Authoring guide published and linked from `LIBRARY_CONTRACT.md`
-- [ ] Three vendor-depth skills updated with cited controls
-- [ ] CI passes
+- [x] Authoring guide published and linked from `LIBRARY_CONTRACT.md`
+- [x] Three vendor-depth skills updated with cited controls
+- [x] CI passes
 
 ---
 
