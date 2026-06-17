@@ -44,6 +44,15 @@ Feature: <capability>
 - Keep business terminology consistent across scenarios, code and documentation.
 - When scenarios reveal ambiguity, stop and ask for clarification or encode the assumption explicitly.
 
+## Related skills
+
+- `spec-driven-development` — spec before scenarios
+- `tdd-practice` — executable tests from scenarios
+- `ddd-practice` — domain language in scenarios
 ## Verification
 
-Report scenarios added or updated, acceptance tests run, behaviour implemented, assumptions discovered, and gaps that still require stakeholder confirmation.
+- [ ] Scenarios added or updated in business-readable form.
+- [ ] Acceptance tests run with results stated.
+- [ ] Implemented behaviour matches scenarios.
+- [ ] Stakeholder confirmation gaps noted.
+

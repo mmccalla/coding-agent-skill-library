@@ -40,4 +40,8 @@ For source-to-refined and quarantine workflows, users must be able to understand
 
 ## Verification
 
-Report the user role, primary task, key screens or flow steps changed, states handled, accessibility considerations, assumptions, residual UX risks, and tests or manual checks performed.
+- [ ] User role and primary task stated.
+- [ ] Key screens or flow steps changed listed.
+- [ ] States handled and accessibility considerations noted.
+- [ ] Tests or manual checks and residual UX risks reported.
+

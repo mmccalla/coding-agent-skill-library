@@ -41,4 +41,9 @@ Apply DAMA-DMBOK2-style separation of data governance, architecture, modelling, 
 Do not choose streaming where batch is simpler and sufficient.
 
 ## Verification
-State artefacts produced, decisions made, assumptions, risks, validation performed and files changed.
+
+- [ ] Required artefacts produced and linked to scope.
+- [ ] Decisions, assumptions and risks stated explicitly.
+- [ ] Quality checks or validation performed.
+- [ ] Files changed reported with traceability preserved.
+

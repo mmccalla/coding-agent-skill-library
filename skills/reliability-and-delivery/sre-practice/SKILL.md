@@ -57,4 +57,8 @@ For source-to-refined workflows, reliability must cover source connection availa
 
 ## Verification
 
-Report user impact addressed, SLI/SLO or operational signal affected, reliability controls added or changed, tests/checks run, observability evidence added, runbook or operational note updated, and residual reliability risk.
+- [ ] User impact and SLI/SLO or operational signal addressed.
+- [ ] Reliability controls added or changed described.
+- [ ] Tests, checks and observability evidence reported.
+- [ ] Runbook updates and residual reliability risk stated.
+

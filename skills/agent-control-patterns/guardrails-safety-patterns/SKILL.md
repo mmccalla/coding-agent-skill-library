@@ -37,6 +37,11 @@ Represent policies as code where possible. Use schema validation, allowlists, sa
 - Fast, low-cost models may be used as pre-screeners, but deterministic checks should enforce hard rules.
 - Escalate rather than improvise on safety-critical uncertainty.
 
+## Related skills
+
+- `apply-laws-of-ai` — immutable safety baseline
+- `human-in-the-loop` — approval for high-risk actions
+- `tool-use-function-calling` — least-privilege tool execution
 ## Verification
 - [ ] Input and output validation exist.
 - [ ] Tool permissions are least-privilege.

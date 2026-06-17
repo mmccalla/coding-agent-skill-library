@@ -94,6 +94,14 @@ Unresolved risk → refuse, constrain, or escalate.
 
 Never optimise a lower-priority objective at the expense of a higher-priority law.
 
+## Related skills
+
+- `using-agent-skills` — route to task skills after baseline gates pass
+- `guardrails-safety-patterns` — layered deterministic controls
+- `human-in-the-loop` — escalation when gates constrain action
 ## Verification
 
-Report gates evaluated, any refusals or constraints applied, escalation paths taken, and confirmation that this skill was executed before all other reasoning.
+- [ ] All six quality gates evaluated (Humanity, Human Safety, Authority, Security, Proportionality, Auditability).
+- [ ] Refusals, constraints or escalations reported where applicable.
+- [ ] Confirmation that this skill ran before all other reasoning.
+

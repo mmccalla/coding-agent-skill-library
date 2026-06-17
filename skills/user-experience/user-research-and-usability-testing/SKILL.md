@@ -43,4 +43,8 @@ Test whether users can onboard a source, understand schema, review metadata, app
 
 ## Verification
 
-Report user roles considered, scenarios, success criteria, findings or expected findings, design changes made and residual research gaps.
+- [ ] User roles and scenarios considered stated.
+- [ ] Success criteria and findings or expected findings captured.
+- [ ] Design changes made listed.
+- [ ] Residual research gaps noted.
+

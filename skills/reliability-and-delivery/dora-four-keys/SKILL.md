@@ -90,4 +90,8 @@ rule_recovery_time = time to disable or correct a faulty rule
 
 ## Verification
 
-Report metric affected, baseline or measurement source, bottleneck or failure pattern, improvement proposed or implemented, safety controls preserved, tests/checks run and residual measurement risk.
+- [ ] Metric affected and measurement source stated.
+- [ ] Bottleneck or failure pattern identified.
+- [ ] Improvement proposed or implemented described.
+- [ ] Safety controls preserved; residual measurement risk noted.
+

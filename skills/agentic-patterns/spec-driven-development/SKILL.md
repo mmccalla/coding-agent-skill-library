@@ -31,9 +31,17 @@ Optional templates: `skills_docs/templates/agile-epic-template.md` and `skills_d
 - Do not mix requirements, implementation notes and acceptance criteria without distinction.
 - Prefer the smallest spec that removes ambiguity.
 
+## Related skills
+
+- `bdd-practice` — business-readable acceptance scenarios
+- `incremental-implementation` — implement spec in verifiable slices
+- `planning-and-task-decomposition` — break large specs into ordered work
 ## Verification
 
-Report the final behaviour, acceptance criteria, edge cases, constraints and any compatibility concerns captured by the spec.
+- [ ] Final behaviour and acceptance criteria captured.
+- [ ] Edge cases and constraints documented.
+- [ ] Out-of-scope behaviour stated.
+- [ ] Compatibility or rollout concerns noted where relevant.
 
 ## Additional guidance
 

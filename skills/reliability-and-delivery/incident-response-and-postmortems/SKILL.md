@@ -83,4 +83,8 @@ Examples include source-to-refined workflows stuck in running state, failed reco
 
 ## Verification
 
-Report incident or failure type, user impact, mitigation or recovery action, evidence preserved, tests/checks run, postmortem or runbook updates, and corrective actions.
+- [ ] Incident type and user impact stated.
+- [ ] Mitigation or recovery actions documented.
+- [ ] Evidence preserved and postmortem or runbook updates noted.
+- [ ] Corrective actions and follow-up stated.
+

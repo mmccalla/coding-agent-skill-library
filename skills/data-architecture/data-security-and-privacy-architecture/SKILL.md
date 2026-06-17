@@ -43,4 +43,9 @@ Apply DAMA-DMBOK2-style separation of data governance, architecture, modelling, 
 Do not rely on UI-only access controls or broad shared credentials.
 
 ## Verification
-State artefacts produced, decisions made, assumptions, risks, validation performed and files changed.
+
+- [ ] Required artefacts produced and linked to scope.
+- [ ] Decisions, assumptions and risks stated explicitly.
+- [ ] Quality checks or validation performed.
+- [ ] Files changed reported with traceability preserved.
+

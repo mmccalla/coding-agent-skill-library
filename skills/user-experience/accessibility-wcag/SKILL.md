@@ -40,6 +40,16 @@ Ensure interfaces are perceivable, operable, understandable and robust, with pra
 
 For data-quality and quarantine interfaces, show pass/fail status with text and icon, provide table captions and column headers, make failed rules readable by screen readers, expose long-running job status accessibly, and require confirmation for high-impact actions.
 
+## Related skills
+
+- `ux-design-principles` — task-centred design before a11y checks
+- `ui-component-design` — accessible component primitives
+- `frontend-state-and-interaction-design` — keyboard and state accessibility
 ## Verification
 
-Report keyboard interaction checked, labels and accessible names checked, focus states checked, colour-only meaning avoided, table/chart accessibility considered, residual risks, and tests or manual checks performed.
+- [ ] Keyboard interaction checked.
+- [ ] Labels, accessible names and focus states checked.
+- [ ] Colour-only meaning avoided.
+- [ ] Table or chart accessibility considered.
+- [ ] Tests or manual checks performed and residual risks stated.
+

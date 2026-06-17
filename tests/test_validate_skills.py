@@ -226,6 +226,45 @@ class ValidateSkillsTests(unittest.TestCase):
                 module.BASELINE_SKILL = original_baseline
             self.assertEqual(rc, 1)
 
+    def test_verification_requires_checklist_item(self) -> None:
+        module = load_validator_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            skill_dir = (
+                Path(tmp)
+                / "skills"
+                / "agent-control-patterns"
+                / "apply-laws-of-ai"
+            )
+            skill_dir.mkdir(parents=True)
+            (skill_dir / "SKILL.md").write_text(
+                "---\n"
+                "name: apply-laws-of-ai\n"
+                "description: "
+                + ("x" * 70)
+                + ". Use when testing verification checklist rule.\n"
+                "---\n\n"
+                "# Apply Laws of AI\n\n"
+                "## When to use\n\n"
+                "Every session.\n\n"
+                "## Verification\n\n"
+                "Report gates only in prose without checklist items.\n"
+                + ("word " * 150),
+                encoding="utf-8",
+            )
+            original_root = module.ROOT
+            original_baseline = module.BASELINE_SKILL
+            try:
+                module.ROOT = "skills"
+                module.BASELINE_SKILL = os.path.join(
+                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                )
+                os.chdir(tmp)
+                rc = module.main()
+            finally:
+                module.ROOT = original_root
+                module.BASELINE_SKILL = original_baseline
+            self.assertEqual(rc, 1)
+
 
 if __name__ == "__main__":
     unittest.main()

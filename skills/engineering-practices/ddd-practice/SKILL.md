@@ -41,6 +41,15 @@ Create a maintainable domain model that reflects the business language, protects
 - Prefer explicit domain terms over generic technical names such as `Manager`, `Processor`, `Handler` or `Data`.
 - Keep bounded contexts independent; integration between contexts should use explicit contracts, events or anti-corruption layers.
 
+## Related skills
+
+- `bdd-practice` — scenarios using ubiquitous language
+- `spec-driven-development` — bounded context in specs
+- `conceptual-data-modelling` — link domain concepts to data models
 ## Verification
 
-Report the bounded context, key domain terms, aggregate or boundary decisions, invariants protected, tests or scenarios added, and modelling assumptions that require business validation.
+- [ ] Bounded context and key domain terms stated.
+- [ ] Aggregate or boundary decisions documented.
+- [ ] Invariants protected identified.
+- [ ] Modelling assumptions requiring business validation noted.
+

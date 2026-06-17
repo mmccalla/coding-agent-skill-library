@@ -87,4 +87,8 @@ Before adding an alert, answer what user impact it represents, who owns it, what
 
 ## Verification
 
-Report telemetry added or changed, user journey or SLO covered, metrics/logs/traces/dashboards/alerts affected, sensitive-data handling, validation performed and residual observability gaps.
+- [ ] Telemetry added or changed listed.
+- [ ] User journey or SLO coverage stated.
+- [ ] Sensitive-data handling considered.
+- [ ] Validation performed and observability gaps noted.
+

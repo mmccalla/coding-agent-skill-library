@@ -37,6 +37,11 @@ For a small fixed set of functions in one app, direct tool/function calling may 
 - Require confirmation for destructive operations.
 - Prefer local servers for sensitive data and remote servers for shared scalable tools only when access control is mature.
 
+## Related skills
+
+- `tool-use-function-calling` — direct tool calling when MCP is unnecessary
+- `guardrails-safety-patterns` — auth, validation and least privilege
+- `knowledge-retrieval-rag` — document grounding alongside tools
 ## Verification
 - [ ] Tool/resource/prompt boundaries are clear.
 - [ ] Schemas are typed and agent-readable.

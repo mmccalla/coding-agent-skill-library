@@ -33,4 +33,8 @@ Improve maintainability and testability by ensuring code has clear responsibilit
 
 ## Verification
 
-Report which SOLID issue was addressed, what design boundary changed, files changed, tests or checks run, and residual risks or assumptions.
+- [ ] SOLID issue addressed identified.
+- [ ] Design boundary change described.
+- [ ] Tests or checks run reported.
+- [ ] Residual risks or assumptions stated.
+

@@ -49,6 +49,7 @@ def main() -> int:
                 paths.append(os.path.join(dirpath, name))
     paths.sort()
 
+    skill_names = {os.path.basename(os.path.dirname(p)) for p in paths}
     vectors = {}
 
     for p in paths:
@@ -110,6 +111,18 @@ def main() -> int:
             errors.append(f"{p}: use canonical heading '## Verification' (not 'Completion report')")
         if re.search(r"^## Output checklist\s*$", text, flags=re.M):
             errors.append(f"{p}: use canonical heading '## Verification' (not 'Output checklist')")
+
+        ver_match = re.search(r"^## Verification\s*\n(.*?)(?=^## |\Z)", text, flags=re.S | re.M)
+        if ver_match and not re.search(r"^- \[ \]", ver_match.group(1), flags=re.M):
+            errors.append(f"{p}: Verification section must include at least one checklist item")
+
+        related_match = re.search(
+            r"^## Related skills\s*\n(.*?)(?=^## |\Z)", text, flags=re.S | re.M
+        )
+        if related_match:
+            for ref in re.findall(r"`([-a-z0-9]+)`", related_match.group(1)):
+                if ref not in skill_names:
+                    errors.append(f"{p}: Related skills references unknown skill '{ref}'")
 
         word_count = len(re.findall(r"\b\w+\b", text))
         if word_count < MIN_WORDS:

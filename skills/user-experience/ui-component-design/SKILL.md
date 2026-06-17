@@ -40,4 +40,8 @@ Layout, feedback, input, data display, workflow, evidence and agentic UI compone
 
 ## Verification
 
-Report component purpose, props or interface added/changed, states handled, accessibility checks, tests added or updated, assumptions and residual risks.
+- [ ] Component purpose and interface changes stated.
+- [ ] States and variants handled documented.
+- [ ] Accessibility checks performed.
+- [ ] Tests added or updated; residual risks stated.
+

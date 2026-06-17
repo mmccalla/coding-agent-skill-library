@@ -30,4 +30,8 @@ Launch changes with a clear preflight check, a safe rollout path, post-launch mo
 
 ## Verification
 
-Report the release scope, launch path, monitoring signals, rollback option and any post-launch observations or follow-up work.
+- [ ] Launch scope and rollout plan stated.
+- [ ] Pre-launch checks and monitoring plan documented.
+- [ ] Rollback or mitigation path defined.
+- [ ] Residual launch risks stated.
+

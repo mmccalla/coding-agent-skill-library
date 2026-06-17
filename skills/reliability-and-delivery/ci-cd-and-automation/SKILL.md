@@ -30,4 +30,8 @@ Keep automation safe, observable and least-privilege while still reducing manual
 
 ## Verification
 
-Report the pipeline change, safety controls, permissions used, verification run and any remaining operational risk.
+- [ ] Pipeline or automation change scope stated.
+- [ ] Permissions and safety controls preserved.
+- [ ] Tests or checks run reported.
+- [ ] Rollback path and residual delivery risk noted.
+

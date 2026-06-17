@@ -47,6 +47,11 @@ Approval needed: <exact action>
 - Do not proceed on implied approval for destructive or privileged operations.
 - Redact secrets and minimise personal data in review packets.
 
+## Related skills
+
+- `apply-laws-of-ai` — escalation aligned with safety laws
+- `guardrails-safety-patterns` — policy gates before human review
+- `agentic-ux-patterns` — approval and evidence UI patterns
 ## Verification
 - [ ] HITL trigger is explicit.
 - [ ] Options are clear and bounded.

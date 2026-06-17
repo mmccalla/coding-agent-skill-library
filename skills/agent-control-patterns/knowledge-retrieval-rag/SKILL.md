@@ -44,6 +44,11 @@ Add retrieval tests with known questions and expected source files. Measure reca
 - Do not cite chunks that do not support the claim.
 - Do not use raw PDFs or binary files directly if the agent cannot parse them reliably; convert to agent-readable text first.
 
+## Related skills
+
+- `kg-enabled-rag` — graph-native retrieval when Neo4j applies
+- `context-engineering` — assemble retrieval context efficiently
+- `guardrails-safety-patterns` — validate retrieved and generated content
 ## Verification
 - [ ] Sources are parsed into clean text.
 - [ ] Chunking preserves useful context.

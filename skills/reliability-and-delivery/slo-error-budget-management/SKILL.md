@@ -75,4 +75,8 @@ Recommended SLO candidates include `source_onboarding_success_rate`, `schema_dis
 
 ## Verification
 
-Report SLI selected, SLO target and window, error budget policy, burn-rate alerting, telemetry source, release impact and residual measurement risk.
+- [ ] SLI, SLO target and measurement window stated.
+- [ ] Error budget policy and burn-rate alerting defined.
+- [ ] Telemetry source and release impact noted.
+- [ ] Residual measurement risk stated.
+

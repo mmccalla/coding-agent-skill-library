@@ -29,4 +29,8 @@ Remove old paths safely by providing a clear replacement, a controlled transitio
 
 ## Verification
 
-Report the old path, replacement path, migration state, any compatibility period and the evidence that the legacy path can be removed or left intentionally in place.
+- [ ] Deprecated surface and timeline stated.
+- [ ] Migration path and consumer communication documented.
+- [ ] Compatibility or dual-run period noted.
+- [ ] Residual migration risks stated.
+

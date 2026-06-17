@@ -30,4 +30,8 @@ Capture the reason for the change, the options considered and the consequences s
 
 ## Verification
 
-Report what was documented, where it lives, what decision it records, and which parts of the repo it now explains.
+- [ ] Documentation or ADR artefacts produced listed.
+- [ ] Decision, context and consequences captured.
+- [ ] Alternatives considered noted.
+- [ ] Residual documentation gaps stated.
+

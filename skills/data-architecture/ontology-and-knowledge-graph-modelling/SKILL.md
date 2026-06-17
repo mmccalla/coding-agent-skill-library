@@ -79,4 +79,9 @@ Pass only if:
 - Ignoring negative tests, adversarial prompts, stale sources or contradictory evidence.
 
 ## Verification
-Report artefacts produced, key decisions, assumptions, trade-offs, risks, validation performed, unresolved issues and files changed.
+
+- [ ] Ontology or graph artefacts produced with key decisions documented.
+- [ ] Assumptions, trade-offs and unresolved issues stated.
+- [ ] Validation performed against modelling rules.
+- [ ] Files changed reported with traceability preserved.
+

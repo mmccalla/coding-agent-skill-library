@@ -31,7 +31,10 @@ Turn a vague idea into a focused proposal with a clear problem statement, option
 
 ## Verification
 
-Report the refined problem statement, options considered, recommended direction, and assumptions that still need confirmation.
+- [ ] Refined problem statement and proposed approach stated.
+- [ ] Constraints, assumptions and open questions listed.
+- [ ] Success criteria or falsifiable hypotheses captured.
+- [ ] Recommendation for spec, interview or implementation next step.
 
 ## Additional guidelines
 

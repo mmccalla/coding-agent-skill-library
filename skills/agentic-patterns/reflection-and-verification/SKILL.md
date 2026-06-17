@@ -27,6 +27,11 @@ Reflection must not replace deterministic verification. Run tests, linters, type
 - Record failed checks and fixes.
 - Stop after a bounded number of repair cycles and report unresolved failures.
 
+## Related skills
+
+- `tdd-practice` — executable verification first
+- `code-review-and-quality` — human or agent review loop
+- `apply-laws-of-ai` — safety gates before claiming completion
 ## Verification
 - [ ] Acceptance criteria are explicit.
 - [ ] Tests or validation checks were run.

@@ -34,4 +34,8 @@ Create a coherent design system that reduces UI inconsistency, improves accessib
 
 ## Verification
 
-Report design-system artefacts changed, tokens or components added/changed, variants added and rationale, accessibility notes, examples or tests updated, and residual consistency risks.
+- [ ] Design-system artefacts changed listed.
+- [ ] Tokens or components added or updated with rationale.
+- [ ] Accessibility notes and examples or tests updated.
+- [ ] Residual consistency risks stated.
+

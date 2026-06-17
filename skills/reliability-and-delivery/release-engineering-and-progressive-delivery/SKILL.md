@@ -81,4 +81,8 @@ draft
 
 ## Verification
 
-Report release risk classification, rollout strategy, pre-release checks, rollback path, health signals, tests/checks run and residual release risk.
+- [ ] Release risk classification and rollout strategy stated.
+- [ ] Pre-release checks and rollback path documented.
+- [ ] Health signals and tests or checks run reported.
+- [ ] Residual release risk stated.
+

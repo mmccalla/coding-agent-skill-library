@@ -29,7 +29,10 @@ Keep change history small, coherent and easy to understand while preserving the 
 
 ## Verification
 
-Report the logical change boundaries, the state of the working tree, and any versioning or compatibility considerations that were part of the change.
+- [ ] Logical change boundaries described.
+- [ ] Working tree state reported.
+- [ ] Versioning or compatibility considerations noted.
+- [ ] Reversibility of the change confirmed.
 
 ## Additional guidelines
 

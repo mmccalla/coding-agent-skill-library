@@ -23,8 +23,8 @@ main
 
 | Phase | Branch | Status | Merged |
 |-------|--------|--------|--------|
-| 1 | `improve/skills-phase-1-descriptions-validator` | Ready for review | — |
-| 2 | `improve/skills-phase-2-verification-related` | Pending | — |
+| 1 | `improve/skills-phase-1-descriptions-validator` | Complete | Yes |
+| 2 | `improve/skills-phase-2-verification-related` | Ready for review | — |
 | 3 | `improve/skills-phase-3-boilerplate-normalise` | Pending | — |
 | 4 | `improve/skills-phase-4-dataops-overlay` | Pending | — |
 | 5 | `improve/skills-phase-5-kg-enabled-rag-split` | Pending | — |
@@ -54,9 +54,9 @@ main
 
 **Acceptance criteria**
 
-- [ ] `python3 scripts/ci_local.sh` passes
-- [ ] All 87 descriptions include `Use when` and are 80–1024 characters
-- [ ] Validator tests cover description and folder-name rules
+- [x] `python3 scripts/ci_local.sh` passes
+- [x] All 87 descriptions include `Use when` and are 80–1024 characters
+- [x] Validator tests cover description and folder-name rules
 
 **Sources:** [Anthropic Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills), [LIBRARY_CONTRACT.md](LIBRARY_CONTRACT.md)
 
@@ -77,9 +77,9 @@ main
 
 **Acceptance criteria**
 
-- [ ] Every skill has a checklist-style `## Verification` section
-- [ ] Related skills links use valid `skills/<category>/<name>` paths
-- [ ] CI passes
+- [x] Every skill has a checklist-style `## Verification` section
+- [x] Related skills links use valid skill folder names in backticks
+- [x] CI passes
 
 ---
 

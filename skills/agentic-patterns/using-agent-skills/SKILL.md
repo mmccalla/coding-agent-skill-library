@@ -31,9 +31,17 @@ Select the smallest relevant skill or skill combination and explain why it was c
 - Do not duplicate planning, verification or release work when an existing local skill already covers it.
 - Prefer local analogues when they are more coherent with this repository's structure.
 
+## Related skills
+
+- `apply-laws-of-ai` — mandatory baseline before routing
+- `planning-and-task-decomposition` — multi-step work decomposition
+- `interview-me` — underspecified requests
 ## Verification
 
-Report confirmation that `apply-laws-of-ai` was executed, the selected skill or skills, why they were chosen, what was intentionally not loaded, and any remaining ambiguity.
+- [ ] `apply-laws-of-ai` execution confirmed.
+- [ ] Selected skill(s) and selection rationale reported.
+- [ ] Intentionally excluded skills noted.
+- [ ] Remaining ambiguity or re-check triggers stated.
 
 ## Additional guidance
 

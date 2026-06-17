@@ -32,9 +32,17 @@ Drive implementation from executable expectations. Produce code that is correct,
 - Keep tests fast enough to support iterative development.
 - Use mocks, fakes or fixtures for unstable external dependencies, but do not mock the unit under test so heavily that the test proves nothing.
 
+## Related skills
+
+- `code-review-and-quality` — review after tests pass
+- `reflection-and-verification` — repair loop when checks fail
+- `bdd-practice` — acceptance scenarios for external behaviour
 ## Verification
 
-Report the failing test added, the production change made, the final test result, any refactor performed, and remaining untested risks.
+- [ ] Failing test added before production change.
+- [ ] Production change made and targeted tests pass.
+- [ ] Refactor performed only with tests green.
+- [ ] Remaining untested risks stated.
 
 ## Additional guidelines
 

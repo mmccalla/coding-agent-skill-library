@@ -30,4 +30,8 @@ Turn confidence into evidence by stress-testing the current hypothesis before co
 
 ## Verification
 
-Report the claims checked, evidence found, alternative paths considered, and the remaining uncertainties after reconciliation.
+- [ ] Doubts, assumptions and failure modes logged.
+- [ ] Evidence sought or experiments defined.
+- [ ] Proceed, constrain or escalate decision stated.
+- [ ] Residual uncertainty reported.
+

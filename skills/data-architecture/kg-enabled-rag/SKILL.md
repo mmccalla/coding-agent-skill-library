@@ -611,10 +611,9 @@ A KG-enabled RAG task is done only when:
 7. Report changed files, commands run, tests passed/failed, and residual risks.
 
 ## Verification
-Report:
 
-- files changed;
-- commands and validations run;
-- behaviour intentionally changed;
-- assumptions made;
-- residual risks or follow-up work.
+- [ ] Files changed reported.
+- [ ] Commands and validations run with results stated.
+- [ ] Behaviour intentionally changed described.
+- [ ] Assumptions and residual risks or follow-up work stated.
+

@@ -29,4 +29,8 @@ Verify user-facing behaviour with DevTools evidence so frontend or browser issue
 
 ## Verification
 
-Report the browser path exercised, the DevTools evidence captured, the issue localized, and the behaviour confirmed after the fix.
+- [ ] Browser flows exercised listed.
+- [ ] DOM, console, network or performance evidence captured.
+- [ ] Defects or regressions reported with reproduction steps.
+- [ ] Residual untested browser risks stated.
+

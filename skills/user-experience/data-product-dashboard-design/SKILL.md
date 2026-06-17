@@ -44,4 +44,8 @@ Source overview, schema discovery, profiling, rule management, validation, clean
 
 ## Verification
 
-Report dashboard user and decision, metrics included/excluded, filters and drill-downs, evidence links, accessibility considerations and residual dashboard risks.
+- [ ] Dashboard user and decision stated.
+- [ ] Metrics, filters and drill-downs documented.
+- [ ] Evidence links and accessibility considerations noted.
+- [ ] Residual dashboard risks stated.
+

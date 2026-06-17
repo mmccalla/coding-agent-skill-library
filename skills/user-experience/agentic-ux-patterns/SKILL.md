@@ -45,4 +45,8 @@ For generated data-quality rules, show rule name, rule type, target table/column
 
 ## Verification
 
-Report agent action, risk level, evidence shown, approval/control mechanism, uncertainty display, auditability and residual safety or UX risks.
+- [ ] Agent action and risk level stated.
+- [ ] Evidence, approval mechanism and uncertainty display documented.
+- [ ] Auditability considered.
+- [ ] Residual safety or UX risks stated.
+

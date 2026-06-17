@@ -30,4 +30,8 @@ Extract enough intent to make the next implementation decision complete and low 
 
 ## Verification
 
-Report the confirmed goal, in-scope and out-of-scope items, key constraints, and the remaining assumptions, if any.
+- [ ] Clarifying questions asked or assumptions stated explicitly.
+- [ ] User goal, constraints and success criteria captured.
+- [ ] Scope boundaries and out-of-scope items noted.
+- [ ] Ready-to-proceed signal or remaining gaps stated.
+

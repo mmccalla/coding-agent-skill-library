@@ -41,4 +41,9 @@ Keep capabilities, value streams, processes, organisation, information concepts,
 Do not turn value streams into detailed process maps.
 
 ## Verification
-State artefacts produced, decisions made, assumptions, risks, validation performed and files changed.
+
+- [ ] Required artefacts produced and linked to scope.
+- [ ] Decisions, assumptions and risks stated explicitly.
+- [ ] Quality checks or validation performed.
+- [ ] Files changed reported with traceability preserved.
+

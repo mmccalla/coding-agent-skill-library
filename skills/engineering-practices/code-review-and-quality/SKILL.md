@@ -28,9 +28,17 @@ Identify correctness risks, test gaps, maintainability problems, hidden regressi
 - Do not suppress a real issue just because the diff is small.
 - Do not approve a change without checking the relevant tests or evidence.
 
+## Related skills
+
+- `tdd-practice` — tests as review evidence
+- `git-workflow-and-versioning` — reviewable atomic changes
+- `guardrails-safety-patterns` — security findings in review
 ## Verification
 
-Report the findings, their severity, the evidence used, any tests checked, and any remaining risks that still need follow-up.
+- [ ] Findings listed with severity and evidence.
+- [ ] Tests or checks run reported.
+- [ ] Correctness assessed before style concerns.
+- [ ] Residual risks requiring follow-up stated.
 
 ## Additional guidelines
 

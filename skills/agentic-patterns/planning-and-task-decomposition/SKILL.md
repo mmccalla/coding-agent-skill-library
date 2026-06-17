@@ -28,6 +28,11 @@ Do not over-plan routine one-file changes.
 - Avoid speculative architecture unless justified by the requirement.
 - Use explicit deferred-work notes only for work intentionally postponed and disclosed.
 
+## Related skills
+
+- `incremental-implementation` — execute plan as small slices
+- `spec-driven-development` — decision-complete spec before coding
+- `using-agent-skills` — select supporting skills per step
 ## Verification
 - [ ] Objective and acceptance criteria are clear.
 - [ ] Plan steps are executable and ordered.

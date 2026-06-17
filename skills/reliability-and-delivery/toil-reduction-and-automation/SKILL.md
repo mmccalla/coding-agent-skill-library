@@ -62,4 +62,8 @@ High-risk automation requiring approval includes promoting generated rules, writ
 
 ## Verification
 
-Report toil reduced, expected time or error reduction, safeguards added, tests/checks run, dry-run or rollback path, audit or telemetry added and residual automation risk.
+- [ ] Toil reduced and expected benefit stated.
+- [ ] Safeguards, dry-run or rollback path documented.
+- [ ] Tests or checks run reported.
+- [ ] Audit or telemetry added; residual automation risk stated.
+

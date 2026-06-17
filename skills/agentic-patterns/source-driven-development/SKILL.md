@@ -29,4 +29,8 @@ Base the implementation or guidance on the most authoritative available source a
 
 ## Verification
 
-Report the source used, the facts confirmed, any assumptions left open, and how the result aligns with those facts.
+- [ ] Authoritative sources cited.
+- [ ] Claims mapped to source evidence.
+- [ ] Gaps where sources are silent or conflicting stated.
+- [ ] Implementation or documentation aligned to sources.
+

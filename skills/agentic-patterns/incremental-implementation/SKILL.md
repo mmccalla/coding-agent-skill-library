@@ -28,9 +28,17 @@ Reduce risk by implementing one coherent slice at a time and verifying each slic
 - Do not widen the scope when a smaller slice already satisfies the user request.
 - Prefer explicit checkpoints over hidden progress.
 
+## Related skills
+
+- `planning-and-task-decomposition` — ordered plan before slicing
+- `tdd-practice` — verify each slice with tests
+- `reflection-and-verification` — quality gate per slice
 ## Verification
 
-Report each slice completed, the check performed for that slice, and any remaining risk before the next slice.
+- [ ] Slice scope and acceptance criteria stated.
+- [ ] Validation run for the completed slice.
+- [ ] Behaviour change and rollback path described.
+- [ ] Next slice or residual risks noted.
 
 ## Additional guidelines
 

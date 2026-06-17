@@ -29,4 +29,8 @@ Load enough context to work accurately while avoiding irrelevant material that d
 
 ## Verification
 
-Report which sources were loaded, why they were selected, and what was intentionally left out.
+- [ ] Context sources selected and justified.
+- [ ] Excluded or truncated context noted.
+- [ ] Token or noise trade-offs stated.
+- [ ] Residual context gaps or risks reported.
+

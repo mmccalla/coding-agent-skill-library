@@ -44,4 +44,8 @@ For source-to-refined workflows, show workflow run status, current step, timesta
 
 ## Verification
 
-Report states implemented, transitions handled, recovery options, high-risk controls, tests or manual checks, and residual interaction risks.
+- [ ] States and transitions implemented listed.
+- [ ] Recovery options and high-risk controls documented.
+- [ ] Tests or manual checks performed.
+- [ ] Residual interaction risks stated.
+

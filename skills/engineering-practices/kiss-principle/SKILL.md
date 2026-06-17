@@ -32,4 +32,8 @@ Deliver the simplest maintainable solution that satisfies the current requiremen
 
 ## Verification
 
-Report what was simplified, what complexity was retained and why, files changed, tests or checks run, and residual risks or assumptions.
+- [ ] Simplification described with rationale.
+- [ ] Retained complexity justified.
+- [ ] Tests or checks run reported.
+- [ ] Residual risks or assumptions stated.
+

@@ -31,4 +31,8 @@ Remove duplication of knowledge and behaviour where it creates maintenance risk,
 
 ## Verification
 
-Report duplication removed or deliberately retained, abstraction introduced if any, why the abstraction is safe, files changed, tests or checks run, and residual risks or assumptions.
+- [ ] Duplication removed or deliberately retained with reason.
+- [ ] Any new abstraction justified as safe.
+- [ ] Tests or checks run reported.
+- [ ] Residual risks or assumptions stated.
+
