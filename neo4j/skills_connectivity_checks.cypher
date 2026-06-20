@@ -19,6 +19,29 @@ RETURN
   s.name AS skill_name
 ORDER BY skill_name;
 
+// missing bridge assertion
+MATCH (s:Skill)
+WHERE NOT (s)-[:ASSERTS_BRIDGE]->(:BridgeAssertion)
+RETURN
+  "missing bridge assertion" AS check,
+  s.id AS skill_id,
+  s.name AS skill_name
+ORDER BY skill_name;
+
+// invalid bridge assertion provenance
+MATCH (s:Skill)-[:ASSERTS_BRIDGE]->(b:BridgeAssertion)
+WHERE b.source IS NULL
+  OR b.path IS NULL
+  OR b.confidence IS NULL
+  OR b.confidence < 0.0
+  OR b.confidence > 1.0
+RETURN
+  "invalid bridge assertion provenance" AS check,
+  s.id AS skill_id,
+  s.name AS skill_name,
+  b.id AS bridge_assertion_id
+ORDER BY skill_name, bridge_assertion_id;
+
 // missing semantic bridge
 MATCH (s:Skill)
 WHERE NOT (
@@ -41,8 +64,6 @@ WHERE s <> root
       :HAS_TASK_SHAPE
       |HAS_WORKFLOW_STAGE
       |HAS_CAPABILITY
-      |HAS_CONTROL_THEME
-      |HAS_KNOWLEDGE_DOMAIN
       |RELATED_TO
       |PRECEDES
       |SUPPORTS
@@ -57,14 +78,3 @@ RETURN
   s.name AS skill_name
 ORDER BY skill_name;
 
-// weakly connected component check for Neo4j GDS users.
-// Requires a projected graph named "skills-connectivity".
-CALL gds.wcc.stream("skills-connectivity")
-YIELD nodeId, componentId
-WITH componentId, collect(gds.util.asNode(nodeId).name) AS skill_names
-RETURN
-  "weakly connected" AS check,
-  componentId,
-  size(skill_names) AS component_size,
-  skill_names
-ORDER BY component_size DESC;

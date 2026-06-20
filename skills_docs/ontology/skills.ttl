@@ -45,7 +45,15 @@ skills:ControlTheme a owl:Class ;
 skills:KnowledgeDomain a owl:Class ;
     rdfs:label "Knowledge domain" .
 
+skills:BridgeAssertion a owl:Class ;
+    rdfs:label "Bridge assertion" ;
+    rdfs:comment "A provenance-bearing assertion that a skill supports a bridge concept." .
+
 skills:name a owl:DatatypeProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range xsd:string .
+
+skills:title a owl:DatatypeProperty ;
     rdfs:domain skills:Skill ;
     rdfs:range xsd:string .
 
@@ -70,6 +78,14 @@ skills:lineCount a owl:DatatypeProperty ;
 skills:isBaselineSkill a owl:DatatypeProperty ;
     rdfs:domain skills:Skill ;
     rdfs:range xsd:boolean .
+
+skills:confidence a owl:DatatypeProperty ;
+    rdfs:domain skills:BridgeAssertion ;
+    rdfs:range xsd:decimal .
+
+skills:source a owl:DatatypeProperty ;
+    rdfs:domain skills:BridgeAssertion ;
+    rdfs:range xsd:string .
 
 skills:belongsToCategory a owl:ObjectProperty ;
     rdfs:domain skills:Skill ;
@@ -112,6 +128,10 @@ skills:governedBy a owl:ObjectProperty ;
 skills:partOfDomain a owl:ObjectProperty ;
     rdfs:domain skills:Skill ;
     rdfs:range skills:KnowledgeDomain .
+
+skills:assertsBridge a owl:ObjectProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:BridgeAssertion .
 
 skills:derivedFrom a owl:ObjectProperty ;
     rdfs:domain skills:SkillChunk ;

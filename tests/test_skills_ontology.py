@@ -39,6 +39,7 @@ class SkillsOntologyTests(unittest.TestCase):
             "Capability",
             "ControlTheme",
             "KnowledgeDomain",
+            "BridgeAssertion",
         ):
             self.assertIn(f"`{concept}`", text)
 
@@ -56,6 +57,7 @@ class SkillsOntologyTests(unittest.TestCase):
             "Capability",
             "ControlTheme",
             "KnowledgeDomain",
+            "BridgeAssertion",
         ):
             self.assertIn(f"skills:{class_name} a owl:Class", text)
 
@@ -68,8 +70,20 @@ class SkillsOntologyTests(unittest.TestCase):
             "enablesCapability",
             "governedBy",
             "partOfDomain",
+            "assertsBridge",
         ):
             self.assertIn(f"skills:{predicate} a owl:ObjectProperty", text)
+
+        for datatype_property in (
+            "title",
+            "contentHash",
+            "wordCount",
+            "lineCount",
+            "isBaselineSkill",
+            "source",
+            "confidence",
+        ):
+            self.assertIn(f"skills:{datatype_property} a owl:DatatypeProperty", text)
 
     def test_shacl_shapes_capture_required_skill_constraints(self) -> None:
         text = read(ONTOLOGY_DIR / "skills.shacl.ttl")
@@ -79,15 +93,24 @@ class SkillsOntologyTests(unittest.TestCase):
             "SkillSectionShape",
             "SkillChunkShape",
             "BridgeCoverageShape",
+            "BridgeAssertionShape",
         ):
             self.assertIn(f"skills:{shape} a sh:NodeShape", text)
 
         for required_path in (
             "skills:name",
+            "skills:title",
             "skills:path",
+            "skills:contentHash",
+            "skills:wordCount",
+            "skills:lineCount",
+            "skills:isBaselineSkill",
             "skills:belongsToCategory",
             "skills:supportsTaskShape",
             "skills:enablesCapability",
+            "skills:assertsBridge",
+            "skills:source",
+            "skills:confidence",
         ):
             self.assertIn(f"sh:path {required_path}", text)
 

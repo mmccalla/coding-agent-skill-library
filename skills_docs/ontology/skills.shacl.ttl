@@ -11,6 +11,12 @@ skills:SkillShape a sh:NodeShape ;
         sh:maxCount 1 ;
     ] ;
     sh:property [
+        sh:path skills:title ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
         sh:path skills:path ;
         sh:datatype xsd:string ;
         sh:minCount 1 ;
@@ -22,6 +28,26 @@ skills:SkillShape a sh:NodeShape ;
         sh:minCount 1 ;
     ] ;
     sh:property [
+        sh:path skills:contentHash ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:wordCount ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:lineCount ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:isBaselineSkill ;
+        sh:datatype xsd:boolean ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
         sh:path skills:belongsToCategory ;
         sh:class skills:SkillCategory ;
         sh:minCount 1 ;
@@ -30,6 +56,11 @@ skills:SkillShape a sh:NodeShape ;
     sh:property [
         sh:path skills:hasSection ;
         sh:class skills:SkillSection ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:assertsBridge ;
+        sh:class skills:BridgeAssertion ;
         sh:minCount 1 ;
     ] .
 
@@ -80,4 +111,29 @@ skills:BridgeCoverageShape a sh:NodeShape ;
         sh:path skills:operatesInStage ;
         sh:class skills:WorkflowStage ;
         sh:minCount 1 ;
+    ] .
+
+skills:BridgeAssertionShape a sh:NodeShape ;
+    sh:targetClass skills:BridgeAssertion ;
+    sh:property [
+        sh:path skills:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:path ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:source ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:confidence ;
+        sh:datatype xsd:decimal ;
+        sh:minCount 1 ;
+        sh:minInclusive 0.0 ;
+        sh:maxInclusive 1.0 ;
     ] .
