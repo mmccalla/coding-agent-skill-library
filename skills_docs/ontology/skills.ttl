@@ -1,0 +1,142 @@
+@prefix skills: <https://example.org/coding-agent-skills#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+skills:Ontology a owl:Ontology ;
+    rdfs:label "Coding Agent Skills Ontology" ;
+    rdfs:comment "Semantic contract for a connected knowledge graph of coding-agent skills." .
+
+skills:Skill a owl:Class ;
+    rdfs:label "Skill" ;
+    rdfs:comment "An operational coding-agent skill defined by a SKILL.md file." .
+
+skills:SkillCategory a owl:Class ;
+    rdfs:label "Skill category" .
+
+skills:SkillSection a owl:Class ;
+    rdfs:label "Skill section" .
+
+skills:SkillChunk a owl:Class ;
+    rdfs:label "Skill chunk" .
+
+skills:ReferenceDocument a owl:Class ;
+    rdfs:label "Reference document" .
+
+skills:ValidationRule a owl:Class ;
+    rdfs:label "Validation rule" .
+
+skills:Source a owl:Class ;
+    rdfs:label "Source" .
+
+skills:TaskShape a owl:Class ;
+    rdfs:label "Task shape" .
+
+skills:WorkflowStage a owl:Class ;
+    rdfs:label "Workflow stage" .
+
+skills:Capability a owl:Class ;
+    rdfs:label "Capability" .
+
+skills:ControlTheme a owl:Class ;
+    rdfs:label "Control theme" .
+
+skills:KnowledgeDomain a owl:Class ;
+    rdfs:label "Knowledge domain" .
+
+skills:name a owl:DatatypeProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range xsd:string .
+
+skills:path a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+skills:description a owl:DatatypeProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range xsd:string .
+
+skills:contentHash a owl:DatatypeProperty ;
+    rdfs:range xsd:string .
+
+skills:wordCount a owl:DatatypeProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range xsd:integer .
+
+skills:lineCount a owl:DatatypeProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range xsd:integer .
+
+skills:isBaselineSkill a owl:DatatypeProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range xsd:boolean .
+
+skills:belongsToCategory a owl:ObjectProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:SkillCategory .
+
+skills:hasSection a owl:ObjectProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:SkillSection .
+
+skills:hasChunk a owl:ObjectProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:SkillChunk .
+
+skills:hasReference a owl:ObjectProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:ReferenceDocument .
+
+skills:validatedBy a owl:ObjectProperty ;
+    rdfs:range skills:ValidationRule .
+
+skills:citesSource a owl:ObjectProperty ;
+    rdfs:range skills:Source .
+
+skills:supportsTaskShape a owl:ObjectProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:TaskShape .
+
+skills:operatesInStage a owl:ObjectProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:WorkflowStage .
+
+skills:enablesCapability a owl:ObjectProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:Capability .
+
+skills:governedBy a owl:ObjectProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:ControlTheme .
+
+skills:partOfDomain a owl:ObjectProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:KnowledgeDomain .
+
+skills:derivedFrom a owl:ObjectProperty ;
+    rdfs:domain skills:SkillChunk ;
+    rdfs:range skills:SkillSection .
+
+skills:precedes a owl:ObjectProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:Skill .
+
+skills:requires a owl:ObjectProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:Skill .
+
+skills:complements a owl:ObjectProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:Skill .
+
+skills:refines a owl:ObjectProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:Skill .
+
+skills:governsSkill a owl:ObjectProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:Skill .
+
+skills:validatesSkill a owl:ObjectProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:Skill .

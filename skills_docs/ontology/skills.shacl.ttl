@@ -1,0 +1,83 @@
+@prefix skills: <https://example.org/coding-agent-skills#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+skills:SkillShape a sh:NodeShape ;
+    sh:targetClass skills:Skill ;
+    sh:property [
+        sh:path skills:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:path ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:description ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:belongsToCategory ;
+        sh:class skills:SkillCategory ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:hasSection ;
+        sh:class skills:SkillSection ;
+        sh:minCount 1 ;
+    ] .
+
+skills:SkillSectionShape a sh:NodeShape ;
+    sh:targetClass skills:SkillSection ;
+    sh:property [
+        sh:path skills:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:contentHash ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] .
+
+skills:SkillChunkShape a sh:NodeShape ;
+    sh:targetClass skills:SkillChunk ;
+    sh:property [
+        sh:path skills:path ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:contentHash ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:derivedFrom ;
+        sh:class skills:SkillSection ;
+        sh:minCount 1 ;
+    ] .
+
+skills:BridgeCoverageShape a sh:NodeShape ;
+    sh:targetClass skills:Skill ;
+    sh:property [
+        sh:path skills:supportsTaskShape ;
+        sh:class skills:TaskShape ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:enablesCapability ;
+        sh:class skills:Capability ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:operatesInStage ;
+        sh:class skills:WorkflowStage ;
+        sh:minCount 1 ;
+    ] .
