@@ -8,12 +8,12 @@ import math
 import sys
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Mapping, NamedTuple, Protocol, Sequence
+from typing import Any, Mapping, NamedTuple, Protocol, Sequence
 
-try:
-    import load_skills_neo4j
-except ModuleNotFoundError:
-    from scripts import load_skills_neo4j
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from scripts import load_skills_neo4j
 
 DEFAULT_CONFIG_PATH = Path("configs") / "skills_kg.yaml"
 DEFAULT_VECTOR_INDEX = "skill_chunk_embedding_vector"
@@ -80,7 +80,7 @@ class VectorQueryGraph(Protocol):
 class Neo4jVectorQueryGraph:
     """Neo4j driver-backed vector index query adapter."""
 
-    def __init__(self, driver: object) -> None:
+    def __init__(self, driver: Any) -> None:
         self._driver = driver
 
     def query_vector_index(
@@ -127,6 +127,12 @@ def _string(properties: Mapping[str, object], key: str) -> str:
 def _integer(properties: Mapping[str, object], key: str) -> int:
     value = properties.get(key)
     return value if isinstance(value, int) and not isinstance(value, bool) else 0
+
+
+def _float(value: object) -> float:
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return float(value)
+    return 0.0
 
 
 def _embedding_dimension_from_config(config_path: Path = DEFAULT_CONFIG_PATH) -> int:
@@ -218,7 +224,7 @@ def query_neo4j_vector_candidates(
         candidates.append(
             VectorCandidate(
                 chunk_id=_string(record, "chunk_id"),
-                score=float(record.get("score", 0.0)),
+                score=_float(record.get("score", 0.0)),
                 source_path=_string(record, "source_path"),
                 section_id=_string(record, "section_id"),
                 skill_id=_string(record, "skill_id"),
