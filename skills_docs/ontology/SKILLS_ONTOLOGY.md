@@ -50,6 +50,10 @@ Semantic skill-to-skill relationships use explicit predicates such as `precedes`
 
 Bridge assertions must include source evidence and confidence. Generic graph-wide bridge values are invalid because they can hide outliers and make fragmented graphs appear connected.
 
+## Bridge Mapping Rules
+
+Curated semantic mapping rules live in `bridge_mapping_rules.json`. The mapper applies category rules and skill-specific rules after raw extraction, preserving each rule ID as bridge or relationship provenance. Category-derived raw bridges alone must not prove graph reachability; curated rule IDs are required for semantic operating-model bridges.
+
 ## Property Graph Mapping
 
 | Ontology class | Neo4j label | Identifier policy |

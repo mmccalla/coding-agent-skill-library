@@ -12,8 +12,10 @@ from typing import Mapping, NamedTuple, Sequence, cast
 
 try:
     from extract_skills_graph import extract_skills_graph_records
+    from map_skills_bridges import apply_semantic_bridge_mappings
 except ModuleNotFoundError:
     from scripts.extract_skills_graph import extract_skills_graph_records
+    from scripts.map_skills_bridges import apply_semantic_bridge_mappings
 
 BRIDGE_FIELDS = (
     "task_shapes",
@@ -30,6 +32,15 @@ BRIDGE_FIELD_KINDS = {
     "knowledge_domains": "knowledge_domain",
 }
 ALLOWED_BRIDGE_KINDS = set(BRIDGE_FIELD_KINDS.values())
+ALLOWED_RELATIONSHIP_TYPES = {
+    "RELATED_TO",
+    "PRECEDES",
+    "REQUIRES",
+    "COMPLEMENTS",
+    "REFINES",
+    "GOVERNS",
+    "VALIDATES",
+}
 NON_CONNECTIVE_BRIDGE_SOURCES = {
     ("control_theme", "category"),
     ("knowledge_domain", "category"),
@@ -138,7 +149,8 @@ def _slug(value: str) -> str:
 
 def build_records_from_skills(skills_root: Path) -> dict[str, object]:
     """Build deterministic graph records from repository-local skill files."""
-    return extract_skills_graph_records(skills_root)
+    records = extract_skills_graph_records(skills_root)
+    return apply_semantic_bridge_mappings(records)
 
 
 def validate_graph_records(records: Mapping[str, object]) -> GraphValidationResult:
@@ -194,10 +206,30 @@ def validate_graph_records(records: Mapping[str, object]) -> GraphValidationResu
     for relationship in _relationship_records(records):
         source = _string_value(relationship, "source")
         target = _string_value(relationship, "target")
-        if source in skills_by_id and target in skills_by_id:
-            _add_edge(graph, source, target)
-            related_skill_ids_by_skill[source].add(target)
-            related_skill_ids_by_skill[target].add(source)
+        rel_type = _string_value(relationship, "type")
+        source_path = _string_value(relationship, "source_path")
+        source_section_id = _string_value(relationship, "source_section_id")
+        mapping_rule_id = _string_value(relationship, "mapping_rule_id")
+        relationship_valid = (
+            source in skills_by_id
+            and target in skills_by_id
+            and rel_type in ALLOWED_RELATIONSHIP_TYPES
+            and bool(source_path)
+            and (
+                (rel_type == "RELATED_TO" and bool(source_section_id))
+                or (rel_type != "RELATED_TO" and bool(mapping_rule_id))
+            )
+        )
+        if not relationship_valid:
+            errors.append(
+                "invalid relationship provenance for "
+                f"{source or '<missing source>'}:{rel_type or '<missing type>'}:"
+                f"{target or '<missing target>'}"
+            )
+            continue
+        _add_edge(graph, source, target)
+        related_skill_ids_by_skill[source].add(target)
+        related_skill_ids_by_skill[target].add(source)
 
     for skill in skills:
         skill_id = _string_value(skill, "id")

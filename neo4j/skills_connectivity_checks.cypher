@@ -31,7 +31,9 @@ ORDER BY skill_name;
 // invalid bridge assertion provenance
 MATCH (s:Skill)-[:ASSERTS_BRIDGE]->(b:BridgeAssertion)
 WHERE b.source IS NULL
+  OR trim(b.source) = ""
   OR b.path IS NULL
+  OR trim(b.path) = ""
   OR b.confidence IS NULL
   OR b.confidence < 0.0
   OR b.confidence > 1.0
@@ -42,12 +44,32 @@ RETURN
   b.id AS bridge_assertion_id
 ORDER BY skill_name, bridge_assertion_id;
 
+// invalid relationship provenance
+MATCH (s:Skill)-[r:RELATED_TO|PRECEDES|REQUIRES|COMPLEMENTS|REFINES|GOVERNS|VALIDATES]-(t:Skill)
+WHERE r.source_path IS NULL
+  OR trim(r.source_path) = ""
+  OR (
+    type(r) = "RELATED_TO"
+    AND (r.source_section_id IS NULL OR trim(r.source_section_id) = "")
+  )
+  OR (
+    type(r) <> "RELATED_TO"
+    AND (r.mapping_rule_id IS NULL OR trim(r.mapping_rule_id) = "")
+  )
+RETURN
+  "invalid relationship provenance" AS check,
+  s.id AS skill_id,
+  s.name AS skill_name,
+  type(r) AS relationship_type,
+  t.id AS target_skill_id
+ORDER BY skill_name, relationship_type, target_skill_id;
+
 // missing semantic bridge
 MATCH (s:Skill)
 WHERE NOT (
   (s)-[:HAS_CONTROL_THEME|HAS_KNOWLEDGE_DOMAIN]-()
-  OR (s)-[:RELATED_TO|PRECEDES|SUPPORTS|SPECIALISES|REQUIRES]-(:Skill)
-  OR (:Skill)-[:RELATED_TO|PRECEDES|SUPPORTS|SPECIALISES|REQUIRES]-(s)
+  OR (s)-[:RELATED_TO|PRECEDES|REQUIRES|COMPLEMENTS|REFINES|GOVERNS|VALIDATES]-(:Skill)
+  OR (:Skill)-[:RELATED_TO|PRECEDES|REQUIRES|COMPLEMENTS|REFINES|GOVERNS|VALIDATES]-(s)
 )
 RETURN
   "missing semantic bridge" AS check,
@@ -66,9 +88,11 @@ WHERE s <> root
       |HAS_CAPABILITY
       |RELATED_TO
       |PRECEDES
-      |SUPPORTS
-      |SPECIALISES
-      |REQUIRES*
+      |REQUIRES
+      |COMPLEMENTS
+      |REFINES
+      |GOVERNS
+      |VALIDATES*
     ]-(s)
     RETURN path
   }

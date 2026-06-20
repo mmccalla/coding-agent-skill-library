@@ -20,6 +20,14 @@ def load_validator_module():
     return module
 
 
+def load_module(path: Path, name: str):
+    spec = importlib.util.spec_from_file_location(name, path)
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def connected_fixture() -> dict[str, object]:
     records = {
         "root_skill": "apply-laws-of-ai",
@@ -50,6 +58,8 @@ def connected_fixture() -> dict[str, object]:
                 "source": "skill:apply-laws-of-ai",
                 "type": "PRECEDES",
                 "target": "skill:using-agent-skills",
+                "source_path": "fixture",
+                "mapping_rule_id": "fixture",
             }
         ],
         "bridges": [
@@ -270,6 +280,25 @@ class SkillsGraphConnectivityTests(unittest.TestCase):
         self.assertFalse(result.valid)
         self.assertTrue(any("invalid bridge provenance" in e for e in result.errors))
 
+    def test_missing_curated_relationship_provenance_fails_validation(self) -> None:
+        mapper = load_module(REPO_ROOT / "scripts" / "map_skills_bridges.py", "map_skills_bridges")
+        extractor = load_module(REPO_ROOT / "scripts" / "extract_skills_graph.py", "extract_skills_graph")
+        module = load_validator_module()
+        records = mapper.apply_semantic_bridge_mappings(
+            extractor.extract_skills_graph_records(REPO_ROOT / "skills")
+        )
+        relationship = next(
+            relationship
+            for relationship in records["relationships"]
+            if relationship["type"] == "GOVERNS"
+        )
+        del relationship["mapping_rule_id"]
+
+        result = module.validate_graph_records(records)
+
+        self.assertFalse(result.valid)
+        self.assertTrue(any("invalid relationship provenance" in e for e in result.errors))
+
     def test_category_derived_bridges_do_not_mask_same_category_orphan(self) -> None:
         module = load_validator_module()
         records = connected_fixture()
@@ -362,9 +391,16 @@ class SkillsGraphConnectivityTests(unittest.TestCase):
             "missing workflow stage",
             "missing bridge assertion",
             "invalid bridge assertion provenance",
+            "invalid relationship provenance",
+            "COMPLEMENTS",
+            "GOVERNS",
+            "trim(r.source_path)",
+            "trim(b.source)",
             "unreachable from root",
         ):
             self.assertIn(marker, text)
+        self.assertNotIn("SUPPORTS", text)
+        self.assertNotIn("SPECIALISES", text)
         self.assertNotIn("gds.wcc.stream", text)
 
     def test_gds_connectivity_cypher_is_optional(self) -> None:
