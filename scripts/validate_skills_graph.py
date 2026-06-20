@@ -10,6 +10,11 @@ from collections import defaultdict, deque
 from pathlib import Path
 from typing import Mapping, NamedTuple, Sequence, cast
 
+try:
+    from extract_skills_graph import extract_skills_graph_records
+except ModuleNotFoundError:
+    from scripts.extract_skills_graph import extract_skills_graph_records
+
 BRIDGE_FIELDS = (
     "task_shapes",
     "workflow_stages",
@@ -17,18 +22,17 @@ BRIDGE_FIELDS = (
     "control_themes",
     "knowledge_domains",
 )
-STOP_WORDS = {
-    "and",
-    "any",
-    "for",
-    "from",
-    "into",
-    "that",
-    "the",
-    "this",
-    "use",
-    "when",
-    "with",
+BRIDGE_FIELD_KINDS = {
+    "task_shapes": "task_shape",
+    "workflow_stages": "workflow_stage",
+    "capabilities": "capability",
+    "control_themes": "control_theme",
+    "knowledge_domains": "knowledge_domain",
+}
+ALLOWED_BRIDGE_KINDS = set(BRIDGE_FIELD_KINDS.values())
+NON_CONNECTIVE_BRIDGE_SOURCES = {
+    ("control_theme", "category"),
+    ("knowledge_domain", "category"),
 }
 
 
@@ -73,6 +77,17 @@ def _relationship_records(records: Mapping[str, object]) -> tuple[Mapping[str, o
     )
 
 
+def _bridge_records(records: Mapping[str, object]) -> tuple[Mapping[str, object], ...]:
+    bridges = records.get("bridges")
+    if not isinstance(bridges, list):
+        return ()
+    return tuple(
+        cast(Mapping[str, object], bridge)
+        for bridge in bridges
+        if isinstance(bridge, dict)
+    )
+
+
 def _root_skill_id(
     records: Mapping[str, object],
     skills_by_id: Mapping[str, Mapping[str, object]],
@@ -108,119 +123,22 @@ def _reachable_nodes(graph: Mapping[str, set[str]], start: str) -> set[str]:
     return visited
 
 
-def _unique(values: Sequence[str]) -> tuple[str, ...]:
-    seen: set[str] = set()
-    unique_values: list[str] = []
-    for value in values:
-        clean_value = value.strip()
-        if clean_value and clean_value not in seen:
-            seen.add(clean_value)
-            unique_values.append(clean_value)
-    return tuple(unique_values)
-
-
-def _slug_tokens(text: str) -> tuple[str, ...]:
-    tokens = re.findall(r"[a-z0-9]+", text.lower())
-    return tuple(token for token in tokens if token not in STOP_WORDS and len(token) > 2)
-
-
-def _frontmatter_value(text: str, key: str) -> str:
-    if not text.startswith("---\n"):
-        return ""
-    frontmatter_end = text.find("\n---\n", 4)
-    if frontmatter_end == -1:
-        return ""
-    frontmatter = text[4:frontmatter_end]
-    match = re.search(rf"^{re.escape(key)}:\s*(.+)$", frontmatter, flags=re.M)
-    return match.group(1).strip() if match else ""
-
-
-def _section_text(text: str, heading: str) -> str:
-    match = re.search(
-        rf"^## {re.escape(heading)}\s*\n(.*?)(?=^## |\Z)",
-        text,
-        flags=re.M | re.S,
-    )
-    return match.group(1) if match else ""
-
-
-def _related_skill_names(text: str, known_skill_names: set[str]) -> tuple[str, ...]:
-    related_section = _section_text(text, "Related skills")
-    return _unique(
-        tuple(
-            name
-            for name in re.findall(r"`([-a-z0-9]+)`", related_section)
-            if name in known_skill_names
-        )
+def _valid_confidence(value: object) -> bool:
+    return (
+        isinstance(value, (int, float))
+        and not isinstance(value, bool)
+        and 0.0 <= float(value) <= 1.0
     )
 
 
-def _workflow_stages(text: str) -> tuple[str, ...]:
-    stages = ["skill-use"]
-    if re.search(r"^## When to use\s*$", text, flags=re.M):
-        stages.append("routing")
-    if re.search(r"^## Procedure\s*$", text, flags=re.M):
-        stages.append("execution")
-    if re.search(r"^## Verification\s*$", text, flags=re.M):
-        stages.append("verification")
-    return _unique(stages)
-
-
-def _task_shapes(name: str, description: str) -> tuple[str, ...]:
-    description_tokens = _slug_tokens(description)
-    name_tokens = _slug_tokens(name)
-    return _unique(("skill-operation", *name_tokens[:3], *description_tokens[:5]))
-
-
-def _capabilities(name: str, category: str, description: str) -> tuple[str, ...]:
-    return _unique((*_slug_tokens(name), *_slug_tokens(category), *_slug_tokens(description)[:4]))
+def _slug(value: str) -> str:
+    slug = re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
+    return slug or "bridge"
 
 
 def build_records_from_skills(skills_root: Path) -> dict[str, object]:
     """Build deterministic graph records from repository-local skill files."""
-
-    skill_paths = sorted(skills_root.rglob("SKILL.md"))
-    known_skill_names = {path.parent.name for path in skill_paths}
-    skills: list[dict[str, object]] = []
-    relationships: list[dict[str, str]] = []
-
-    for path in skill_paths:
-        text = path.read_text(encoding="utf-8")
-        name = _frontmatter_value(text, "name") or path.parent.name
-        category = path.parent.parent.name
-        description = _frontmatter_value(text, "description")
-        skill_id = f"skill:{name}"
-        related_names = _related_skill_names(text, known_skill_names)
-
-        skills.append(
-            {
-                "id": skill_id,
-                "name": name,
-                "category": category,
-                "task_shapes": list(_task_shapes(name, description)),
-                "workflow_stages": list(_workflow_stages(text)),
-                "capabilities": list(_capabilities(name, category, description)),
-                "control_themes": ["skill-governance", category],
-                "knowledge_domains": [category],
-                "related_skill_ids": [f"skill:{related_name}" for related_name in related_names],
-                "source_path": str(path),
-            }
-        )
-
-        for related_name in related_names:
-            relationships.append(
-                {
-                    "source": skill_id,
-                    "type": "RELATED_TO",
-                    "target": f"skill:{related_name}",
-                }
-            )
-
-    return {
-        "root_skill": "apply-laws-of-ai",
-        "skills": skills,
-        "relationships": relationships,
-    }
+    return extract_skills_graph_records(skills_root)
 
 
 def validate_graph_records(records: Mapping[str, object]) -> GraphValidationResult:
@@ -244,6 +162,34 @@ def validate_graph_records(records: Mapping[str, object]) -> GraphValidationResu
 
     graph: dict[str, set[str]] = defaultdict(set)
     related_skill_ids_by_skill: dict[str, set[str]] = defaultdict(set)
+    proven_bridge_sources: dict[tuple[str, str, str], str] = {}
+    for bridge in _bridge_records(records):
+        bridge_skill_id = _string_value(bridge, "skill_id")
+        bridge_kind = _string_value(bridge, "kind")
+        bridge_value = _string_value(bridge, "value")
+        bridge_source = _string_value(bridge, "source")
+        bridge_path = _string_value(bridge, "source_path") or _string_value(bridge, "path")
+        bridge_id = _string_value(bridge, "id")
+        skill_path = _string_value(skills_by_id.get(bridge_skill_id, {}), "path")
+        expected_bridge_id = f"{bridge_skill_id}:bridge:{bridge_kind}:{_slug(bridge_value)}"
+        bridge_key = (bridge_skill_id, bridge_kind, bridge_value)
+        if (
+            bridge_skill_id not in skills_by_id
+            or bridge_kind not in ALLOWED_BRIDGE_KINDS
+            or not bridge_value
+            or not bridge_source
+            or not bridge_path
+            or not _valid_confidence(bridge.get("confidence"))
+            or bridge_id != expected_bridge_id
+            or (bool(skill_path) and bridge_path != skill_path)
+        ):
+            errors.append(
+                "invalid bridge provenance for "
+                f"{bridge_skill_id or '<missing skill>'}:{bridge_kind or '<missing kind>'}:"
+                f"{bridge_value or '<missing value>'}"
+            )
+            continue
+        proven_bridge_sources[bridge_key] = bridge_source
 
     for relationship in _relationship_records(records):
         source = _string_value(relationship, "source")
@@ -280,7 +226,16 @@ def validate_graph_records(records: Mapping[str, object]) -> GraphValidationResu
 
         for field in BRIDGE_FIELDS:
             for value in _string_list(skill, field):
-                _add_edge(graph, skill_id, f"{field}:{value}")
+                bridge_key = (skill_id, BRIDGE_FIELD_KINDS[field], value)
+                bridge_source = proven_bridge_sources.get(bridge_key)
+                if bridge_source:
+                    if (BRIDGE_FIELD_KINDS[field], bridge_source) not in NON_CONNECTIVE_BRIDGE_SOURCES:
+                        _add_edge(graph, skill_id, f"{field}:{value}")
+                else:
+                    errors.append(
+                        f"{skill_name}: missing bridge provenance for "
+                        f"{BRIDGE_FIELD_KINDS[field]} '{value}'"
+                    )
 
         for related_skill_id in _string_list(skill, "related_skill_ids"):
             if related_skill_id in skills_by_id:

@@ -29,6 +29,7 @@ The ontology is deliberately implementation-aware but not storage-specific. Phys
 - `Capability`: a reusable ability enabled by one or more skills.
 - `ControlTheme`: a governance or safety theme such as provenance, least privilege or human approval.
 - `KnowledgeDomain`: a domain bridge such as data architecture, agentic patterns or reliability.
+- `BridgeAssertion`: a provenance-bearing assertion that a skill supports a task shape, workflow stage, capability, control theme or knowledge domain.
 
 ## Core Relationships
 
@@ -43,14 +44,17 @@ The ontology is deliberately implementation-aware but not storage-specific. Phys
 - `enablesCapability`: connects a skill to a capability.
 - `governedBy`: connects a skill to a control theme.
 - `partOfDomain`: connects a skill to a knowledge domain.
+- `assertsBridge`: connects a skill to each bridge assertion used to justify bridge coverage and connectivity.
 
 Semantic skill-to-skill relationships use explicit predicates such as `precedes`, `requires`, `complements`, `refines`, `governsSkill` and `validatesSkill`. Avoid vague relationships such as `relatedTo` unless the source relationship is literal and later mapper slices refine it.
+
+Bridge assertions must include source evidence and confidence. Generic graph-wide bridge values are invalid because they can hide outliers and make fragmented graphs appear connected.
 
 ## Property Graph Mapping
 
 | Ontology class | Neo4j label | Identifier policy |
 | --- | --- | --- |
-| `Skill` | `Skill` | deterministic path-derived `id`; unique `name` |
+| `Skill` | `Skill` | deterministic `skill:{name}` id where `name` matches the skill folder path; unique `name` |
 | `SkillCategory` | `SkillCategory` | category folder name |
 | `SkillSection` | `SkillSection` | skill id plus heading plus ordinal |
 | `SkillChunk` | `SkillChunk` | section id plus chunk ordinal plus content hash |
@@ -62,6 +66,7 @@ Semantic skill-to-skill relationships use explicit predicates such as `precedes`
 | `Capability` | `Capability` | curated capability slug |
 | `ControlTheme` | `ControlTheme` | curated control-theme slug |
 | `KnowledgeDomain` | `KnowledgeDomain` | curated domain slug |
+| `BridgeAssertion` | `BridgeAssertion` | skill id plus bridge kind plus bridge value |
 
 Required skill properties include `id`, `name`, `title`, `description`, `path`, `contentHash`, `wordCount`, `lineCount` and `isBaselineSkill`. Later slices may add embeddings to `SkillChunk` and optionally coarse embeddings to `Skill`.
 
