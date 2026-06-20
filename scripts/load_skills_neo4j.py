@@ -12,14 +12,12 @@ from collections import Counter
 from pathlib import Path
 from typing import Any, Mapping, NamedTuple, Protocol, Sequence, cast
 
-try:
-    from map_skills_bridges import apply_semantic_bridge_mappings
-    from extract_skills_graph import extract_skills_graph_records
-    from validate_skills_graph import validate_graph_records
-except ModuleNotFoundError:
-    from scripts.extract_skills_graph import extract_skills_graph_records
-    from scripts.map_skills_bridges import apply_semantic_bridge_mappings
-    from scripts.validate_skills_graph import validate_graph_records
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from scripts.extract_skills_graph import extract_skills_graph_records
+from scripts.map_skills_bridges import apply_semantic_bridge_mappings
+from scripts.validate_skills_graph import validate_graph_records
 
 REQUIRED_SCHEMA_ITEMS = frozenset(
     {
@@ -166,7 +164,7 @@ class InMemoryNeo4jGraph:
 class Neo4jMergeGraph:
     """Neo4j driver-backed implementation of the merge graph protocol."""
 
-    def __init__(self, driver: object) -> None:
+    def __init__(self, driver: Any) -> None:
         self._driver = driver
 
     def available_schema_items(self) -> set[str]:
@@ -216,7 +214,7 @@ class Neo4jMergeGraph:
         return identifier
 
     @classmethod
-    def _merge_nodes_tx(cls, tx: object, nodes: Sequence[GraphNode]) -> None:
+    def _merge_nodes_tx(cls, tx: Any, nodes: Sequence[GraphNode]) -> None:
         for node in nodes:
             label = cls._safe_identifier(node.label)
             tx.run(
@@ -228,7 +226,7 @@ class Neo4jMergeGraph:
     @classmethod
     def _merge_relationships_tx(
         cls,
-        tx: object,
+        tx: Any,
         relationships: Sequence[GraphRelationship],
     ) -> None:
         for relationship in relationships:
@@ -268,7 +266,7 @@ def neo4j_graph_from_env(environ: Mapping[str, str] | None = None) -> Neo4jMerge
         raise RuntimeError(f"Missing Neo4j environment variable(s): {', '.join(missing)}")
 
     try:
-        from neo4j import GraphDatabase
+        from neo4j import GraphDatabase  # type: ignore[attr-defined]
     except ModuleNotFoundError as exc:
         raise RuntimeError("Install the neo4j Python package to use --apply") from exc
 

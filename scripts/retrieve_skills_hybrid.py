@@ -10,13 +10,11 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Mapping, NamedTuple, Sequence
 
-try:
-    import embed_skill_chunks
-    import load_skills_neo4j
-    from embed_skill_chunks import VectorCandidate
-except ModuleNotFoundError:
-    from scripts import embed_skill_chunks, load_skills_neo4j
-    from scripts.embed_skill_chunks import VectorCandidate
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from scripts import embed_skill_chunks, load_skills_neo4j
+from scripts.embed_skill_chunks import VectorCandidate
 
 MIN_CONFIDENT_SCORE = 0.2
 DEFAULT_TOKEN_BUDGET = 1200

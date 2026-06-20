@@ -10,10 +10,10 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Mapping, Sequence, cast
 
-try:
-    from extract_skills_graph import extract_skills_graph_records
-except ModuleNotFoundError:
-    from scripts.extract_skills_graph import extract_skills_graph_records
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from scripts.extract_skills_graph import extract_skills_graph_records
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MAPPING_RULES = REPO_ROOT / "skills_docs" / "ontology" / "bridge_mapping_rules.json"
@@ -102,18 +102,21 @@ def _bridge_records_by_id(records: Mapping[str, object]) -> dict[str, dict[str, 
     bridges = records.get("bridges", [])
     if not isinstance(bridges, list):
         return {}
-    return {
-        bridge["id"]: bridge
-        for bridge in bridges
-        if isinstance(bridge, dict) and isinstance(bridge.get("id"), str)
-    }
+    by_id: dict[str, dict[str, object]] = {}
+    for bridge in bridges:
+        if isinstance(bridge, dict) and isinstance(bridge.get("id"), str):
+            by_id[cast(str, bridge["id"])] = cast(dict[str, object], bridge)
+    return by_id
 
 
 def _relationship_key(relationship: Mapping[str, object]) -> tuple[str, str, str]:
+    source = relationship.get("source")
+    rel_type = relationship.get("type")
+    target = relationship.get("target")
     return (
-        relationship.get("source") if isinstance(relationship.get("source"), str) else "",
-        relationship.get("type") if isinstance(relationship.get("type"), str) else "",
-        relationship.get("target") if isinstance(relationship.get("target"), str) else "",
+        source if isinstance(source, str) else "",
+        rel_type if isinstance(rel_type, str) else "",
+        target if isinstance(target, str) else "",
     )
 
 
@@ -139,9 +142,12 @@ def _apply_rule_to_skill(
         _append_unique(existing_values, values)
         for value in values:
             bridge = _bridge_record(skill_id, kind, value, skill_path, rule_id)
-            bridges_by_id[bridge["id"]] = bridge
+            bridges_by_id[cast(str, bridge["id"])] = bridge
 
-    for relationship_value in rule.get("relationships", []):
+    relationship_values = rule.get("relationships", [])
+    if not isinstance(relationship_values, list):
+        relationship_values = []
+    for relationship_value in relationship_values:
         if not isinstance(relationship_value, dict):
             raise ValueError(f"{rule_id}: relationship entries must be objects")
         relationship = _relationship_record(

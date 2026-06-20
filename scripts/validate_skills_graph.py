@@ -10,12 +10,11 @@ from collections import defaultdict, deque
 from pathlib import Path
 from typing import Mapping, NamedTuple, Sequence, cast
 
-try:
-    from extract_skills_graph import extract_skills_graph_records
-    from map_skills_bridges import apply_semantic_bridge_mappings
-except ModuleNotFoundError:
-    from scripts.extract_skills_graph import extract_skills_graph_records
-    from scripts.map_skills_bridges import apply_semantic_bridge_mappings
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from scripts.extract_skills_graph import extract_skills_graph_records
+from scripts.map_skills_bridges import apply_semantic_bridge_mappings
 
 BRIDGE_FIELDS = (
     "task_shapes",
@@ -259,9 +258,9 @@ def validate_graph_records(records: Mapping[str, object]) -> GraphValidationResu
         for field in BRIDGE_FIELDS:
             for value in _string_list(skill, field):
                 bridge_key = (skill_id, BRIDGE_FIELD_KINDS[field], value)
-                bridge_source = proven_bridge_sources.get(bridge_key)
-                if bridge_source:
-                    if (BRIDGE_FIELD_KINDS[field], bridge_source) not in NON_CONNECTIVE_BRIDGE_SOURCES:
+                proven_source = proven_bridge_sources.get(bridge_key)
+                if proven_source:
+                    if (BRIDGE_FIELD_KINDS[field], proven_source) not in NON_CONNECTIVE_BRIDGE_SOURCES:
                         _add_edge(graph, skill_id, f"{field}:{value}")
                 else:
                     errors.append(
