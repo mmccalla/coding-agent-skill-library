@@ -1,3 +1,4 @@
 neo4j:
   embedding_dimensions: 1536
+  embedding_provider: deterministic-test-embedding
   vector_similarity_function: cosine
