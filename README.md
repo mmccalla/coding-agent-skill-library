@@ -10,6 +10,7 @@ This repository is designed to be dropped into another repo and provide one cohe
 - routing guide: `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`
 - skills subtree index: `skills/README.md`
 - full inventory: `skills/MANIFEST.md`
+- Skills KG and MCP runbook: `skills_docs/SKILLS_KG_MCP_RUNBOOK.md`
 - execution guidance: the smallest relevant `SKILL.md`
 
 ## Mandatory startup order
@@ -116,3 +117,7 @@ find skills -name "MANIFEST.md" | sort
 ```
 
 With all eight categories installed, the library should contain **87 skills** (including mandatory `apply-laws-of-ai`).
+
+## Skills KG And MCP
+
+The graph-backed skills workflow is documented in `skills_docs/SKILLS_KG_MCP_RUNBOOK.md`. It covers extraction, bridge mapping, Neo4j schema setup, dry-run loading, deterministic embeddings, hybrid retrieval, read-only MCP usage, connectedness troubleshooting and offline CI expectations.
