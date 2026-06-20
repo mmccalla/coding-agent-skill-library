@@ -1,0 +1,3 @@
+neo4j:
+  embedding_dimensions: 1536
+  vector_similarity_function: cosine
