@@ -7,6 +7,9 @@ cd "$ROOT"
 echo "==> validate_skills.py"
 python3 scripts/validate_skills.py
 
+echo "==> validate_skills_graph.py"
+python3 scripts/validate_skills_graph.py
+
 echo "==> unittest"
 python3 -m unittest discover -s tests -p 'test_*.py' -q
 
