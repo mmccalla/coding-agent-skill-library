@@ -1,0 +1,104 @@
+{
+  "category_rules": {
+    "agent-control-patterns": {
+      "capabilities": ["agent-control", "safety-governance"],
+      "control_themes": ["least-privilege", "policy-enforcement"],
+      "knowledge_domains": ["agent-control"],
+      "task_shapes": ["controlled-agent-operation"],
+      "workflow_stages": ["validation"]
+    },
+    "agentic-patterns": {
+      "capabilities": ["agent-workflow-design", "task-orchestration"],
+      "control_themes": ["workflow-discipline"],
+      "knowledge_domains": ["agentic-systems"],
+      "task_shapes": ["agent-workflow"],
+      "workflow_stages": ["routing", "planning", "implementation"]
+    },
+    "business-architecture": {
+      "capabilities": ["business-traceability", "capability-analysis"],
+      "control_themes": ["business-alignment"],
+      "knowledge_domains": ["strategy", "capability", "value-stream", "data-traceability"],
+      "task_shapes": ["business-architecture"],
+      "workflow_stages": ["planning", "design"]
+    },
+    "data-architecture": {
+      "capabilities": ["data-modelling", "data-governance", "semantic-modelling"],
+      "control_themes": ["provenance", "data-quality"],
+      "knowledge_domains": ["data-architecture", "knowledge-graph", "data-governance"],
+      "task_shapes": ["data-architecture"],
+      "workflow_stages": ["design", "validation"]
+    },
+    "engineering-practices": {
+      "capabilities": ["quality-engineering", "testability"],
+      "control_themes": ["code-quality"],
+      "knowledge_domains": ["software-engineering"],
+      "task_shapes": ["engineering-practice"],
+      "workflow_stages": ["implementation", "validation"]
+    },
+    "event-driven-and-real-time-data": {
+      "capabilities": ["event-modelling", "stream-processing"],
+      "control_themes": ["real-time-operability"],
+      "knowledge_domains": ["event-driven-architecture", "real-time-data"],
+      "task_shapes": ["event-driven-design"],
+      "workflow_stages": ["design", "operations"]
+    },
+    "reliability-and-delivery": {
+      "capabilities": ["delivery-safety", "operability"],
+      "control_themes": ["release-safety", "reliability"],
+      "knowledge_domains": ["sre", "delivery-performance"],
+      "task_shapes": ["reliability-and-delivery"],
+      "workflow_stages": ["release", "operations", "validation"]
+    },
+    "user-experience": {
+      "capabilities": ["user-centred-design", "accessibility"],
+      "control_themes": ["inclusive-design"],
+      "knowledge_domains": ["user-experience", "accessibility"],
+      "task_shapes": ["user-facing-design"],
+      "workflow_stages": ["design", "validation"]
+    }
+  },
+  "skill_rules": {
+    "apply-laws-of-ai": {
+      "capabilities": ["safety-baseline"],
+      "control_themes": ["ai-safety", "instruction-hierarchy"],
+      "knowledge_domains": ["agent-control"],
+      "task_shapes": ["session-start", "safety-gate"],
+      "workflow_stages": ["startup"]
+    },
+    "bdd-practice": {
+      "capabilities": ["behaviour-specification", "acceptance-test-design"],
+      "knowledge_domains": ["software-engineering"],
+      "relationships": [
+        {
+          "target": "skill:tdd-practice",
+          "type": "COMPLEMENTS"
+        }
+      ],
+      "task_shapes": ["acceptance-criteria", "business-readable-behaviour"],
+      "workflow_stages": ["validation"]
+    },
+    "guardrails-safety-patterns": {
+      "capabilities": ["policy-enforcement", "safety-validation"],
+      "control_themes": ["least-privilege", "tool-restriction", "policy-enforcement"],
+      "relationships": [
+        {
+          "target": "skill:human-in-the-loop",
+          "type": "GOVERNS"
+        }
+      ],
+      "task_shapes": ["guardrail-design"],
+      "workflow_stages": ["validation"]
+    },
+    "using-agent-skills": {
+      "capabilities": ["skill-discovery"],
+      "relationships": [
+        {
+          "target": "skill:apply-laws-of-ai",
+          "type": "REQUIRES"
+        }
+      ],
+      "task_shapes": ["skill-routing"],
+      "workflow_stages": ["routing"]
+    }
+  }
+}

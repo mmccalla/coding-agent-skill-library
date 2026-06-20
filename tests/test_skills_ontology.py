@@ -22,6 +22,7 @@ class SkillsOntologyTests(unittest.TestCase):
             "## Competency Questions",
             "## Core Classes",
             "## Core Relationships",
+            "## Bridge Mapping Rules",
             "## Property Graph Mapping",
             "## Open Decisions",
         ):
@@ -42,6 +43,7 @@ class SkillsOntologyTests(unittest.TestCase):
             "BridgeAssertion",
         ):
             self.assertIn(f"`{concept}`", text)
+        self.assertIn("`bridge_mapping_rules.json`", text)
 
     def test_turtle_ontology_defines_core_classes_and_properties(self) -> None:
         text = read(ONTOLOGY_DIR / "skills.ttl")
