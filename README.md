@@ -1,93 +1,99 @@
 # Coding Agent Skills KG
 
-This repository is a coding-agent skills delivery system. It contains a portable skills library, a Neo4j knowledge graph representation of those skills, a read-only MCP server, a FastAPI GraphRAG API and a React UI for local inspection, API contract review and agent workflow testing.
+Portable coding-agent skills library plus a local Neo4j-backed GraphRAG service.
 
-The intended users are coding delivery systems such as Codex, Claude Code and Cursor agents. The system helps those agents choose the smallest relevant operating procedure for a task, retrieve source-backed guidance, inspect related skills and apply delivery controls such as TDD, safety gates, accessibility checks, reliability checks and evidence reporting.
+Core surfaces:
 
-## Current Purpose
+- `skills/`: reusable `SKILL.md` operating procedures.
+- `skills_docs/`: routing, contracts, ontology, runbooks and templates.
+- `scripts/skills_mcp_server.py`: read-only MCP server.
+- `scripts/skills_api.py`: FastAPI GraphRAG API, OpenAPI, metrics and MCP HTTP transport.
+- `skills-ui/`: React/Tailwind/D3 inspection UI.
+- `docker-compose.yml`: Neo4j, loader, API, UI, Prometheus and Grafana.
 
-The project now has two linked purposes:
+Primary consumers: Cursor, Claude Code, Codex and other coding-agent runtimes that need deterministic task routing, source-backed skill retrieval and delivery controls.
 
-- **Portable skills library:** `skills/` and `skills_docs/` provide reusable coding-agent operating procedures and mandatory startup guidance.
-- **Skills KG service:** Neo4j, MCP, FastAPI and the UI expose those skills as a queryable, source-backed knowledge graph for humans and agents.
+## Agent Contract
 
-The long-term goal is for agents to use the Skills KG as a delivery control plane:
-
-```text
-user request
-→ classify task and risk
-→ resolve exact skills or recommend relevant skills
-→ retrieve source-backed procedures, rules and verification checklists
-→ execute with tests and evidence
-→ report files changed, checks run, behaviour changes and residual risk
-```
-
-## System Components
-
-- `skills/`: 87 `SKILL.md` files across agentic patterns, control patterns, engineering practices, UX, reliability, event-driven architecture, business architecture and data architecture.
-- `skills_docs/`: routing guides, library contract, ontology documents, runbooks and templates.
-- `scripts/extract_skills_graph.py`: extracts skill metadata, sections and relationships from the filesystem.
-- `scripts/load_skills_neo4j.py` and `scripts/embed_skill_chunks.py`: load the skills graph and deterministic retrieval-unit embeddings into Neo4j.
-- `scripts/skills_mcp_server.py`: exposes read-only MCP tools and resources.
-- `scripts/skills_api.py`: exposes FastAPI endpoints for health, graph inspection, retrieval, upload preview, Ollama-backed query and MCP HTTP transport.
-- `skills-ui/`: React, Tailwind and D3 UI for agent workflow review, OpenAPI/API exploration, graph inspection, model-backed graph questions, upload preview and MCP boundary review.
-- `docker-compose.yml`: local full-stack deployment with Neo4j, graph loader, API, UI, Prometheus and Grafana.
-
-## Agent Startup Contract
-
-Every coding-agent session using this library must start with:
+Mandatory session startup order:
 
 1. `AGENTIC_CODING_GLOBAL_SAFETY.md`
 2. `SECURE_AGENTIC_DEVELOPMENT.md`
 3. `skills/agent-control-patterns/apply-laws-of-ai/SKILL.md`
 4. `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`
-5. the smallest relevant `SKILL.md` set for the task
+5. smallest relevant `SKILL.md` set for the task
 
-The mandatory baseline is also recorded in `AGENTS.md` and `CLAUDE.md`.
+Minimum agent loop:
 
-## How Agents Should Use The Skills KG
+```text
+classify task and risk
+→ resolve or recommend skills
+→ retrieve source-backed guidance
+→ execute with tests and evidence
+→ report changed files, checks, behaviour changes, assumptions and residual risk
+```
 
-The current MCP tools are:
+## MCP Server
 
-- `route_skill_query`: classify a user request as `direct_lookup`, `recommendation`, `context` or `execution_plan`.
-- `resolve_skill`: map human names such as `accessibility-wcag` to canonical ids such as `skill:accessibility-wcag`.
-- `search_skills`: find likely skills by exact or keyword-oriented lookup.
-- `get_skill`: retrieve one skill's bounded metadata and retrieval units.
-- `recommend_skills`: recommend connected skills for a task query with evidence.
-- `get_skill_context`: retrieve neighbouring skills and graph evidence paths.
-- `get_skill_execution_guide`: return when-to-use, objective, procedure, rules, verification checklist and related skills.
+Read-only stdio server:
 
-The current MCP resources are:
+```bash
+uv run --no-project \
+  --directory /path/to/coding-agent-skill-library \
+  --with-editable /path/to/coding-agent-skill-library \
+  python scripts/skills_mcp_server.py --sdk-stdio
+```
+
+Discovery checks:
+
+```bash
+python3 scripts/skills_mcp_server.py --list-tools
+python3 scripts/skills_mcp_server.py --list-resources
+```
+
+Tools:
+
+- `route_skill_query`
+- `resolve_skill`
+- `search_skills`
+- `get_skill`
+- `recommend_skills`
+- `get_skill_context`
+- `get_skill_execution_guide`
+
+Resources:
 
 - `skills://ontology`
 - `skills://contract`
 
-Recommended agent flow:
+Global Cursor MCP config shape:
 
-```text
-1. Use route_skill_query for natural-language requests.
-2. Use resolve_skill when a human-readable skill name is present.
-3. Use get_skill for direct_lookup.
-4. Use recommend_skills for recommendation.
-5. Use get_skill_context for context expansion.
-6. Use get_skill_execution_guide before acting from a skill.
-7. Return route, selected tools, source paths, section ids or evidence paths before planning, editing or claiming completion.
+```json
+{
+  "mcpServers": {
+    "skills-kg": {
+      "command": "/path/to/uv",
+      "args": [
+        "run",
+        "--no-project",
+        "--directory",
+        "/path/to/coding-agent-skill-library",
+        "--with-editable",
+        "/path/to/coding-agent-skill-library",
+        "python",
+        "scripts/skills_mcp_server.py",
+        "--sdk-stdio"
+      ]
+    }
+  }
+}
 ```
 
-`/skills/query` uses this router before generation, so direct skill-description questions use skill-profile evidence and task-oriented questions use recommendation evidence.
+## API
 
-Example routes:
+Graph consumers are read-only. No arbitrary Cypher, raw embeddings or write tools are exposed.
 
-| User request | Route | Main tools |
-| --- | --- | --- |
-| `tell me about accessibility-wcag` | `direct_lookup` | `route_skill_query` → `resolve_skill` → `get_skill` |
-| `which skills should I use for a secure MCP server?` | `recommendation` | `route_skill_query` → `recommend_skills` |
-| `what is related to kg-enabled-rag?` | `context` | `route_skill_query` → `resolve_skill` → `get_skill_context` |
-| `how do I apply tdd-practice?` | `execution_plan` | `route_skill_query` → `resolve_skill` → `get_skill_execution_guide` |
-
-## FastAPI Surface
-
-The API is read-only for graph consumers and does not expose arbitrary Cypher, raw embeddings or write tools.
+Endpoints:
 
 - `GET /health/live`
 - `GET /health/ready`
@@ -106,91 +112,123 @@ The API is read-only for graph consumers and does not expose arbitrary Cypher, r
 - `GET /metrics`
 - `GET /docs`
 - `GET /openapi.json`
-- `/mcp` for the official MCP streamable HTTP app
+- `/mcp`
 
-`POST /skills/upload/preview` validates a candidate `SKILL.md` without persisting it or writing to Neo4j.
+Notes:
 
-`POST /skills/query` sends bounded graph evidence to a user-selected local Ollama model. Ollama endpoint validation is local-only and rejects credential-bearing URLs.
+- `POST /skills/upload/preview` validates a candidate `SKILL.md`; it does not persist or write to Neo4j.
+- `POST /skills/query` sends bounded graph evidence to a user-selected local Ollama model.
+- Ollama URL validation is local-only and rejects credential-bearing URLs.
 
-## Run The Full Local Stack
+## Local Stack
 
-Use Docker Compose for live local testing or redeployment from the repository root:
-
-```bash
-cd /Users/mmccalla/Documents/vscode/coding-agent-skill-library
-```
-
-Stop the current stack without deleting volumes:
-
-```bash
-docker compose down
-```
-
-Rebuild and redeploy the full stack:
+Start from the repository root:
 
 ```bash
 docker compose up --build -d
 ```
 
-Services:
+Stop without deleting Neo4j data:
 
+```bash
+docker compose down
+```
+
+Service URLs:
+
+- UI: `http://localhost:5173`
+- FastAPI: `http://localhost:8000`
+- OpenAPI: `http://localhost:8000/docs`
+- OpenAPI JSON: `http://localhost:8000/openapi.json`
 - Neo4j browser: `http://localhost:7474`
 - Neo4j Bolt: `bolt://localhost:7687`
-- FastAPI: `http://localhost:8000`
-- OpenAPI docs: `http://localhost:8000/docs`
-- OpenAPI spec: `http://localhost:8000/openapi.json`
 - Prometheus: `http://localhost:9090`
 - Grafana: `http://localhost:3000`
-- UI: `http://localhost:5173`
 
-Verify the redeploy:
+Health checks:
 
 ```bash
 docker compose ps
 curl -fsS http://localhost:8000/health/live
 curl -fsS http://localhost:8000/health/ready
 curl -fsS http://localhost:8000/metrics
-curl -fsS http://localhost:8000/openapi.json
 curl -fsS http://localhost:5173
 ```
 
-`docker compose down` stops containers and preserves the Neo4j volume. Do not add `-v` unless you intentionally want to delete local graph data.
+Do not use `docker compose down -v` unless deleting local graph data is intentional.
 
-When the API runs in Docker and Ollama runs on the host, use:
+Ollama endpoint when API runs in Docker and Ollama runs on the host:
 
 ```text
 http://host.docker.internal:11434
 ```
 
-The Docker-served UI defaults to that endpoint. A non-Docker local UI run can use `http://127.0.0.1:11434`.
+Non-Docker local UI endpoint:
+
+```text
+http://127.0.0.1:11434
+```
+
+## UI
+
+Workspace sections:
+
+- `Ask`: local Ollama-backed graph queries.
+- `Agent Workflow`: route, resolve, retrieve, expand context and produce execution guidance.
+- `API Contract`: OpenAPI and agent-critical endpoint rules.
+- `Upload`: non-persistent `SKILL.md` preview validation.
+- `Graph`: D3 graph inspection with filters, labels, selected node detail and accessible summary.
+
+The header shows API readiness, MCP status and graph counts. The MCP panel reads `GET /mcp/technical-info`.
+
+## Neo4j Loading
+
+For a local Neo4j instance:
+
+```bash
+export NEO4J_URI="bolt://localhost:7687"
+export NEO4J_USER="neo4j"
+export NEO4J_PASSWORD="<local-password>"
+export NEO4J_DATABASE="neo4j"
+
+python3 scripts/embed_skill_chunks.py --apply --batch-size 500
+python3 scripts/check_neo4j_readiness.py --json
+```
+
+Schema: `neo4j/skills_schema.cypher`
+
+Readiness requirement:
+
+```json
+{"ready": true}
+```
 
 ## Observability
 
-The API now emits bounded local observability signals for root-cause analysis:
+Signals:
 
-- every API response includes an `x-request-id` header;
-- `/skills/query` and `/ollama/models` return structured safe error details with `error_type`, `operation`, `request_id` and a remediation hint;
-- `GET /metrics` exposes Prometheus metrics for request counts, request duration, Neo4j readiness, graph node/relationship counts, retrieval route outcomes, recommendation counts, top-score distribution and Ollama failures;
-- structured API logs include `api_request_completed`, `skill_query_route_selected`, `skill_query_evidence_selected`, `skill_retrieval_completed` and safe failure events keyed by `request_id`;
-- Docker Compose starts Prometheus and Grafana with a provisioned `Skills KG API Observability` dashboard.
+- `x-request-id` on API responses.
+- Structured safe errors for `/skills/query` and `/ollama/models`.
+- Prometheus metrics at `GET /metrics`.
+- Structured logs for request completion, route selection, evidence selection and retrieval completion.
+- Provisioned Grafana dashboard: `Skills KG API Observability`.
 
-Prometheus scrapes `skills-api:8000/metrics`. Grafana uses the provisioned Prometheus datasource and dashboard under `configs/grafana/`, including panels for API latency, 5xx ratio, Ollama failures, Neo4j readiness, graph counts and retrieval outcomes.
+Key metric groups:
 
-## UI Navigation And Capabilities
+- request count and duration;
+- 5xx ratio;
+- Neo4j readiness;
+- graph node and relationship counts;
+- retrieval requests by route and outcome;
+- recommendation count and top-score distribution;
+- Ollama failures.
 
-The UI at `http://localhost:5173` is organised around five task-centred workspace sections:
+Config locations:
 
-- **Ask:** graph querying through local Ollama. The UI calls `GET /ollama/models` so the user chooses the model explicitly before sending `POST /skills/query`. Query failures show HTTP status, error type, operation, request id and next diagnostic check when the API provides them.
-- **Agent Workflow:** the explicit agent contract: route request, resolve skill, retrieve instructions, expand context only when needed, produce the execution checklist, then implement and validate.
-- **API Contract:** OpenAPI Standards & API Explorer sourced from `GET /openapi.json`, plus query rules for the agent-critical endpoints.
-- **Upload:** upload preview for candidate `SKILL.md` files through `POST /skills/upload/preview`; this validates shape and metadata without persisting or writing to Neo4j.
-- **Graph:** D3 graph inspection with pan, zoom, node dragging, node type filters, skill category filtering, selected node details and an accessible graph summary.
+- `configs/prometheus/prometheus.yml`
+- `configs/grafana/`
 
-The header status cards show API readiness, MCP boundary status and graph counts. The MCP technical information panel reads `GET /mcp/technical-info` and shows exposed tools, resources, endpoints and limits.
-
-The API also exposes FastAPI's native OpenAPI docs at `http://localhost:8000/docs` and the raw OpenAPI document at `http://localhost:8000/openapi.json`.
-
-## Run Backend And UI Without Docker
+## Local Development
 
 Install Python dependencies:
 
@@ -198,13 +236,13 @@ Install Python dependencies:
 python3 -m pip install -e ".[dev]"
 ```
 
-Start the API:
+Run API:
 
 ```bash
 python3 -m uvicorn scripts.skills_api:create_app --factory --host 127.0.0.1 --port 8000 --reload
 ```
 
-Start the UI:
+Run UI:
 
 ```bash
 cd skills-ui
@@ -212,33 +250,15 @@ npm install
 VITE_API_BASE_URL=http://localhost:8000 npm run dev
 ```
 
-## Neo4j Graph Loading
-
-For a local Neo4j instance:
-
-```bash
-export NEO4J_URI="bolt://localhost:7687"
-export NEO4J_USER="neo4j"
-export NEO4J_PASSWORD="testpassword"
-export NEO4J_DATABASE="neo4j"
-
-python3 scripts/embed_skill_chunks.py --apply --batch-size 500
-python3 scripts/check_neo4j_readiness.py --json
-```
-
-`neo4j/skills_schema.cypher` defines constraints, lookup indexes, full-text indexes and the vector index. The readiness report must show `ready: true` before relying on live retrieval.
-
 ## Validation
 
-Run the local quality gate:
+Full local gate:
 
 ```bash
 ./scripts/ci_local.sh
 ```
 
-The gate includes skill validation, Ruff, mypy, pytest with coverage, offline MCP smoke checks and retrieval evaluation.
-
-For targeted checks:
+Targeted checks:
 
 ```bash
 python3 scripts/validate_skills.py
@@ -251,9 +271,17 @@ npm --prefix skills-ui run lint
 npm --prefix skills-ui run build
 ```
 
-## Portable Library Usage
+Quality baseline:
 
-The skills library can still be copied into another repository as a drop-in agent guidance layer. For a new project, copy:
+- Ruff and Ruff format clean.
+- mypy clean for `scripts/`.
+- pytest coverage threshold: 80%.
+- offline MCP smoke checks pass.
+- retrieval evaluation gate passes.
+
+## Portable Library
+
+Copy set:
 
 ```text
 AGENTS.md
@@ -264,9 +292,7 @@ skills/
 skills_docs/
 ```
 
-If the target repository already has its own `README.md`, keep this file as `docs/coding-agent-skill-library/README.md` or `AGENT_SKILLS_README.md`.
-
-For portable setup, start with:
+Bootstrap docs:
 
 - `skills_docs/DROP_IN_BOOTSTRAP.md`
 - `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`
@@ -274,4 +300,19 @@ For portable setup, start with:
 
 ## Runbook
 
-The detailed graph-backed workflow is documented in `skills_docs/SKILLS_KG_MCP_RUNBOOK.md`. It covers extraction, bridge mapping, Neo4j schema setup, idempotent loading, index readiness, deterministic embeddings, hybrid retrieval, official MCP SDK usage, FastAPI endpoints, retrieval evaluation gates, connectedness troubleshooting and CI expectations.
+Detailed workflow: `skills_docs/SKILLS_KG_MCP_RUNBOOK.md`
+
+Coverage:
+
+- extraction;
+- bridge mapping;
+- Neo4j schema setup;
+- idempotent loading;
+- index readiness;
+- retrieval-unit embeddings;
+- hybrid retrieval;
+- MCP SDK usage;
+- FastAPI endpoints;
+- retrieval evaluation gates;
+- connectedness troubleshooting;
+- CI expectations.
