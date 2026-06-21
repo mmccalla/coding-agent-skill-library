@@ -72,8 +72,7 @@ def fixture_records() -> dict[str, object]:
                 "text": "Keep humans safe.",
             }
         ],
-        "bridges": [
-        ],
+        "bridges": [],
         "relationships": [
             {
                 "source": "skill:apply-laws-of-ai",
@@ -214,6 +213,88 @@ class LoadSkillsNeo4jTests(unittest.TestCase):
         self.assertIn("Skills KG dry-run load report", report)
         self.assertNotIn("bolt://", report)
         self.assertNotIn("password", report.lower())
+
+    def test_neo4j_adapter_uses_configured_database_for_sessions(self) -> None:
+        loader = load_module()
+        driver = RecordingDriver()
+        graph = loader.Neo4jMergeGraph(driver, database="skills")
+
+        graph.available_schema_items()
+
+        self.assertEqual(["skills"], driver.databases)
+
+    def test_load_plan_from_neo4j_reads_nodes_and_relationships_from_database(self) -> None:
+        loader = load_module()
+        settings = type("Settings", (), {"database": "skills"})()
+        driver = SnapshotDriver()
+
+        plan = loader.load_plan_from_neo4j(driver, settings)
+
+        self.assertEqual("Skill", plan.nodes[0].label)
+        self.assertEqual("skill:example", plan.nodes[0].id)
+        self.assertEqual("RELATED_TO", plan.relationships[0].type)
+        self.assertEqual(["skills"], driver.databases)
+
+
+class RecordingSession:
+    def __enter__(self) -> RecordingSession:
+        return self
+
+    def __exit__(self, *_args: object) -> None:
+        return None
+
+    def run(self, _query: str, **_parameters: object) -> list[dict[str, object]]:
+        return [{"name": "skill_id_unique"}]
+
+
+class RecordingDriver:
+    def __init__(self) -> None:
+        self.databases: list[str | None] = []
+
+    def session(self, database: str | None = None) -> RecordingSession:
+        self.databases.append(database)
+        return RecordingSession()
+
+
+class SnapshotSession:
+    def __init__(self) -> None:
+        self.calls = 0
+
+    def __enter__(self) -> SnapshotSession:
+        return self
+
+    def __exit__(self, *_args: object) -> None:
+        return None
+
+    def run(self, _query: str, **_parameters: object) -> list[dict[str, object]]:
+        self.calls += 1
+        if self.calls == 1:
+            return [
+                {
+                    "labels": ["Skill"],
+                    "id": "skill:example",
+                    "properties": {"id": "skill:example", "name": "example"},
+                }
+            ]
+        return [
+            {
+                "type": "RELATED_TO",
+                "source_labels": ["Skill"],
+                "source_id": "skill:example",
+                "target_labels": ["Skill"],
+                "target_id": "skill:other",
+                "properties": {"source": "test"},
+            }
+        ]
+
+
+class SnapshotDriver:
+    def __init__(self) -> None:
+        self.databases: list[str | None] = []
+
+    def session(self, database: str | None = None) -> SnapshotSession:
+        self.databases.append(database)
+        return SnapshotSession()
 
 
 if __name__ == "__main__":

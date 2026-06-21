@@ -4,3 +4,7 @@ __pycache__/
 skills_docs/CHANGELOG.md
 skills_docs/SKILL_LIBRARY_IMPROVEMENT_PLAN.md
 tests/test_suggest_skills.py
+.coverage
+skills-ui/*.tsbuildinfo
+skills-ui/dist/
+skills-ui/node_modules/

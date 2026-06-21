@@ -7,16 +7,17 @@ import hashlib
 import math
 import sys
 from argparse import ArgumentParser
+from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Any, Mapping, NamedTuple, Protocol, Sequence
+from typing import Any, NamedTuple, Protocol
 
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts import load_skills_neo4j
+from scripts import load_skills_neo4j, skills_config
 
-DEFAULT_CONFIG_PATH = Path("configs") / "skills_kg.yaml"
-DEFAULT_VECTOR_INDEX = "skill_chunk_embedding_vector"
+DEFAULT_CONFIG_PATH = skills_config.DEFAULT_CONFIG_PATH
+DEFAULT_VECTOR_INDEX = skills_config.Neo4jSettings().vector_index
 
 
 class EmbeddingProvider(Protocol):
@@ -43,7 +44,7 @@ class DeterministicEmbeddingProvider:
         values: list[float] = []
         counter = 0
         while len(values) < self.dimension:
-            digest = hashlib.sha256(f"{counter}:{text}".encode("utf-8")).digest()
+            digest = hashlib.sha256(f"{counter}:{text}".encode()).digest()
             for byte in digest:
                 values.append((byte / 127.5) - 1.0)
                 if len(values) == self.dimension:
@@ -116,7 +117,9 @@ def _normalise(vector: Sequence[float]) -> tuple[float, ...]:
 def _cosine(left: Sequence[float], right: Sequence[float]) -> float:
     if len(left) != len(right):
         raise ValueError("vectors must use the same dimension")
-    return sum(left_value * right_value for left_value, right_value in zip(left, right))
+    return sum(
+        left_value * right_value for left_value, right_value in zip(left, right, strict=True)
+    )
 
 
 def _string(properties: Mapping[str, object], key: str) -> str:
@@ -136,11 +139,7 @@ def _float(value: object) -> float:
 
 
 def _embedding_dimension_from_config(config_path: Path = DEFAULT_CONFIG_PATH) -> int:
-    for line in config_path.read_text(encoding="utf-8").splitlines():
-        stripped = line.strip()
-        if stripped.startswith("embedding_dimensions:"):
-            return int(stripped.split(":", 1)[1].strip())
-    raise ValueError(f"{config_path}: missing embedding_dimensions")
+    return skills_config.load_settings(config_path).neo4j.embedding_dimensions
 
 
 def embed_skill_chunks(
@@ -219,6 +218,14 @@ def query_neo4j_vector_candidates(
     """Query Neo4j's vector index and return provenance-safe candidates."""
 
     records = graph.query_vector_index(index_name, embedder.embed(query_text), limit)
+    return vector_candidates_from_records(records)
+
+
+def vector_candidates_from_records(
+    records: Sequence[Mapping[str, object]],
+) -> tuple[VectorCandidate, ...]:
+    """Convert Neo4j vector result records into provenance-safe candidates."""
+
     candidates = []
     for record in records:
         candidates.append(
@@ -245,15 +252,18 @@ def build_embedded_repository_load_plan(
     return embed_skill_chunks(plan, DeterministicEmbeddingProvider(dimension=dimension))
 
 
-def main(argv: Sequence[str] | None = None) -> int:
+def main(argv: Sequence[str] | None = None) -> int:  # pragma: no cover
     parser = ArgumentParser(description="Create deterministic SkillChunk embeddings.")
     parser.add_argument("--apply", action="store_true", help="Write embedded chunks to Neo4j.")
-    parser.add_argument("--batch-size", type=int, default=500, help="Transactional load batch size.")
+    parser.add_argument(
+        "--batch-size", type=int, default=500, help="Transactional load batch size."
+    )
     parser.add_argument("--query", help="Optional query text for local candidate inspection.")
     parser.add_argument("--limit", type=int, default=5, help="Maximum candidates to print.")
     args = parser.parse_args(list(sys.argv[1:] if argv is None else argv))
 
-    dimension = _embedding_dimension_from_config()
+    settings = skills_config.load_settings()
+    dimension = settings.neo4j.embedding_dimensions
     embedder = DeterministicEmbeddingProvider(dimension=dimension)
     plan = embed_skill_chunks(load_skills_neo4j.build_repository_load_plan(), embedder)
     chunk_count = sum(1 for node in plan.nodes if node.label == "SkillChunk")
@@ -268,7 +278,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             plan,
             batch_size=args.batch_size,
             schema_statements=load_skills_neo4j.read_schema_statements(),
-            schema_parameters={"embedding_dimensions": dimension},
+            schema_parameters={"embedding_dimensions": settings.neo4j.embedding_dimensions},
         )
         print("Skills KG embedded load report")
         for key, value in report.logical_counts.items():

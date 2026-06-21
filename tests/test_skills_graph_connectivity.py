@@ -282,7 +282,9 @@ class SkillsGraphConnectivityTests(unittest.TestCase):
 
     def test_missing_curated_relationship_provenance_fails_validation(self) -> None:
         mapper = load_module(REPO_ROOT / "scripts" / "map_skills_bridges.py", "map_skills_bridges")
-        extractor = load_module(REPO_ROOT / "scripts" / "extract_skills_graph.py", "extract_skills_graph")
+        extractor = load_module(
+            REPO_ROOT / "scripts" / "extract_skills_graph.py", "extract_skills_graph"
+        )
         module = load_validator_module()
         records = mapper.apply_semantic_bridge_mappings(
             extractor.extract_skills_graph_records(REPO_ROOT / "skills")

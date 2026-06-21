@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
+import itertools
 import os
 import re
 import sys
-import itertools
 from collections import Counter
 
 ROOT = "skills"
@@ -18,35 +18,35 @@ ALLOWED_FRONTMATTER_KEYS = {"name", "description"}
 
 
 def read(path: str) -> str:
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         return f.read()
 
 
-def tokenise_for_similarity(text: str):
+def tokenise_for_similarity(text: str) -> list[str]:
     text = text.lower()
     text = re.sub(r"`[^`]*`", " ", text)
     text = re.sub(r"[^a-z0-9\s]", " ", text)
     return [t for t in text.split() if len(t) > 3]
 
 
-def cosine(counter_a: Counter, counter_b: Counter) -> float:
+def cosine(counter_a: Counter[str], counter_b: Counter[str]) -> float:
     inter = set(counter_a) & set(counter_b)
-    num = sum(counter_a[t] * counter_b[t] for t in inter)
-    den_a = sum(v * v for v in counter_a.values()) ** 0.5
-    den_b = sum(v * v for v in counter_b.values()) ** 0.5
+    num: float = float(sum(counter_a[t] * counter_b[t] for t in inter))
+    den_a: float = float(sum(v * v for v in counter_a.values()) ** 0.5)
+    den_b: float = float(sum(v * v for v in counter_b.values()) ** 0.5)
     if not den_a or not den_b:
         return 0.0
     return num / (den_a * den_b)
 
 
 def main() -> int:
-    errors = []
-    warnings = []
+    errors: list[str] = []
+    warnings: list[str] = []
 
     if not os.path.isfile(BASELINE_SKILL):
         errors.append(f"missing mandatory baseline skill: {BASELINE_SKILL}")
 
-    paths = []
+    paths: list[str] = []
     for dirpath, _, files in os.walk(ROOT):
         for name in files:
             if name == "SKILL.md":
@@ -54,7 +54,7 @@ def main() -> int:
     paths.sort()
 
     skill_names = {os.path.basename(os.path.dirname(p)) for p in paths}
-    vectors = {}
+    vectors: dict[str, Counter[str]] = {}
 
     for p in paths:
         text = read(p)
@@ -85,17 +85,11 @@ def main() -> int:
             desc_match = re.search(r"^description:\s*(.+)$", fm, flags=re.M)
             desc = desc_match.group(1).strip() if desc_match else ""
             if len(desc) < MIN_DESC_LEN:
-                errors.append(
-                    f"{p}: description too short ({len(desc)} chars < {MIN_DESC_LEN})"
-                )
+                errors.append(f"{p}: description too short ({len(desc)} chars < {MIN_DESC_LEN})")
             if len(desc) > MAX_DESC_LEN:
-                errors.append(
-                    f"{p}: description too long ({len(desc)} chars > {MAX_DESC_LEN})"
-                )
+                errors.append(f"{p}: description too long ({len(desc)} chars > {MAX_DESC_LEN})")
             if not WHEN_TRIGGER.search(desc):
-                errors.append(
-                    f"{p}: description must include 'Use when' trigger phrase"
-                )
+                errors.append(f"{p}: description must include 'Use when' trigger phrase")
 
         folder_name = os.path.basename(os.path.dirname(p))
         name_match = re.search(r"^name:\s*([-a-z0-9]+)\s*$", fm, flags=re.M)
@@ -124,7 +118,9 @@ def main() -> int:
         if re.search(r"^## Operating procedure\s*$", text, flags=re.M):
             errors.append(f"{p}: use canonical heading '## Procedure' (not 'Operating procedure')")
         if re.search(r"^## Implementation pattern\s*$", text, flags=re.M):
-            errors.append(f"{p}: use canonical heading '## Procedure' (not 'Implementation pattern')")
+            errors.append(
+                f"{p}: use canonical heading '## Procedure' (not 'Implementation pattern')"
+            )
         if re.search(r"^## Additional (guidance|guidelines)\s*$", text, flags=re.M):
             errors.append(f"{p}: remove generic Additional guidance/guidelines section")
         if "MAS DataOps MCP" in text or "DataOps-specific" in text:
@@ -176,7 +172,9 @@ def main() -> int:
 
     for warning in warnings:
         print(f"WARN: {warning}")
-    print(f"PASS: validated {len(paths)} skills; no structural or high-similarity duplication issues.")
+    print(
+        f"PASS: validated {len(paths)} skills; no structural or high-similarity duplication issues."
+    )
     return 0
 
 

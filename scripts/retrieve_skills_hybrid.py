@@ -7,17 +7,33 @@ import re
 import sys
 from argparse import ArgumentParser
 from collections import Counter, defaultdict
+from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Mapping, NamedTuple, Sequence
+from typing import Any, NamedTuple
 
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts import embed_skill_chunks, load_skills_neo4j
+from scripts import embed_skill_chunks, load_skills_neo4j, skills_config
 from scripts.embed_skill_chunks import VectorCandidate
 
-MIN_CONFIDENT_SCORE = 0.2
-DEFAULT_TOKEN_BUDGET = 1200
+DEFAULT_RETRIEVAL_SETTINGS = skills_config.load_settings().retrieval
+MIN_CONFIDENT_SCORE = DEFAULT_RETRIEVAL_SETTINGS.min_confident_score
+DEFAULT_TOKEN_BUDGET = DEFAULT_RETRIEVAL_SETTINGS.default_token_budget
+CONNECTED_RELATIONSHIP_TYPES = frozenset(
+    {
+        "RELATED_TO",
+        "PRECEDES",
+        "REQUIRES",
+        "COMPLEMENTS",
+        "REFINES",
+        "GOVERNS",
+        "VALIDATES",
+        "HAS_WORKFLOW_STAGE",
+        "HAS_TASK_SHAPE",
+        "HAS_CAPABILITY",
+    }
+)
 
 
 class SkillRecommendation(NamedTuple):
@@ -85,16 +101,26 @@ def _text_scores(
     return scores, {skill_id: tuple(chunk_ids) for skill_id, chunk_ids in matched_chunks.items()}
 
 
-def _vector_scores(vector_candidates: Sequence[VectorCandidate]) -> dict[str, float]:
+def _vector_scores(
+    vector_candidates: Sequence[VectorCandidate],
+    min_score: float,
+) -> dict[str, float]:
     scores: dict[str, float] = defaultdict(float)
     for candidate in vector_candidates:
+        if candidate.score < min_score:
+            continue
         scores[candidate.skill_id] = max(scores[candidate.skill_id], candidate.score)
     return scores
 
 
-def _vector_chunk_ids(vector_candidates: Sequence[VectorCandidate]) -> dict[str, tuple[str, ...]]:
+def _vector_chunk_ids(
+    vector_candidates: Sequence[VectorCandidate],
+    min_score: float,
+) -> dict[str, tuple[str, ...]]:
     chunk_ids: dict[str, list[str]] = defaultdict(list)
     for candidate in vector_candidates:
+        if candidate.score < min_score:
+            continue
         chunk_ids[candidate.skill_id].append(candidate.chunk_id)
     return {skill_id: tuple(values) for skill_id, values in chunk_ids.items()}
 
@@ -104,25 +130,13 @@ def _graph_evidence(
     start_skill_ids: set[str],
     max_depth: int,
 ) -> tuple[dict[str, float], dict[str, tuple[str, ...]]]:
-    connected_relationships = {
-        "RELATED_TO",
-        "PRECEDES",
-        "REQUIRES",
-        "COMPLEMENTS",
-        "REFINES",
-        "GOVERNS",
-        "VALIDATES",
-        "HAS_WORKFLOW_STAGE",
-        "HAS_TASK_SHAPE",
-        "HAS_CAPABILITY",
-    }
     paths: dict[str, list[str]] = defaultdict(list)
     counts: Counter[str] = Counter()
     if max_depth <= 0:
         return {}, {}
     adjacency: dict[str, list[load_skills_neo4j.GraphRelationship]] = defaultdict(list)
     for relationship in plan.relationships:
-        if relationship.type not in connected_relationships:
+        if relationship.type not in CONNECTED_RELATIONSHIP_TYPES:
             continue
         if relationship.source_label == "Skill":
             adjacency[relationship.source_id].append(relationship)
@@ -137,8 +151,7 @@ def _graph_evidence(
                 continue
             for relationship in adjacency.get(current, []):
                 path_text = (
-                    f"{relationship.source_id} -[{relationship.type}]-> "
-                    f"{relationship.target_id}"
+                    f"{relationship.source_id} -[{relationship.type}]-> {relationship.target_id}"
                 )
                 if path_text not in paths[start_skill_id]:
                     paths[start_skill_id].append(path_text)
@@ -167,14 +180,10 @@ def _chunk_evidence(
     remaining = token_budget
     chunks_by_id = {chunk.id: chunk for chunk in _chunk_nodes(plan)}
     ordered_chunks = [
-        chunks_by_id[chunk_id]
-        for chunk_id in preferred_chunk_ids
-        if chunk_id in chunks_by_id
+        chunks_by_id[chunk_id] for chunk_id in preferred_chunk_ids if chunk_id in chunks_by_id
     ]
     ordered_chunks.extend(
-        chunk
-        for chunk in _chunk_nodes(plan)
-        if chunk.id not in set(preferred_chunk_ids)
+        chunk for chunk in _chunk_nodes(plan) if chunk.id not in set(preferred_chunk_ids)
     )
     for chunk in ordered_chunks:
         if _string(chunk.properties, "skill_id") != skill_id:
@@ -201,16 +210,16 @@ def retrieve_hybrid_skills(
 ) -> HybridRetrievalResult:
     """Rank skills using text, vector and graph evidence."""
 
-    limit = max(1, min(limit, 20))
+    settings = skills_config.load_settings().retrieval
+    limit = max(1, min(limit, settings.max_limit))
+    max_depth = max(0, min(max_depth, settings.max_depth))
     skills = _skill_nodes(plan)
     text_scores, text_chunk_ids = _text_scores(plan, query_text)
-    vector_scores = _vector_scores(vector_candidates)
-    vector_chunk_ids = _vector_chunk_ids(vector_candidates)
+    vector_scores = _vector_scores(vector_candidates, settings.min_vector_candidate_score)
+    vector_chunk_ids = _vector_chunk_ids(vector_candidates, settings.min_vector_candidate_score)
     candidate_skill_ids = set(text_scores) | set(vector_scores)
     graph_scores, evidence_paths = _graph_evidence(plan, candidate_skill_ids, max_depth)
-    recommendation_inputs: list[
-        tuple[str, float, float, float, float, tuple[str, ...]]
-    ] = []
+    recommendation_inputs: list[tuple[str, float, float, float, float, tuple[str, ...]]] = []
 
     for skill_id in candidate_skill_ids:
         skill = skills.get(skill_id)
@@ -264,9 +273,7 @@ def retrieve_hybrid_skills(
         if remaining_budget <= 0:
             break
 
-    ranked = tuple(
-        sorted(recommendations, key=lambda item: (-item.score, item.skill_name))[:limit]
-    )
+    ranked = tuple(sorted(recommendations, key=lambda item: (-item.score, item.skill_name))[:limit])
     if not ranked or ranked[0].score < MIN_CONFIDENT_SCORE:
         return HybridRetrievalResult(
             query=query_text,
@@ -279,6 +286,176 @@ def retrieve_hybrid_skills(
         uncertain=False,
         message="Hybrid retrieval returned connected, source-backed skill evidence.",
         recommendations=ranked,
+    )
+
+
+def _record_mapping(record: Mapping[str, object]) -> Mapping[str, object]:
+    return dict(record)
+
+
+class Neo4jHybridRetrievalGraph:
+    """Neo4j-backed candidate and evidence fetcher for production retrieval."""
+
+    def __init__(self, driver: Any, settings: skills_config.SkillsKgSettings) -> None:
+        self._driver = driver
+        self._settings = settings
+
+    def fulltext_skill_ids(self, query_text: str, limit: int) -> tuple[str, ...]:
+        """Return skill IDs matched by Neo4j full-text indexes."""
+
+        with self._driver.session(database=self._settings.neo4j.database) as session:
+            records = session.run(
+                (
+                    "CALL db.index.fulltext.queryNodes($chunk_index, $query_text, {limit: $limit}) "
+                    "YIELD node, score "
+                    "RETURN node.skill_id AS skill_id "
+                    "UNION "
+                    "CALL db.index.fulltext.queryNodes($metadata_index, $query_text, {limit: $limit}) "
+                    "YIELD node, score "
+                    "RETURN node.id AS skill_id"
+                ),
+                chunk_index=self._settings.neo4j.chunk_fulltext_index,
+                metadata_index=self._settings.neo4j.metadata_fulltext_index,
+                query_text=query_text,
+                limit=limit,
+            )
+            skill_ids = [
+                str(record["skill_id"])
+                for record in records
+                if isinstance(_record_mapping(record).get("skill_id"), str)
+            ]
+        return tuple(dict.fromkeys(skill_ids))
+
+    def vector_candidates(
+        self,
+        query_text: str,
+        embedder: embed_skill_chunks.EmbeddingProvider,
+        limit: int,
+    ) -> tuple[VectorCandidate, ...]:
+        """Return vector candidates from Neo4j's named vector index."""
+
+        embedding = embedder.embed(query_text)
+        with self._driver.session(database=self._settings.neo4j.database) as session:
+            records = session.run(
+                (
+                    "CALL db.index.vector.queryNodes($index_name, $limit, $embedding) "
+                    "YIELD node, score "
+                    "RETURN node.id AS chunk_id, score, node.source_path AS source_path, "
+                    "node.section_id AS section_id, node.skill_id AS skill_id, "
+                    "node.text AS text, node.embeddingProvider AS embedding_provider, "
+                    "node.embeddingDimensions AS embedding_dimensions"
+                ),
+                index_name=self._settings.neo4j.vector_index,
+                limit=limit,
+                embedding=list(embedding),
+            )
+            return embed_skill_chunks.vector_candidates_from_records(records)
+
+    def fetch_retrieval_plan(self, skill_ids: Sequence[str]) -> load_skills_neo4j.LoadPlan:
+        """Fetch a bounded candidate subgraph for ranking and evidence formatting."""
+
+        unique_skill_ids = tuple(dict.fromkeys(skill_ids))
+        if not unique_skill_ids:
+            return load_skills_neo4j.LoadPlan(nodes=(), relationships=())
+        with self._driver.session(database=self._settings.neo4j.database) as session:
+            skill_records = tuple(
+                _record_mapping(record)
+                for record in session.run(
+                    (
+                        "MATCH (s:Skill) "
+                        "WHERE s.id IN $skill_ids "
+                        "RETURN s.id AS id, properties(s) AS properties"
+                    ),
+                    skill_ids=list(unique_skill_ids),
+                )
+            )
+            chunk_records = tuple(
+                _record_mapping(record)
+                for record in session.run(
+                    (
+                        "MATCH (s:Skill)-[:HAS_SECTION]->(:SkillSection)-[:HAS_CHUNK]->"
+                        "(chunk:SkillChunk) "
+                        "WHERE s.id IN $skill_ids "
+                        "RETURN chunk.id AS id, properties(chunk) AS properties"
+                    ),
+                    skill_ids=list(unique_skill_ids),
+                )
+            )
+            relationship_records = tuple(
+                _record_mapping(record)
+                for record in session.run(
+                    (
+                        "MATCH (source:Skill)-[r]->(target) "
+                        "WHERE source.id IN $skill_ids AND type(r) IN $relationship_types "
+                        "RETURN type(r) AS type, labels(source)[0] AS source_label, "
+                        "source.id AS source_id, labels(target)[0] AS target_label, "
+                        "target.id AS target_id, properties(r) AS properties"
+                    ),
+                    skill_ids=list(unique_skill_ids),
+                    relationship_types=sorted(CONNECTED_RELATIONSHIP_TYPES),
+                )
+            )
+        nodes = [
+            load_skills_neo4j.GraphNode("Skill", str(record["id"]), _properties(record))
+            for record in skill_records
+        ]
+        nodes.extend(
+            load_skills_neo4j.GraphNode("SkillChunk", str(record["id"]), _properties(record))
+            for record in chunk_records
+        )
+        relationships = [
+            load_skills_neo4j.GraphRelationship(
+                type=str(record["type"]),
+                source_label=str(record["source_label"]),
+                source_id=str(record["source_id"]),
+                target_label=str(record["target_label"]),
+                target_id=str(record["target_id"]),
+                properties=_properties(record),
+            )
+            for record in relationship_records
+            if isinstance(record.get("target_id"), str)
+        ]
+        return load_skills_neo4j.LoadPlan(nodes=tuple(nodes), relationships=tuple(relationships))
+
+
+def _properties(record: Mapping[str, object]) -> Mapping[str, object]:
+    value = record.get("properties")
+    return dict(value) if isinstance(value, dict) else {}
+
+
+def retrieve_hybrid_skills_from_neo4j(
+    driver: Any,
+    settings: skills_config.SkillsKgSettings,
+    query_text: str,
+    embedder: embed_skill_chunks.EmbeddingProvider | None = None,
+    limit: int = 5,
+    max_depth: int = 2,
+    token_budget: int = DEFAULT_TOKEN_BUDGET,
+) -> HybridRetrievalResult:
+    """Run production retrieval from live Neo4j full-text, vector and graph evidence."""
+
+    bounded_limit = max(1, min(limit, settings.retrieval.max_limit))
+    runtime_embedder = embedder or embed_skill_chunks.DeterministicEmbeddingProvider(
+        dimension=settings.neo4j.embedding_dimensions
+    )
+    graph = Neo4jHybridRetrievalGraph(driver, settings)
+    vector_candidates = graph.vector_candidates(query_text, runtime_embedder, bounded_limit)
+    candidate_skill_ids = tuple(
+        dict.fromkeys(
+            (
+                *graph.fulltext_skill_ids(query_text, bounded_limit),
+                *(candidate.skill_id for candidate in vector_candidates),
+            )
+        )
+    )
+    plan = graph.fetch_retrieval_plan(candidate_skill_ids)
+    return retrieve_hybrid_skills(
+        plan,
+        query_text,
+        vector_candidates=vector_candidates,
+        limit=bounded_limit,
+        max_depth=max_depth,
+        token_budget=token_budget,
     )
 
 
@@ -372,15 +549,20 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
     return load_skills_neo4j.LoadPlan(nodes=nodes, relationships=relationships)
 
 
-def main(argv: Sequence[str] | None = None) -> int:
+def main(argv: Sequence[str] | None = None) -> int:  # pragma: no cover
     parser = ArgumentParser(description="Run local hybrid skill retrieval.")
     parser.add_argument("query", help="Task query to retrieve skills for.")
     parser.add_argument("--limit", type=int, default=5)
     args = parser.parse_args(list(sys.argv[1:] if argv is None else argv))
 
+    settings = skills_config.load_settings()
     plan = embed_skill_chunks.build_embedded_repository_load_plan(Path("skills"))
-    embedder = embed_skill_chunks.DeterministicEmbeddingProvider(dimension=1536)
-    vector_candidates = embed_skill_chunks.query_vector_candidates(plan, args.query, embedder, args.limit)
+    embedder = embed_skill_chunks.DeterministicEmbeddingProvider(
+        dimension=settings.neo4j.embedding_dimensions
+    )
+    vector_candidates = embed_skill_chunks.query_vector_candidates(
+        plan, args.query, embedder, args.limit
+    )
     result = retrieve_hybrid_skills(plan, args.query, vector_candidates, args.limit)
     print(result.message)
     for recommendation in result.recommendations:

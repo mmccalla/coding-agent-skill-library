@@ -10,13 +10,16 @@ from __future__ import annotations
 import json
 import sys
 from argparse import ArgumentParser
+from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Any, Mapping, NamedTuple, Sequence
+from typing import Any, NamedTuple
+
+from mcp.server.fastmcp import FastMCP
 
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts import embed_skill_chunks, load_skills_neo4j, retrieve_skills_hybrid
+from scripts import embed_skill_chunks, load_skills_neo4j, retrieve_skills_hybrid, skills_config
 
 
 class ToolDefinition(NamedTuple):
@@ -58,19 +61,27 @@ def _string(value: object) -> str:
 class SkillsMcpServer:
     """Read-only MCP-style facade over the skills retrieval graph."""
 
-    def __init__(self, plan: load_skills_neo4j.LoadPlan) -> None:
+    def __init__(
+        self,
+        plan: load_skills_neo4j.LoadPlan,
+        settings: skills_config.SkillsKgSettings | None = None,
+    ) -> None:
         self._plan = plan
+        self._settings = settings or skills_config.load_settings()
 
     @classmethod
-    def for_test_fixture(cls) -> "SkillsMcpServer":
-        return cls(retrieve_skills_hybrid.fixture_load_plan())
+    def for_test_fixture(cls) -> SkillsMcpServer:
+        return cls(
+            retrieve_skills_hybrid.fixture_load_plan(), skills_config.load_settings(environ={})
+        )
 
     @classmethod
-    def from_repository(cls, skills_root: Path = Path("skills")) -> "SkillsMcpServer":
+    def from_repository(cls, skills_root: Path = Path("skills")) -> SkillsMcpServer:
         plan = embed_skill_chunks.build_embedded_repository_load_plan(skills_root)
         return cls(plan)
 
     def list_tools(self) -> tuple[dict[str, object], ...]:
+        mcp_limits = self._settings.mcp
         tools = (
             ToolDefinition(
                 name="search_skills",
@@ -78,7 +89,11 @@ class SkillsMcpServer:
                 inputSchema=_schema(
                     {
                         "query": {"type": "string", "minLength": 1},
-                        "limit": {"type": "integer", "minimum": 1, "maximum": 20},
+                        "limit": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": mcp_limits.search_limit_max,
+                        },
                     },
                     ("query",),
                 ),
@@ -89,7 +104,11 @@ class SkillsMcpServer:
                 inputSchema=_schema(
                     {
                         "skill_id": {"type": "string", "minLength": 1},
-                        "chunk_limit": {"type": "integer", "minimum": 1, "maximum": 10},
+                        "chunk_limit": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": mcp_limits.chunk_limit_max,
+                        },
                     },
                     ("skill_id",),
                 ),
@@ -100,9 +119,21 @@ class SkillsMcpServer:
                 inputSchema=_schema(
                     {
                         "query": {"type": "string", "minLength": 1},
-                        "limit": {"type": "integer", "minimum": 1, "maximum": 10},
-                        "max_depth": {"type": "integer", "minimum": 0, "maximum": 3},
-                        "token_budget": {"type": "integer", "minimum": 50, "maximum": 2000},
+                        "limit": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": mcp_limits.recommend_limit_max,
+                        },
+                        "max_depth": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": self._settings.retrieval.max_depth,
+                        },
+                        "token_budget": {
+                            "type": "integer",
+                            "minimum": mcp_limits.token_budget_min,
+                            "maximum": mcp_limits.token_budget_max,
+                        },
                     },
                     ("query",),
                 ),
@@ -113,7 +144,11 @@ class SkillsMcpServer:
                 inputSchema=_schema(
                     {
                         "skill_id": {"type": "string", "minLength": 1},
-                        "limit": {"type": "integer", "minimum": 1, "maximum": 20},
+                        "limit": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": mcp_limits.context_limit_max,
+                        },
                     },
                     ("skill_id",),
                 ),
@@ -137,6 +172,91 @@ class SkillsMcpServer:
             ),
         )
         return tuple(resource._asdict() for resource in resources)
+
+    def read_resource(self, uri: str) -> tuple[dict[str, object], ...]:
+        """Read a public, agent-safe MCP resource."""
+
+        return self._read_resource(uri)
+
+    def graph_summary(self) -> dict[str, object]:
+        """Return a D3-friendly, bounded graph summary without raw embeddings."""
+
+        nodes: list[dict[str, object]] = []
+        for node in self._plan.nodes:
+            if node.label not in {
+                "Skill",
+                "TaskShape",
+                "WorkflowStage",
+                "Capability",
+                "ControlTheme",
+                "KnowledgeDomain",
+            }:
+                continue
+            nodes.append(
+                {
+                    "id": node.id,
+                    "label": node.label,
+                    "name": _string(node.properties.get("name")) or node.id,
+                    "category": _string(node.properties.get("category")),
+                    "source_path": _string(node.properties.get("path")),
+                }
+            )
+        node_ids = {node["id"] for node in nodes}
+        links = [
+            {
+                "source": relationship.source_id,
+                "target": relationship.target_id,
+                "type": relationship.type,
+            }
+            for relationship in self._plan.relationships
+            if relationship.source_label == "Skill"
+            and relationship.type
+            in {
+                "RELATED_TO",
+                "PRECEDES",
+                "REQUIRES",
+                "COMPLEMENTS",
+                "REFINES",
+                "GOVERNS",
+                "VALIDATES",
+                "HAS_WORKFLOW_STAGE",
+                "HAS_TASK_SHAPE",
+                "HAS_CAPABILITY",
+            }
+            and relationship.source_id in node_ids
+            and relationship.target_id in node_ids
+        ]
+        return {
+            "status": "ok",
+            "nodes": nodes,
+            "links": links,
+            "node_count": len(nodes),
+            "link_count": len(links),
+        }
+
+    def technical_info(self) -> dict[str, object]:
+        """Return safe technical information for MCP clients and operators."""
+
+        contract = json.loads(_string(self.read_resource("skills://contract")[0].get("text")))
+        return {
+            "status": "ok",
+            "server_name": "skills-kg",
+            "read_only": True,
+            "tools": contract.get("tools", []),
+            "resources": [resource["uri"] for resource in self.list_resources()],
+            "limits": contract.get("limits", {}),
+            "api_endpoints": [
+                "GET /health/live",
+                "GET /health/ready",
+                "GET /skills/graph",
+                "GET /skills/search",
+                "GET /skills/{skill_id}",
+                "GET /skills/{skill_id}/context",
+                "POST /skills/recommend",
+                "POST /skills/upload/preview",
+                "GET /mcp/technical-info",
+            ],
+        }
 
     def handle_json_rpc(self, request: Mapping[str, object]) -> dict[str, object] | None:
         """Handle the small MCP JSON-RPC surface used by stdio clients."""
@@ -162,7 +282,7 @@ class SkillsMcpServer:
             return self._json_rpc_result(request_id, {"resources": self.list_resources()})
         if method == "resources/read":
             uri = _string(param_map.get("uri"))
-            return self._json_rpc_result(request_id, {"contents": self._read_resource(uri)})
+            return self._json_rpc_result(request_id, {"contents": self.read_resource(uri)})
         if method == "tools/call":
             tool_name = _string(param_map.get("name"))
             arguments = param_map.get("arguments")
@@ -208,10 +328,10 @@ class SkillsMcpServer:
                 "read_only": True,
                 "tools": [tool["name"] for tool in self.list_tools()],
                 "limits": {
-                    "recommend_skills.limit": 10,
-                    "recommend_skills.max_depth": 3,
-                    "get_skill.chunk_limit": 10,
-                    "search_skills.limit": 20,
+                    "recommend_skills.limit": self._settings.mcp.recommend_limit_max,
+                    "recommend_skills.max_depth": self._settings.retrieval.max_depth,
+                    "get_skill.chunk_limit": self._settings.mcp.chunk_limit_max,
+                    "search_skills.limit": self._settings.mcp.search_limit_max,
                 },
                 "exclusions": ["raw_cypher", "raw_embeddings", "write_tools"],
             }
@@ -262,7 +382,7 @@ class SkillsMcpServer:
 
     def _search_skills(self, arguments: Mapping[str, object]) -> dict[str, object]:
         query = _string(arguments.get("query")).lower()
-        limit = _bounded_int(arguments.get("limit"), 5, 1, 20)
+        limit = _bounded_int(arguments.get("limit"), 5, 1, self._settings.mcp.search_limit_max)
         matches: list[dict[str, object]] = []
         for skill in self._skills():
             skill_name = _string(skill.properties.get("name"))
@@ -288,7 +408,9 @@ class SkillsMcpServer:
 
     def _get_skill(self, arguments: Mapping[str, object]) -> dict[str, object]:
         skill_id = _string(arguments.get("skill_id"))
-        chunk_limit = _bounded_int(arguments.get("chunk_limit"), 3, 1, 10)
+        chunk_limit = _bounded_int(
+            arguments.get("chunk_limit"), 3, 1, self._settings.mcp.chunk_limit_max
+        )
         skill = self._skill_by_id(skill_id)
         if skill is None:
             return {"status": "error", "message": f"Skill not found: {skill_id}"}
@@ -310,9 +432,16 @@ class SkillsMcpServer:
 
     def _recommend_skills(self, arguments: Mapping[str, object]) -> dict[str, object]:
         query = _string(arguments.get("query"))
-        limit = _bounded_int(arguments.get("limit"), 5, 1, 10)
-        max_depth = _bounded_int(arguments.get("max_depth"), 2, 0, 3)
-        token_budget = _bounded_int(arguments.get("token_budget"), 600, 50, 2000)
+        limit = _bounded_int(arguments.get("limit"), 5, 1, self._settings.mcp.recommend_limit_max)
+        max_depth = _bounded_int(
+            arguments.get("max_depth"), 2, 0, self._settings.retrieval.max_depth
+        )
+        token_budget = _bounded_int(
+            arguments.get("token_budget"),
+            600,
+            self._settings.mcp.token_budget_min,
+            self._settings.mcp.token_budget_max,
+        )
         result = retrieve_skills_hybrid.retrieve_hybrid_skills(
             self._plan,
             query,
@@ -342,7 +471,7 @@ class SkillsMcpServer:
 
     def _get_skill_context(self, arguments: Mapping[str, object]) -> dict[str, object]:
         skill_id = _string(arguments.get("skill_id"))
-        limit = _bounded_int(arguments.get("limit"), 10, 1, 20)
+        limit = _bounded_int(arguments.get("limit"), 10, 1, self._settings.mcp.context_limit_max)
         if self._skill_by_id(skill_id) is None:
             return {"status": "error", "message": f"Skill not found: {skill_id}"}
         related: list[str] = []
@@ -368,17 +497,96 @@ class SkillsMcpServer:
         }
 
 
-def main(argv: Sequence[str] | None = None) -> int:
+def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
+    """Build the official MCP SDK server for the Skills KG tools."""
+
+    fastmcp = FastMCP("skills-kg", json_response=True)
+
+    @fastmcp.tool(
+        name="search_skills",
+        description="Search skills by keyword over skill names and chunk text.",
+        structured_output=True,
+    )
+    def search_skills(query: str, limit: int = 5) -> dict[str, object]:
+        return server.call_tool("search_skills", {"query": query, "limit": limit})
+
+    @fastmcp.tool(
+        name="get_skill",
+        description="Return one skill's bounded metadata and source chunks.",
+        structured_output=True,
+    )
+    def get_skill(skill_id: str, chunk_limit: int = 3) -> dict[str, object]:
+        return server.call_tool("get_skill", {"skill_id": skill_id, "chunk_limit": chunk_limit})
+
+    @fastmcp.tool(
+        name="recommend_skills",
+        description="Recommend connected skills for a task query with evidence.",
+        structured_output=True,
+    )
+    def recommend_skills(
+        query: str,
+        limit: int = 5,
+        max_depth: int = 2,
+        token_budget: int = 600,
+    ) -> dict[str, object]:
+        return server.call_tool(
+            "recommend_skills",
+            {
+                "query": query,
+                "limit": limit,
+                "max_depth": max_depth,
+                "token_budget": token_budget,
+            },
+        )
+
+    @fastmcp.tool(
+        name="get_skill_context",
+        description="Return connected neighbouring skills and evidence paths.",
+        structured_output=True,
+    )
+    def get_skill_context(skill_id: str, limit: int = 10) -> dict[str, object]:
+        return server.call_tool("get_skill_context", {"skill_id": skill_id, "limit": limit})
+
+    @fastmcp.resource(
+        "skills://ontology",
+        name="Skills ontology",
+        description="Conceptual ontology and graph contract for the skills KG.",
+        mime_type="text/markdown",
+    )
+    def skills_ontology() -> str:
+        return _string(server.read_resource("skills://ontology")[0].get("text"))
+
+    @fastmcp.resource(
+        "skills://contract",
+        name="Skills MCP contract",
+        description="Agent-safe tool semantics, result limits and evidence requirements.",
+        mime_type="application/json",
+    )
+    def skills_contract() -> str:
+        return _string(server.read_resource("skills://contract")[0].get("text"))
+
+    return fastmcp
+
+
+def main(argv: Sequence[str] | None = None) -> int:  # pragma: no cover
     parser = ArgumentParser(description="Inspect read-only Skills MCP capabilities.")
     parser.add_argument("--list-tools", action="store_true")
     parser.add_argument("--list-resources", action="store_true")
     parser.add_argument("--stdio", action="store_true", help="Run stdio JSON-RPC MCP loop.")
+    parser.add_argument(
+        "--sdk-stdio", action="store_true", help="Run official MCP SDK stdio server."
+    )
+    parser.add_argument("--fixture", action="store_true", help="Use a deterministic fixture graph.")
     args = parser.parse_args(list(sys.argv[1:] if argv is None else argv))
-    server = SkillsMcpServer.from_repository()
+    server = (
+        SkillsMcpServer.for_test_fixture() if args.fixture else SkillsMcpServer.from_repository()
+    )
     if args.list_tools:
         print(json.dumps(server.list_tools(), indent=2, sort_keys=True))
     elif args.list_resources:
         print(json.dumps(server.list_resources(), indent=2, sort_keys=True))
+    elif args.sdk_stdio:
+        build_fastmcp_server(server).run(transport="stdio")
     else:
         stdio_loop(server)
     return 0

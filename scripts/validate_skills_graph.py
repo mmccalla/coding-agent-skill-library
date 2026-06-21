@@ -7,8 +7,9 @@ import json
 import re
 import sys
 from collections import defaultdict, deque
+from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Mapping, NamedTuple, Sequence, cast
+from typing import NamedTuple, cast
 
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -69,11 +70,7 @@ def _skill_records(records: Mapping[str, object]) -> tuple[Mapping[str, object],
     skills = records.get("skills")
     if not isinstance(skills, list):
         return ()
-    return tuple(
-        cast(Mapping[str, object], skill)
-        for skill in skills
-        if isinstance(skill, dict)
-    )
+    return tuple(cast(Mapping[str, object], skill) for skill in skills if isinstance(skill, dict))
 
 
 def _relationship_records(records: Mapping[str, object]) -> tuple[Mapping[str, object], ...]:
@@ -92,9 +89,7 @@ def _bridge_records(records: Mapping[str, object]) -> tuple[Mapping[str, object]
     if not isinstance(bridges, list):
         return ()
     return tuple(
-        cast(Mapping[str, object], bridge)
-        for bridge in bridges
-        if isinstance(bridge, dict)
+        cast(Mapping[str, object], bridge) for bridge in bridges if isinstance(bridge, dict)
     )
 
 
@@ -260,7 +255,10 @@ def validate_graph_records(records: Mapping[str, object]) -> GraphValidationResu
                 bridge_key = (skill_id, BRIDGE_FIELD_KINDS[field], value)
                 proven_source = proven_bridge_sources.get(bridge_key)
                 if proven_source:
-                    if (BRIDGE_FIELD_KINDS[field], proven_source) not in NON_CONNECTIVE_BRIDGE_SOURCES:
+                    if (
+                        BRIDGE_FIELD_KINDS[field],
+                        proven_source,
+                    ) not in NON_CONNECTIVE_BRIDGE_SOURCES:
                         _add_edge(graph, skill_id, f"{field}:{value}")
                 else:
                     errors.append(
