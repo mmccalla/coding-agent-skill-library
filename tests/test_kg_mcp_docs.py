@@ -28,9 +28,16 @@ class SkillsKgMcpDocsTests(unittest.TestCase):
             "python3 scripts/embed_skill_chunks.py",
             "python3 scripts/retrieve_skills_hybrid.py",
             "python3 scripts/skills_mcp_server.py",
+            "python3 scripts/skills_mcp_server.py --sdk-stdio",
+            "python3 scripts/check_neo4j_readiness.py --json",
+            "python3 scripts/evaluate_skill_retrieval.py --limit 3",
             "python3 scripts/validate_skills_graph.py",
+            "python3 -m uvicorn scripts.skills_api:create_app --factory",
             "placeholder",
-            "No live Neo4j instance is required for offline CI",
+            "ready: true",
+            "official MCP client",
+            "FastAPI",
+            "retrieval evaluation gate",
             "connectedness failure",
             "mapping_rule_id",
             "read-only",
@@ -42,6 +49,7 @@ class SkillsKgMcpDocsTests(unittest.TestCase):
 
         self.assertIn("python3 scripts/skills_mcp_server.py --list-tools", text)
         self.assertIn("python3 scripts/embed_skill_chunks.py --query", text)
+        self.assertIn("python3 scripts/evaluate_skill_retrieval.py --limit 3", text)
         self.assertNotIn("--apply", text)
 
 

@@ -66,12 +66,17 @@ class SkillsBridgeMapperTests(unittest.TestCase):
             ("skill:guardrails-safety-patterns", "GOVERNS", "skill:human-in-the-loop")
         ]
         self.assertEqual(relationship["mapping_rule_id"], "skill-rule:guardrails-safety-patterns")
-        self.assertEqual(relationship["source_path"], "skills/agent-control-patterns/guardrails-safety-patterns/SKILL.md")
+        self.assertEqual(
+            relationship["source_path"],
+            "skills/agent-control-patterns/guardrails-safety-patterns/SKILL.md",
+        )
 
     def test_mapper_is_stable_and_preserves_connectivity_validation(self) -> None:
         extractor = load_module(EXTRACTOR, "extract_skills_graph")
         mapper = load_module(MAPPER, "map_skills_bridges")
-        validator = load_module(REPO_ROOT / "scripts" / "validate_skills_graph.py", "validate_skills_graph")
+        validator = load_module(
+            REPO_ROOT / "scripts" / "validate_skills_graph.py", "validate_skills_graph"
+        )
         records = extractor.extract_skills_graph_records(REPO_ROOT / "skills")
 
         first = mapper.apply_semantic_bridge_mappings(records, MAPPING_RULES)

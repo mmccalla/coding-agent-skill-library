@@ -1,0 +1,59 @@
+services:
+  neo4j:
+    image: neo4j:5.26-community
+    ports:
+      - "127.0.0.1:7474:7474"
+      - "127.0.0.1:7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-testpassword}
+      NEO4J_server_memory_heap_initial__size: 512m
+      NEO4J_server_memory_heap_max__size: 1G
+      NEO4J_server_memory_pagecache_size: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:7474 || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 24
+      start_period: 20s
+
+  skills-loader:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    depends_on:
+      neo4j:
+        condition: service_healthy
+    environment:
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD:-testpassword}
+      NEO4J_DATABASE: neo4j
+    command: ["python", "scripts/embed_skill_chunks.py", "--apply", "--batch-size", "500"]
+    restart: "no"
+
+  skills-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    depends_on:
+      neo4j:
+        condition: service_healthy
+      skills-loader:
+        condition: service_completed_successfully
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD:-testpassword}
+      NEO4J_DATABASE: neo4j
+
+  skills-ui:
+    build:
+      context: ./skills-ui
+      args:
+        VITE_API_BASE_URL: http://localhost:8000
+    depends_on:
+      - skills-api
+    ports:
+      - "127.0.0.1:5173:80"

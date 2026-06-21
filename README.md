@@ -109,6 +109,7 @@ If the target repository already has its own `README.md`, do not overwrite it. K
 After installing all categories, validate the library with:
 
 ```bash
+python3 -m pip install -e ".[dev]"
 python3 scripts/validate_skills.py
 ./scripts/ci_local.sh
 find skills -maxdepth 2 -name "README.md" | sort
@@ -120,4 +121,27 @@ With all eight categories installed, the library should contain **87 skills** (i
 
 ## Skills KG And MCP
 
-The graph-backed skills workflow is documented in `skills_docs/SKILLS_KG_MCP_RUNBOOK.md`. It covers extraction, bridge mapping, Neo4j schema setup, dry-run loading, deterministic embeddings, hybrid retrieval, read-only MCP usage, connectedness troubleshooting and offline CI expectations.
+The graph-backed skills workflow is documented in `skills_docs/SKILLS_KG_MCP_RUNBOOK.md`. It covers extraction, bridge mapping, Neo4j schema setup, idempotent loading, index readiness, deterministic embeddings, Neo4j-backed hybrid retrieval, official MCP SDK usage, FastAPI endpoints, retrieval evaluation gates, connectedness troubleshooting and CI expectations.
+
+## Skills KG UI
+
+The separate React deployable lives in `skills-ui/`. It provides a Tailwind and D3 console for upload preview, graph inspection, API readiness and MCP technical information.
+
+Run the backend and UI locally:
+
+```bash
+python3 -m uvicorn scripts.skills_api:create_app --factory --reload
+cd skills-ui
+npm install
+VITE_API_BASE_URL=http://localhost:8000 npm run dev
+```
+
+The upload flow calls `POST /skills/upload/preview`; it validates a candidate `SKILL.md` and does not persist the file or write to Neo4j. The graph panel reads `GET /skills/graph`, and the MCP panel reads `GET /mcp/technical-info`.
+
+To run the full local Docker stack for live testing:
+
+```bash
+docker compose up --build
+```
+
+Then open the UI at `http://localhost:5173` and the FastAPI docs at `http://localhost:8000/docs`.

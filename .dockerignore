@@ -1,0 +1,10 @@
+.git/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+*.pyc
+.coverage
+skills-ui/*.tsbuildinfo
+skills-ui/dist/
+skills-ui/node_modules/

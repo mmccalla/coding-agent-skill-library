@@ -170,7 +170,7 @@ class EmbedSkillChunksTests(unittest.TestCase):
                 self.query = ""
                 self.parameters: dict[str, object] = {}
 
-            def __enter__(self) -> "FakeSession":
+            def __enter__(self) -> FakeSession:
                 return self
 
             def __exit__(self, *_args: object) -> None:
@@ -209,7 +209,9 @@ class EmbedSkillChunksTests(unittest.TestCase):
         )
 
         self.assertIn("CALL db.index.vector.queryNodes", driver.session_instance.query)
-        self.assertEqual("skill_chunk_embedding_vector", driver.session_instance.parameters["index_name"])
+        self.assertEqual(
+            "skill_chunk_embedding_vector", driver.session_instance.parameters["index_name"]
+        )
         self.assertEqual([0.1, 0.2], driver.session_instance.parameters["embedding"])
         self.assertEqual(1, driver.session_instance.parameters["limit"])
         self.assertEqual("chunk-approval", records[0]["chunk_id"])

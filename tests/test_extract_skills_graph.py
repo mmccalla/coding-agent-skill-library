@@ -36,9 +36,7 @@ class SkillsGraphExtractorTests(unittest.TestCase):
 
         records = module.extract_skills_graph_records(REPO_ROOT / "skills")
         skill = next(
-            skill
-            for skill in records["skills"]
-            if skill["id"] == "skill:apply-laws-of-ai"
+            skill for skill in records["skills"] if skill["id"] == "skill:apply-laws-of-ai"
         )
 
         for key in (
@@ -75,7 +73,9 @@ class SkillsGraphExtractorTests(unittest.TestCase):
         self.assertIn("Verification", headings)
         self.assertTrue(all(section["contentHash"] for section in sections))
         self.assertTrue(all(section["name"] for section in sections))
-        self.assertTrue(all(section["id"].startswith("skill:apply-laws-of-ai:section:") for section in sections))
+        self.assertTrue(
+            all(section["id"].startswith("skill:apply-laws-of-ai:section:") for section in sections)
+        )
 
     def test_bridge_records_are_provenanced_and_cover_every_skill(self) -> None:
         module = load_extractor_module()
@@ -88,7 +88,17 @@ class SkillsGraphExtractorTests(unittest.TestCase):
             {skill["id"] for skill in records["skills"]},
         )
         for bridge in records["bridges"]:
-            for key in ("id", "skill_id", "name", "kind", "value", "source", "path", "source_path", "confidence"):
+            for key in (
+                "id",
+                "skill_id",
+                "name",
+                "kind",
+                "value",
+                "source",
+                "path",
+                "source_path",
+                "confidence",
+            ):
                 self.assertIn(key, bridge)
             self.assertNotIn(bridge["value"], {"skill-operation", "skill-use", "skill-governance"})
             self.assertGreaterEqual(bridge["confidence"], 0.0)
@@ -156,7 +166,9 @@ class SkillsGraphExtractorTests(unittest.TestCase):
         ):
             relationship = relationships[("skill:mcp-server-design", target)]
             self.assertEqual(relationship["type"], "RELATED_TO")
-            self.assertEqual(relationship["source_path"], "skills/agentic-patterns/mcp-server-design/SKILL.md")
+            self.assertEqual(
+                relationship["source_path"], "skills/agentic-patterns/mcp-server-design/SKILL.md"
+            )
             self.assertTrue(relationship["source_section_id"].endswith("related-skills"))
 
     def test_extraction_is_repeatable_without_file_changes(self) -> None:
