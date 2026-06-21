@@ -19,7 +19,13 @@ from mcp.server.fastmcp import FastMCP
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts import embed_skill_chunks, load_skills_neo4j, retrieve_skills_hybrid, skills_config
+from scripts import (
+    embed_skill_chunks,
+    load_skills_neo4j,
+    retrieve_skills_hybrid,
+    skills_config,
+    skills_router,
+)
 
 
 class ToolDefinition(NamedTuple):
@@ -153,6 +159,47 @@ class SkillsMcpServer:
                     ("skill_id",),
                 ),
             ),
+            ToolDefinition(
+                name="route_skill_query",
+                description=(
+                    "Classify a skill question as direct_lookup, recommendation, context or "
+                    "execution_plan before selecting retrieval evidence."
+                ),
+                inputSchema=_schema(
+                    {
+                        "query": {"type": "string", "minLength": 1},
+                    },
+                    ("query",),
+                ),
+            ),
+            ToolDefinition(
+                name="resolve_skill",
+                description="Resolve a human skill name or canonical id to a Skills KG skill id.",
+                inputSchema=_schema(
+                    {
+                        "name": {"type": "string", "minLength": 1},
+                    },
+                    ("name",),
+                ),
+            ),
+            ToolDefinition(
+                name="get_skill_execution_guide",
+                description=(
+                    "Return when-to-use, objective, procedure, rules, verification checklist "
+                    "and related skills for a resolved skill."
+                ),
+                inputSchema=_schema(
+                    {
+                        "skill_id": {"type": "string", "minLength": 1},
+                        "related_limit": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": mcp_limits.context_limit_max,
+                        },
+                    },
+                    ("skill_id",),
+                ),
+            ),
         )
         return tuple(tool._asdict() for tool in tools)
 
@@ -252,7 +299,12 @@ class SkillsMcpServer:
                 "GET /skills/search",
                 "GET /skills/{skill_id}",
                 "GET /skills/{skill_id}/context",
+                "GET /ollama/models",
+                "POST /skills/route",
+                "GET /skills/resolve",
+                "GET /skills/{skill_id}/execution-guide",
                 "POST /skills/recommend",
+                "POST /skills/query",
                 "POST /skills/upload/preview",
                 "GET /mcp/technical-info",
             ],
@@ -332,7 +384,74 @@ class SkillsMcpServer:
                     "recommend_skills.max_depth": self._settings.retrieval.max_depth,
                     "get_skill.chunk_limit": self._settings.mcp.chunk_limit_max,
                     "search_skills.limit": self._settings.mcp.search_limit_max,
+                    "get_skill_context.limit": self._settings.mcp.context_limit_max,
+                    "get_skill_execution_guide.related_limit": self._settings.mcp.context_limit_max,
                 },
+                "tool_selection": {
+                    "direct_lookup": {
+                        "when": "The request names one known skill or asks what a skill is.",
+                        "tool": "resolve_skill",
+                        "then": ["get_skill", "get_skill_context"],
+                    },
+                    "recommendation": {
+                        "when": "The request asks which skills to use for a task or no exact skill is named.",
+                        "tool": "recommend_skills",
+                    },
+                    "context": {
+                        "when": "The request asks for related, prerequisite, complementary or neighbouring skills.",
+                        "tool": "get_skill_context",
+                    },
+                    "execution_plan": {
+                        "when": "The request asks how to apply, execute or verify a known skill.",
+                        "tool": "get_skill_execution_guide",
+                    },
+                },
+                "classification_rules": [
+                    "Call route_skill_query before answering ambiguous natural-language skill questions.",
+                    "Use resolve_skill before get_skill, get_skill_context or get_skill_execution_guide when users provide a human-readable name.",
+                    "Use recommend_skills only for task-oriented recommendation prompts.",
+                    "Use get_skill_execution_guide before acting from a skill so the agent has procedure, rules and verification evidence.",
+                ],
+                "evidence_requirements": {
+                    "before_acting": [
+                        "selected route",
+                        "resolved skill id when applicable",
+                        "source paths",
+                        "section ids or evidence paths",
+                        "verification checklist for execution_plan",
+                    ],
+                    "never_return": ["raw_cypher", "raw_embeddings", "secrets"],
+                },
+                "examples": [
+                    {
+                        "query": "tell me about accessibility-wcag",
+                        "route": "direct_lookup",
+                        "tool_sequence": ["route_skill_query", "resolve_skill", "get_skill"],
+                    },
+                    {
+                        "query": "which skills should I use for a secure MCP server?",
+                        "route": "recommendation",
+                        "tool_sequence": ["route_skill_query", "recommend_skills"],
+                    },
+                    {
+                        "query": "what is related to kg-enabled-rag?",
+                        "route": "context",
+                        "tool_sequence": [
+                            "route_skill_query",
+                            "resolve_skill",
+                            "get_skill_context",
+                        ],
+                    },
+                    {
+                        "query": "how do I apply tdd-practice?",
+                        "route": "execution_plan",
+                        "tool_sequence": [
+                            "route_skill_query",
+                            "resolve_skill",
+                            "get_skill_execution_guide",
+                        ],
+                    },
+                ],
                 "exclusions": ["raw_cypher", "raw_embeddings", "write_tools"],
             }
             return (
@@ -359,6 +478,12 @@ class SkillsMcpServer:
             return self._recommend_skills(arguments)
         if name == "get_skill_context":
             return self._get_skill_context(arguments)
+        if name == "route_skill_query":
+            return self._route_skill_query(arguments)
+        if name == "resolve_skill":
+            return self._resolve_skill(arguments)
+        if name == "get_skill_execution_guide":
+            return self._get_skill_execution_guide(arguments)
         return {
             "status": "error",
             "message": f"Unsupported read-only Skills MCP tool: {name}",
@@ -496,6 +621,25 @@ class SkillsMcpServer:
             "evidence_paths": tuple(evidence_paths[:limit]),
         }
 
+    def _route_skill_query(self, arguments: Mapping[str, object]) -> dict[str, object]:
+        query = _string(arguments.get("query"))
+        return skills_router.route_skill_query(self._plan, query)
+
+    def _resolve_skill(self, arguments: Mapping[str, object]) -> dict[str, object]:
+        name = _string(arguments.get("name"))
+        return skills_router.resolve_skill(self._plan, name)
+
+    def _get_skill_execution_guide(self, arguments: Mapping[str, object]) -> dict[str, object]:
+        skill_id = _string(arguments.get("skill_id"))
+        related_limit = _bounded_int(
+            arguments.get("related_limit"), 10, 1, self._settings.mcp.context_limit_max
+        )
+        return skills_router.get_skill_execution_guide(
+            self._plan,
+            skill_id,
+            related_limit=related_limit,
+        )
+
 
 def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
     """Build the official MCP SDK server for the Skills KG tools."""
@@ -546,6 +690,37 @@ def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
     )
     def get_skill_context(skill_id: str, limit: int = 10) -> dict[str, object]:
         return server.call_tool("get_skill_context", {"skill_id": skill_id, "limit": limit})
+
+    @fastmcp.tool(
+        name="route_skill_query",
+        description=(
+            "Classify a skill question as direct_lookup, recommendation, context or execution_plan."
+        ),
+        structured_output=True,
+    )
+    def route_skill_query(query: str) -> dict[str, object]:
+        return server.call_tool("route_skill_query", {"query": query})
+
+    @fastmcp.tool(
+        name="resolve_skill",
+        description="Resolve a human skill name or canonical id to a Skills KG skill id.",
+        structured_output=True,
+    )
+    def resolve_skill(name: str) -> dict[str, object]:
+        return server.call_tool("resolve_skill", {"name": name})
+
+    @fastmcp.tool(
+        name="get_skill_execution_guide",
+        description=(
+            "Return when-to-use, objective, procedure, rules, verification checklist and related skills."
+        ),
+        structured_output=True,
+    )
+    def get_skill_execution_guide(skill_id: str, related_limit: int = 10) -> dict[str, object]:
+        return server.call_tool(
+            "get_skill_execution_guide",
+            {"skill_id": skill_id, "related_limit": related_limit},
+        )
 
     @fastmcp.resource(
         "skills://ontology",

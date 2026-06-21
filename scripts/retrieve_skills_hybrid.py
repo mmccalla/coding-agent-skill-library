@@ -480,6 +480,17 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
         ),
         load_skills_neo4j.GraphNode(
             "SkillChunk",
+            "chunk-kg-when",
+            {
+                "id": "chunk-kg-when",
+                "skill_id": "skill:kg-enabled-rag",
+                "text": "Use this skill when building graph-grounded retrieval with provenance.",
+                "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
+                "section_id": "skill:kg-enabled-rag:section:0-when-to-use",
+            },
+        ),
+        load_skills_neo4j.GraphNode(
+            "SkillChunk",
             "chunk-kg",
             {
                 "id": "chunk-kg",
@@ -487,6 +498,39 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
                 "text": "Use KG-enabled RAG for graph-grounded retrieval.",
                 "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
                 "section_id": "skill:kg-enabled-rag:section:0-objective",
+            },
+        ),
+        load_skills_neo4j.GraphNode(
+            "SkillChunk",
+            "chunk-kg-procedure",
+            {
+                "id": "chunk-kg-procedure",
+                "skill_id": "skill:kg-enabled-rag",
+                "text": "1. Inspect graph and retrieval code. 2. Add tests. 3. Return evidence.",
+                "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
+                "section_id": "skill:kg-enabled-rag:section:0-procedure",
+            },
+        ),
+        load_skills_neo4j.GraphNode(
+            "SkillChunk",
+            "chunk-kg-rules",
+            {
+                "id": "chunk-kg-rules",
+                "skill_id": "skill:kg-enabled-rag",
+                "text": "Never expose raw Cypher, raw embeddings or answers without evidence.",
+                "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
+                "section_id": "skill:kg-enabled-rag:section:0-rules",
+            },
+        ),
+        load_skills_neo4j.GraphNode(
+            "SkillChunk",
+            "chunk-kg-verification",
+            {
+                "id": "chunk-kg-verification",
+                "skill_id": "skill:kg-enabled-rag",
+                "text": "- [ ] Retrieval returns typed evidence.\n- [ ] Answers cite source paths.",
+                "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
+                "section_id": "skill:kg-enabled-rag:section:0-verification",
             },
         ),
         load_skills_neo4j.GraphNode(

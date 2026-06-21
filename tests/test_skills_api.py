@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import unittest
+from collections.abc import Mapping
 
 from fastapi.testclient import TestClient
 
+from scripts import skills_contracts
 from scripts.skills_api import create_app
 from scripts.skills_mcp_server import SkillsMcpServer
 
@@ -113,6 +115,186 @@ Use when validating uploads.
 
         self.assertEqual(200, response.status_code)
         self.assertEqual("http://localhost:5173", response.headers["access-control-allow-origin"])
+
+    def test_query_endpoint_uses_bounded_graph_evidence_and_safe_ollama_provider(self) -> None:
+        async def fake_query_provider(
+            request: skills_contracts.QuerySkillsRequest,
+            recommendations: Mapping[str, object],
+        ) -> Mapping[str, object]:
+            return {
+                "status": "ok",
+                "answer": "Use kg-enabled-rag with source evidence.",
+                "model": "test-model",
+                "ollama_endpoint": request.ollama_endpoint,
+                "evidence": recommendations,
+            }
+
+        client = TestClient(
+            create_app(SkillsMcpServer.for_test_fixture(), query_provider=fake_query_provider)
+        )
+
+        response = client.post(
+            "/skills/query",
+            json={
+                "query": "How should I use graph retrieval?",
+                "ollama_endpoint": "http://127.0.0.1:11434",
+            },
+        )
+
+        self.assertEqual(200, response.status_code)
+        payload = response.json()
+        self.assertEqual("ok", payload["status"])
+        self.assertEqual("test-model", payload["model"])
+        self.assertIn("kg-enabled-rag", response.text)
+        self.assertNotIn("secret", response.text.lower())
+
+    def test_query_endpoint_passes_user_selected_model_to_provider(self) -> None:
+        async def fake_query_provider(
+            request: skills_contracts.QuerySkillsRequest,
+            recommendations: Mapping[str, object],
+        ) -> Mapping[str, object]:
+            return {
+                "status": "ok",
+                "answer": "Use kg-enabled-rag with source evidence.",
+                "model": request.model,
+                "ollama_endpoint": request.ollama_endpoint,
+                "evidence": recommendations,
+            }
+
+        client = TestClient(
+            create_app(SkillsMcpServer.for_test_fixture(), query_provider=fake_query_provider)
+        )
+
+        response = client.post(
+            "/skills/query",
+            json={
+                "query": "How should I use graph retrieval?",
+                "ollama_endpoint": "http://127.0.0.1:11434",
+                "model": "qwen3:1.7b",
+            },
+        )
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual("qwen3:1.7b", response.json()["model"])
+
+    def test_query_endpoint_routes_direct_skill_lookup_before_generation(self) -> None:
+        async def fake_query_provider(
+            request: skills_contracts.QuerySkillsRequest,
+            evidence: Mapping[str, object],
+        ) -> Mapping[str, object]:
+            return {
+                "status": "ok",
+                "answer": "kg-enabled-rag is the direct skill profile.",
+                "model": request.model,
+                "ollama_endpoint": request.ollama_endpoint,
+                "evidence": evidence,
+            }
+
+        client = TestClient(
+            create_app(SkillsMcpServer.for_test_fixture(), query_provider=fake_query_provider)
+        )
+
+        response = client.post(
+            "/skills/query",
+            json={
+                "query": "Tell me about kg-enabled-rag",
+                "ollama_endpoint": "http://127.0.0.1:11434",
+                "model": "qwen3:1.7b",
+            },
+        )
+
+        self.assertEqual(200, response.status_code)
+        evidence = response.json()["evidence"]
+        self.assertEqual("direct_lookup", evidence["route"])
+        self.assertEqual("skill:kg-enabled-rag", evidence["skill"]["skill_id"])
+        self.assertNotIn("recommendations", evidence)
+
+    def test_route_resolve_and_execution_guide_endpoints_are_agent_readable(self) -> None:
+        client = TestClient(create_app(SkillsMcpServer.for_test_fixture()))
+
+        route_response = client.post(
+            "/skills/route", json={"query": "How do I apply kg-enabled-rag?"}
+        )
+        resolve_response = client.get("/skills/resolve", params={"name": "kg-enabled-rag"})
+        guide_response = client.get("/skills/skill:kg-enabled-rag/execution-guide")
+
+        self.assertEqual(200, route_response.status_code)
+        self.assertEqual("execution_plan", route_response.json()["route"])
+        self.assertEqual(200, resolve_response.status_code)
+        self.assertEqual("skill:kg-enabled-rag", resolve_response.json()["skill_id"])
+        self.assertEqual(200, guide_response.status_code)
+        self.assertTrue(guide_response.json()["verification_checklist"])
+
+    def test_ollama_models_endpoint_returns_safe_model_choices(self) -> None:
+        async def fake_model_provider(endpoint: str) -> Mapping[str, object]:
+            return {
+                "status": "ok",
+                "ollama_endpoint": endpoint,
+                "models": [
+                    {"name": "qwen3:1.7b", "running": True},
+                    {"name": "bge-m3:latest", "running": False},
+                ],
+            }
+
+        client = TestClient(
+            create_app(SkillsMcpServer.for_test_fixture(), model_provider=fake_model_provider)
+        )
+
+        response = client.get(
+            "/ollama/models",
+            params={"ollama_endpoint": "http://127.0.0.1:11434"},
+        )
+
+        self.assertEqual(200, response.status_code)
+        payload = response.json()
+        self.assertEqual("ok", payload["status"])
+        self.assertEqual("http://127.0.0.1:11434", payload["ollama_endpoint"])
+        self.assertEqual("qwen3:1.7b", payload["models"][0]["name"])
+
+    def test_query_endpoint_rejects_non_local_ollama_endpoint(self) -> None:
+        client = TestClient(create_app(SkillsMcpServer.for_test_fixture()))
+
+        response = client.post(
+            "/skills/query",
+            json={"query": "test", "ollama_endpoint": "https://example.com"},
+        )
+
+        self.assertEqual(422, response.status_code)
+
+    def test_query_endpoint_returns_bad_gateway_for_ollama_failures(self) -> None:
+        async def failing_query_provider(
+            _request: skills_contracts.QuerySkillsRequest,
+            _recommendations: Mapping[str, object],
+        ) -> Mapping[str, object]:
+            from scripts import skills_ollama
+
+            raise skills_ollama.OllamaQueryError("Could not connect to local Ollama.")
+
+        client = TestClient(
+            create_app(SkillsMcpServer.for_test_fixture(), query_provider=failing_query_provider)
+        )
+
+        response = client.post(
+            "/skills/query",
+            json={"query": "test", "ollama_endpoint": "http://127.0.0.1:11434"},
+        )
+
+        self.assertEqual(502, response.status_code)
+        self.assertTrue(response.headers["x-request-id"].startswith("req_"))
+        detail = response.json()["detail"]
+        self.assertEqual("ollama_query_failed", detail["error_type"])
+        self.assertEqual("skills.query", detail["operation"])
+        self.assertIn("Could not connect to local Ollama", detail["message"])
+        self.assertIn("request_id", detail)
+        self.assertIn("Check that Ollama is running", detail["hint"])
+
+        metrics_response = client.get("/metrics")
+
+        self.assertEqual(200, metrics_response.status_code)
+        self.assertIn("skills_api_requests_total", metrics_response.text)
+        self.assertIn("skills_api_ollama_failures_total", metrics_response.text)
+        self.assertIn('operation="skills.query"', metrics_response.text)
+        self.assertIn('error_type="ollama_query_failed"', metrics_response.text)
 
 
 if __name__ == "__main__":

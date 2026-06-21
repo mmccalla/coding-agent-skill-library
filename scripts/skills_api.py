@@ -3,24 +3,66 @@
 
 from __future__ import annotations
 
+import json
+import logging
 import os
 import re
 import sys
-from collections.abc import Callable, Mapping
+import time
+import uuid
+from collections.abc import Awaitable, Callable, Mapping
 from pathlib import Path
 from typing import Annotated
 
-from fastapi import FastAPI, File, HTTPException, Query, UploadFile
+from fastapi import FastAPI, File, HTTPException, Query, Request, Response, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from prometheus_client import (
+    CONTENT_TYPE_LATEST,
+    CollectorRegistry,
+    Counter,
+    Histogram,
+    generate_latest,
+)
 
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts import check_neo4j_readiness, load_skills_neo4j, skills_config, skills_contracts
+from scripts import (
+    check_neo4j_readiness,
+    load_skills_neo4j,
+    skills_config,
+    skills_contracts,
+    skills_ollama,
+)
 from scripts.skills_mcp_server import SkillsMcpServer, build_fastmcp_server
 
 ReadinessProvider = Callable[[], Mapping[str, object]]
+QueryProvider = Callable[
+    [skills_contracts.QuerySkillsRequest, Mapping[str, object]], Awaitable[Mapping[str, object]]
+]
+ModelProvider = Callable[[str], Awaitable[Mapping[str, object]]]
 MAX_UPLOAD_BYTES = 256 * 1024
+API_LOGGER_NAME = "skills_api"
+METRICS_REGISTRY = CollectorRegistry()
+REQUESTS_TOTAL = Counter(
+    "skills_api_requests_total",
+    "Total Skills API HTTP requests by method, route and status code.",
+    ("method", "route", "status_code"),
+    registry=METRICS_REGISTRY,
+)
+REQUEST_DURATION_SECONDS = Histogram(
+    "skills_api_request_duration_seconds",
+    "Skills API HTTP request duration in seconds by method, route and status code.",
+    ("method", "route", "status_code"),
+    registry=METRICS_REGISTRY,
+)
+OLLAMA_FAILURES_TOTAL = Counter(
+    "skills_api_ollama_failures_total",
+    "Total Ollama-related API failures by operation and error type.",
+    ("operation", "error_type"),
+    registry=METRICS_REGISTRY,
+)
+logging.getLogger(API_LOGGER_NAME).setLevel(logging.INFO)
 
 
 def _default_readiness() -> Mapping[str, object]:
@@ -56,11 +98,15 @@ def _default_server() -> SkillsMcpServer:
 def create_app(
     server: SkillsMcpServer | None = None,
     readiness_provider: ReadinessProvider | None = None,
+    query_provider: QueryProvider | None = None,
+    model_provider: ModelProvider | None = None,
 ) -> FastAPI:
     """Create the FastAPI app with a narrow read-only Skills service boundary."""
 
     skills_server = server or _default_server()
     readiness = readiness_provider or _default_readiness
+    answer_query = query_provider or skills_ollama.answer_graph_query
+    list_models = model_provider or skills_ollama.list_ollama_models
     app = FastAPI(
         title="Skills KG GraphRAG",
         version="0.1.0",
@@ -73,6 +119,42 @@ def create_app(
         allow_headers=["*"],
     )
 
+    @app.middleware("http")
+    async def add_request_context(
+        request: Request,
+        call_next: Callable[[Request], Awaitable[Response]],
+    ) -> Response:
+        request_id = request.headers.get("x-request-id") or f"req_{uuid.uuid4().hex}"
+        request.state.request_id = request_id
+        start_time = time.perf_counter()
+        response = await call_next(request)
+        duration_seconds = time.perf_counter() - start_time
+        duration_ms = round(duration_seconds * 1000, 2)
+        route = _route_path(request)
+        status_code = str(response.status_code)
+        REQUESTS_TOTAL.labels(
+            method=request.method,
+            route=route,
+            status_code=status_code,
+        ).inc()
+        REQUEST_DURATION_SECONDS.labels(
+            method=request.method,
+            route=route,
+            status_code=status_code,
+        ).observe(duration_seconds)
+        response.headers["x-request-id"] = request_id
+        _log_api_event(
+            "api_request_completed",
+            {
+                "request_id": request_id,
+                "method": request.method,
+                "route": route,
+                "status_code": response.status_code,
+                "duration_ms": duration_ms,
+            },
+        )
+        return response
+
     @app.get("/health/live")
     def health_live() -> dict[str, str]:
         return {"status": "ok"}
@@ -80,6 +162,10 @@ def create_app(
     @app.get("/health/ready")
     def health_ready() -> Mapping[str, object]:
         return readiness()
+
+    @app.get("/metrics")
+    def metrics() -> Response:
+        return Response(generate_latest(METRICS_REGISTRY), media_type=CONTENT_TYPE_LATEST)
 
     @app.get("/skills/search")
     def search_skills(
@@ -92,6 +178,12 @@ def create_app(
     @app.get("/skills/graph")
     def skills_graph() -> Mapping[str, object]:
         return skills_server.graph_summary()
+
+    @app.post("/skills/route")
+    def route_skill_query(
+        request: skills_contracts.RouteSkillQueryRequest,
+    ) -> Mapping[str, object]:
+        return skills_server.call_tool("route_skill_query", request.model_dump())
 
     @app.post("/skills/upload/preview")
     async def upload_skill_preview(
@@ -129,6 +221,43 @@ def create_app(
     def mcp_technical_info() -> Mapping[str, object]:
         return skills_server.technical_info()
 
+    @app.get("/ollama/models")
+    async def ollama_models(
+        api_request: Request,
+        ollama_endpoint: str = Query(default=skills_ollama.DEFAULT_OLLAMA_ENDPOINT, min_length=1),
+    ) -> Mapping[str, object]:
+        try:
+            return await list_models(ollama_endpoint)
+        except skills_ollama.UnsafeOllamaEndpointError as exc:
+            raise HTTPException(
+                status_code=422,
+                detail=_api_error_detail(
+                    error_type="unsafe_ollama_endpoint",
+                    message=str(exc),
+                    operation="ollama.models",
+                    request_id=_request_id(api_request),
+                    hint="Use a local HTTP Ollama endpoint such as http://127.0.0.1:11434 or http://host.docker.internal:11434.",
+                ),
+            ) from exc
+        except skills_ollama.OllamaQueryError as exc:
+            raise HTTPException(
+                status_code=502,
+                detail=_api_error_detail(
+                    error_type="ollama_model_discovery_failed",
+                    message=str(exc),
+                    operation="ollama.models",
+                    request_id=_request_id(api_request),
+                    hint="Check that Ollama is running, reachable from the API container, and responding to /api/tags.",
+                ),
+            ) from exc
+
+    @app.get("/skills/resolve")
+    def resolve_skill(
+        name: str = Query(min_length=1, max_length=200),
+    ) -> Mapping[str, object]:
+        request = skills_contracts.ResolveSkillRequest(name=name)
+        return skills_server.call_tool("resolve_skill", request.model_dump())
+
     @app.get("/skills/{skill_id}")
     def get_skill(
         skill_id: str,
@@ -145,11 +274,52 @@ def create_app(
         request = skills_contracts.SkillContextRequest(skill_id=skill_id, limit=limit)
         return skills_server.call_tool("get_skill_context", request.model_dump())
 
+    @app.get("/skills/{skill_id}/execution-guide")
+    def get_skill_execution_guide(
+        skill_id: str,
+        related_limit: int = Query(default=10, ge=1, le=20),
+    ) -> Mapping[str, object]:
+        return skills_server.call_tool(
+            "get_skill_execution_guide",
+            {"skill_id": skill_id, "related_limit": related_limit},
+        )
+
     @app.post("/skills/recommend")
     def recommend_skills(
         request: skills_contracts.RecommendSkillsRequest,
     ) -> Mapping[str, object]:
         return skills_server.call_tool("recommend_skills", request.model_dump())
+
+    @app.post("/skills/query")
+    async def query_skills(
+        api_request: Request,
+        request: skills_contracts.QuerySkillsRequest,
+    ) -> Mapping[str, object]:
+        evidence = _query_evidence_for_route(skills_server, request)
+        try:
+            return await answer_query(request, evidence)
+        except skills_ollama.UnsafeOllamaEndpointError as exc:
+            raise HTTPException(
+                status_code=422,
+                detail=_api_error_detail(
+                    error_type="unsafe_ollama_endpoint",
+                    message=str(exc),
+                    operation="skills.query",
+                    request_id=_request_id(api_request),
+                    hint="Use a local HTTP Ollama endpoint. Docker deployments usually need http://host.docker.internal:11434.",
+                ),
+            ) from exc
+        except skills_ollama.OllamaQueryError as exc:
+            raise HTTPException(
+                status_code=502,
+                detail=_api_error_detail(
+                    error_type="ollama_query_failed",
+                    message=str(exc),
+                    operation="skills.query",
+                    request_id=_request_id(api_request),
+                    hint="Check that Ollama is running, the selected model is installed, and the endpoint is reachable from the API container.",
+                ),
+            ) from exc
 
     app.mount("/mcp", build_fastmcp_server(skills_server).streamable_http_app())
     return app
@@ -165,3 +335,107 @@ def _extract_frontmatter(text: str) -> str:
 def _frontmatter_value(frontmatter: str, key: str) -> str:
     match = re.search(rf"^{re.escape(key)}:\s*(.+)$", frontmatter, flags=re.MULTILINE)
     return match.group(1).strip() if match else ""
+
+
+def _query_evidence_for_route(
+    skills_server: SkillsMcpServer,
+    request: skills_contracts.QuerySkillsRequest,
+) -> Mapping[str, object]:
+    routing = skills_server.call_tool("route_skill_query", {"query": request.query})
+    route = routing.get("route")
+    skill_id = routing.get("resolved_skill_id")
+    if route == "direct_lookup" and isinstance(skill_id, str):
+        skill = skills_server.call_tool(
+            "get_skill",
+            {"skill_id": skill_id, "chunk_limit": request.limit},
+        )
+        context = skills_server.call_tool(
+            "get_skill_context",
+            {"skill_id": skill_id, "limit": request.limit},
+        )
+        return {
+            "status": "ok",
+            "route": "direct_lookup",
+            "routing": routing,
+            "skill": skill,
+            "context": context,
+        }
+    if route == "context" and isinstance(skill_id, str):
+        context = skills_server.call_tool(
+            "get_skill_context",
+            {"skill_id": skill_id, "limit": request.limit},
+        )
+        return {
+            "status": "ok",
+            "route": "context",
+            "routing": routing,
+            "context": context,
+        }
+    if route == "execution_plan" and isinstance(skill_id, str):
+        guide = skills_server.call_tool(
+            "get_skill_execution_guide",
+            {"skill_id": skill_id, "related_limit": request.limit},
+        )
+        return {
+            "status": "ok",
+            "route": "execution_plan",
+            "routing": routing,
+            "execution_guide": guide,
+        }
+
+    recommendation_request = skills_contracts.RecommendSkillsRequest(
+        query=request.query,
+        limit=request.limit,
+        max_depth=request.max_depth,
+        token_budget=request.token_budget,
+    )
+    recommendations = skills_server.call_tool(
+        "recommend_skills", recommendation_request.model_dump()
+    )
+    return {
+        "status": "ok",
+        "route": "recommendation",
+        "routing": routing,
+        **recommendations,
+    }
+
+
+def _request_id(request: Request) -> str:
+    value = getattr(request.state, "request_id", "")
+    return value if isinstance(value, str) and value else "req_unknown"
+
+
+def _route_path(request: Request) -> str:
+    route = request.scope.get("route")
+    path = getattr(route, "path", None)
+    return path if isinstance(path, str) else request.url.path
+
+
+def _api_error_detail(
+    *,
+    error_type: str,
+    message: str,
+    operation: str,
+    request_id: str,
+    hint: str,
+) -> dict[str, str]:
+    OLLAMA_FAILURES_TOTAL.labels(operation=operation, error_type=error_type).inc()
+    _log_api_event(
+        "api_request_failed",
+        {
+            "request_id": request_id,
+            "operation": operation,
+            "error_type": error_type,
+        },
+    )
+    return {
+        "error_type": error_type,
+        "message": message,
+        "operation": operation,
+        "request_id": request_id,
+        "hint": hint,
+    }
+
+
+def _log_api_event(event: str, fields: Mapping[str, object]) -> None:
+    logging.getLogger(API_LOGGER_NAME).info(json.dumps({"event": event, **fields}, sort_keys=True))
