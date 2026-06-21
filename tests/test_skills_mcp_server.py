@@ -2,12 +2,17 @@
 
 from __future__ import annotations
 
+import asyncio
 import importlib.util
-from io import StringIO
 import json
+import sys
 import unittest
+from io import StringIO
 from pathlib import Path
 from typing import Any
+
+from mcp import ClientSession
+from mcp.client.stdio import StdioServerParameters, stdio_client
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = REPO_ROOT / "scripts" / "skills_mcp_server.py"
@@ -126,8 +131,7 @@ class SkillsMcpServerTests(unittest.TestCase):
             }
         )
         input_stream = StringIO(
-            json.dumps({"jsonrpc": "2.0", "id": 4, "method": "initialize", "params": {}})
-            + "\n"
+            json.dumps({"jsonrpc": "2.0", "id": 4, "method": "initialize", "params": {}}) + "\n"
         )
         output_stream = StringIO()
 
@@ -156,8 +160,7 @@ class SkillsMcpServerTests(unittest.TestCase):
         mcp = load_module()
         server = mcp.SkillsMcpServer.for_test_fixture()
         input_stream = StringIO(
-            json.dumps({"jsonrpc": "2.0", "method": "notifications/initialized"})
-            + "\n"
+            json.dumps({"jsonrpc": "2.0", "method": "notifications/initialized"}) + "\n"
         )
         output_stream = StringIO()
 
@@ -166,14 +169,39 @@ class SkillsMcpServerTests(unittest.TestCase):
         self.assertEqual("", output_stream.getvalue())
 
         input_stream = StringIO(
-            json.dumps({"jsonrpc": "2.0", "method": "tools/list", "params": {}})
-            + "\n"
+            json.dumps({"jsonrpc": "2.0", "method": "tools/list", "params": {}}) + "\n"
         )
         output_stream = StringIO()
 
         mcp.stdio_loop(server, input_stream=input_stream, output_stream=output_stream)
 
         self.assertEqual("", output_stream.getvalue())
+
+    def test_official_mcp_client_discovers_and_calls_sdk_stdio_server(self) -> None:
+        async def run_client() -> None:
+            server_params = StdioServerParameters(
+                command=sys.executable,
+                args=[str(SCRIPT), "--sdk-stdio", "--fixture"],
+                cwd=REPO_ROOT,
+            )
+            async with stdio_client(server_params) as (read_stream, write_stream):
+                async with ClientSession(read_stream, write_stream) as session:
+                    await session.initialize()
+                    tools = await session.list_tools()
+                    tool_names = {tool.name for tool in tools.tools}
+                    self.assertIn("recommend_skills", tool_names)
+
+                    result = await session.call_tool(
+                        "recommend_skills",
+                        {"query": "graph rag ontology retrieval", "limit": 1},
+                    )
+
+            serialised = repr(result)
+            self.assertIn("kg-enabled-rag", serialised)
+            self.assertNotIn("MATCH ", serialised)
+            self.assertNotIn("embedding=", serialised)
+
+        asyncio.run(run_client())
 
 
 if __name__ == "__main__":

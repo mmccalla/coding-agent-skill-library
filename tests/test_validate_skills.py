@@ -36,13 +36,7 @@ class ValidateSkillsTests(unittest.TestCase):
         self.assertIn("PASS", result.stdout)
 
     def test_baseline_skill_exists(self) -> None:
-        baseline = (
-            REPO_ROOT
-            / "skills"
-            / "agent-control-patterns"
-            / "apply-laws-of-ai"
-            / "SKILL.md"
-        )
+        baseline = REPO_ROOT / "skills" / "agent-control-patterns" / "apply-laws-of-ai" / "SKILL.md"
         self.assertTrue(baseline.is_file())
 
     def test_missing_baseline_fails(self) -> None:
@@ -77,15 +71,8 @@ class ValidateSkillsTests(unittest.TestCase):
                 module.BASELINE_SKILL = original_baseline
             self.assertEqual(rc, 1)
 
-
     def test_canonical_headings_on_baseline(self) -> None:
-        baseline = (
-            REPO_ROOT
-            / "skills"
-            / "agent-control-patterns"
-            / "apply-laws-of-ai"
-            / "SKILL.md"
-        )
+        baseline = REPO_ROOT / "skills" / "agent-control-patterns" / "apply-laws-of-ai" / "SKILL.md"
         text = baseline.read_text(encoding="utf-8")
         self.assertIsNotNone(re.search(r"^## When to use\s*$", text, flags=re.M))
         self.assertIsNotNone(re.search(r"^## Verification\s*$", text, flags=re.M))
@@ -96,12 +83,7 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_description_requires_use_when_trigger(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = (
-                Path(tmp)
-                / "skills"
-                / "agent-control-patterns"
-                / "apply-laws-of-ai"
-            )
+            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
             skill_dir.mkdir(parents=True)
             baseline = skill_dir / "SKILL.md"
             baseline.write_text(
@@ -133,12 +115,7 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_description_length_bounds(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = (
-                Path(tmp)
-                / "skills"
-                / "agent-control-patterns"
-                / "apply-laws-of-ai"
-            )
+            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
             skill_dir.mkdir(parents=True)
             baseline = skill_dir / "SKILL.md"
             baseline.write_text(
@@ -170,19 +147,12 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_folder_name_must_match_frontmatter_name(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = (
-                Path(tmp)
-                / "skills"
-                / "agent-control-patterns"
-                / "wrong-folder-name"
-            )
+            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "wrong-folder-name"
             skill_dir.mkdir(parents=True)
             (skill_dir / "SKILL.md").write_text(
                 "---\n"
                 "name: apply-laws-of-ai\n"
-                "description: "
-                + ("x" * 70)
-                + ". Use when testing validator folder-name rule.\n"
+                "description: " + ("x" * 70) + ". Use when testing validator folder-name rule.\n"
                 "---\n\n"
                 "# Apply Laws of AI\n\n"
                 "## When to use\n\n"
@@ -191,19 +161,12 @@ class ValidateSkillsTests(unittest.TestCase):
                 "Report gates.\n" + ("word " * 150),
                 encoding="utf-8",
             )
-            baseline_dir = (
-                Path(tmp)
-                / "skills"
-                / "agent-control-patterns"
-                / "apply-laws-of-ai"
-            )
+            baseline_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
             baseline_dir.mkdir(parents=True)
             (baseline_dir / "SKILL.md").write_text(
                 "---\n"
                 "name: apply-laws-of-ai\n"
-                "description: "
-                + ("x" * 70)
-                + ". Use when testing validator baseline presence.\n"
+                "description: " + ("x" * 70) + ". Use when testing validator baseline presence.\n"
                 "---\n\n"
                 "# Apply Laws of AI\n\n"
                 "## When to use\n\n"
@@ -229,26 +192,18 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_verification_requires_checklist_item(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = (
-                Path(tmp)
-                / "skills"
-                / "agent-control-patterns"
-                / "apply-laws-of-ai"
-            )
+            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
             skill_dir.mkdir(parents=True)
             (skill_dir / "SKILL.md").write_text(
                 "---\n"
                 "name: apply-laws-of-ai\n"
-                "description: "
-                + ("x" * 70)
-                + ". Use when testing verification checklist rule.\n"
+                "description: " + ("x" * 70) + ". Use when testing verification checklist rule.\n"
                 "---\n\n"
                 "# Apply Laws of AI\n\n"
                 "## When to use\n\n"
                 "Every session.\n\n"
                 "## Verification\n\n"
-                "Report gates only in prose without checklist items.\n"
-                + ("word " * 150),
+                "Report gates only in prose without checklist items.\n" + ("word " * 150),
                 encoding="utf-8",
             )
             original_root = module.ROOT
@@ -268,26 +223,18 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_objective_section_is_required(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = (
-                Path(tmp)
-                / "skills"
-                / "agent-control-patterns"
-                / "apply-laws-of-ai"
-            )
+            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
             skill_dir.mkdir(parents=True)
             (skill_dir / "SKILL.md").write_text(
                 "---\n"
                 "name: apply-laws-of-ai\n"
-                "description: "
-                + ("x" * 70)
-                + ". Use when testing objective section rule.\n"
+                "description: " + ("x" * 70) + ". Use when testing objective section rule.\n"
                 "---\n\n"
                 "# Apply Laws of AI\n\n"
                 "## When to use\n\n"
                 "Every session.\n\n"
                 "## Verification\n\n"
-                "- [ ] Report gates.\n"
-                + ("word " * 150),
+                "- [ ] Report gates.\n" + ("word " * 150),
                 encoding="utf-8",
             )
             original_root = module.ROOT
@@ -307,19 +254,12 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_legacy_procedure_headings_fail(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = (
-                Path(tmp)
-                / "skills"
-                / "agent-control-patterns"
-                / "apply-laws-of-ai"
-            )
+            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
             skill_dir.mkdir(parents=True)
             (skill_dir / "SKILL.md").write_text(
                 "---\n"
                 "name: apply-laws-of-ai\n"
-                "description: "
-                + ("x" * 70)
-                + ". Use when testing legacy procedure heading rule.\n"
+                "description: " + ("x" * 70) + ". Use when testing legacy procedure heading rule.\n"
                 "---\n\n"
                 "# Apply Laws of AI\n\n"
                 "## When to use\n\n"
@@ -329,8 +269,7 @@ class ValidateSkillsTests(unittest.TestCase):
                 "## Operating procedure\n\n"
                 "1. Test.\n\n"
                 "## Verification\n\n"
-                "- [ ] Report gates.\n"
-                + ("word " * 150),
+                "- [ ] Report gates.\n" + ("word " * 150),
                 encoding="utf-8",
             )
             original_root = module.ROOT
@@ -350,12 +289,7 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_product_specific_overlay_content_fails_in_skills(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = (
-                Path(tmp)
-                / "skills"
-                / "agent-control-patterns"
-                / "apply-laws-of-ai"
-            )
+            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
             skill_dir.mkdir(parents=True)
             (skill_dir / "SKILL.md").write_text(
                 "---\n"
@@ -374,8 +308,7 @@ class ValidateSkillsTests(unittest.TestCase):
                 "## MAS DataOps MCP guidance\n\n"
                 "Product-specific guidance should live in the overlay.\n\n"
                 "## Verification\n\n"
-                "- [ ] Report gates.\n"
-                + ("word " * 150),
+                "- [ ] Report gates.\n" + ("word " * 150),
                 encoding="utf-8",
             )
             original_root = module.ROOT
@@ -395,19 +328,12 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_unsupported_frontmatter_key_fails(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = (
-                Path(tmp)
-                / "skills"
-                / "agent-control-patterns"
-                / "apply-laws-of-ai"
-            )
+            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
             skill_dir.mkdir(parents=True)
             (skill_dir / "SKILL.md").write_text(
                 "---\n"
                 "name: apply-laws-of-ai\n"
-                "description: "
-                + ("x" * 70)
-                + ". Use when testing frontmatter key restrictions.\n"
+                "description: " + ("x" * 70) + ". Use when testing frontmatter key restrictions.\n"
                 "version: 1.0.0\n"
                 "---\n\n"
                 "# Apply Laws of AI\n\n"
@@ -418,8 +344,7 @@ class ValidateSkillsTests(unittest.TestCase):
                 "## Procedure\n\n"
                 "1. Test.\n\n"
                 "## Verification\n\n"
-                "- [ ] Report gates.\n"
-                + ("word " * 150),
+                "- [ ] Report gates.\n" + ("word " * 150),
                 encoding="utf-8",
             )
             original_root = module.ROOT
@@ -439,20 +364,13 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_skill_over_max_line_limit_fails(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = (
-                Path(tmp)
-                / "skills"
-                / "agent-control-patterns"
-                / "apply-laws-of-ai"
-            )
+            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
             skill_dir.mkdir(parents=True)
             long_body = "\n".join(f"- [ ] Line {idx}" for idx in range(610))
             (skill_dir / "SKILL.md").write_text(
                 "---\n"
                 "name: apply-laws-of-ai\n"
-                "description: "
-                + ("x" * 70)
-                + ". Use when testing skill line count restrictions.\n"
+                "description: " + ("x" * 70) + ". Use when testing skill line count restrictions.\n"
                 "---\n\n"
                 "# Apply Laws of AI\n\n"
                 "## When to use\n\n"
@@ -482,12 +400,7 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_non_baseline_skill_under_200_words_fails(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            baseline_dir = (
-                Path(tmp)
-                / "skills"
-                / "agent-control-patterns"
-                / "apply-laws-of-ai"
-            )
+            baseline_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
             baseline_dir.mkdir(parents=True)
             (baseline_dir / "SKILL.md").write_text(
                 "---\n"
@@ -504,8 +417,7 @@ class ValidateSkillsTests(unittest.TestCase):
                 "## Procedure\n\n"
                 "1. Test.\n\n"
                 "## Verification\n\n"
-                "- [ ] Report gates.\n"
-                + ("baselineword " * 210),
+                "- [ ] Report gates.\n" + ("baselineword " * 210),
                 encoding="utf-8",
             )
 
@@ -526,8 +438,7 @@ class ValidateSkillsTests(unittest.TestCase):
                 "## Procedure\n\n"
                 "1. Test.\n\n"
                 "## Verification\n\n"
-                "- [ ] Report gates.\n"
-                + ("thinword " * 150),
+                "- [ ] Report gates.\n" + ("thinword " * 150),
                 encoding="utf-8",
             )
 
@@ -548,12 +459,7 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_baseline_skill_is_exempt_from_minimum_word_count(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            baseline_dir = (
-                Path(tmp)
-                / "skills"
-                / "agent-control-patterns"
-                / "apply-laws-of-ai"
-            )
+            baseline_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
             baseline_dir.mkdir(parents=True)
             (baseline_dir / "SKILL.md").write_text(
                 "---\n"
@@ -570,8 +476,7 @@ class ValidateSkillsTests(unittest.TestCase):
                 "## Procedure\n\n"
                 "1. Test.\n\n"
                 "## Verification\n\n"
-                "- [ ] Report gates.\n"
-                + ("baselineword " * 80),
+                "- [ ] Report gates.\n" + ("baselineword " * 80),
                 encoding="utf-8",
             )
 

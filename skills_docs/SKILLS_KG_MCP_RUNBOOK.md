@@ -4,9 +4,10 @@ This runbook explains how to rebuild, validate and operate the graph-backed skil
 
 ## Offline Local Workflow
 
-No live Neo4j instance is required for offline CI. These commands validate extraction, mapping, embeddings, retrieval and MCP discovery using deterministic local code:
+Install the project and run the deterministic offline gate first:
 
 ```bash
+python3 -m pip install -e ".[dev]"
 python3 scripts/extract_skills_graph.py > /tmp/skills-graph.json
 python3 scripts/map_skills_bridges.py > /tmp/skills-graph-mapped.json
 python3 scripts/validate_skills_graph.py
@@ -14,26 +15,36 @@ python3 scripts/load_skills_neo4j.py
 python3 scripts/embed_skill_chunks.py --query "approval before destructive command" --limit 3
 python3 scripts/retrieve_skills_hybrid.py "graph rag ontology retrieval" --limit 3
 python3 scripts/skills_mcp_server.py --list-tools
+python3 scripts/evaluate_skill_retrieval.py --limit 3
 ./scripts/ci_local.sh
 ```
 
-The dry-run loader reports planned nodes and relationships without contacting Neo4j. The deterministic embedder is used in local test mode and makes no external network call.
+The dry-run loader reports planned nodes and relationships without contacting Neo4j. The deterministic embedder is used in local test mode and makes no external network call. `./scripts/ci_local.sh` runs skill validators, Ruff, mypy, pytest with coverage, offline smoke checks and the retrieval evaluation gate.
 
 ## Production-Like Neo4j Workflow
 
-Apply `neo4j/skills_schema.cypher` before loading. The loader can also apply schema during `--apply`, then preflights the required constraints before writing.
+Use Docker Compose for a disposable local Neo4j instance:
 
-Use placeholders for local setup:
+```bash
+docker compose up -d neo4j
+```
+
+Then set placeholder local credentials and load the embedded graph:
 
 ```bash
 export NEO4J_URI="bolt://localhost:7687"
 export NEO4J_USER="neo4j"
-export NEO4J_PASSWORD="<placeholder-password>"
+export NEO4J_PASSWORD="testpassword"
+export NEO4J_DATABASE="neo4j"
 
 python3 scripts/embed_skill_chunks.py --apply --batch-size 500
+python3 scripts/check_neo4j_readiness.py --json
+python3 -m pytest -m live_neo4j tests/test_live_neo4j_integration.py -q
 ```
 
-Do not print or store secrets in run logs. The first release is read-only from the MCP surface; graph loading remains an operator action, not an agent tool.
+`neo4j/skills_schema.cypher` defines required constraints, lookup indexes, full-text indexes and the vector index. The live readiness report must show `ready: true`, all required constraints/indexes online and `vector_query_ok: true`.
+
+Do not print or store real secrets in run logs. The MCP and API surfaces are read-only; graph loading remains an operator action, not an agent tool.
 
 ## MCP Usage
 
@@ -44,10 +55,16 @@ The MCP server exposes only read-only capabilities:
 - `recommend_skills`
 - `get_skill_context`
 
-STDIO mode is the default:
+The legacy JSON-RPC stdio compatibility mode remains the default:
 
 ```bash
 python3 scripts/skills_mcp_server.py
+```
+
+Use the official MCP SDK stdio server for protocol-compatible clients:
+
+```bash
+python3 scripts/skills_mcp_server.py --sdk-stdio
 ```
 
 Discovery smoke checks:
@@ -57,17 +74,92 @@ python3 scripts/skills_mcp_server.py --list-tools
 python3 scripts/skills_mcp_server.py --list-resources
 ```
 
-The server denies unsupported write or arbitrary Cypher tools. Agent-facing resources are curated and do not expose raw vectors, executable Cypher or internal graph schema metadata.
+The server denies unsupported write or arbitrary Cypher tools. Agent-facing resources are curated and do not expose raw vectors, executable Cypher or internal graph schema metadata. Tests include a real official MCP client discovery and tool-call check.
+
+## FastAPI Usage
+
+The FastAPI app factory lives in `scripts/skills_api.py`. It exposes read-only endpoints:
+
+- `GET /health/live`
+- `GET /health/ready`
+- `GET /skills/graph`
+- `GET /skills/search`
+- `GET /skills/{skill_id}`
+- `GET /skills/{skill_id}/context`
+- `POST /skills/recommend`
+- `POST /skills/upload/preview`
+- `GET /mcp/technical-info`
+
+For local serving:
+
+```bash
+python3 -m uvicorn scripts.skills_api:create_app --factory --host 127.0.0.1 --port 8000
+```
+
+The app also mounts the official MCP streamable HTTP app at `/mcp`.
+
+## UI Usage
+
+The separate React deployable lives in `skills-ui/`. It uses Tailwind for styling, D3 for graph rendering and the existing FastAPI surface for all backend calls.
+
+Run it locally after starting the FastAPI app:
+
+```bash
+cd skills-ui
+npm install
+VITE_API_BASE_URL=http://localhost:8000 npm run dev
+```
+
+The UI supports:
+
+- upload preview for candidate `SKILL.md` files through `POST /skills/upload/preview`;
+- D3 graph inspection through `GET /skills/graph`;
+- API readiness and MCP boundary checks through `GET /health/ready` and `GET /mcp/technical-info`.
+
+Upload preview is intentionally non-persistent. It validates the file shape and frontmatter but does not write to the repository or Neo4j.
+
+## Full Local Docker Stack
+
+For live testing with Neo4j, the FastAPI service and the UI together:
+
+```bash
+docker compose up --build
+```
+
+Compose starts:
+
+- `neo4j` on `http://localhost:7474` and `bolt://localhost:7687`;
+- `skills-loader`, which applies the graph load once Neo4j is healthy;
+- `skills-api` on `http://localhost:8000`;
+- `skills-ui` on `http://localhost:5173`.
+
+Use `http://localhost:5173` for UI testing and `http://localhost:8000/health/ready` to inspect live Neo4j readiness evidence.
 
 ## Integration Tests
 
-Unit tests and deterministic validations run without Neo4j. Live integration tests require explicit local configuration:
+Unit tests and deterministic validations run without Neo4j. Live integration tests require explicit local configuration or the GitHub Actions Neo4j service:
 
 - `NEO4J_URI`
 - `NEO4J_USER`
 - `NEO4J_PASSWORD`
+- `NEO4J_DATABASE`
 
-Do not enable live integration tests in shared CI unless credentials are provided through a secure secret store and the target database is disposable.
+GitHub Actions uses a disposable `neo4j:5.26-community` service with placeholder credentials, runs `./scripts/ci_local.sh`, then emits `python scripts/check_neo4j_readiness.py --json`. Do not point the live test profile at a shared or production database.
+
+## Retrieval Evaluation
+
+Golden cases are stored in `tests/fixtures/retrieval_evaluation/golden_queries.json`. The gate runs:
+
+```bash
+python3 scripts/evaluate_skill_retrieval.py --limit 3
+```
+
+The report must pass these metrics:
+
+- recall@k
+- mean reciprocal rank
+- source and section coverage
+- uncertainty accuracy for absent answers
 
 ## Connectedness Failure Runbook
 
