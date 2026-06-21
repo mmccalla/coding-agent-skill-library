@@ -50,10 +50,13 @@ Do not print or store real secrets in run logs. The MCP and API surfaces are rea
 
 The MCP server exposes only read-only capabilities:
 
+- `route_skill_query`
+- `resolve_skill`
 - `search_skills`
 - `get_skill`
 - `recommend_skills`
 - `get_skill_context`
+- `get_skill_execution_guide`
 
 The legacy JSON-RPC stdio compatibility mode remains the default:
 
@@ -76,6 +79,17 @@ python3 scripts/skills_mcp_server.py --list-resources
 
 The server denies unsupported write or arbitrary Cypher tools. Agent-facing resources are curated and do not expose raw vectors, executable Cypher or internal graph schema metadata. Tests include a real official MCP client discovery and tool-call check.
 
+`skills://contract` defines the agent workflow explicitly:
+
+- call `route_skill_query` before answering ambiguous natural-language skill questions;
+- use `resolve_skill` when the user provides a human-readable skill name such as `accessibility-wcag`;
+- use `get_skill` for `direct_lookup` requests;
+- use `recommend_skills` only for task-oriented recommendation prompts;
+- use `get_skill_context` for related, prerequisite, complementary or neighbouring skills;
+- use `get_skill_execution_guide` before acting from a skill so the agent has when-to-use, objective, procedure, rules, verification checklist and related-skill evidence.
+
+Before acting, agents must return or retain the selected route, resolved skill id where applicable, source paths, section ids or evidence paths, and the verification checklist for execution-plan routes. The contract examples cover direct lookup, recommendation, context expansion and execution-plan requests.
+
 ## FastAPI Usage
 
 The FastAPI app factory lives in `scripts/skills_api.py`. It exposes read-only endpoints:
@@ -86,7 +100,12 @@ The FastAPI app factory lives in `scripts/skills_api.py`. It exposes read-only e
 - `GET /skills/search`
 - `GET /skills/{skill_id}`
 - `GET /skills/{skill_id}/context`
+- `GET /ollama/models`
+- `POST /skills/route`
+- `GET /skills/resolve`
+- `GET /skills/{skill_id}/execution-guide`
 - `POST /skills/recommend`
+- `POST /skills/query`
 - `POST /skills/upload/preview`
 - `GET /mcp/technical-info`
 
@@ -114,9 +133,12 @@ The UI supports:
 
 - upload preview for candidate `SKILL.md` files through `POST /skills/upload/preview`;
 - D3 graph inspection through `GET /skills/graph`;
+- local Ollama-backed graph questions through `POST /skills/query`;
 - API readiness and MCP boundary checks through `GET /health/ready` and `GET /mcp/technical-info`.
 
 Upload preview is intentionally non-persistent. It validates the file shape and frontmatter but does not write to the repository or Neo4j.
+
+The Ollama query flow defaults to `http://127.0.0.1:11434` and lets the user edit the endpoint. Server-side guardrails allow only local endpoints such as `127.0.0.1`, `localhost`, `::1` and `host.docker.internal`, reject URLs containing credentials, and send only bounded graph evidence to the selected model. Keep `.env` files out of source control. The UI calls `GET /ollama/models` so users can choose from running and installed local Ollama models before submitting a graph query.
 
 ## Full Local Docker Stack
 
@@ -134,6 +156,8 @@ Compose starts:
 - `skills-ui` on `http://localhost:5173`.
 
 Use `http://localhost:5173` for UI testing and `http://localhost:8000/health/ready` to inspect live Neo4j readiness evidence.
+
+If the FastAPI service is running in Docker and Ollama is running on the host, use `http://host.docker.internal:11434` in the UI endpoint field. Load the model list in the UI, then choose the model explicitly before querying. The API does not auto-rank or auto-select models.
 
 ## Integration Tests
 

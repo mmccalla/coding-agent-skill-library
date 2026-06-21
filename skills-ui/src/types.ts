@@ -30,6 +30,28 @@ export interface TechnicalInfo {
   api_endpoints: string[];
 }
 
+export interface OpenApiOperation {
+  summary?: string;
+  description?: string;
+}
+
+export interface OpenApiPathItem {
+  get?: OpenApiOperation;
+  post?: OpenApiOperation;
+  put?: OpenApiOperation;
+  patch?: OpenApiOperation;
+  delete?: OpenApiOperation;
+}
+
+export interface OpenApiSpec {
+  openapi: string;
+  info: {
+    title: string;
+    version: string;
+  };
+  paths: Record<string, OpenApiPathItem>;
+}
+
 export interface ReadyResponse {
   status: string;
   read_only?: boolean;
@@ -48,4 +70,44 @@ export interface UploadPreview {
   warnings: string[];
   persisted: boolean;
   message: string;
+}
+
+export interface GraphQueryRequest {
+  query: string;
+  ollama_endpoint: string;
+  model: string;
+}
+
+export interface OllamaModel {
+  name: string;
+  running: boolean;
+}
+
+export interface OllamaModelsResponse {
+  status: "ok";
+  ollama_endpoint: string;
+  models: OllamaModel[];
+}
+
+export interface GraphQueryResponse {
+  status: "ok";
+  answer: string;
+  model: string;
+  ollama_endpoint: string;
+  evidence: {
+    route?: string;
+    routing?: {
+      route?: string;
+      confidence?: number;
+      suggested_tool?: string;
+      resolved_skill_id?: string;
+    };
+    recommendations?: Array<{
+      skill_id: string;
+      skill_name: string;
+      rationale: string;
+      source_paths: string[];
+      evidence_snippets: string[];
+    }>;
+  };
 }
