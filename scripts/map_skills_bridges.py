@@ -6,9 +6,10 @@ from __future__ import annotations
 import json
 import re
 import sys
+from collections.abc import Mapping, Sequence
 from copy import deepcopy
 from pathlib import Path
-from typing import Mapping, Sequence, cast
+from typing import cast
 
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -208,9 +209,7 @@ def apply_semantic_bridge_mappings(
             )
 
     mapped["bridges"] = [bridges_by_id[key] for key in sorted(bridges_by_id)]
-    mapped["relationships"] = [
-        relationships_by_key[key] for key in sorted(relationships_by_key)
-    ]
+    mapped["relationships"] = [relationships_by_key[key] for key in sorted(relationships_by_key)]
     return mapped
 
 

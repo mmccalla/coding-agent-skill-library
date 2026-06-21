@@ -9,14 +9,16 @@ import re
 import sys
 from argparse import ArgumentParser
 from collections import Counter
+from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Any, Mapping, NamedTuple, Protocol, Sequence, cast
+from typing import Any, NamedTuple, Protocol, cast
 
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.extract_skills_graph import extract_skills_graph_records
 from scripts.map_skills_bridges import apply_semantic_bridge_mappings
+from scripts.skills_config import Neo4jSettings, load_settings
 from scripts.validate_skills_graph import validate_graph_records
 
 REQUIRED_SCHEMA_ITEMS = frozenset(
@@ -164,8 +166,15 @@ class InMemoryNeo4jGraph:
 class Neo4jMergeGraph:
     """Neo4j driver-backed implementation of the merge graph protocol."""
 
-    def __init__(self, driver: Any) -> None:
+    def __init__(self, driver: Any, database: str | None = None) -> None:
         self._driver = driver
+        self._database = database
+
+    @property
+    def driver(self) -> Any:
+        """Return the underlying Neo4j driver for read-only integration checks."""
+
+        return self._driver
 
     def available_schema_items(self) -> set[str]:
         with self._session() as session:
@@ -199,13 +208,11 @@ class Neo4jMergeGraph:
 
     def relationship_counts(self) -> Mapping[str, int]:
         with self._session() as session:
-            records = session.run(
-                "MATCH ()-[r]->() RETURN type(r) AS type, count(*) AS count"
-            )
+            records = session.run("MATCH ()-[r]->() RETURN type(r) AS type, count(*) AS count")
             return dict(sorted((str(record["type"]), int(record["count"])) for record in records))
 
     def _session(self) -> Any:
-        return self._driver.session()
+        return self._driver.session(database=self._database)
 
     @staticmethod
     def _safe_identifier(identifier: str) -> str:
@@ -246,13 +253,12 @@ class Neo4jMergeGraph:
             )
 
 
-def neo4j_graph_from_env(environ: Mapping[str, str] | None = None) -> Neo4jMergeGraph:
-    """Create a Neo4j graph adapter from environment variables without logging secrets."""
+def neo4j_graph_from_settings(settings: Neo4jSettings) -> Neo4jMergeGraph:
+    """Create a Neo4j graph adapter from typed settings without logging secrets."""
 
-    env = os.environ if environ is None else environ
-    uri = env.get("NEO4J_URI", "")
-    user = env.get("NEO4J_USER", "")
-    password = env.get("NEO4J_PASSWORD", "")
+    uri = settings.uri
+    user = settings.user
+    password = settings.password
     missing = [
         name
         for name, value in (
@@ -266,11 +272,66 @@ def neo4j_graph_from_env(environ: Mapping[str, str] | None = None) -> Neo4jMerge
         raise RuntimeError(f"Missing Neo4j environment variable(s): {', '.join(missing)}")
 
     try:
-        from neo4j import GraphDatabase  # type: ignore[attr-defined]
+        from neo4j import GraphDatabase
     except ModuleNotFoundError as exc:
         raise RuntimeError("Install the neo4j Python package to use --apply") from exc
 
-    return Neo4jMergeGraph(GraphDatabase.driver(uri, auth=(user, password)))
+    return Neo4jMergeGraph(
+        GraphDatabase.driver(uri, auth=(user, password)), database=settings.database
+    )
+
+
+def neo4j_graph_from_env(environ: Mapping[str, str] | None = None) -> Neo4jMergeGraph:
+    """Create a Neo4j graph adapter from environment variables without logging secrets."""
+
+    return neo4j_graph_from_settings(
+        load_settings(environ=os.environ if environ is None else environ).neo4j
+    )
+
+
+def load_plan_from_neo4j(driver: Any, settings: Neo4jSettings) -> LoadPlan:
+    """Read the live Neo4j graph into the existing read-only MCP load-plan contract."""
+
+    with driver.session(database=settings.database) as session:
+        node_records = session.run(
+            "MATCH (n) RETURN labels(n) AS labels, n.id AS id, properties(n) AS properties"
+        )
+        relationship_records = session.run(
+            "MATCH (source)-[r]->(target) "
+            "RETURN type(r) AS type, labels(source) AS source_labels, "
+            "source.id AS source_id, labels(target) AS target_labels, "
+            "target.id AS target_id, properties(r) AS properties"
+        )
+        nodes = tuple(
+            GraphNode(
+                label=_primary_label(record["labels"]),
+                id=str(record["id"]),
+                properties=cast(Mapping[str, object], dict(record["properties"])),
+            )
+            for record in node_records
+            if record.get("id") is not None
+        )
+        relationships = tuple(
+            GraphRelationship(
+                type=str(record["type"]),
+                source_label=_primary_label(record["source_labels"]),
+                source_id=str(record["source_id"]),
+                target_label=_primary_label(record["target_labels"]),
+                target_id=str(record["target_id"]),
+                properties=cast(Mapping[str, object], dict(record["properties"])),
+            )
+            for record in relationship_records
+            if record.get("source_id") is not None and record.get("target_id") is not None
+        )
+    return LoadPlan(nodes=nodes, relationships=relationships)
+
+
+def _primary_label(labels: object) -> str:
+    if isinstance(labels, list) and labels and isinstance(labels[0], str):
+        return labels[0]
+    if isinstance(labels, tuple) and labels and isinstance(labels[0], str):
+        return labels[0]
+    raise ValueError(f"Neo4j record has no usable label: {labels!r}")
 
 
 def _records_list(records: Mapping[str, object], key: str) -> tuple[Mapping[str, object], ...]:
@@ -366,11 +427,17 @@ def build_load_plan(records: Mapping[str, object]) -> LoadPlan:
         section_id = _string(section, "id")
         skill_id = _string(section, "skill_id")
         add_node(_node("SkillSection", section_id, section))
-        add_relationship(_relationship("HAS_SECTION", "Skill", skill_id, "SkillSection", section_id))
+        add_relationship(
+            _relationship("HAS_SECTION", "Skill", skill_id, "SkillSection", section_id)
+        )
         chunk = _chunk_from_section(section, skill_paths.get(skill_id, ""))
         add_node(chunk)
-        add_relationship(_relationship("HAS_CHUNK", "SkillSection", section_id, "SkillChunk", chunk.id))
-        add_relationship(_relationship("DERIVED_FROM", "SkillChunk", chunk.id, "SkillSection", section_id))
+        add_relationship(
+            _relationship("HAS_CHUNK", "SkillSection", section_id, "SkillChunk", chunk.id)
+        )
+        add_relationship(
+            _relationship("DERIVED_FROM", "SkillChunk", chunk.id, "SkillSection", section_id)
+        )
 
     for bridge in bridges:
         bridge_id = _string(bridge, "id")
@@ -378,18 +445,24 @@ def build_load_plan(records: Mapping[str, object]) -> LoadPlan:
         bridge_kind = _string(bridge, "kind")
         bridge_value = _string(bridge, "value")
         add_node(_node("BridgeAssertion", bridge_id, bridge))
-        add_relationship(_relationship("ASSERTS_BRIDGE", "Skill", skill_id, "BridgeAssertion", bridge_id))
+        add_relationship(
+            _relationship("ASSERTS_BRIDGE", "Skill", skill_id, "BridgeAssertion", bridge_id)
+        )
         label_and_relationship = BRIDGE_KIND_TO_LABEL_AND_REL.get(bridge_kind)
         if label_and_relationship is not None:
             label, relationship_type = label_and_relationship
             add_node(_node(label, bridge_value, {"name": bridge_value}))
-            add_relationship(_relationship(relationship_type, "Skill", skill_id, label, bridge_value))
+            add_relationship(
+                _relationship(relationship_type, "Skill", skill_id, label, bridge_value)
+            )
 
     for reference in references:
         reference_id = _string(reference, "id")
         skill_id = _string(reference, "skill_id")
         add_node(_node("ReferenceDocument", reference_id, reference))
-        add_relationship(_relationship("HAS_REFERENCE", "Skill", skill_id, "ReferenceDocument", reference_id))
+        add_relationship(
+            _relationship("HAS_REFERENCE", "Skill", skill_id, "ReferenceDocument", reference_id)
+        )
 
     for relationship in source_relationships:
         add_relationship(
@@ -467,11 +540,15 @@ def load_plan(
 
 def dry_run_report(plan: LoadPlan) -> str:
     node_counts: Counter[str] = Counter(node.label for node in plan.nodes)
-    relationship_counts: Counter[str] = Counter(relationship.type for relationship in plan.relationships)
+    relationship_counts: Counter[str] = Counter(
+        relationship.type for relationship in plan.relationships
+    )
     lines = ["Skills KG dry-run load report", "Nodes:"]
     lines.extend(f"- {label}: {count}" for label, count in sorted(node_counts.items()))
     lines.append("Relationships:")
-    lines.extend(f"- {rel_type}: {count}" for rel_type, count in sorted(relationship_counts.items()))
+    lines.extend(
+        f"- {rel_type}: {count}" for rel_type, count in sorted(relationship_counts.items())
+    )
     return "\n".join(lines)
 
 
@@ -481,10 +558,12 @@ def build_repository_load_plan(skills_root: Path = Path("skills")) -> LoadPlan:
     return build_load_plan(mapped_records)
 
 
-def main(argv: Sequence[str] | None = None) -> int:
+def main(argv: Sequence[str] | None = None) -> int:  # pragma: no cover
     parser = ArgumentParser(description="Load skills KG records into Neo4j.")
     parser.add_argument("records_json", nargs="?", help="Optional exported records JSON file.")
-    parser.add_argument("--apply", action="store_true", help="Write to Neo4j using environment settings.")
+    parser.add_argument(
+        "--apply", action="store_true", help="Write to Neo4j using environment settings."
+    )
     parser.add_argument("--batch-size", type=int, default=500, help="Transactional batch size.")
     args = parser.parse_args(list(sys.argv[1:] if argv is None else argv))
 
@@ -498,13 +577,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         plan = build_repository_load_plan()
 
     if args.apply:
-        graph = neo4j_graph_from_env()
+        settings = load_settings()
+        graph = neo4j_graph_from_settings(settings.neo4j)
         report = load_plan(
             graph,
             plan,
             batch_size=args.batch_size,
             schema_statements=read_schema_statements(),
-            schema_parameters={"embedding_dimensions": 1536},
+            schema_parameters={"embedding_dimensions": settings.neo4j.embedding_dimensions},
         )
         print("Skills KG load report")
         for key, value in report.logical_counts.items():

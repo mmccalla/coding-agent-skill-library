@@ -1,0 +1,20 @@
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+COPY pyproject.toml README.md ./
+COPY scripts ./scripts
+COPY configs ./configs
+COPY skills ./skills
+COPY skills_docs ./skills_docs
+COPY neo4j ./neo4j
+
+RUN python -m pip install --no-cache-dir --upgrade pip \
+    && python -m pip install --no-cache-dir .
+
+EXPOSE 8000
+
+CMD ["python", "-m", "uvicorn", "scripts.skills_api:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000"]

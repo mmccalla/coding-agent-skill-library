@@ -45,8 +45,13 @@ class HybridRetrievalTests(unittest.TestCase):
         self.assertFalse(result.uncertain)
         self.assertEqual("skill:kg-enabled-rag", result.recommendations[0].skill_id)
         self.assertIn("graph-grounded retrieval", result.recommendations[0].evidence_snippets[0])
-        self.assertIn("skills/data-architecture/kg-enabled-rag/SKILL.md", result.recommendations[0].source_paths)
-        self.assertIn("skill:kg-enabled-rag:section:0-objective", result.recommendations[0].section_ids)
+        self.assertIn(
+            "skills/data-architecture/kg-enabled-rag/SKILL.md",
+            result.recommendations[0].source_paths,
+        )
+        self.assertIn(
+            "skill:kg-enabled-rag:section:0-objective", result.recommendations[0].section_ids
+        )
         self.assertTrue(result.recommendations[0].evidence_paths)
 
     def test_connected_skill_outranks_isolated_vector_match(self) -> None:
@@ -190,6 +195,98 @@ class HybridRetrievalTests(unittest.TestCase):
         )
 
         self.assertIn("graph-grounded retrieval", result.recommendations[0].evidence_snippets[0])
+
+    def test_neo4j_hybrid_adapter_uses_fulltext_vector_and_fetches_plan(self) -> None:
+        retrieval = load_module()
+
+        class FakeSession:
+            def __init__(self) -> None:
+                self.queries: list[tuple[str, dict[str, object]]] = []
+
+            def __enter__(self) -> FakeSession:
+                return self
+
+            def __exit__(self, *_args: object) -> None:
+                return None
+
+            def run(self, query: str, **parameters: object) -> tuple[dict[str, object], ...]:
+                self.queries.append((query, parameters))
+                if "db.index.fulltext.queryNodes" in query:
+                    return ({"skill_id": "skill:kg-enabled-rag"},)
+                if "db.index.vector.queryNodes" in query:
+                    return (
+                        {
+                            "chunk_id": "chunk-kg",
+                            "score": 0.91,
+                            "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
+                            "section_id": "skill:kg-enabled-rag:section:0-objective",
+                            "skill_id": "skill:kg-enabled-rag",
+                            "text": "Use KG-enabled RAG for graph-grounded retrieval.",
+                            "embedding_provider": "deterministic-test-embedding",
+                            "embedding_dimensions": 8,
+                        },
+                    )
+                if "RETURN s.id AS id" in query:
+                    return (
+                        {
+                            "id": "skill:kg-enabled-rag",
+                            "properties": {
+                                "id": "skill:kg-enabled-rag",
+                                "name": "kg-enabled-rag",
+                            },
+                        },
+                    )
+                if "RETURN chunk.id AS id" in query:
+                    return (
+                        {
+                            "id": "chunk-kg",
+                            "properties": {
+                                "id": "chunk-kg",
+                                "skill_id": "skill:kg-enabled-rag",
+                                "text": "Use KG-enabled RAG for graph-grounded retrieval.",
+                                "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
+                                "section_id": "skill:kg-enabled-rag:section:0-objective",
+                            },
+                        },
+                    )
+                if "RETURN type(r) AS type" in query:
+                    return (
+                        {
+                            "type": "HAS_CAPABILITY",
+                            "source_label": "Skill",
+                            "source_id": "skill:kg-enabled-rag",
+                            "target_label": "Capability",
+                            "target_id": "graph-rag",
+                            "properties": {},
+                        },
+                    )
+                raise AssertionError(f"Unexpected query: {query}")
+
+        class FakeDriver:
+            def __init__(self) -> None:
+                self.session_instance = FakeSession()
+                self.database = ""
+
+            def session(self, *, database: str) -> FakeSession:
+                self.database = database
+                return self.session_instance
+
+        settings = retrieval.skills_config.load_settings(environ={})
+        driver = FakeDriver()
+        result = retrieval.retrieve_hybrid_skills_from_neo4j(
+            driver,
+            settings,
+            "graph rag retrieval",
+            embedder=retrieval.embed_skill_chunks.DeterministicEmbeddingProvider(dimension=8),
+            limit=1,
+        )
+
+        self.assertFalse(result.uncertain)
+        self.assertEqual("skill:kg-enabled-rag", result.recommendations[0].skill_id)
+        queries = "\n".join(query for query, _parameters in driver.session_instance.queries)
+        self.assertIn("db.index.fulltext.queryNodes", queries)
+        self.assertIn("db.index.vector.queryNodes", queries)
+        self.assertEqual("neo4j", driver.database)
 
 
 if __name__ == "__main__":
