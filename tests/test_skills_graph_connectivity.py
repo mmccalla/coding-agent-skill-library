@@ -60,6 +60,10 @@ def connected_fixture() -> dict[str, object]:
                 "target": "skill:using-agent-skills",
                 "source_path": "fixture",
                 "mapping_rule_id": "fixture",
+                "confidence": 1.0,
+                "rationale": "Fixture curated relationship.",
+                "source_scope": "fixture",
+                "source_ref": "fixture",
             }
         ],
         "bridges": [
@@ -146,7 +150,12 @@ def connected_fixture() -> dict[str, object]:
         ],
     }
     for bridge in records["bridges"]:
+        source = bridge["source"]
         bridge["source_path"] = "fixture"
+        bridge["rule_id"] = source
+        bridge["source_scope"] = "fixture"
+        bridge["source_ref"] = "fixture"
+        bridge["rationale"] = "Fixture bridge assertion."
     return records
 
 
@@ -242,6 +251,10 @@ class SkillsGraphConnectivityTests(unittest.TestCase):
         )
         for bridge in records["bridges"]:
             bridge.setdefault("source_path", "fixture")
+            bridge.setdefault("rule_id", bridge["source"])
+            bridge.setdefault("source_scope", "fixture")
+            bridge.setdefault("source_ref", "fixture")
+            bridge.setdefault("rationale", "Fixture bridge assertion.")
 
         result = module.validate_graph_records(records)
 
@@ -324,6 +337,10 @@ class SkillsGraphConnectivityTests(unittest.TestCase):
                     "kind": "task_shape",
                     "value": "isolated-task",
                     "source": "fixture",
+                    "rule_id": "fixture",
+                    "source_scope": "fixture",
+                    "source_ref": "fixture",
+                    "rationale": "Fixture bridge assertion.",
                     "source_path": "fixture",
                     "confidence": 1.0,
                 },
@@ -333,6 +350,10 @@ class SkillsGraphConnectivityTests(unittest.TestCase):
                     "kind": "workflow_stage",
                     "value": "isolated-stage",
                     "source": "fixture",
+                    "rule_id": "fixture",
+                    "source_scope": "fixture",
+                    "source_ref": "fixture",
+                    "rationale": "Fixture bridge assertion.",
                     "source_path": "fixture",
                     "confidence": 1.0,
                 },
@@ -342,6 +363,10 @@ class SkillsGraphConnectivityTests(unittest.TestCase):
                     "kind": "capability",
                     "value": "isolated-capability",
                     "source": "fixture",
+                    "rule_id": "fixture",
+                    "source_scope": "fixture",
+                    "source_ref": "fixture",
+                    "rationale": "Fixture bridge assertion.",
                     "source_path": "fixture",
                     "confidence": 1.0,
                 },
@@ -350,7 +375,11 @@ class SkillsGraphConnectivityTests(unittest.TestCase):
                     "skill_id": "skill:isolated-agentic",
                     "kind": "control_theme",
                     "value": "agentic-patterns",
-                    "source": "category",
+                    "source": "fixture",
+                    "rule_id": "fixture",
+                    "source_scope": "category",
+                    "source_ref": "agentic-patterns",
+                    "rationale": "Fixture category bridge assertion.",
                     "source_path": "fixture",
                     "confidence": 0.9,
                 },
@@ -359,7 +388,11 @@ class SkillsGraphConnectivityTests(unittest.TestCase):
                     "skill_id": "skill:isolated-agentic",
                     "kind": "knowledge_domain",
                     "value": "agentic-patterns",
-                    "source": "category",
+                    "source": "fixture",
+                    "rule_id": "fixture",
+                    "source_scope": "category",
+                    "source_ref": "agentic-patterns",
+                    "rationale": "Fixture category bridge assertion.",
                     "source_path": "fixture",
                     "confidence": 0.9,
                 },

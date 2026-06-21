@@ -133,9 +133,9 @@ def get_skill_execution_guide(
     if skill is None:
         return {"status": "error", "message": f"Skill not found: {skill_id}"}
 
-    section_texts = _canonical_section_texts(_chunks_for_skill(plan, skill_id))
+    section_texts = _canonical_section_texts(_retrieval_units_for_skill(plan, skill_id))
     related_skill_ids, evidence_paths = _related_skill_ids(plan, skill_id, related_limit)
-    evidence = _section_evidence(_chunks_for_skill(plan, skill_id))
+    evidence = _section_evidence(_retrieval_units_for_skill(plan, skill_id))
     return {
         "status": "ok",
         "skill_id": skill.id,
@@ -165,13 +165,13 @@ def _skill_by_id(
     return None
 
 
-def _chunks_for_skill(
+def _retrieval_units_for_skill(
     plan: load_skills_neo4j.LoadPlan, skill_id: str
 ) -> tuple[load_skills_neo4j.GraphNode, ...]:
     return tuple(
         node
         for node in plan.nodes
-        if node.label == "SkillChunk" and node.properties.get("skill_id") == skill_id
+        if node.label == "RetrievalUnit" and node.properties.get("skill_id") == skill_id
     )
 
 
@@ -210,15 +210,15 @@ def _source_paths_for_skill(plan: load_skills_neo4j.LoadPlan, skill_id: str) -> 
         path = _string(skill.properties.get("path"))
         if path:
             paths.append(path)
-    for chunk in _chunks_for_skill(plan, skill_id):
-        path = _string(chunk.properties.get("source_path"))
+    for unit in _retrieval_units_for_skill(plan, skill_id):
+        path = _string(unit.properties.get("source_path"))
         if path:
             paths.append(path)
     return tuple(dict.fromkeys(paths))
 
 
 def _canonical_section_texts(
-    chunks: Sequence[load_skills_neo4j.GraphNode],
+    retrieval_units: Sequence[load_skills_neo4j.GraphNode],
 ) -> dict[str, str]:
     sections = {
         "when_to_use": "",
@@ -227,9 +227,9 @@ def _canonical_section_texts(
         "rules": "",
         "verification": "",
     }
-    for chunk in chunks:
-        section_id = _string(chunk.properties.get("section_id")).lower()
-        text = _string(chunk.properties.get("text")).strip()
+    for unit in retrieval_units:
+        section_id = _string(unit.properties.get("section_id")).lower()
+        text = _string(unit.properties.get("text")).strip()
         if not text:
             continue
         if "when-to-use" in section_id:
@@ -256,19 +256,21 @@ def _verification_checklist(text: str) -> tuple[str, ...]:
     return tuple(check for check in checks if check)
 
 
-def _section_evidence(chunks: Sequence[load_skills_neo4j.GraphNode]) -> tuple[dict[str, str], ...]:
+def _section_evidence(
+    retrieval_units: Sequence[load_skills_neo4j.GraphNode],
+) -> tuple[dict[str, str], ...]:
     evidence: list[dict[str, str]] = []
-    for chunk in chunks:
-        section_id = _string(chunk.properties.get("section_id"))
+    for unit in retrieval_units:
+        section_id = _string(unit.properties.get("section_id"))
         if any(
             marker in section_id.lower()
             for marker in ("when-to-use", "objective", "procedure", "rules", "verification")
         ):
             evidence.append(
                 {
-                    "chunk_id": chunk.id,
+                    "retrieval_unit_id": unit.id,
                     "section_id": section_id,
-                    "source_path": _string(chunk.properties.get("source_path")),
+                    "source_path": _string(unit.properties.get("source_path")),
                 }
             )
     return tuple(evidence)
@@ -299,7 +301,7 @@ def _related_skill_ids(
 
 def _evidence_required(route: str) -> tuple[str, ...]:
     requirements = {
-        ROUTE_DIRECT_LOOKUP: ("resolved_skill_id", "skill chunks", "source paths"),
+        ROUTE_DIRECT_LOOKUP: ("resolved_skill_id", "retrieval units", "source paths"),
         ROUTE_RECOMMENDATION: ("ranked recommendations", "rationale", "source snippets"),
         ROUTE_CONTEXT: ("resolved_skill_id", "related skills", "evidence paths"),
         ROUTE_EXECUTION_PLAN: (

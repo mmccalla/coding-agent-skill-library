@@ -18,8 +18,8 @@ skills:SkillCategory a owl:Class ;
 skills:SkillSection a owl:Class ;
     rdfs:label "Skill section" .
 
-skills:SkillChunk a owl:Class ;
-    rdfs:label "Skill chunk" .
+skills:RetrievalUnit a owl:Class ;
+    rdfs:label "Retrieval unit" .
 
 skills:ReferenceDocument a owl:Class ;
     rdfs:label "Reference document" .
@@ -87,6 +87,22 @@ skills:source a owl:DatatypeProperty ;
     rdfs:domain skills:BridgeAssertion ;
     rdfs:range xsd:string .
 
+skills:rule_id a owl:DatatypeProperty ;
+    rdfs:domain skills:BridgeAssertion ;
+    rdfs:range xsd:string .
+
+skills:source_scope a owl:DatatypeProperty ;
+    rdfs:domain skills:BridgeAssertion ;
+    rdfs:range xsd:string .
+
+skills:source_ref a owl:DatatypeProperty ;
+    rdfs:domain skills:BridgeAssertion ;
+    rdfs:range xsd:string .
+
+skills:rationale a owl:DatatypeProperty ;
+    rdfs:domain skills:BridgeAssertion ;
+    rdfs:range xsd:string .
+
 skills:belongsToCategory a owl:ObjectProperty ;
     rdfs:domain skills:Skill ;
     rdfs:range skills:SkillCategory .
@@ -95,9 +111,9 @@ skills:hasSection a owl:ObjectProperty ;
     rdfs:domain skills:Skill ;
     rdfs:range skills:SkillSection .
 
-skills:hasChunk a owl:ObjectProperty ;
-    rdfs:domain skills:Skill ;
-    rdfs:range skills:SkillChunk .
+skills:hasRetrievalUnit a owl:ObjectProperty ;
+    rdfs:domain skills:SkillSection ;
+    rdfs:range skills:RetrievalUnit .
 
 skills:hasReference a owl:ObjectProperty ;
     rdfs:domain skills:Skill ;
@@ -134,7 +150,7 @@ skills:assertsBridge a owl:ObjectProperty ;
     rdfs:range skills:BridgeAssertion .
 
 skills:derivedFrom a owl:ObjectProperty ;
-    rdfs:domain skills:SkillChunk ;
+    rdfs:domain skills:RetrievalUnit ;
     rdfs:range skills:SkillSection .
 
 skills:precedes a owl:ObjectProperty ;

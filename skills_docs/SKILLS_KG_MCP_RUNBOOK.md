@@ -19,7 +19,7 @@ python3 scripts/evaluate_skill_retrieval.py --limit 3
 ./scripts/ci_local.sh
 ```
 
-The dry-run loader reports planned nodes and relationships without contacting Neo4j. The deterministic embedder is used in local test mode and makes no external network call. `./scripts/ci_local.sh` runs skill validators, Ruff, mypy, pytest with coverage, offline smoke checks and the retrieval evaluation gate.
+The dry-run loader reports planned nodes and relationships without contacting Neo4j. The deterministic retrieval-unit embedder is used in local test mode and makes no external network call. `./scripts/ci_local.sh` runs skill validators, Ruff, mypy, pytest with coverage, offline smoke checks and the retrieval evaluation gate.
 
 ## Production-Like Neo4j Workflow
 
@@ -42,7 +42,7 @@ python3 scripts/check_neo4j_readiness.py --json
 python3 -m pytest -m live_neo4j tests/test_live_neo4j_integration.py -q
 ```
 
-`neo4j/skills_schema.cypher` defines required constraints, lookup indexes, full-text indexes and the vector index. The live readiness report must show `ready: true`, all required constraints/indexes online and `vector_query_ok: true`.
+`neo4j/skills_schema.cypher` defines required constraints, lookup indexes, full-text indexes and the `RetrievalUnit` vector index. The live readiness report must show `ready: true`, all required constraints/indexes online and `vector_query_ok: true`.
 
 Do not print or store real secrets in run logs. The MCP and API surfaces are read-only; graph loading remains an operator action, not an agent tool.
 
@@ -158,6 +158,20 @@ Compose starts:
 Use `http://localhost:5173` for UI testing and `http://localhost:8000/health/ready` to inspect live Neo4j readiness evidence.
 
 If the FastAPI service is running in Docker and Ollama is running on the host, use `http://host.docker.internal:11434` in the UI endpoint field. Load the model list in the UI, then choose the model explicitly before querying. The API does not auto-rank or auto-select models.
+
+## Observability Checks
+
+Use the API request id to connect UI/API failures to structured logs and Prometheus metrics. The API emits safe JSON log events for completed requests, selected skill-query routes, selected query evidence, retrieval results and Ollama failures. These logs intentionally omit raw prompts, embeddings, credentials and `.env` values.
+
+Prometheus scrapes `GET /metrics` and includes:
+
+- `skills_api_requests_total` and `skills_api_request_duration_seconds` for route-level traffic and latency;
+- `skills_api_readiness_state` for Neo4j dependency readiness;
+- `skills_api_graph_nodes` and `skills_api_graph_relationships` for loaded graph shape after reloads;
+- `skills_api_retrieval_requests_total`, `skills_api_retrieval_recommendation_count` and `skills_api_retrieval_top_score` for retrieval outcome tracking;
+- `skills_api_ollama_failures_total` for model discovery and query failures.
+
+Grafana's `Skills KG API Observability` dashboard shows API request rate, 5xx ratio, p95 latency, Ollama failures, Neo4j readiness, graph node counts and retrieval requests by route.
 
 ## Integration Tests
 

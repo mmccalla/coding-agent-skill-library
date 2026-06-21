@@ -29,9 +29,9 @@ class Neo4jSettings(BaseModel):
     embedding_dimensions: PositiveInt = 1536
     embedding_provider: str = "deterministic-test-embedding"
     vector_similarity_function: str = "cosine"
-    vector_index: str = "skill_chunk_embedding_vector"
+    vector_index: str = "retrieval_unit_embedding_vector"
     metadata_fulltext_index: str = "skill_metadata_fulltext"
-    chunk_fulltext_index: str = "skill_chunk_text_fulltext"
+    retrieval_unit_fulltext_index: str = "retrieval_unit_text_fulltext"
 
 
 class RetrievalSettings(BaseModel):
@@ -55,7 +55,7 @@ class McpSettings(BaseModel):
     search_limit_max: PositiveInt = 20
     recommend_limit_max: PositiveInt = 10
     context_limit_max: PositiveInt = 20
-    chunk_limit_max: PositiveInt = 10
+    retrieval_unit_limit_max: PositiveInt = 10
     token_budget_min: PositiveInt = 50
     token_budget_max: PositiveInt = 2000
 

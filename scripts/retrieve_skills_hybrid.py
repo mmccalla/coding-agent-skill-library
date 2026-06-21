@@ -78,8 +78,16 @@ def _skill_nodes(plan: load_skills_neo4j.LoadPlan) -> dict[str, load_skills_neo4
     return {node.id: node for node in plan.nodes if node.label == "Skill"}
 
 
-def _chunk_nodes(plan: load_skills_neo4j.LoadPlan) -> tuple[load_skills_neo4j.GraphNode, ...]:
-    return tuple(node for node in plan.nodes if node.label == "SkillChunk")
+def _retrieval_unit_nodes(
+    plan: load_skills_neo4j.LoadPlan,
+) -> tuple[load_skills_neo4j.GraphNode, ...]:
+    return tuple(node for node in plan.nodes if node.label == "RetrievalUnit")
+
+
+def _bridge_assertion_nodes(
+    plan: load_skills_neo4j.LoadPlan,
+) -> tuple[load_skills_neo4j.GraphNode, ...]:
+    return tuple(node for node in plan.nodes if node.label == "BridgeAssertion")
 
 
 def _text_scores(
@@ -90,15 +98,15 @@ def _text_scores(
     if not query_tokens:
         return {}, {}
     scores: dict[str, float] = defaultdict(float)
-    matched_chunks: dict[str, list[str]] = defaultdict(list)
-    for chunk in _chunk_nodes(plan):
-        chunk_tokens = _tokens(_string(chunk.properties, "text"))
-        overlap = len(query_tokens & chunk_tokens)
+    matched_units: dict[str, list[str]] = defaultdict(list)
+    for unit in _retrieval_unit_nodes(plan):
+        unit_tokens = _tokens(_string(unit.properties, "text"))
+        overlap = len(query_tokens & unit_tokens)
         if overlap:
-            skill_id = _string(chunk.properties, "skill_id")
+            skill_id = _string(unit.properties, "skill_id")
             scores[skill_id] = max(scores[skill_id], overlap / len(query_tokens))
-            matched_chunks[skill_id].append(chunk.id)
-    return scores, {skill_id: tuple(chunk_ids) for skill_id, chunk_ids in matched_chunks.items()}
+            matched_units[skill_id].append(unit.id)
+    return scores, {skill_id: tuple(unit_ids) for skill_id, unit_ids in matched_units.items()}
 
 
 def _vector_scores(
@@ -113,16 +121,16 @@ def _vector_scores(
     return scores
 
 
-def _vector_chunk_ids(
+def _vector_retrieval_unit_ids(
     vector_candidates: Sequence[VectorCandidate],
     min_score: float,
 ) -> dict[str, tuple[str, ...]]:
-    chunk_ids: dict[str, list[str]] = defaultdict(list)
+    unit_ids: dict[str, list[str]] = defaultdict(list)
     for candidate in vector_candidates:
         if candidate.score < min_score:
             continue
-        chunk_ids[candidate.skill_id].append(candidate.chunk_id)
-    return {skill_id: tuple(values) for skill_id, values in chunk_ids.items()}
+        unit_ids[candidate.skill_id].append(candidate.retrieval_unit_id)
+    return {skill_id: tuple(values) for skill_id, values in unit_ids.items()}
 
 
 def _graph_evidence(
@@ -168,34 +176,72 @@ def _graph_evidence(
     return scores, {skill_id: tuple(skill_paths[:5]) for skill_id, skill_paths in paths.items()}
 
 
-def _chunk_evidence(
+def _confidence(value: object) -> float:
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return max(0.0, min(1.0, float(value)))
+    return 1.0
+
+
+def _bridge_scores(
+    plan: load_skills_neo4j.LoadPlan,
+    query_text: str,
+) -> tuple[dict[str, float], dict[str, tuple[str, ...]]]:
+    query_tokens = _tokens(query_text)
+    if not query_tokens:
+        return {}, {}
+    scores: dict[str, float] = defaultdict(float)
+    evidence_paths: dict[str, list[str]] = defaultdict(list)
+    for bridge in _bridge_assertion_nodes(plan):
+        properties = bridge.properties
+        skill_id = _string(properties, "skill_id")
+        bridge_kind = _string(properties, "kind")
+        bridge_value = _string(properties, "value")
+        rule_id = _string(properties, "rule_id") or _string(properties, "source")
+        rationale = _string(properties, "rationale")
+        source_ref = _string(properties, "source_ref")
+        bridge_tokens = _tokens(" ".join((bridge_kind, bridge_value, rationale, source_ref)))
+        if not skill_id or not bridge_tokens:
+            continue
+        overlap = len(query_tokens & bridge_tokens)
+        if not overlap:
+            continue
+        specificity = overlap / len(bridge_tokens)
+        score = min(1.0, specificity * _confidence(properties.get("confidence")))
+        scores[skill_id] = max(scores[skill_id], score)
+        evidence_text = f"{rule_id} ({bridge_kind}:{bridge_value})"
+        if evidence_text not in evidence_paths[skill_id]:
+            evidence_paths[skill_id].append(evidence_text)
+    return scores, {skill_id: tuple(paths[:5]) for skill_id, paths in evidence_paths.items()}
+
+
+def _retrieval_unit_evidence(
     plan: load_skills_neo4j.LoadPlan,
     skill_id: str,
-    preferred_chunk_ids: Sequence[str],
+    preferred_unit_ids: Sequence[str],
     token_budget: int,
 ) -> tuple[tuple[str, ...], tuple[str, ...], tuple[str, ...]]:
     snippets: list[str] = []
     source_paths: list[str] = []
     section_ids: list[str] = []
     remaining = token_budget
-    chunks_by_id = {chunk.id: chunk for chunk in _chunk_nodes(plan)}
-    ordered_chunks = [
-        chunks_by_id[chunk_id] for chunk_id in preferred_chunk_ids if chunk_id in chunks_by_id
+    units_by_id = {unit.id: unit for unit in _retrieval_unit_nodes(plan)}
+    ordered_units = [
+        units_by_id[unit_id] for unit_id in preferred_unit_ids if unit_id in units_by_id
     ]
-    ordered_chunks.extend(
-        chunk for chunk in _chunk_nodes(plan) if chunk.id not in set(preferred_chunk_ids)
+    ordered_units.extend(
+        unit for unit in _retrieval_unit_nodes(plan) if unit.id not in set(preferred_unit_ids)
     )
-    for chunk in ordered_chunks:
-        if _string(chunk.properties, "skill_id") != skill_id:
+    for unit in ordered_units:
+        if _string(unit.properties, "skill_id") != skill_id:
             continue
-        text = _string(chunk.properties, "text")
+        text = _string(unit.properties, "text")
         snippet = text[:240]
         cost = max(1, len(snippet.split()))
         if cost > remaining:
             break
         snippets.append(snippet)
-        source_paths.append(_string(chunk.properties, "source_path"))
-        section_ids.append(_string(chunk.properties, "section_id"))
+        source_paths.append(_string(unit.properties, "source_path"))
+        section_ids.append(_string(unit.properties, "section_id"))
         remaining -= cost
     return tuple(snippets[:3]), tuple(sorted(set(source_paths))), tuple(sorted(set(section_ids)))
 
@@ -214,10 +260,13 @@ def retrieve_hybrid_skills(
     limit = max(1, min(limit, settings.max_limit))
     max_depth = max(0, min(max_depth, settings.max_depth))
     skills = _skill_nodes(plan)
-    text_scores, text_chunk_ids = _text_scores(plan, query_text)
+    text_scores, text_unit_ids = _text_scores(plan, query_text)
     vector_scores = _vector_scores(vector_candidates, settings.min_vector_candidate_score)
-    vector_chunk_ids = _vector_chunk_ids(vector_candidates, settings.min_vector_candidate_score)
-    candidate_skill_ids = set(text_scores) | set(vector_scores)
+    vector_unit_ids = _vector_retrieval_unit_ids(
+        vector_candidates, settings.min_vector_candidate_score
+    )
+    bridge_scores, bridge_evidence_paths = _bridge_scores(plan, query_text)
+    candidate_skill_ids = set(text_scores) | set(vector_scores) | set(bridge_scores)
     graph_scores, evidence_paths = _graph_evidence(plan, candidate_skill_ids, max_depth)
     recommendation_inputs: list[tuple[str, float, float, float, float, tuple[str, ...]]] = []
 
@@ -227,26 +276,31 @@ def retrieve_hybrid_skills(
             continue
         full_text_score = text_scores.get(skill_id, 0.0)
         vector_score = max(0.0, vector_scores.get(skill_id, 0.0))
-        graph_score = graph_scores.get(skill_id, 0.0)
-        score = (0.35 * full_text_score) + (0.35 * vector_score) + (0.55 * graph_score)
-        preferred_chunk_ids = tuple(
-            dict.fromkeys((*text_chunk_ids.get(skill_id, ()), *vector_chunk_ids.get(skill_id, ())))
+        graph_score = max(graph_scores.get(skill_id, 0.0), bridge_scores.get(skill_id, 0.0))
+        score = (
+            (0.45 * full_text_score)
+            + (0.10 * vector_score)
+            + (0.15 * graph_scores.get(skill_id, 0.0))
+            + (0.80 * bridge_scores.get(skill_id, 0.0))
+        )
+        preferred_unit_ids = tuple(
+            dict.fromkeys((*text_unit_ids.get(skill_id, ()), *vector_unit_ids.get(skill_id, ())))
         )
         recommendation_inputs.append(
-            (skill_id, score, graph_score, vector_score, full_text_score, preferred_chunk_ids)
+            (skill_id, score, graph_score, vector_score, full_text_score, preferred_unit_ids)
         )
 
     recommendations: list[SkillRecommendation] = []
     remaining_budget = token_budget
-    for skill_id, score, graph_score, vector_score, full_text_score, preferred_chunk_ids in sorted(
+    for skill_id, score, graph_score, vector_score, full_text_score, preferred_unit_ids in sorted(
         recommendation_inputs,
         key=lambda item: (-item[1], _string(skills[item[0]].properties, "name")),
     ):
         skill = skills[skill_id]
-        snippets, source_paths, section_ids = _chunk_evidence(
+        snippets, source_paths, section_ids = _retrieval_unit_evidence(
             plan,
             skill_id,
-            preferred_chunk_ids,
+            preferred_unit_ids,
             remaining_budget,
         )
         if not snippets:
@@ -263,10 +317,17 @@ def retrieve_hybrid_skills(
                 evidence_snippets=snippets,
                 source_paths=source_paths,
                 section_ids=section_ids,
-                evidence_paths=evidence_paths.get(skill_id, ()),
+                evidence_paths=tuple(
+                    dict.fromkeys(
+                        (
+                            *bridge_evidence_paths.get(skill_id, ()),
+                            *evidence_paths.get(skill_id, ()),
+                        )
+                    )
+                ),
                 why=(
-                    "Selected from full-text, vector and graph evidence; "
-                    "graph connectivity is weighted to avoid isolated matches."
+                    "Selected from explicit bridge rules, full-text, vector and graph evidence; "
+                    "curated bridge evidence outranks isolated vector or graph matches."
                 ),
             )
         )
@@ -314,7 +375,7 @@ class Neo4jHybridRetrievalGraph:
                     "YIELD node, score "
                     "RETURN node.id AS skill_id"
                 ),
-                chunk_index=self._settings.neo4j.chunk_fulltext_index,
+                chunk_index=self._settings.neo4j.retrieval_unit_fulltext_index,
                 metadata_index=self._settings.neo4j.metadata_fulltext_index,
                 query_text=query_text,
                 limit=limit,
@@ -340,7 +401,7 @@ class Neo4jHybridRetrievalGraph:
                 (
                     "CALL db.index.vector.queryNodes($index_name, $limit, $embedding) "
                     "YIELD node, score "
-                    "RETURN node.id AS chunk_id, score, node.source_path AS source_path, "
+                    "RETURN node.id AS retrieval_unit_id, score, node.source_path AS source_path, "
                     "node.section_id AS section_id, node.skill_id AS skill_id, "
                     "node.text AS text, node.embeddingProvider AS embedding_provider, "
                     "node.embeddingDimensions AS embedding_dimensions"
@@ -373,10 +434,10 @@ class Neo4jHybridRetrievalGraph:
                 _record_mapping(record)
                 for record in session.run(
                     (
-                        "MATCH (s:Skill)-[:HAS_SECTION]->(:SkillSection)-[:HAS_CHUNK]->"
-                        "(chunk:SkillChunk) "
+                        "MATCH (s:Skill)-[:HAS_SECTION]->(:SkillSection)-[:HAS_RETRIEVAL_UNIT]->"
+                        "(unit:RetrievalUnit) "
                         "WHERE s.id IN $skill_ids "
-                        "RETURN chunk.id AS id, properties(chunk) AS properties"
+                        "RETURN unit.id AS id, properties(unit) AS properties"
                     ),
                     skill_ids=list(unique_skill_ids),
                 )
@@ -400,7 +461,7 @@ class Neo4jHybridRetrievalGraph:
             for record in skill_records
         ]
         nodes.extend(
-            load_skills_neo4j.GraphNode("SkillChunk", str(record["id"]), _properties(record))
+            load_skills_neo4j.GraphNode("RetrievalUnit", str(record["id"]), _properties(record))
             for record in chunk_records
         )
         relationships = [
@@ -479,10 +540,10 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
             {"id": "skill:generic-documentation", "name": "generic-documentation"},
         ),
         load_skills_neo4j.GraphNode(
-            "SkillChunk",
-            "chunk-kg-when",
+            "RetrievalUnit",
+            "retrieval:skill:kg-enabled-rag:section:0:kg-when",
             {
-                "id": "chunk-kg-when",
+                "id": "retrieval:skill:kg-enabled-rag:section:0:kg-when",
                 "skill_id": "skill:kg-enabled-rag",
                 "text": "Use this skill when building graph-grounded retrieval with provenance.",
                 "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
@@ -490,10 +551,10 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
             },
         ),
         load_skills_neo4j.GraphNode(
-            "SkillChunk",
-            "chunk-kg",
+            "RetrievalUnit",
+            "retrieval:skill:kg-enabled-rag:section:1:kg",
             {
-                "id": "chunk-kg",
+                "id": "retrieval:skill:kg-enabled-rag:section:1:kg",
                 "skill_id": "skill:kg-enabled-rag",
                 "text": "Use KG-enabled RAG for graph-grounded retrieval.",
                 "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
@@ -501,10 +562,10 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
             },
         ),
         load_skills_neo4j.GraphNode(
-            "SkillChunk",
-            "chunk-kg-procedure",
+            "RetrievalUnit",
+            "retrieval:skill:kg-enabled-rag:section:2:kg-procedure",
             {
-                "id": "chunk-kg-procedure",
+                "id": "retrieval:skill:kg-enabled-rag:section:2:kg-procedure",
                 "skill_id": "skill:kg-enabled-rag",
                 "text": "1. Inspect graph and retrieval code. 2. Add tests. 3. Return evidence.",
                 "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
@@ -512,10 +573,10 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
             },
         ),
         load_skills_neo4j.GraphNode(
-            "SkillChunk",
-            "chunk-kg-rules",
+            "RetrievalUnit",
+            "retrieval:skill:kg-enabled-rag:section:3:kg-rules",
             {
-                "id": "chunk-kg-rules",
+                "id": "retrieval:skill:kg-enabled-rag:section:3:kg-rules",
                 "skill_id": "skill:kg-enabled-rag",
                 "text": "Never expose raw Cypher, raw embeddings or answers without evidence.",
                 "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
@@ -523,10 +584,10 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
             },
         ),
         load_skills_neo4j.GraphNode(
-            "SkillChunk",
-            "chunk-kg-verification",
+            "RetrievalUnit",
+            "retrieval:skill:kg-enabled-rag:section:4:kg-verification",
             {
-                "id": "chunk-kg-verification",
+                "id": "retrieval:skill:kg-enabled-rag:section:4:kg-verification",
                 "skill_id": "skill:kg-enabled-rag",
                 "text": "- [ ] Retrieval returns typed evidence.\n- [ ] Answers cite source paths.",
                 "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
@@ -534,10 +595,10 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
             },
         ),
         load_skills_neo4j.GraphNode(
-            "SkillChunk",
-            "chunk-retrieval",
+            "RetrievalUnit",
+            "retrieval:skill:knowledge-retrieval-rag:section:0:retrieval",
             {
-                "id": "chunk-retrieval",
+                "id": "retrieval:skill:knowledge-retrieval-rag:section:0:retrieval",
                 "skill_id": "skill:knowledge-retrieval-rag",
                 "text": "Use retrieval evidence and source-backed context.",
                 "source_path": "skills/agentic-patterns/knowledge-retrieval-rag/SKILL.md",
@@ -545,10 +606,10 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
             },
         ),
         load_skills_neo4j.GraphNode(
-            "SkillChunk",
-            "chunk-generic",
+            "RetrievalUnit",
+            "retrieval:skill:generic-documentation:section:0:generic",
             {
-                "id": "chunk-generic",
+                "id": "retrieval:skill:generic-documentation:section:0:generic",
                 "skill_id": "skill:generic-documentation",
                 "text": "General documentation guidance.",
                 "source_path": "skills/reference/generic-documentation/SKILL.md",

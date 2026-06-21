@@ -32,7 +32,7 @@ class SkillsOntologyTests(unittest.TestCase):
             "Skill",
             "SkillCategory",
             "SkillSection",
-            "SkillChunk",
+            "RetrievalUnit",
             "ReferenceDocument",
             "ValidationRule",
             "TaskShape",
@@ -44,6 +44,8 @@ class SkillsOntologyTests(unittest.TestCase):
         ):
             self.assertIn(f"`{concept}`", text)
         self.assertIn("`bridge_mapping_rules.json`", text)
+        self.assertIn("explicit top-level `rules` array", text)
+        self.assertIn("rejects legacy anonymous `category_rules` and `skill_rules` maps", text)
 
     def test_turtle_ontology_defines_core_classes_and_properties(self) -> None:
         text = read(ONTOLOGY_DIR / "skills.ttl")
@@ -52,7 +54,7 @@ class SkillsOntologyTests(unittest.TestCase):
             "Skill",
             "SkillCategory",
             "SkillSection",
-            "SkillChunk",
+            "RetrievalUnit",
             "ReferenceDocument",
             "TaskShape",
             "WorkflowStage",
@@ -66,7 +68,7 @@ class SkillsOntologyTests(unittest.TestCase):
         for predicate in (
             "belongsToCategory",
             "hasSection",
-            "hasChunk",
+            "hasRetrievalUnit",
             "supportsTaskShape",
             "operatesInStage",
             "enablesCapability",
@@ -83,6 +85,10 @@ class SkillsOntologyTests(unittest.TestCase):
             "lineCount",
             "isBaselineSkill",
             "source",
+            "rule_id",
+            "source_scope",
+            "source_ref",
+            "rationale",
             "confidence",
         ):
             self.assertIn(f"skills:{datatype_property} a owl:DatatypeProperty", text)
@@ -93,7 +99,7 @@ class SkillsOntologyTests(unittest.TestCase):
         for shape in (
             "SkillShape",
             "SkillSectionShape",
-            "SkillChunkShape",
+            "RetrievalUnitShape",
             "BridgeCoverageShape",
             "BridgeAssertionShape",
         ):
@@ -112,6 +118,10 @@ class SkillsOntologyTests(unittest.TestCase):
             "skills:enablesCapability",
             "skills:assertsBridge",
             "skills:source",
+            "skills:rule_id",
+            "skills:source_scope",
+            "skills:source_ref",
+            "skills:rationale",
             "skills:confidence",
         ):
             self.assertIn(f"sh:path {required_path}", text)

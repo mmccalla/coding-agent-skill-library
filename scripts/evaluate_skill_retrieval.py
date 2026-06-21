@@ -28,6 +28,8 @@ class EvaluationCase(BaseModel):
     id: str = Field(min_length=1)
     query: str = Field(min_length=1)
     expected_skill_ids: tuple[str, ...]
+    required_skill_ids: tuple[str, ...] = ()
+    excluded_skill_ids: tuple[str, ...] = ()
     expect_uncertain: bool = False
 
 
@@ -114,6 +116,16 @@ def evaluate_offline(
             failures.append(
                 f"{case.id}: expected one of {case.expected_skill_ids}, got {ranked_ids}"
             )
+        missing_required = tuple(
+            skill_id for skill_id in case.required_skill_ids if skill_id not in ranked_ids
+        )
+        if missing_required:
+            failures.append(f"{case.id}: missing required skills {missing_required}")
+        unexpected = tuple(
+            skill_id for skill_id in case.excluded_skill_ids if skill_id in ranked_ids
+        )
+        if unexpected:
+            failures.append(f"{case.id}: excluded skills were ranked {unexpected}")
         reciprocal_ranks.append(_reciprocal_rank(ranked_ids, case.expected_skill_ids))
         matching = [
             item for item in result.recommendations if item.skill_id in set(case.expected_skill_ids)

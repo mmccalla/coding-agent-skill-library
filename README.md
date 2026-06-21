@@ -27,7 +27,7 @@ user request
 - `skills/`: 87 `SKILL.md` files across agentic patterns, control patterns, engineering practices, UX, reliability, event-driven architecture, business architecture and data architecture.
 - `skills_docs/`: routing guides, library contract, ontology documents, runbooks and templates.
 - `scripts/extract_skills_graph.py`: extracts skill metadata, sections and relationships from the filesystem.
-- `scripts/load_skills_neo4j.py` and `scripts/embed_skill_chunks.py`: load the skills graph and deterministic embeddings into Neo4j.
+- `scripts/load_skills_neo4j.py` and `scripts/embed_skill_chunks.py`: load the skills graph and deterministic retrieval-unit embeddings into Neo4j.
 - `scripts/skills_mcp_server.py`: exposes read-only MCP tools and resources.
 - `scripts/skills_api.py`: exposes FastAPI endpoints for health, graph inspection, retrieval, upload preview, Ollama-backed query and MCP HTTP transport.
 - `skills-ui/`: React, Tailwind and D3 UI for agent workflow review, OpenAPI/API exploration, graph inspection, model-backed graph questions, upload preview and MCP boundary review.
@@ -52,7 +52,7 @@ The current MCP tools are:
 - `route_skill_query`: classify a user request as `direct_lookup`, `recommendation`, `context` or `execution_plan`.
 - `resolve_skill`: map human names such as `accessibility-wcag` to canonical ids such as `skill:accessibility-wcag`.
 - `search_skills`: find likely skills by exact or keyword-oriented lookup.
-- `get_skill`: retrieve one skill's bounded metadata and source chunks.
+- `get_skill`: retrieve one skill's bounded metadata and retrieval units.
 - `recommend_skills`: recommend connected skills for a task query with evidence.
 - `get_skill_context`: retrieve neighbouring skills and graph evidence paths.
 - `get_skill_execution_guide`: return when-to-use, objective, procedure, rules, verification checklist and related skills.
@@ -170,10 +170,11 @@ The API now emits bounded local observability signals for root-cause analysis:
 
 - every API response includes an `x-request-id` header;
 - `/skills/query` and `/ollama/models` return structured safe error details with `error_type`, `operation`, `request_id` and a remediation hint;
-- `GET /metrics` exposes Prometheus metrics for request counts, request duration and Ollama failures;
+- `GET /metrics` exposes Prometheus metrics for request counts, request duration, Neo4j readiness, graph node/relationship counts, retrieval route outcomes, recommendation counts, top-score distribution and Ollama failures;
+- structured API logs include `api_request_completed`, `skill_query_route_selected`, `skill_query_evidence_selected`, `skill_retrieval_completed` and safe failure events keyed by `request_id`;
 - Docker Compose starts Prometheus and Grafana with a provisioned `Skills KG API Observability` dashboard.
 
-Prometheus scrapes `skills-api:8000/metrics`. Grafana uses the provisioned Prometheus datasource and dashboard under `configs/grafana/`.
+Prometheus scrapes `skills-api:8000/metrics`. Grafana uses the provisioned Prometheus datasource and dashboard under `configs/grafana/`, including panels for API latency, 5xx ratio, Ollama failures, Neo4j readiness, graph counts and retrieval outcomes.
 
 ## UI Navigation And Capabilities
 
