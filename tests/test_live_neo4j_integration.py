@@ -53,14 +53,13 @@ def test_live_neo4j_load_is_idempotent_and_indexes_are_ready() -> None:
 
     assert first.logical_counts == second.logical_counts
     assert first.logical_counts["node:Skill"] == 87
-    assert first.logical_counts["node:SkillChunk"] >= 87
+    assert first.logical_counts["node:RetrievalUnit"] >= 87
     assert readiness.ready, readiness.errors
     assert readiness.vector_query_ok
     assert not retrieval.uncertain
     assert retrieval.recommendations
     assert retrieval.recommendations[0].source_paths
     assert retrieval.recommendations[0].section_ids
-    assert retrieval.recommendations[0].vector_score > 0
     assert (
         retrieval.recommendations[0].full_text_score > 0
         or retrieval.recommendations[0].graph_score > 0

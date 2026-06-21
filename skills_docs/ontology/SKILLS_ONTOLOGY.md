@@ -20,7 +20,7 @@ The ontology is deliberately implementation-aware but not storage-specific. Phys
 - `Skill`: one operational skill defined by a `SKILL.md` file.
 - `SkillCategory`: the category folder containing a skill.
 - `SkillSection`: a canonical or optional markdown section within a skill.
-- `SkillChunk`: a retrieval unit derived from a skill section or reference.
+- `RetrievalUnit`: a source-backed unit derived from a skill section or reference for retrieval and evidence.
 - `ReferenceDocument`: a linked local reference file used by a skill.
 - `ValidationRule`: a structural, semantic or graph-connectivity rule.
 - `Source`: an external or local evidence source cited by a skill.
@@ -35,7 +35,7 @@ The ontology is deliberately implementation-aware but not storage-specific. Phys
 
 - `belongsToCategory`: connects a skill to exactly one category.
 - `hasSection`: connects a skill to its extracted sections.
-- `hasChunk`: connects a skill to retrieval chunks.
+- `hasRetrievalUnit`: connects a skill section to retrieval units.
 - `hasReference`: connects a skill to local reference documents.
 - `validatedBy`: connects a skill or artefact to validation rules.
 - `citesSource`: connects a skill to supporting evidence sources.
@@ -52,7 +52,9 @@ Bridge assertions must include source evidence and confidence. Generic graph-wid
 
 ## Bridge Mapping Rules
 
-Curated semantic mapping rules live in `bridge_mapping_rules.json`. The mapper applies category rules and skill-specific rules after raw extraction, preserving each rule ID as bridge or relationship provenance. Category-derived raw bridges alone must not prove graph reachability; curated rule IDs are required for semantic operating-model bridges.
+Curated semantic mapping rules live in `bridge_mapping_rules.json` as an explicit top-level `rules` array. Each rule object must include `id`, `scope`, `source`, `bridge_kind`, `bridge_value`, `confidence` and `rationale`; relationship rules also include `relationship_type`.
+
+The mapper rejects legacy anonymous `category_rules` and `skill_rules` maps. It applies explicit category-scoped and skill-scoped rules after raw extraction, preserving `rule_id`, `source_scope`, `source_ref`, confidence and rationale as bridge or relationship provenance. Category-derived raw bridges alone must not prove graph reachability; curated rule IDs are required for semantic operating-model bridges.
 
 ## Property Graph Mapping
 
@@ -61,7 +63,7 @@ Curated semantic mapping rules live in `bridge_mapping_rules.json`. The mapper a
 | `Skill` | `Skill` | deterministic `skill:{name}` id where `name` matches the skill folder path; unique `name` |
 | `SkillCategory` | `SkillCategory` | category folder name |
 | `SkillSection` | `SkillSection` | skill id plus heading plus ordinal |
-| `SkillChunk` | `SkillChunk` | section id plus chunk ordinal plus content hash |
+| `RetrievalUnit` | `RetrievalUnit` | `retrieval:{skill_id}:section:{ordinal}:{content-hash-prefix}` |
 | `ReferenceDocument` | `ReferenceDocument` | repository-relative path |
 | `ValidationRule` | `ValidationRule` | stable rule id |
 | `Source` | `Source` | URL or repository-relative path |
@@ -72,7 +74,7 @@ Curated semantic mapping rules live in `bridge_mapping_rules.json`. The mapper a
 | `KnowledgeDomain` | `KnowledgeDomain` | curated domain slug |
 | `BridgeAssertion` | `BridgeAssertion` | skill id plus bridge kind plus bridge value |
 
-Required skill properties include `id`, `name`, `title`, `description`, `path`, `contentHash`, `wordCount`, `lineCount` and `isBaselineSkill`. Later slices may add embeddings to `SkillChunk` and optionally coarse embeddings to `Skill`.
+Required skill properties include `id`, `name`, `title`, `description`, `path`, `contentHash`, `wordCount`, `lineCount` and `isBaselineSkill`. `RetrievalUnit` records carry `skill_id`, `unit_type`, `title`, `text`, `source_path`, `section_heading`, `ordinal`, `content_hash` and `section_id`; embeddings attach to `RetrievalUnit` nodes.
 
 ## Open Decisions
 

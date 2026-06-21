@@ -14,9 +14,12 @@ class EvaluateSkillRetrievalTests(unittest.TestCase):
     def test_load_cases_requires_expected_skill_contract(self) -> None:
         cases = load_cases(DATASET)
 
-        self.assertEqual(4, len(cases))
+        self.assertEqual(5, len(cases))
         self.assertEqual("kg_rag", cases[0].id)
         self.assertEqual(("skill:kg-enabled-rag",), cases[0].expected_skill_ids)
+        self.assertEqual("event_streaming_iceberg_pipeline", cases[3].id)
+        self.assertIn("skill:event-streaming-platform-design", cases[3].required_skill_ids)
+        self.assertIn("skill:accessibility-wcag", cases[3].excluded_skill_ids)
 
     def test_offline_evaluation_meets_quality_gate(self) -> None:
         report = evaluate_offline(DATASET, limit=3)

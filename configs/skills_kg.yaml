@@ -2,3 +2,5 @@ neo4j:
   embedding_dimensions: 1536
   embedding_provider: deterministic-test-embedding
   vector_similarity_function: cosine
+  vector_index: retrieval_unit_embedding_vector
+  retrieval_unit_fulltext_index: retrieval_unit_text_fulltext

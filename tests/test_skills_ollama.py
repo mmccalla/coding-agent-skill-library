@@ -56,8 +56,9 @@ class SkillsOllamaTests(unittest.TestCase):
             "skill": {
                 "skill_id": "skill:kg-enabled-rag",
                 "skill_name": "kg-enabled-rag",
-                "chunks": [
+                "retrieval_units": [
                     {
+                        "retrieval_unit_id": "retrieval:skill:kg-enabled-rag:section:0:objective",
                         "text": "Use KG-enabled RAG for graph-grounded retrieval.",
                         "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
                         "section_id": "skill:kg-enabled-rag:section:0-objective",

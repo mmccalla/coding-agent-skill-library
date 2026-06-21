@@ -91,7 +91,7 @@ class SkillsMcpServer:
         tools = (
             ToolDefinition(
                 name="search_skills",
-                description="Search skills by keyword over skill names and chunk text.",
+                description="Search skills by keyword over skill names and retrieval-unit text.",
                 inputSchema=_schema(
                     {
                         "query": {"type": "string", "minLength": 1},
@@ -106,14 +106,14 @@ class SkillsMcpServer:
             ),
             ToolDefinition(
                 name="get_skill",
-                description="Return one skill's bounded metadata and source chunks.",
+                description="Return one skill's bounded metadata and retrieval units.",
                 inputSchema=_schema(
                     {
                         "skill_id": {"type": "string", "minLength": 1},
-                        "chunk_limit": {
+                        "retrieval_unit_limit": {
                             "type": "integer",
                             "minimum": 1,
-                            "maximum": mcp_limits.chunk_limit_max,
+                            "maximum": mcp_limits.retrieval_unit_limit_max,
                         },
                     },
                     ("skill_id",),
@@ -281,6 +281,22 @@ class SkillsMcpServer:
             "link_count": len(links),
         }
 
+    def graph_logical_counts(self) -> dict[str, dict[str, int]]:
+        """Return bounded graph node and relationship counts for telemetry."""
+
+        node_counts: dict[str, int] = {}
+        for node in self._plan.nodes:
+            node_counts[node.label] = node_counts.get(node.label, 0) + 1
+        relationship_counts: dict[str, int] = {}
+        for relationship in self._plan.relationships:
+            relationship_counts[relationship.type] = (
+                relationship_counts.get(relationship.type, 0) + 1
+            )
+        return {
+            "nodes": dict(sorted(node_counts.items())),
+            "relationships": dict(sorted(relationship_counts.items())),
+        }
+
     def technical_info(self) -> dict[str, object]:
         """Return safe technical information for MCP clients and operators."""
 
@@ -368,7 +384,7 @@ class SkillsMcpServer:
                     "",
                     "Skills are operational procedures for coding agents.",
                     "Categories group skills by practice area.",
-                    "Sections and snippets provide source-backed evidence.",
+                    "Sections and retrieval units provide source-backed evidence.",
                     "Relationships explain prerequisite, complementary and validating skills.",
                     "Task shapes, workflow stages and capabilities describe when a skill applies.",
                     "Responses should include source paths, section identifiers and rationale.",
@@ -382,7 +398,7 @@ class SkillsMcpServer:
                 "limits": {
                     "recommend_skills.limit": self._settings.mcp.recommend_limit_max,
                     "recommend_skills.max_depth": self._settings.retrieval.max_depth,
-                    "get_skill.chunk_limit": self._settings.mcp.chunk_limit_max,
+                    "get_skill.retrieval_unit_limit": self._settings.mcp.retrieval_unit_limit_max,
                     "search_skills.limit": self._settings.mcp.search_limit_max,
                     "get_skill_context.limit": self._settings.mcp.context_limit_max,
                     "get_skill_execution_guide.related_limit": self._settings.mcp.context_limit_max,
@@ -492,11 +508,11 @@ class SkillsMcpServer:
     def _skills(self) -> tuple[load_skills_neo4j.GraphNode, ...]:
         return tuple(node for node in self._plan.nodes if node.label == "Skill")
 
-    def _chunks_for_skill(self, skill_id: str) -> tuple[load_skills_neo4j.GraphNode, ...]:
+    def _retrieval_units_for_skill(self, skill_id: str) -> tuple[load_skills_neo4j.GraphNode, ...]:
         return tuple(
             node
             for node in self._plan.nodes
-            if node.label == "SkillChunk" and node.properties.get("skill_id") == skill_id
+            if node.label == "RetrievalUnit" and node.properties.get("skill_id") == skill_id
         )
 
     def _skill_by_id(self, skill_id: str) -> load_skills_neo4j.GraphNode | None:
@@ -511,9 +527,12 @@ class SkillsMcpServer:
         matches: list[dict[str, object]] = []
         for skill in self._skills():
             skill_name = _string(skill.properties.get("name"))
-            chunks = self._chunks_for_skill(skill.id)
+            retrieval_units = self._retrieval_units_for_skill(skill.id)
             haystack = " ".join(
-                [skill_name, *(_string(chunk.properties.get("text")) for chunk in chunks)]
+                [
+                    skill_name,
+                    *(_string(unit.properties.get("text")) for unit in retrieval_units),
+                ]
             ).lower()
             if query in haystack:
                 matches.append(
@@ -522,9 +541,9 @@ class SkillsMcpServer:
                         "skill_name": skill_name,
                         "source_paths": sorted(
                             {
-                                _string(chunk.properties.get("source_path"))
-                                for chunk in chunks
-                                if _string(chunk.properties.get("source_path"))
+                                _string(unit.properties.get("source_path"))
+                                for unit in retrieval_units
+                                if _string(unit.properties.get("source_path"))
                             }
                         ),
                     }
@@ -533,25 +552,25 @@ class SkillsMcpServer:
 
     def _get_skill(self, arguments: Mapping[str, object]) -> dict[str, object]:
         skill_id = _string(arguments.get("skill_id"))
-        chunk_limit = _bounded_int(
-            arguments.get("chunk_limit"), 3, 1, self._settings.mcp.chunk_limit_max
+        retrieval_unit_limit = _bounded_int(
+            arguments.get("retrieval_unit_limit"), 3, 1, self._settings.mcp.retrieval_unit_limit_max
         )
         skill = self._skill_by_id(skill_id)
         if skill is None:
             return {"status": "error", "message": f"Skill not found: {skill_id}"}
-        chunks = self._chunks_for_skill(skill_id)[:chunk_limit]
+        retrieval_units = self._retrieval_units_for_skill(skill_id)[:retrieval_unit_limit]
         return {
             "status": "ok",
             "skill_id": skill.id,
             "skill_name": _string(skill.properties.get("name")),
-            "chunks": [
+            "retrieval_units": [
                 {
-                    "chunk_id": chunk.id,
-                    "text": _string(chunk.properties.get("text"))[:240],
-                    "source_path": _string(chunk.properties.get("source_path")),
-                    "section_id": _string(chunk.properties.get("section_id")),
+                    "retrieval_unit_id": unit.id,
+                    "text": _string(unit.properties.get("text"))[:240],
+                    "source_path": _string(unit.properties.get("source_path")),
+                    "section_id": _string(unit.properties.get("section_id")),
                 }
-                for chunk in chunks
+                for unit in retrieval_units
             ],
         }
 
@@ -648,7 +667,7 @@ def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
 
     @fastmcp.tool(
         name="search_skills",
-        description="Search skills by keyword over skill names and chunk text.",
+        description="Search skills by keyword over skill names and retrieval-unit text.",
         structured_output=True,
     )
     def search_skills(query: str, limit: int = 5) -> dict[str, object]:
@@ -656,11 +675,14 @@ def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
 
     @fastmcp.tool(
         name="get_skill",
-        description="Return one skill's bounded metadata and source chunks.",
+        description="Return one skill's bounded metadata and retrieval units.",
         structured_output=True,
     )
-    def get_skill(skill_id: str, chunk_limit: int = 3) -> dict[str, object]:
-        return server.call_tool("get_skill", {"skill_id": skill_id, "chunk_limit": chunk_limit})
+    def get_skill(skill_id: str, retrieval_unit_limit: int = 3) -> dict[str, object]:
+        return server.call_tool(
+            "get_skill",
+            {"skill_id": skill_id, "retrieval_unit_limit": retrieval_unit_limit},
+        )
 
     @fastmcp.tool(
         name="recommend_skills",

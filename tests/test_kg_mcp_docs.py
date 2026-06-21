@@ -51,6 +51,7 @@ class SkillsKgMcpDocsTests(unittest.TestCase):
             "retrieval evaluation gate",
             "connectedness failure",
             "mapping_rule_id",
+            "RetrievalUnit",
             "read-only",
         ):
             self.assertIn(marker, text)

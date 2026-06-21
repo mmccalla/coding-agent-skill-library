@@ -22,6 +22,31 @@ class SkillsApiTests(unittest.TestCase):
         self.assertEqual("ok", ready["status"])
         self.assertTrue(ready["read_only"])
 
+    def test_metrics_include_readiness_and_graph_snapshot(self) -> None:
+        client = TestClient(
+            create_app(
+                SkillsMcpServer.for_test_fixture(),
+                readiness_provider=lambda: {
+                    "status": "ok",
+                    "read_only": True,
+                    "ready": True,
+                    "database": "neo4j",
+                    "errors": [],
+                },
+            )
+        )
+
+        client.get("/health/ready")
+        metrics_response = client.get("/metrics")
+
+        self.assertEqual(200, metrics_response.status_code)
+        self.assertIn("skills_api_readiness_state", metrics_response.text)
+        self.assertIn('database="neo4j"', metrics_response.text)
+        self.assertIn("skills_api_graph_nodes", metrics_response.text)
+        self.assertIn('label="RetrievalUnit"', metrics_response.text)
+        self.assertIn("skills_api_graph_relationships", metrics_response.text)
+        self.assertIn('type="COMPLEMENTS"', metrics_response.text)
+
     def test_recommend_endpoint_returns_bounded_grounded_result(self) -> None:
         client = TestClient(create_app(SkillsMcpServer.for_test_fixture()))
 
@@ -37,6 +62,12 @@ class SkillsApiTests(unittest.TestCase):
         self.assertEqual("kg-enabled-rag", payload["recommendations"][0]["skill_name"])
         self.assertNotIn("MATCH ", response.text)
         self.assertNotIn("embedding", response.text.lower())
+        metrics_response = client.get("/metrics")
+        self.assertIn("skills_api_retrieval_requests_total", metrics_response.text)
+        self.assertIn('operation="skills.recommend"', metrics_response.text)
+        self.assertIn('route="recommendation"', metrics_response.text)
+        self.assertIn("skills_api_retrieval_recommendation_count", metrics_response.text)
+        self.assertIn("skills_api_retrieval_top_score", metrics_response.text)
 
     def test_invalid_request_is_rejected_before_tool_execution(self) -> None:
         client = TestClient(create_app(SkillsMcpServer.for_test_fixture()))
@@ -207,6 +238,8 @@ Use when validating uploads.
         evidence = response.json()["evidence"]
         self.assertEqual("direct_lookup", evidence["route"])
         self.assertEqual("skill:kg-enabled-rag", evidence["skill"]["skill_id"])
+        self.assertIn("retrieval_units", evidence["skill"])
+        self.assertNotIn("chunks", evidence["skill"])
         self.assertNotIn("recommendations", evidence)
 
     def test_route_resolve_and_execution_guide_endpoints_are_agent_readable(self) -> None:

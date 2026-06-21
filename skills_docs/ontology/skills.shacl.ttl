@@ -77,8 +77,8 @@ skills:SkillSectionShape a sh:NodeShape ;
         sh:minCount 1 ;
     ] .
 
-skills:SkillChunkShape a sh:NodeShape ;
-    sh:targetClass skills:SkillChunk ;
+skills:RetrievalUnitShape a sh:NodeShape ;
+    sh:targetClass skills:RetrievalUnit ;
     sh:property [
         sh:path skills:path ;
         sh:datatype xsd:string ;
@@ -127,6 +127,26 @@ skills:BridgeAssertionShape a sh:NodeShape ;
     ] ;
     sh:property [
         sh:path skills:source ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:rule_id ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:source_scope ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:source_ref ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:rationale ;
         sh:datatype xsd:string ;
         sh:minCount 1 ;
     ] ;

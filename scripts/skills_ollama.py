@@ -221,15 +221,15 @@ def _skill_profile_lines(skill: Mapping[str, object]) -> list[str]:
     lines = [
         f"skill={_safe_string(skill.get('skill_name'))}; skill_id={_safe_string(skill.get('skill_id'))}"
     ]
-    chunks = skill.get("chunks")
-    if not isinstance(chunks, list):
+    retrieval_units = skill.get("retrieval_units")
+    if not isinstance(retrieval_units, list):
         return lines
-    for chunk in chunks[:5]:
-        if not isinstance(chunk, dict):
+    for unit in retrieval_units[:5]:
+        if not isinstance(unit, dict):
             continue
-        text = _safe_string(chunk.get("text"))[:300]
-        source_path = _safe_string(chunk.get("source_path"))
-        section_id = _safe_string(chunk.get("section_id"))
+        text = _safe_string(unit.get("text"))[:300]
+        source_path = _safe_string(unit.get("source_path"))
+        section_id = _safe_string(unit.get("section_id"))
         lines.append(f"source={source_path}; section={section_id}; text={text}")
     return lines
 

@@ -70,4 +70,4 @@ class GetSkillRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     skill_id: str = Field(min_length=1)
-    chunk_limit: PositiveInt = Field(default=3, le=10)
+    retrieval_unit_limit: PositiveInt = Field(default=3, le=10)

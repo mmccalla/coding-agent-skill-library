@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Embed skill chunks and return provenance-safe vector candidates."""
+"""Embed retrieval units and return provenance-safe vector candidates."""
 
 from __future__ import annotations
 
@@ -56,7 +56,7 @@ class DeterministicEmbeddingProvider:
 class VectorCandidate(NamedTuple):
     """A retrieval candidate with provenance but without raw vectors."""
 
-    chunk_id: str
+    retrieval_unit_id: str
     score: float
     source_path: str
     section_id: str
@@ -95,7 +95,7 @@ class Neo4jVectorQueryGraph:
                 (
                     "CALL db.index.vector.queryNodes($index_name, $limit, $embedding) "
                     "YIELD node, score "
-                    "RETURN node.id AS chunk_id, score, node.source_path AS source_path, "
+                    "RETURN node.id AS retrieval_unit_id, score, node.source_path AS source_path, "
                     "node.section_id AS section_id, node.skill_id AS skill_id, "
                     "node.text AS text, node.embeddingProvider AS embedding_provider, "
                     "node.embeddingDimensions AS embedding_dimensions"
@@ -142,15 +142,15 @@ def _embedding_dimension_from_config(config_path: Path = DEFAULT_CONFIG_PATH) ->
     return skills_config.load_settings(config_path).neo4j.embedding_dimensions
 
 
-def embed_skill_chunks(
+def embed_retrieval_units(
     plan: load_skills_neo4j.LoadPlan,
     embedder: EmbeddingProvider,
 ) -> load_skills_neo4j.LoadPlan:
-    """Return a load plan with embeddings added to every SkillChunk node."""
+    """Return a load plan with embeddings added to every RetrievalUnit node."""
 
     nodes: list[load_skills_neo4j.GraphNode] = []
     for node in plan.nodes:
-        if node.label != "SkillChunk":
+        if node.label != "RetrievalUnit":
             nodes.append(node)
             continue
         properties = dict(node.properties)
@@ -182,7 +182,7 @@ def query_vector_candidates(
     query_embedding = embedder.embed(query_text)
     candidates: list[VectorCandidate] = []
     for node in plan.nodes:
-        if node.label != "SkillChunk":
+        if node.label != "RetrievalUnit":
             continue
         embedding = node.properties.get("embedding")
         if not isinstance(embedding, list):
@@ -193,7 +193,7 @@ def query_vector_candidates(
         score = _cosine(query_embedding, vector)
         candidates.append(
             VectorCandidate(
-                chunk_id=node.id,
+                retrieval_unit_id=node.id,
                 score=score,
                 source_path=_string(node.properties, "source_path"),
                 section_id=_string(node.properties, "section_id"),
@@ -204,7 +204,9 @@ def query_vector_candidates(
             )
         )
     return tuple(
-        sorted(candidates, key=lambda candidate: (-candidate.score, candidate.chunk_id))[:limit]
+        sorted(candidates, key=lambda candidate: (-candidate.score, candidate.retrieval_unit_id))[
+            :limit
+        ]
     )
 
 
@@ -230,7 +232,7 @@ def vector_candidates_from_records(
     for record in records:
         candidates.append(
             VectorCandidate(
-                chunk_id=_string(record, "chunk_id"),
+                retrieval_unit_id=_string(record, "retrieval_unit_id"),
                 score=_float(record.get("score", 0.0)),
                 source_path=_string(record, "source_path"),
                 section_id=_string(record, "section_id"),
@@ -249,12 +251,14 @@ def build_embedded_repository_load_plan(
 ) -> load_skills_neo4j.LoadPlan:
     dimension = _embedding_dimension_from_config(config_path)
     plan = load_skills_neo4j.build_repository_load_plan(skills_root)
-    return embed_skill_chunks(plan, DeterministicEmbeddingProvider(dimension=dimension))
+    return embed_retrieval_units(plan, DeterministicEmbeddingProvider(dimension=dimension))
 
 
 def main(argv: Sequence[str] | None = None) -> int:  # pragma: no cover
-    parser = ArgumentParser(description="Create deterministic SkillChunk embeddings.")
-    parser.add_argument("--apply", action="store_true", help="Write embedded chunks to Neo4j.")
+    parser = ArgumentParser(description="Create deterministic RetrievalUnit embeddings.")
+    parser.add_argument(
+        "--apply", action="store_true", help="Write embedded retrieval units to Neo4j."
+    )
     parser.add_argument(
         "--batch-size", type=int, default=500, help="Transactional load batch size."
     )
@@ -265,11 +269,11 @@ def main(argv: Sequence[str] | None = None) -> int:  # pragma: no cover
     settings = skills_config.load_settings()
     dimension = settings.neo4j.embedding_dimensions
     embedder = DeterministicEmbeddingProvider(dimension=dimension)
-    plan = embed_skill_chunks(load_skills_neo4j.build_repository_load_plan(), embedder)
-    chunk_count = sum(1 for node in plan.nodes if node.label == "SkillChunk")
+    plan = embed_retrieval_units(load_skills_neo4j.build_repository_load_plan(), embedder)
+    retrieval_unit_count = sum(1 for node in plan.nodes if node.label == "RetrievalUnit")
     print(
-        "Embedded SkillChunk nodes: "
-        f"{chunk_count}; provider={embedder.provider_name}; dimensions={dimension}"
+        "Embedded RetrievalUnit nodes: "
+        f"{retrieval_unit_count}; provider={embedder.provider_name}; dimensions={dimension}"
     )
     if args.apply:
         graph = load_skills_neo4j.neo4j_graph_from_env()
@@ -287,7 +291,7 @@ def main(argv: Sequence[str] | None = None) -> int:  # pragma: no cover
     if args.query:
         for candidate in query_vector_candidates(plan, args.query, embedder, args.limit):
             print(
-                f"- {candidate.chunk_id} score={candidate.score:.6f} "
+                f"- {candidate.retrieval_unit_id} score={candidate.score:.6f} "
                 f"source={candidate.source_path} section={candidate.section_id}"
             )
     return 0

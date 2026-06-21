@@ -1,4 +1,4 @@
-"""Tests for deterministic skill chunk embeddings and vector candidates."""
+"""Tests for deterministic retrieval unit embeddings and vector candidates."""
 
 from __future__ import annotations
 
@@ -31,15 +31,15 @@ class EmbedSkillChunksTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual("deterministic-test-embedding", embedder.provider_name)
 
-    def test_enriched_chunk_nodes_include_embeddings_and_provider_metadata(self) -> None:
+    def test_enriched_retrieval_unit_nodes_include_embeddings_and_provider_metadata(self) -> None:
         embeddings = load_module()
         plan = embeddings.load_skills_neo4j.LoadPlan(
             nodes=(
                 embeddings.load_skills_neo4j.GraphNode(
-                    label="SkillChunk",
-                    id="chunk-1",
+                    label="RetrievalUnit",
+                    id="retrieval:skill:example:section:0:abcdef123456",
                     properties={
-                        "id": "chunk-1",
+                        "id": "retrieval:skill:example:section:0:abcdef123456",
                         "text": "approval before destructive command",
                         "source_path": "skills/example/SKILL.md",
                         "section_id": "skill:example:section:0-objective",
@@ -51,22 +51,24 @@ class EmbedSkillChunksTests(unittest.TestCase):
         )
         embedder = embeddings.DeterministicEmbeddingProvider(dimension=8)
 
-        enriched = embeddings.embed_skill_chunks(plan, embedder)
+        enriched = embeddings.embed_retrieval_units(plan, embedder)
 
-        chunk = enriched.nodes[0]
-        self.assertEqual(8, len(chunk.properties["embedding"]))
-        self.assertEqual("deterministic-test-embedding", chunk.properties["embeddingProvider"])
-        self.assertEqual(8, chunk.properties["embeddingDimensions"])
+        retrieval_unit = enriched.nodes[0]
+        self.assertEqual(8, len(retrieval_unit.properties["embedding"]))
+        self.assertEqual(
+            "deterministic-test-embedding", retrieval_unit.properties["embeddingProvider"]
+        )
+        self.assertEqual(8, retrieval_unit.properties["embeddingDimensions"])
 
     def test_vector_candidates_include_provenance_without_raw_vectors(self) -> None:
         embeddings = load_module()
         plan = embeddings.load_skills_neo4j.LoadPlan(
             nodes=(
                 embeddings.load_skills_neo4j.GraphNode(
-                    label="SkillChunk",
-                    id="chunk-approval",
+                    label="RetrievalUnit",
+                    id="retrieval:skill:human-in-the-loop:section:0:approval",
                     properties={
-                        "id": "chunk-approval",
+                        "id": "retrieval:skill:human-in-the-loop:section:0:approval",
                         "text": "approval before destructive command",
                         "source_path": "skills/agent-control-patterns/human-in-the-loop/SKILL.md",
                         "section_id": "skill:human-in-the-loop:section:0-objective",
@@ -74,10 +76,10 @@ class EmbedSkillChunksTests(unittest.TestCase):
                     },
                 ),
                 embeddings.load_skills_neo4j.GraphNode(
-                    label="SkillChunk",
-                    id="chunk-dashboard",
+                    label="RetrievalUnit",
+                    id="retrieval:skill:design-system-practice:section:0:dashboard",
                     properties={
-                        "id": "chunk-dashboard",
+                        "id": "retrieval:skill:design-system-practice:section:0:dashboard",
                         "text": "dashboard typography and layout",
                         "source_path": "skills/user-experience/design-system-practice/SKILL.md",
                         "section_id": "skill:design-system-practice:section:0-objective",
@@ -88,7 +90,7 @@ class EmbedSkillChunksTests(unittest.TestCase):
             relationships=(),
         )
         embedder = embeddings.DeterministicEmbeddingProvider(dimension=8)
-        enriched = embeddings.embed_skill_chunks(plan, embedder)
+        enriched = embeddings.embed_retrieval_units(plan, embedder)
 
         candidates = embeddings.query_vector_candidates(
             enriched,
@@ -97,7 +99,10 @@ class EmbedSkillChunksTests(unittest.TestCase):
             limit=1,
         )
 
-        self.assertEqual("chunk-approval", candidates[0].chunk_id)
+        self.assertEqual(
+            "retrieval:skill:human-in-the-loop:section:0:approval",
+            candidates[0].retrieval_unit_id,
+        )
         self.assertGreaterEqual(candidates[0].score, 0.0)
         self.assertEqual(
             "skills/agent-control-patterns/human-in-the-loop/SKILL.md",
@@ -134,7 +139,7 @@ class EmbedSkillChunksTests(unittest.TestCase):
                 )
                 return (
                     {
-                        "chunk_id": "chunk-approval",
+                        "retrieval_unit_id": "retrieval:skill:human-in-the-loop:section:0:approval",
                         "score": 0.91,
                         "source_path": "skills/agent-control-patterns/human-in-the-loop/SKILL.md",
                         "section_id": "skill:human-in-the-loop:section:0-objective",
@@ -154,10 +159,13 @@ class EmbedSkillChunksTests(unittest.TestCase):
             limit=1,
         )
 
-        self.assertEqual("skill_chunk_embedding_vector", graph.calls[0]["index_name"])
+        self.assertEqual("retrieval_unit_embedding_vector", graph.calls[0]["index_name"])
         self.assertEqual(8, len(graph.calls[0]["embedding"]))
         self.assertEqual(1, graph.calls[0]["limit"])
-        self.assertEqual("chunk-approval", candidates[0].chunk_id)
+        self.assertEqual(
+            "retrieval:skill:human-in-the-loop:section:0:approval",
+            candidates[0].retrieval_unit_id,
+        )
         self.assertEqual("deterministic-test-embedding", candidates[0].embedding_provider)
         self.assertEqual(8, candidates[0].embedding_dimensions)
         self.assertFalse(hasattr(candidates[0], "embedding"))
@@ -181,7 +189,7 @@ class EmbedSkillChunksTests(unittest.TestCase):
                 self.parameters = parameters
                 return (
                     {
-                        "chunk_id": "chunk-approval",
+                        "retrieval_unit_id": "retrieval:skill:human-in-the-loop:section:0:approval",
                         "score": 0.91,
                         "source_path": "skills/agent-control-patterns/human-in-the-loop/SKILL.md",
                         "section_id": "skill:human-in-the-loop:section:0-objective",
@@ -203,18 +211,21 @@ class EmbedSkillChunksTests(unittest.TestCase):
         graph = embeddings.Neo4jVectorQueryGraph(driver)
 
         records = graph.query_vector_index(
-            "skill_chunk_embedding_vector",
+            "retrieval_unit_embedding_vector",
             embedding=(0.1, 0.2),
             limit=1,
         )
 
         self.assertIn("CALL db.index.vector.queryNodes", driver.session_instance.query)
         self.assertEqual(
-            "skill_chunk_embedding_vector", driver.session_instance.parameters["index_name"]
+            "retrieval_unit_embedding_vector", driver.session_instance.parameters["index_name"]
         )
         self.assertEqual([0.1, 0.2], driver.session_instance.parameters["embedding"])
         self.assertEqual(1, driver.session_instance.parameters["limit"])
-        self.assertEqual("chunk-approval", records[0]["chunk_id"])
+        self.assertEqual(
+            "retrieval:skill:human-in-the-loop:section:0:approval",
+            records[0]["retrieval_unit_id"],
+        )
         self.assertEqual("deterministic-test-embedding", records[0]["embedding_provider"])
 
 

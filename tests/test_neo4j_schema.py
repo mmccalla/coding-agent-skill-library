@@ -18,7 +18,7 @@ class Neo4jSchemaTests(unittest.TestCase):
             ("Skill", "id"),
             ("Skill", "name"),
             ("SkillSection", "id"),
-            ("SkillChunk", "id"),
+            ("RetrievalUnit", "id"),
             ("SkillCategory", "id"),
             ("TaskShape", "id"),
             ("WorkflowStage", "id"),
@@ -39,7 +39,7 @@ class Neo4jSchemaTests(unittest.TestCase):
             ("skill_category_lookup", "Skill", "category"),
             ("skill_path_lookup", "Skill", "path"),
             ("bridge_assertion_source_lookup", "BridgeAssertion", "source"),
-            ("skill_chunk_source_lookup", "SkillChunk", "source_path"),
+            ("retrieval_unit_source_lookup", "RetrievalUnit", "source_path"),
         ):
             self.assertIn(f"CREATE INDEX {index_name} IF NOT EXISTS", text)
             self.assertIn(f"FOR (n:{label}) ON (n.{property_name})", text)
@@ -51,16 +51,17 @@ class Neo4jSchemaTests(unittest.TestCase):
         self.assertIn("Skill", text)
         self.assertIn("title", text)
         self.assertIn("description", text)
-        self.assertIn("skill_chunk_text_fulltext", text)
-        self.assertIn("SkillChunk", text)
+        self.assertIn("retrieval_unit_text_fulltext", text)
+        self.assertIn("RetrievalUnit", text)
         self.assertIn("text", text)
 
     def test_schema_defines_vector_index_for_chunk_embeddings(self) -> None:
         text = SCHEMA.read_text(encoding="utf-8")
         config_text = CONFIG.read_text(encoding="utf-8")
 
-        self.assertIn("skill_chunk_embedding_vector", text)
-        self.assertIn("FOR (n:SkillChunk) ON (n.embedding)", text)
+        self.assertIn("retrieval_unit_embedding_vector", text)
+        self.assertIn("FOR (n:RetrievalUnit) ON (n.embedding)", text)
+        self.assertNotIn("SkillChunk", text)
         self.assertIn("vector.dimensions", text)
         self.assertIn("$embedding_dimensions", text)
         self.assertIn("embedding_dimensions: 1536", config_text)

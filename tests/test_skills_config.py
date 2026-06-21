@@ -14,7 +14,7 @@ class SkillsConfigTests(unittest.TestCase):
 
         self.assertEqual(1536, settings.neo4j.embedding_dimensions)
         self.assertEqual("deterministic-test-embedding", settings.neo4j.embedding_provider)
-        self.assertEqual("skill_chunk_embedding_vector", settings.neo4j.vector_index)
+        self.assertEqual("retrieval_unit_embedding_vector", settings.neo4j.vector_index)
         self.assertEqual(10, settings.mcp.recommend_limit_max)
         self.assertEqual(1200, settings.retrieval.default_token_budget)
 

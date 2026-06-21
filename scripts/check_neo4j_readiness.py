@@ -23,10 +23,10 @@ REQUIRED_INDEXES = frozenset(
         "skill_category_lookup",
         "skill_path_lookup",
         "bridge_assertion_source_lookup",
-        "skill_chunk_source_lookup",
+        "retrieval_unit_source_lookup",
         "skill_metadata_fulltext",
-        "skill_chunk_text_fulltext",
-        "skill_chunk_embedding_vector",
+        "retrieval_unit_text_fulltext",
+        "retrieval_unit_embedding_vector",
     }
 )
 
@@ -98,7 +98,7 @@ def collect_readiness(driver: Any, settings: skills_config.Neo4jSettings) -> Neo
                     (
                         "CALL db.index.vector.queryNodes($index_name, 1, $embedding) "
                         "YIELD node, score "
-                        "RETURN node.id AS chunk_id, score"
+                        "RETURN node.id AS retrieval_unit_id, score"
                     ),
                     index_name=settings.vector_index,
                     embedding=embedding,
@@ -106,7 +106,7 @@ def collect_readiness(driver: Any, settings: skills_config.Neo4jSettings) -> Neo
             )
             vector_query_ok = bool(records)
             if not vector_query_ok:
-                errors.append("vector query returned no SkillChunk candidates")
+                errors.append("vector query returned no RetrievalUnit candidates")
 
     return Neo4jReadinessReport(
         ready=not errors,

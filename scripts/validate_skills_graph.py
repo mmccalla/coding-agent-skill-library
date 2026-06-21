@@ -168,12 +168,16 @@ def validate_graph_records(records: Mapping[str, object]) -> GraphValidationResu
 
     graph: dict[str, set[str]] = defaultdict(set)
     related_skill_ids_by_skill: dict[str, set[str]] = defaultdict(set)
-    proven_bridge_sources: dict[tuple[str, str, str], str] = {}
+    proven_bridge_source_scopes: dict[tuple[str, str, str], str] = {}
     for bridge in _bridge_records(records):
         bridge_skill_id = _string_value(bridge, "skill_id")
         bridge_kind = _string_value(bridge, "kind")
         bridge_value = _string_value(bridge, "value")
         bridge_source = _string_value(bridge, "source")
+        bridge_rule_id = _string_value(bridge, "rule_id")
+        bridge_source_scope = _string_value(bridge, "source_scope")
+        bridge_source_ref = _string_value(bridge, "source_ref")
+        bridge_rationale = _string_value(bridge, "rationale")
         bridge_path = _string_value(bridge, "source_path") or _string_value(bridge, "path")
         bridge_id = _string_value(bridge, "id")
         skill_path = _string_value(skills_by_id.get(bridge_skill_id, {}), "path")
@@ -184,6 +188,11 @@ def validate_graph_records(records: Mapping[str, object]) -> GraphValidationResu
             or bridge_kind not in ALLOWED_BRIDGE_KINDS
             or not bridge_value
             or not bridge_source
+            or not bridge_rule_id
+            or bridge_source != bridge_rule_id
+            or not bridge_source_scope
+            or not bridge_source_ref
+            or not bridge_rationale
             or not bridge_path
             or not _valid_confidence(bridge.get("confidence"))
             or bridge_id != expected_bridge_id
@@ -195,7 +204,7 @@ def validate_graph_records(records: Mapping[str, object]) -> GraphValidationResu
                 f"{bridge_value or '<missing value>'}"
             )
             continue
-        proven_bridge_sources[bridge_key] = bridge_source
+        proven_bridge_source_scopes[bridge_key] = bridge_source_scope
 
     for relationship in _relationship_records(records):
         source = _string_value(relationship, "source")
@@ -204,6 +213,12 @@ def validate_graph_records(records: Mapping[str, object]) -> GraphValidationResu
         source_path = _string_value(relationship, "source_path")
         source_section_id = _string_value(relationship, "source_section_id")
         mapping_rule_id = _string_value(relationship, "mapping_rule_id")
+        has_curated_metadata = (
+            _valid_confidence(relationship.get("confidence"))
+            and bool(_string_value(relationship, "rationale"))
+            and bool(_string_value(relationship, "source_scope"))
+            and bool(_string_value(relationship, "source_ref"))
+        )
         relationship_valid = (
             source in skills_by_id
             and target in skills_by_id
@@ -211,7 +226,7 @@ def validate_graph_records(records: Mapping[str, object]) -> GraphValidationResu
             and bool(source_path)
             and (
                 (rel_type == "RELATED_TO" and bool(source_section_id))
-                or (rel_type != "RELATED_TO" and bool(mapping_rule_id))
+                or (rel_type != "RELATED_TO" and bool(mapping_rule_id) and has_curated_metadata)
             )
         )
         if not relationship_valid:
@@ -253,11 +268,11 @@ def validate_graph_records(records: Mapping[str, object]) -> GraphValidationResu
         for field in BRIDGE_FIELDS:
             for value in _string_list(skill, field):
                 bridge_key = (skill_id, BRIDGE_FIELD_KINDS[field], value)
-                proven_source = proven_bridge_sources.get(bridge_key)
-                if proven_source:
+                proven_source_scope = proven_bridge_source_scopes.get(bridge_key)
+                if proven_source_scope:
                     if (
                         BRIDGE_FIELD_KINDS[field],
-                        proven_source,
+                        proven_source_scope,
                     ) not in NON_CONNECTIVE_BRIDGE_SOURCES:
                         _add_edge(graph, skill_id, f"{field}:{value}")
                 else:

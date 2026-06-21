@@ -79,6 +79,19 @@ class SkillsMcpServerTests(unittest.TestCase):
         self.assertNotIn("embedding", repr(response))
         self.assertNotIn("MATCH ", repr(response))
 
+    def test_get_skill_returns_retrieval_units_not_legacy_chunks(self) -> None:
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+
+        response = server.call_tool("get_skill", {"skill_id": "skill:kg-enabled-rag"})
+
+        self.assertEqual("ok", response["status"])
+        self.assertIn("retrieval_units", response)
+        self.assertNotIn("chunks", response)
+        first = response["retrieval_units"][0]
+        self.assertIn("retrieval_unit_id", first)
+        self.assertNotIn("chunk_id", first)
+
     def test_get_skill_context_returns_related_connected_skills(self) -> None:
         mcp = load_module()
         server = mcp.SkillsMcpServer.for_test_fixture()
@@ -226,6 +239,7 @@ class SkillsMcpServerTests(unittest.TestCase):
         self.assertNotIn("Neo4j", ontology_text)
         self.assertNotIn("embedding", ontology_text.lower())
         self.assertNotIn("contentHash", ontology_text)
+        self.assertIn("retrieval units", ontology_text)
 
     def test_json_rpc_notifications_do_not_emit_responses(self) -> None:
         mcp = load_module()

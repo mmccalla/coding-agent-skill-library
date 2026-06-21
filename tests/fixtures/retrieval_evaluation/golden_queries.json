@@ -18,6 +18,27 @@
     "expect_uncertain": false
   },
   {
+    "id": "event_streaming_iceberg_pipeline",
+    "query": "I've been instructed to build an event driven and real time data streaming pipeline that stores data in iceberg tables using apache pulsar and apache flink. How should this be done?",
+    "expected_skill_ids": [
+      "skill:real-time-operability",
+      "skill:event-streaming-platform-design",
+      "skill:stream-processing-patterns",
+      "skill:lakehouse-and-medallion-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:event-streaming-platform-design",
+      "skill:stream-processing-patterns"
+    ],
+    "excluded_skill_ids": [
+      "skill:accessibility-wcag",
+      "skill:ci-cd-and-automation",
+      "skill:ddd-practice",
+      "skill:dora-four-keys"
+    ],
+    "expect_uncertain": false
+  },
+  {
     "id": "absent",
     "query": "zzzz qqqq nonsense",
     "expected_skill_ids": [],

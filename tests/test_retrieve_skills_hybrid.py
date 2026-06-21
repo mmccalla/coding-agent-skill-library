@@ -29,7 +29,7 @@ class HybridRetrievalTests(unittest.TestCase):
             query_text="semantically similar request",
             vector_candidates=(
                 retrieval.VectorCandidate(
-                    chunk_id="chunk-kg",
+                    retrieval_unit_id="retrieval:skill:kg-enabled-rag:section:1:kg",
                     score=0.72,
                     source_path="skills/data-architecture/kg-enabled-rag/SKILL.md",
                     section_id="skill:kg-enabled-rag:section:0-objective",
@@ -63,7 +63,7 @@ class HybridRetrievalTests(unittest.TestCase):
             query_text="semantically similar request",
             vector_candidates=(
                 retrieval.VectorCandidate(
-                    chunk_id="chunk-generic",
+                    retrieval_unit_id="retrieval:skill:generic-documentation:section:0:generic",
                     score=0.95,
                     source_path="skills/reference/generic-documentation/SKILL.md",
                     section_id="skill:generic-documentation:section:0-objective",
@@ -73,7 +73,7 @@ class HybridRetrievalTests(unittest.TestCase):
                     embedding_dimensions=8,
                 ),
                 retrieval.VectorCandidate(
-                    chunk_id="chunk-kg",
+                    retrieval_unit_id="retrieval:skill:kg-enabled-rag:section:1:kg",
                     score=0.72,
                     source_path="skills/data-architecture/kg-enabled-rag/SKILL.md",
                     section_id="skill:kg-enabled-rag:section:0-objective",
@@ -172,10 +172,10 @@ class HybridRetrievalTests(unittest.TestCase):
         retrieval = load_module()
         plan = retrieval.fixture_load_plan()
         irrelevant = retrieval.load_skills_neo4j.GraphNode(
-            "SkillChunk",
-            "chunk-irrelevant-first",
+            "RetrievalUnit",
+            "retrieval:skill:kg-enabled-rag:section:9:irrelevant",
             {
-                "id": "chunk-irrelevant-first",
+                "id": "retrieval:skill:kg-enabled-rag:section:9:irrelevant",
                 "skill_id": "skill:kg-enabled-rag",
                 "text": "Unrelated release notes.",
                 "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
@@ -216,7 +216,7 @@ class HybridRetrievalTests(unittest.TestCase):
                 if "db.index.vector.queryNodes" in query:
                     return (
                         {
-                            "chunk_id": "chunk-kg",
+                            "retrieval_unit_id": "retrieval:skill:kg-enabled-rag:section:1:kg",
                             "score": 0.91,
                             "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
                             "section_id": "skill:kg-enabled-rag:section:0-objective",
@@ -236,12 +236,12 @@ class HybridRetrievalTests(unittest.TestCase):
                             },
                         },
                     )
-                if "RETURN chunk.id AS id" in query:
+                if "RETURN unit.id AS id" in query:
                     return (
                         {
-                            "id": "chunk-kg",
+                            "id": "retrieval:skill:kg-enabled-rag:section:1:kg",
                             "properties": {
-                                "id": "chunk-kg",
+                                "id": "retrieval:skill:kg-enabled-rag:section:1:kg",
                                 "skill_id": "skill:kg-enabled-rag",
                                 "text": "Use KG-enabled RAG for graph-grounded retrieval.",
                                 "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",

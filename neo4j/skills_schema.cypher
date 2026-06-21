@@ -12,8 +12,8 @@ FOR (n:Skill) REQUIRE n.name IS UNIQUE;
 CREATE CONSTRAINT skill_section_id_unique IF NOT EXISTS
 FOR (n:SkillSection) REQUIRE n.id IS UNIQUE;
 
-CREATE CONSTRAINT skill_chunk_id_unique IF NOT EXISTS
-FOR (n:SkillChunk) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT retrieval_unit_id_unique IF NOT EXISTS
+FOR (n:RetrievalUnit) REQUIRE n.id IS UNIQUE;
 
 CREATE CONSTRAINT skill_category_id_unique IF NOT EXISTS
 FOR (n:SkillCategory) REQUIRE n.id IS UNIQUE;
@@ -54,17 +54,17 @@ FOR (n:Skill) ON (n.path);
 CREATE INDEX bridge_assertion_source_lookup IF NOT EXISTS
 FOR (n:BridgeAssertion) ON (n.source);
 
-CREATE INDEX skill_chunk_source_lookup IF NOT EXISTS
-FOR (n:SkillChunk) ON (n.source_path);
+CREATE INDEX retrieval_unit_source_lookup IF NOT EXISTS
+FOR (n:RetrievalUnit) ON (n.source_path);
 
 CREATE FULLTEXT INDEX skill_metadata_fulltext IF NOT EXISTS
 FOR (n:Skill) ON EACH [n.name, n.title, n.description, n.category];
 
-CREATE FULLTEXT INDEX skill_chunk_text_fulltext IF NOT EXISTS
-FOR (n:SkillChunk) ON EACH [n.text, n.path, n.source_path];
+CREATE FULLTEXT INDEX retrieval_unit_text_fulltext IF NOT EXISTS
+FOR (n:RetrievalUnit) ON EACH [n.text, n.path, n.source_path];
 
-CREATE VECTOR INDEX skill_chunk_embedding_vector IF NOT EXISTS
-FOR (n:SkillChunk) ON (n.embedding)
+CREATE VECTOR INDEX retrieval_unit_embedding_vector IF NOT EXISTS
+FOR (n:RetrievalUnit) ON (n.embedding)
 OPTIONS {
   indexConfig: {
     `vector.dimensions`: $embedding_dimensions,

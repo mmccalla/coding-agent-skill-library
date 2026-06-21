@@ -26,7 +26,7 @@ REQUIRED_SCHEMA_ITEMS = frozenset(
         "skill_id_unique",
         "skill_name_unique",
         "skill_section_id_unique",
-        "skill_chunk_id_unique",
+        "retrieval_unit_id_unique",
         "skill_category_id_unique",
         "task_shape_id_unique",
         "workflow_stage_id_unique",
@@ -368,19 +368,23 @@ def _relationship(
     )
 
 
-def _chunk_from_section(section: Mapping[str, object], skill_path: str) -> GraphNode:
+def _retrieval_unit_from_section(section: Mapping[str, object], skill_path: str) -> GraphNode:
     section_id = _string(section, "id")
     content_hash = _string(section, "contentHash")
-    chunk_id = f"{section_id}:chunk:0:{content_hash[:12]}"
+    unit_id = f"retrieval:{_string(section, 'skill_id')}:section:{section.get('order', 0)}:{content_hash[:12]}"
     return _node(
-        "SkillChunk",
-        chunk_id,
+        "RetrievalUnit",
+        unit_id,
         {
             "section_id": section_id,
             "skill_id": _string(section, "skill_id"),
+            "unit_type": "section",
+            "title": _string(section, "name"),
             "text": _string(section, "text"),
-            "contentHash": content_hash,
+            "content_hash": content_hash,
             "source_path": skill_path,
+            "section_heading": _string(section, "heading"),
+            "ordinal": section.get("order", 0),
         },
     )
 
@@ -430,13 +434,25 @@ def build_load_plan(records: Mapping[str, object]) -> LoadPlan:
         add_relationship(
             _relationship("HAS_SECTION", "Skill", skill_id, "SkillSection", section_id)
         )
-        chunk = _chunk_from_section(section, skill_paths.get(skill_id, ""))
-        add_node(chunk)
+        retrieval_unit = _retrieval_unit_from_section(section, skill_paths.get(skill_id, ""))
+        add_node(retrieval_unit)
         add_relationship(
-            _relationship("HAS_CHUNK", "SkillSection", section_id, "SkillChunk", chunk.id)
+            _relationship(
+                "HAS_RETRIEVAL_UNIT",
+                "SkillSection",
+                section_id,
+                "RetrievalUnit",
+                retrieval_unit.id,
+            )
         )
         add_relationship(
-            _relationship("DERIVED_FROM", "SkillChunk", chunk.id, "SkillSection", section_id)
+            _relationship(
+                "DERIVED_FROM",
+                "RetrievalUnit",
+                retrieval_unit.id,
+                "SkillSection",
+                section_id,
+            )
         )
 
     for bridge in bridges:

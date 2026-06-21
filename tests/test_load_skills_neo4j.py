@@ -122,8 +122,12 @@ def fixture_records() -> dict[str, object]:
                         "kind": kind,
                         "value": bridge_value,
                         "source": f"test-rule:{skill['name']}",
+                        "rule_id": f"test-rule:{skill['name']}",
                         "path": path,
                         "source_path": path,
+                        "source_scope": "fixture",
+                        "source_ref": str(skill["name"]),
+                        "rationale": "Fixture bridge assertion.",
                         "confidence": 1.0,
                     }
                 )
@@ -131,7 +135,9 @@ def fixture_records() -> dict[str, object]:
 
 
 class LoadSkillsNeo4jTests(unittest.TestCase):
-    def test_load_plan_contains_skills_sections_chunks_bridges_and_relationships(self) -> None:
+    def test_load_plan_contains_skills_sections_retrieval_units_bridges_and_relationships(
+        self,
+    ) -> None:
         loader = load_module()
 
         plan = loader.build_load_plan(fixture_records())
@@ -140,15 +146,32 @@ class LoadSkillsNeo4jTests(unittest.TestCase):
         relationship_types = {relationship.type for relationship in plan.relationships}
         self.assertIn("Skill", labels)
         self.assertIn("SkillSection", labels)
-        self.assertIn("SkillChunk", labels)
+        self.assertIn("RetrievalUnit", labels)
+        self.assertNotIn("SkillChunk", labels)
         self.assertIn("BridgeAssertion", labels)
         self.assertIn("SkillCategory", labels)
         self.assertIn("TaskShape", labels)
         self.assertIn("ReferenceDocument", labels)
         self.assertIn("HAS_SECTION", relationship_types)
-        self.assertIn("HAS_CHUNK", relationship_types)
+        self.assertIn("HAS_RETRIEVAL_UNIT", relationship_types)
+        self.assertNotIn("HAS_CHUNK", relationship_types)
         self.assertIn("ASSERTS_BRIDGE", relationship_types)
         self.assertIn("RELATED_TO", relationship_types)
+        retrieval_unit = next(node for node in plan.nodes if node.label == "RetrievalUnit")
+        self.assertTrue(retrieval_unit.id.startswith("retrieval:skill:apply-laws-of-ai:section:0:"))
+        for field in (
+            "id",
+            "skill_id",
+            "unit_type",
+            "title",
+            "text",
+            "source_path",
+            "section_heading",
+            "ordinal",
+            "content_hash",
+            "section_id",
+        ):
+            self.assertIn(field, retrieval_unit.properties)
 
     def test_fake_graph_load_is_idempotent(self) -> None:
         loader = load_module()

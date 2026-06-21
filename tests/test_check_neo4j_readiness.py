@@ -24,7 +24,7 @@ class FakeSession:
                 {"name": "skill_id_unique"},
                 {"name": "skill_name_unique"},
                 {"name": "skill_section_id_unique"},
-                {"name": "skill_chunk_id_unique"},
+                {"name": "retrieval_unit_id_unique"},
                 {"name": "skill_category_id_unique"},
                 {"name": "task_shape_id_unique"},
                 {"name": "workflow_stage_id_unique"},
@@ -39,7 +39,7 @@ class FakeSession:
         if query.startswith("SHOW INDEXES"):
             return self.indexes
         if "db.index.vector.queryNodes" in query:
-            return ({"chunk_id": "chunk-1", "score": 0.9},)
+            return ({"retrieval_unit_id": "retrieval-unit-1", "score": 0.9},)
         raise AssertionError(f"Unexpected query: {query}")
 
 
@@ -60,10 +60,10 @@ class Neo4jReadinessTests(unittest.TestCase):
                 {"name": "skill_category_lookup", "state": "ONLINE", "type": "RANGE"},
                 {"name": "skill_path_lookup", "state": "ONLINE", "type": "RANGE"},
                 {"name": "bridge_assertion_source_lookup", "state": "ONLINE", "type": "RANGE"},
-                {"name": "skill_chunk_source_lookup", "state": "ONLINE", "type": "RANGE"},
+                {"name": "retrieval_unit_source_lookup", "state": "ONLINE", "type": "RANGE"},
                 {"name": "skill_metadata_fulltext", "state": "ONLINE", "type": "FULLTEXT"},
-                {"name": "skill_chunk_text_fulltext", "state": "ONLINE", "type": "FULLTEXT"},
-                {"name": "skill_chunk_embedding_vector", "state": "ONLINE", "type": "VECTOR"},
+                {"name": "retrieval_unit_text_fulltext", "state": "ONLINE", "type": "FULLTEXT"},
+                {"name": "retrieval_unit_embedding_vector", "state": "ONLINE", "type": "VECTOR"},
             )
         )
 
@@ -80,16 +80,16 @@ class Neo4jReadinessTests(unittest.TestCase):
                 {"name": "skill_category_lookup", "state": "ONLINE", "type": "RANGE"},
                 {"name": "skill_path_lookup", "state": "ONLINE", "type": "RANGE"},
                 {"name": "bridge_assertion_source_lookup", "state": "ONLINE", "type": "RANGE"},
-                {"name": "skill_chunk_source_lookup", "state": "ONLINE", "type": "RANGE"},
+                {"name": "retrieval_unit_source_lookup", "state": "ONLINE", "type": "RANGE"},
                 {"name": "skill_metadata_fulltext", "state": "ONLINE", "type": "FULLTEXT"},
-                {"name": "skill_chunk_text_fulltext", "state": "ONLINE", "type": "FULLTEXT"},
+                {"name": "retrieval_unit_text_fulltext", "state": "ONLINE", "type": "FULLTEXT"},
             )
         )
 
         report = collect_readiness(driver, Neo4jSettings(database="skills", embedding_dimensions=3))
 
         self.assertFalse(report.ready)
-        self.assertIn("missing index: skill_chunk_embedding_vector", report.errors)
+        self.assertIn("missing index: retrieval_unit_embedding_vector", report.errors)
 
 
 if __name__ == "__main__":

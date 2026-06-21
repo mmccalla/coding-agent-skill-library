@@ -20,6 +20,7 @@ from prometheus_client import (
     CONTENT_TYPE_LATEST,
     CollectorRegistry,
     Counter,
+    Gauge,
     Histogram,
     generate_latest,
 )
@@ -60,6 +61,44 @@ OLLAMA_FAILURES_TOTAL = Counter(
     "skills_api_ollama_failures_total",
     "Total Ollama-related API failures by operation and error type.",
     ("operation", "error_type"),
+    registry=METRICS_REGISTRY,
+)
+READINESS_STATE = Gauge(
+    "skills_api_readiness_state",
+    "Current Skills API dependency readiness state; 1 means ready and 0 means degraded.",
+    ("database",),
+    registry=METRICS_REGISTRY,
+)
+GRAPH_NODES = Gauge(
+    "skills_api_graph_nodes",
+    "Current Skills KG node count by label in the API graph snapshot.",
+    ("label",),
+    registry=METRICS_REGISTRY,
+)
+GRAPH_RELATIONSHIPS = Gauge(
+    "skills_api_graph_relationships",
+    "Current Skills KG relationship count by type in the API graph snapshot.",
+    ("type",),
+    registry=METRICS_REGISTRY,
+)
+RETRIEVAL_REQUESTS_TOTAL = Counter(
+    "skills_api_retrieval_requests_total",
+    "Total retrieval requests by API operation, selected route and uncertainty state.",
+    ("operation", "route", "uncertain"),
+    registry=METRICS_REGISTRY,
+)
+RETRIEVAL_RECOMMENDATION_COUNT = Histogram(
+    "skills_api_retrieval_recommendation_count",
+    "Number of recommendations returned by retrieval operations.",
+    ("operation", "route", "uncertain"),
+    buckets=(0, 1, 2, 3, 5, 10),
+    registry=METRICS_REGISTRY,
+)
+RETRIEVAL_TOP_SCORE = Histogram(
+    "skills_api_retrieval_top_score",
+    "Top recommendation score by retrieval operation and selected route.",
+    ("operation", "route", "uncertain"),
+    buckets=(0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 2.0),
     registry=METRICS_REGISTRY,
 )
 logging.getLogger(API_LOGGER_NAME).setLevel(logging.INFO)
@@ -107,6 +146,7 @@ def create_app(
     readiness = readiness_provider or _default_readiness
     answer_query = query_provider or skills_ollama.answer_graph_query
     list_models = model_provider or skills_ollama.list_ollama_models
+    _record_graph_snapshot_metrics(skills_server)
     app = FastAPI(
         title="Skills KG GraphRAG",
         version="0.1.0",
@@ -161,10 +201,14 @@ def create_app(
 
     @app.get("/health/ready")
     def health_ready() -> Mapping[str, object]:
-        return readiness()
+        report = readiness()
+        _record_readiness_metrics(report)
+        return report
 
     @app.get("/metrics")
     def metrics() -> Response:
+        _record_graph_snapshot_metrics(skills_server)
+        _record_readiness_metrics(readiness())
         return Response(generate_latest(METRICS_REGISTRY), media_type=CONTENT_TYPE_LATEST)
 
     @app.get("/skills/search")
@@ -261,9 +305,12 @@ def create_app(
     @app.get("/skills/{skill_id}")
     def get_skill(
         skill_id: str,
-        chunk_limit: int = Query(default=3, ge=1, le=10),
+        retrieval_unit_limit: int = Query(default=3, ge=1, le=10),
     ) -> Mapping[str, object]:
-        request = skills_contracts.GetSkillRequest(skill_id=skill_id, chunk_limit=chunk_limit)
+        request = skills_contracts.GetSkillRequest(
+            skill_id=skill_id,
+            retrieval_unit_limit=retrieval_unit_limit,
+        )
         return skills_server.call_tool("get_skill", request.model_dump())
 
     @app.get("/skills/{skill_id}/context")
@@ -286,16 +333,29 @@ def create_app(
 
     @app.post("/skills/recommend")
     def recommend_skills(
+        api_request: Request,
         request: skills_contracts.RecommendSkillsRequest,
     ) -> Mapping[str, object]:
-        return skills_server.call_tool("recommend_skills", request.model_dump())
+        result = skills_server.call_tool("recommend_skills", request.model_dump())
+        _record_retrieval_result(
+            operation="skills.recommend",
+            route="recommendation",
+            request_id=_request_id(api_request),
+            result=result,
+        )
+        return result
 
     @app.post("/skills/query")
     async def query_skills(
         api_request: Request,
         request: skills_contracts.QuerySkillsRequest,
     ) -> Mapping[str, object]:
-        evidence = _query_evidence_for_route(skills_server, request)
+        evidence = _query_evidence_for_route(
+            skills_server,
+            request,
+            request_id=_request_id(api_request),
+        )
+        _record_query_evidence_selection(_request_id(api_request), evidence)
         try:
             return await answer_query(request, evidence)
         except skills_ollama.UnsafeOllamaEndpointError as exc:
@@ -340,6 +400,7 @@ def _frontmatter_value(frontmatter: str, key: str) -> str:
 def _query_evidence_for_route(
     skills_server: SkillsMcpServer,
     request: skills_contracts.QuerySkillsRequest,
+    request_id: str,
 ) -> Mapping[str, object]:
     routing = skills_server.call_tool("route_skill_query", {"query": request.query})
     route = routing.get("route")
@@ -347,41 +408,47 @@ def _query_evidence_for_route(
     if route == "direct_lookup" and isinstance(skill_id, str):
         skill = skills_server.call_tool(
             "get_skill",
-            {"skill_id": skill_id, "chunk_limit": request.limit},
+            {"skill_id": skill_id, "retrieval_unit_limit": request.limit},
         )
         context = skills_server.call_tool(
             "get_skill_context",
             {"skill_id": skill_id, "limit": request.limit},
         )
-        return {
+        evidence = {
             "status": "ok",
             "route": "direct_lookup",
             "routing": routing,
             "skill": skill,
             "context": context,
         }
+        _record_route_decision(request_id, evidence)
+        return evidence
     if route == "context" and isinstance(skill_id, str):
         context = skills_server.call_tool(
             "get_skill_context",
             {"skill_id": skill_id, "limit": request.limit},
         )
-        return {
+        evidence = {
             "status": "ok",
             "route": "context",
             "routing": routing,
             "context": context,
         }
+        _record_route_decision(request_id, evidence)
+        return evidence
     if route == "execution_plan" and isinstance(skill_id, str):
         guide = skills_server.call_tool(
             "get_skill_execution_guide",
             {"skill_id": skill_id, "related_limit": request.limit},
         )
-        return {
+        evidence = {
             "status": "ok",
             "route": "execution_plan",
             "routing": routing,
             "execution_guide": guide,
         }
+        _record_route_decision(request_id, evidence)
+        return evidence
 
     recommendation_request = skills_contracts.RecommendSkillsRequest(
         query=request.query,
@@ -392,12 +459,137 @@ def _query_evidence_for_route(
     recommendations = skills_server.call_tool(
         "recommend_skills", recommendation_request.model_dump()
     )
-    return {
+    recommendation_evidence: dict[str, object] = {
         "status": "ok",
         "route": "recommendation",
         "routing": routing,
-        **recommendations,
     }
+    for key, value in recommendations.items():
+        recommendation_evidence[key] = value
+    _record_route_decision(request_id, recommendation_evidence)
+    return recommendation_evidence
+
+
+def _record_graph_snapshot_metrics(skills_server: SkillsMcpServer) -> None:
+    counts = skills_server.graph_logical_counts()
+    for label, count in counts["nodes"].items():
+        GRAPH_NODES.labels(label=label).set(count)
+    for relationship_type, count in counts["relationships"].items():
+        GRAPH_RELATIONSHIPS.labels(type=relationship_type).set(count)
+
+
+def _record_readiness_metrics(report: Mapping[str, object]) -> None:
+    database = _safe_metric_label(report.get("database"), default="none")
+    ready = report.get("ready")
+    if isinstance(ready, bool):
+        READINESS_STATE.labels(database=database).set(1.0 if ready else 0.0)
+
+
+def _record_route_decision(request_id: str, evidence: Mapping[str, object]) -> None:
+    routing = evidence.get("routing")
+    routing_map = routing if isinstance(routing, dict) else {}
+    route = _safe_metric_label(evidence.get("route"))
+    _log_api_event(
+        "skill_query_route_selected",
+        {
+            "request_id": request_id,
+            "route": route,
+            "suggested_tool": _safe_log_value(routing_map.get("suggested_tool")),
+            "resolved_skill_id": _safe_log_value(routing_map.get("resolved_skill_id")),
+            "confidence": _safe_number(routing_map.get("confidence")),
+        },
+    )
+    _record_retrieval_result(
+        operation="skills.query.evidence",
+        route=route,
+        request_id=request_id,
+        result=evidence,
+    )
+
+
+def _record_query_evidence_selection(request_id: str, evidence: Mapping[str, object]) -> None:
+    route = _safe_metric_label(evidence.get("route"))
+    recommendation_count, top = _recommendation_summary(evidence)
+    _log_api_event(
+        "skill_query_evidence_selected",
+        {
+            "request_id": request_id,
+            "route": route,
+            "recommendation_count": recommendation_count,
+            "top_skill_id": top["skill_id"],
+            "top_skill_name": top["skill_name"],
+            "top_score": top["score"],
+        },
+    )
+
+
+def _record_retrieval_result(
+    *,
+    operation: str,
+    route: str,
+    request_id: str,
+    result: Mapping[str, object],
+) -> None:
+    uncertain_value = bool(result.get("uncertain")) if "uncertain" in result else False
+    uncertain = str(uncertain_value).lower()
+    recommendation_count, top = _recommendation_summary(result)
+    top_score = _safe_number(top.get("score"))
+    RETRIEVAL_REQUESTS_TOTAL.labels(
+        operation=operation,
+        route=_safe_metric_label(route),
+        uncertain=uncertain,
+    ).inc()
+    RETRIEVAL_RECOMMENDATION_COUNT.labels(
+        operation=operation,
+        route=_safe_metric_label(route),
+        uncertain=uncertain,
+    ).observe(recommendation_count)
+    RETRIEVAL_TOP_SCORE.labels(
+        operation=operation,
+        route=_safe_metric_label(route),
+        uncertain=uncertain,
+    ).observe(top_score)
+    _log_api_event(
+        "skill_retrieval_completed",
+        {
+            "request_id": request_id,
+            "operation": operation,
+            "route": _safe_metric_label(route),
+            "uncertain": uncertain_value,
+            "recommendation_count": recommendation_count,
+            "top_skill_id": top["skill_id"],
+            "top_skill_name": top["skill_name"],
+            "top_score": top_score,
+        },
+    )
+
+
+def _recommendation_summary(result: Mapping[str, object]) -> tuple[int, dict[str, object]]:
+    recommendations = result.get("recommendations")
+    if not isinstance(recommendations, list):
+        return 0, {"skill_id": "", "skill_name": "", "score": 0.0}
+    first = recommendations[0] if recommendations and isinstance(recommendations[0], dict) else {}
+    return len(recommendations), {
+        "skill_id": _safe_log_value(first.get("skill_id")),
+        "skill_name": _safe_log_value(first.get("skill_name")),
+        "score": _safe_number(first.get("score")),
+    }
+
+
+def _safe_metric_label(value: object, *, default: str = "unknown") -> str:
+    if isinstance(value, str) and value:
+        return re.sub(r"[^a-zA-Z0-9_.:-]+", "_", value)[:80]
+    return default
+
+
+def _safe_log_value(value: object) -> str:
+    return value if isinstance(value, str) else ""
+
+
+def _safe_number(value: object) -> float:
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return float(value)
+    return 0.0
 
 
 def _request_id(request: Request) -> str:
