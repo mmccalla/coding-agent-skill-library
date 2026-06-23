@@ -35,7 +35,7 @@ VERIFICATION_BY_SKILL: dict[str, str] = {
 - [ ] All six quality gates evaluated (Humanity, Human Safety, Authority, Security, Proportionality, Auditability).
 - [ ] Refusals, constraints or escalations reported where applicable.
 - [ ] Confirmation that this skill ran before all other reasoning.""",
-    "using-agent-skills": """## Verification
+    "skill-discovery-and-selection": """## Verification
 
 - [ ] `apply-laws-of-ai` execution confirmed.
 - [ ] Selected skill(s) and selection rationale reported.
@@ -59,13 +59,13 @@ VERIFICATION_BY_SKILL: dict[str, str] = {
 - [ ] Validation run for the completed slice.
 - [ ] Behaviour change and rollback path described.
 - [ ] Next slice or residual risks noted.""",
-    "idea-refine": """## Verification
+    "idea-refinement": """## Verification
 
 - [ ] Refined problem statement and proposed approach stated.
 - [ ] Constraints, assumptions and open questions listed.
 - [ ] Success criteria or falsifiable hypotheses captured.
 - [ ] Recommendation for spec, interview or implementation next step.""",
-    "interview-me": """## Verification
+    "requirements-elicitation": """## Verification
 
 - [ ] Clarifying questions asked or assumptions stated explicitly.
 - [ ] User goal, constraints and success criteria captured.
@@ -83,7 +83,7 @@ VERIFICATION_BY_SKILL: dict[str, str] = {
 - [ ] Claims mapped to source evidence.
 - [ ] Gaps where sources are silent or conflicting stated.
 - [ ] Implementation or documentation aligned to sources.""",
-    "doubt-driven-development": """## Verification
+    "uncertainty-driven-development": """## Verification
 
 - [ ] Doubts, assumptions and failure modes logged.
 - [ ] Evidence sought or experiments defined.
@@ -255,15 +255,15 @@ VERIFICATION_BY_SKILL: dict[str, str] = {
 }
 
 STANDARD_ARCHITECTURE_SKILLS = {
-    "business-capability-modelling",
-    "business-information-concept-modelling",
+    "business-capability-modeling",
+    "business-information-concept-modeling",
     "capability-maturity-assessment",
     "operating-model-design",
-    "organisation-and-role-design",
-    "process-modelling",
+    "organization-and-role-design",
+    "process-modeling",
     "strategy-to-execution-traceability",
-    "value-stream-modelling",
-    "conceptual-data-modelling",
+    "value-stream-modeling",
+    "conceptual-data-modeling",
     "data-contract-design",
     "data-governance-and-quality",
     "data-integration-and-interoperability",
@@ -272,15 +272,15 @@ STANDARD_ARCHITECTURE_SKILLS = {
     "data-product-design",
     "data-security-and-privacy-architecture",
     "lakehouse-and-medallion-architecture",
-    "logical-data-modelling",
+    "logical-data-modeling",
     "master-and-reference-data-management",
     "metadata-management",
     "cdc-and-source-to-stream-ingestion",
     "event-driven-architecture",
     "event-governance-and-lineage",
-    "event-modelling",
+    "event-modeling",
     "event-streaming-platform-design",
-    "real-time-operability",
+    "streaming-operations-and-slos",
     "schema-registry-and-contracts",
     "stream-processing-patterns",
 }
@@ -289,19 +289,19 @@ ALREADY_CHECKLIST_SKILLS = {
     "reflection-and-verification",
     "multi-agent-collaboration",
     "planning-and-task-decomposition",
-    "parallelisation",
+    "parallelization",
     "guardrails-safety-patterns",
     "goal-setting-and-monitoring",
-    "resource-aware-optimisation",
+    "resource-aware-optimization",
     "evaluation-and-monitoring",
     "routing",
     "exception-handling-and-recovery",
     "human-in-the-loop",
     "reasoning-techniques",
     "prompt-chaining",
-    "prioritisation",
+    "prioritization",
     "mcp-server-design",
-    "tool-use-function-calling",
+    "tool-use-and-function-calling",
     "knowledge-retrieval-rag",
     "inter-agent-communication-a2a",
     "memory-management",
@@ -310,19 +310,19 @@ ALREADY_CHECKLIST_SKILLS = {
 
 RELATED_SKILLS: dict[str, list[tuple[str, str]]] = {
     "apply-laws-of-ai": [
-        ("using-agent-skills", "route to task skills after baseline gates pass"),
+        ("skill-discovery-and-selection", "route to task skills after baseline gates pass"),
         ("guardrails-safety-patterns", "layered deterministic controls"),
         ("human-in-the-loop", "escalation when gates constrain action"),
     ],
-    "using-agent-skills": [
+    "skill-discovery-and-selection": [
         ("apply-laws-of-ai", "mandatory baseline before routing"),
         ("planning-and-task-decomposition", "multi-step work decomposition"),
-        ("interview-me", "underspecified requests"),
+        ("requirements-elicitation", "underspecified requests"),
     ],
     "guardrails-safety-patterns": [
         ("apply-laws-of-ai", "immutable safety baseline"),
         ("human-in-the-loop", "approval for high-risk actions"),
-        ("tool-use-function-calling", "least-privilege tool execution"),
+        ("tool-use-and-function-calling", "least-privilege tool execution"),
     ],
     "spec-driven-development": [
         ("bdd-practice", "business-readable acceptance scenarios"),
@@ -337,7 +337,7 @@ RELATED_SKILLS: dict[str, list[tuple[str, str]]] = {
     "planning-and-task-decomposition": [
         ("incremental-implementation", "execute plan as small slices"),
         ("spec-driven-development", "decision-complete spec before coding"),
-        ("using-agent-skills", "select supporting skills per step"),
+        ("skill-discovery-and-selection", "select supporting skills per step"),
     ],
     "incremental-implementation": [
         ("planning-and-task-decomposition", "ordered plan before slicing"),
@@ -350,12 +350,12 @@ RELATED_SKILLS: dict[str, list[tuple[str, str]]] = {
         ("apply-laws-of-ai", "safety gates before claiming completion"),
     ],
     "mcp-server-design": [
-        ("tool-use-function-calling", "direct tool calling when MCP is unnecessary"),
+        ("tool-use-and-function-calling", "direct tool calling when MCP is unnecessary"),
         ("guardrails-safety-patterns", "auth, validation and least privilege"),
         ("knowledge-retrieval-rag", "document grounding alongside tools"),
     ],
     "knowledge-retrieval-rag": [
-        ("kg-enabled-rag", "graph-native retrieval when Neo4j applies"),
+        ("knowledge-graph-rag", "graph-native retrieval when Neo4j applies"),
         ("context-engineering", "assemble retrieval context efficiently"),
         ("guardrails-safety-patterns", "validate retrieved and generated content"),
     ],
@@ -377,7 +377,7 @@ RELATED_SKILLS: dict[str, list[tuple[str, str]]] = {
     "ddd-practice": [
         ("bdd-practice", "scenarios using ubiquitous language"),
         ("spec-driven-development", "bounded context in specs"),
-        ("conceptual-data-modelling", "link domain concepts to data models"),
+        ("conceptual-data-modeling", "link domain concepts to data models"),
     ],
     "accessibility-wcag": [
         ("ux-design-principles", "task-centred design before a11y checks"),
@@ -433,7 +433,7 @@ def main() -> int:
     updated_related = 0
 
     for skill_name in sorted(
-        STANDARD_ARCHITECTURE_SKILLS | set(VERIFICATION_BY_SKILL) | {"ontology-and-knowledge-graph-modelling", "kg-enabled-rag"}
+        STANDARD_ARCHITECTURE_SKILLS | set(VERIFICATION_BY_SKILL) | {"ontology-and-knowledge-graph-modeling", "knowledge-graph-rag"}
     ):
         path = skill_path(skill_name)
         if path is None:
@@ -442,13 +442,13 @@ def main() -> int:
         if skill_name in ALREADY_CHECKLIST_SKILLS:
             continue
         text = path.read_text(encoding="utf-8")
-        if has_checklist_verification(text) and skill_name != "kg-enabled-rag":
+        if has_checklist_verification(text) and skill_name != "knowledge-graph-rag":
             continue
         if skill_name in VERIFICATION_BY_SKILL:
             new_v = VERIFICATION_BY_SKILL[skill_name]
-        elif skill_name == "ontology-and-knowledge-graph-modelling":
+        elif skill_name == "ontology-and-knowledge-graph-modeling":
             new_v = ONTOLOGY_VERIFICATION
-        elif skill_name == "kg-enabled-rag":
+        elif skill_name == "knowledge-graph-rag":
             new_v = KG_RAG_VERIFICATION
         elif skill_name in STANDARD_ARCHITECTURE_SKILLS:
             new_v = STANDARD_ARCHITECTURE_VERIFICATION

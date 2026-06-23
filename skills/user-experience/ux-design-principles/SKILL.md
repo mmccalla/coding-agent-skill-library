@@ -1,6 +1,9 @@
 ---
 name: ux-design-principles
 description: Applies UX principles for clear, task-centred journeys, navigation and forms. Use when designing new screens, workflows, information architecture, or user journeys.
+aliases:
+  - user-experience-design
+  - ux
 ---
 
 # UX Design Principles
@@ -44,4 +47,3 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 - [ ] Key screens or flow steps changed listed.
 - [ ] States handled and accessibility considerations noted.
 - [ ] Tests or manual checks and residual UX risks reported.
-

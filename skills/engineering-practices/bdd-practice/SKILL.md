@@ -1,6 +1,9 @@
 ---
 name: bdd-practice
 description: Applies behaviour-driven development with business-readable scenarios linked to executable acceptance tests. Use when defining externally visible behaviour, acceptance criteria, or user-facing workflows before implementation.
+aliases:
+  - behavior-driven-development
+  - bdd
 ---
 
 # Behaviour-Driven Development (BDD)
@@ -56,4 +59,3 @@ Feature: <capability>
 - [ ] Acceptance tests run with results stated.
 - [ ] Implemented behaviour matches scenarios.
 - [ ] Stakeholder confirmation gaps noted.
-

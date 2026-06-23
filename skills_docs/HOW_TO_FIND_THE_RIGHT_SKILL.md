@@ -26,7 +26,7 @@ Then continue with the steps below. See `LIBRARY_CONTRACT.md` for portable consi
 | If the task is mainly about... | Start in |
 |---|---|
 | Session setup, planning, specs, implementation flow, source grounding | `skills/agentic-patterns/` |
-| Safety baseline, approval, recovery, RAG, evaluation, prioritisation | `skills/agent-control-patterns/` (`apply-laws-of-ai` first) |
+| Safety baseline, approval, recovery, RAG, evaluation, prioritization | `skills/agent-control-patterns/` (`apply-laws-of-ai` first) |
 | Code quality, testing, refactoring, domain modelling, review | `skills/engineering-practices/` |
 | UI, accessibility, dashboards, interaction states, agent supervision | `skills/user-experience/` |
 | Reliability, incidents, observability, CI/CD, release, launch | `skills/reliability-and-delivery/` |
@@ -39,11 +39,11 @@ Then continue with the steps below. See `LIBRARY_CONTRACT.md` for portable consi
 | Scenario | Recommended starting skill(s) |
 |---|---|
 | Every session | `apply-laws-of-ai` (mandatory first) |
-| Ambiguous request | `using-agent-skills`, then `interview-me` if intent is still unclear |
+| Ambiguous request | `skill-discovery-and-selection`, then `requirements-elicitation` if intent is still unclear |
 | Multi-step implementation | `planning-and-task-decomposition`, then `incremental-implementation` |
 | Generic document-grounded RAG | `knowledge-retrieval-rag` |
-| GraphRAG or Neo4j-native KG-backed RAG | `kg-enabled-rag`, plus `knowledge-retrieval-rag` |
-| Knowledge graph design | `ontology-and-knowledge-graph-modelling` |
+| GraphRAG or Neo4j-native KG-backed RAG | `knowledge-graph-rag`, plus `knowledge-retrieval-rag` |
+| Knowledge graph design | `ontology-and-knowledge-graph-modeling` |
 | Business-facing behaviour change | `bdd-practice`, then `tdd-practice` |
 | Complex domain logic | `ddd-practice` |
 | Code review | `code-review-and-quality` |

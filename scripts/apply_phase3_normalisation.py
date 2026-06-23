@@ -12,15 +12,15 @@ SKILLS = ROOT / "skills"
 ADDITIONAL_BLOCK_SKILLS = {
     "spec-driven-development",
     "tdd-practice",
-    "parallelisation",
+    "parallelization",
     "reflection-and-verification",
     "code-review-and-quality",
     "git-workflow-and-versioning",
-    "idea-refine",
+    "idea-refinement",
     "planning-and-task-decomposition",
     "incremental-implementation",
     "multi-agent-collaboration",
-    "using-agent-skills",
+    "skill-discovery-and-selection",
 }
 
 OBJECTIVES = {
@@ -32,21 +32,21 @@ OBJECTIVES = {
     "human-in-the-loop": "Introduce human judgement at the right decision points without slowing safe, reversible work unnecessarily.",
     "inter-agent-communication-a2a": "Define safe, interoperable contracts for agent identity, delegation, task exchange, and result hand-off.",
     "knowledge-retrieval-rag": "Ground agent answers and changes in retrievable, permission-aware source evidence with inspectable citations.",
-    "prioritisation": "Rank candidate actions consistently using explicit criteria, dependencies, safety impact, and reversibility.",
+    "prioritization": "Rank candidate actions consistently using explicit criteria, dependencies, safety impact, and reversibility.",
     "reasoning-techniques": "Select a reasoning approach that matches task complexity and produces externally verifiable engineering evidence.",
-    "resource-aware-optimisation": "Balance quality, cost, latency, model choice, context budget, and fallback paths without compromising correctness.",
+    "resource-aware-optimization": "Balance quality, cost, latency, model choice, context budget, and fallback paths without compromising correctness.",
     "learning-and-adaptation": "Improve agent behaviour through measured, versioned, reversible changes rather than unbounded self-modification.",
     "mcp-server-design": "Expose external capabilities through narrow, typed, discoverable, least-privilege MCP interfaces.",
     "memory-management": "Retain useful agent context while controlling sensitivity, relevance, provenance, retention, and deletion.",
     "multi-agent-collaboration": "Coordinate specialised agents with explicit roles, schemas, orchestration, and traceability.",
-    "parallelisation": "Run only independent work concurrently and merge results deterministically with bounded resource use.",
+    "parallelization": "Run only independent work concurrently and merge results deterministically with bounded resource use.",
     "planning-and-task-decomposition": "Turn complex objectives into ordered, dependency-aware steps with explicit validation checkpoints.",
     "prompt-chaining": "Decompose overloaded prompts into validated, single-purpose stages with testable hand-offs.",
     "reflection-and-verification": "Critique and repair artefacts using deterministic checks first, then bounded review loops.",
     "routing": "Select execution paths predictably using constrained route definitions, confidence thresholds, and safe fallbacks.",
-    "tool-use-function-calling": "Wrap external capabilities in strict schemas, least-privilege execution, structured observations, and tests.",
-    "kg-enabled-rag": "Implement Neo4j-native KG-enabled RAG with provenance-first ingestion, guarded retrieval, grounded answers, and tests.",
-    "ontology-and-knowledge-graph-modelling": "Produce semantic graph designs that answer competency questions, validate data, and preserve provenance.",
+    "tool-use-and-function-calling": "Wrap external capabilities in strict schemas, least-privilege execution, structured observations, and tests.",
+    "knowledge-graph-rag": "Implement Neo4j-native KG-enabled RAG with provenance-first ingestion, guarded retrieval, grounded answers, and tests.",
+    "ontology-and-knowledge-graph-modeling": "Produce semantic graph designs that answer competency questions, validate data, and preserve provenance.",
 }
 
 

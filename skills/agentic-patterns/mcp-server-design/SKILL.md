@@ -1,6 +1,9 @@
 ---
 name: mcp-server-design
 description: Use when designing, implementing, reviewing or securing Model Context Protocol servers/clients, including tools, resources, prompts, FastMCP servers and agent-friendly API wrappers.
+aliases:
+  - mcp-server
+  - model-context-protocol
 ---
 
 # MCP Server Design
@@ -62,7 +65,7 @@ Use `skills_docs/security/OWASP_ASI_CROSSWALK.md` for the shared risk map.
 
 ## Related skills
 
-- `tool-use-function-calling` — direct tool calling when MCP is unnecessary
+- `tool-use-and-function-calling` — direct tool calling when MCP is unnecessary
 - `guardrails-safety-patterns` — auth, validation and least privilege
 - `knowledge-retrieval-rag` — document grounding alongside tools
 

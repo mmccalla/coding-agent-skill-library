@@ -1,6 +1,9 @@
 ---
 name: dora-four-keys
 description: Uses DevOps Research and Assessment Four Keys to improve delivery performance without gaming metrics. Use when measuring deployment frequency, lead time, change failure rate, or recovery time.
+aliases:
+  - devops-four-keys
+  - delivery-metrics
 ---
 
 # DORA Four Keys
@@ -86,4 +89,3 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 - [ ] Bottleneck or failure pattern identified.
 - [ ] Improvement proposed or implemented described.
 - [ ] Safety controls preserved; residual measurement risk noted.
-

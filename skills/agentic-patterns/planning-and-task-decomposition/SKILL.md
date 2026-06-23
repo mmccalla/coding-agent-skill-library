@@ -36,7 +36,7 @@ Turn complex objectives into ordered, dependency-aware steps with explicit valid
 
 - `incremental-implementation` — execute plan as small slices
 - `spec-driven-development` — decision-complete spec before coding
-- `using-agent-skills` — select supporting skills per step
+- `skill-discovery-and-selection` — select supporting skills per step
 
 ## Verification
 - [ ] Objective and acceptance criteria are clear.

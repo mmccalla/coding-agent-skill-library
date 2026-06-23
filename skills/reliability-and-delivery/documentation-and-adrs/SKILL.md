@@ -1,6 +1,9 @@
 ---
 name: documentation-and-adrs
 description: Use when a change needs durable documentation, an architecture decision record or maintainership guidance.
+aliases:
+  - architecture-decision-records
+  - docs-and-adrs
 ---
 
 # Documentation and ADRs
@@ -38,4 +41,3 @@ For a validator rule change, document why the rule exists, which files it affect
 - [ ] Decision, context and consequences captured.
 - [ ] Alternatives considered noted.
 - [ ] Residual documentation gaps stated.
-

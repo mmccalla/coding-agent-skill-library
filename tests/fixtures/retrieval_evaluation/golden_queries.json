@@ -2,7 +2,7 @@
   {
     "id": "kg_rag",
     "query": "graph rag ontology retrieval",
-    "expected_skill_ids": ["skill:kg-enabled-rag"],
+    "expected_skill_ids": ["skill:knowledge-graph-rag"],
     "expect_uncertain": false
   },
   {
@@ -21,7 +21,7 @@
     "id": "event_streaming_iceberg_pipeline",
     "query": "I've been instructed to build an event driven and real time data streaming pipeline that stores data in iceberg tables using apache pulsar and apache flink. How should this be done?",
     "expected_skill_ids": [
-      "skill:real-time-operability",
+      "skill:streaming-operations-and-slos",
       "skill:event-streaming-platform-design",
       "skill:stream-processing-patterns",
       "skill:lakehouse-and-medallion-architecture"

@@ -7,11 +7,11 @@ const graphResponse = {
   status: "ok",
   nodes: [
     {
-      id: "skill:kg-enabled-rag",
+      id: "skill:knowledge-graph-rag",
       label: "Skill",
-      name: "kg-enabled-rag",
+      name: "knowledge-graph-rag",
       category: "data-architecture",
-      source_path: "skills/data-architecture/kg-enabled-rag/SKILL.md",
+      source_path: "skills/data-architecture/knowledge-graph-rag/SKILL.md",
     },
     {
       id: "skill:accessibility-wcag",
@@ -28,7 +28,7 @@ const graphResponse = {
   ],
   links: [
     {
-      source: "skill:kg-enabled-rag",
+      source: "skill:knowledge-graph-rag",
       target: "capability:retrieval",
       type: "HAS_CAPABILITY",
     },
@@ -138,6 +138,13 @@ describe("App", () => {
         }
         if (url.endsWith("/skills/query")) {
           lastQueryRequest = init?.body ? JSON.parse(String(init.body)) : null;
+          const requestQuery =
+            typeof lastQueryRequest === "object" &&
+            lastQueryRequest !== null &&
+            "query" in lastQueryRequest &&
+            typeof (lastQueryRequest as { query?: unknown }).query === "string"
+              ? (lastQueryRequest as { query: string }).query
+              : "";
           if (queryShouldReturnStructuredError) {
             return jsonResponse(
               {
@@ -160,18 +167,56 @@ describe("App", () => {
               "Bad Gateway",
             );
           }
+          if (requestQuery.includes("Tell me about knowledge-graph-rag")) {
+            return jsonResponse({
+              status: "ok",
+              answer: "knowledge-graph-rag is the direct skill profile.",
+              model: "test-model",
+              ollama_endpoint: "http://127.0.0.1:11434",
+              evidence: {
+                route: "direct_lookup",
+                routing: {
+                  route: "direct_lookup",
+                  confidence: 0.86,
+                  suggested_tool: "get_skill",
+                  resolved_skill_id: "skill:knowledge-graph-rag",
+                },
+                skill: {
+                  skill_id: "skill:knowledge-graph-rag",
+                  skill_name: "knowledge-graph-rag",
+                  aliases: ["kg-enabled-rag"],
+                  retrieval_units: [
+                    {
+                      retrieval_unit_id: "retrieval-1",
+                      text: "Use this skill when implementing graph-backed retrieval with evidence.",
+                      source_path: "skills/data-architecture/knowledge-graph-rag/SKILL.md",
+                      section_id: "skill:knowledge-graph-rag:section:0-when-to-use",
+                    },
+                  ],
+                },
+                context: {
+                  skill_id: "skill:knowledge-graph-rag",
+                  related_skill_ids: ["skill:knowledge-retrieval-rag"],
+                  evidence_paths: [
+                    "skill:knowledge-graph-rag -[COMPLEMENTS]-> skill:knowledge-retrieval-rag",
+                  ],
+                },
+              },
+            });
+          }
           return jsonResponse({
             status: "ok",
-            answer: "Use kg-enabled-rag with source evidence.",
+            answer: "Use knowledge-graph-rag with source evidence.",
             model: "test-model",
             ollama_endpoint: "http://127.0.0.1:11434",
             evidence: {
+              route: "recommendation",
               recommendations: [
                 {
-                  skill_id: "skill:kg-enabled-rag",
-                  skill_name: "kg-enabled-rag",
+                  skill_id: "skill:knowledge-graph-rag",
+                  skill_name: "knowledge-graph-rag",
                   rationale: "Relevant to GraphRAG.",
-                  source_paths: ["skills/data-architecture/kg-enabled-rag/SKILL.md"],
+                  source_paths: ["skills/data-architecture/knowledge-graph-rag/SKILL.md"],
                   evidence_snippets: ["Use graph evidence."],
                 },
               ],
@@ -227,9 +272,24 @@ describe("App", () => {
     fireEvent.click(screen.getByRole("checkbox", { name: /Show edge labels/i }));
 
     await waitFor(() =>
-      expect(container.querySelector(".node-label")?.textContent).toBe("kg-enabled-rag"),
+      expect(container.querySelector(".node-label")?.textContent).toBe("knowledge-graph-rag"),
     );
     expect(container.querySelector(".edge-label")?.textContent).toBe("HAS_CAPABILITY");
+  });
+
+  it("provides explicit zoom controls for the graph", async () => {
+    render(<App />);
+    await screen.findByRole("heading", { name: "Ask the Skills Graph" });
+    fireEvent.click(screen.getByRole("button", { name: "Graph" }));
+
+    expect(screen.getByLabelText("Graph zoom controls")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Zoom out graph" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Zoom in graph" })).toBeInTheDocument();
+    expect(screen.getByText("100%")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Zoom in graph" }));
+
+    await waitFor(() => expect(screen.getByText("120%")).toBeInTheDocument());
   });
 
   it("shows node details when a graph node is selected", async () => {
@@ -243,9 +303,9 @@ describe("App", () => {
 
     expect(await screen.findByText("Selected node details")).toBeInTheDocument();
     const details = screen.getByRole("complementary");
-    expect(within(details).getByText("kg-enabled-rag")).toBeInTheDocument();
+    expect(within(details).getByText("knowledge-graph-rag")).toBeInTheDocument();
     expect(
-      within(details).getByText("skills/data-architecture/kg-enabled-rag/SKILL.md"),
+      within(details).getByText("skills/data-architecture/knowledge-graph-rag/SKILL.md"),
     ).toBeInTheDocument();
   });
 
@@ -267,11 +327,36 @@ describe("App", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: /Query graph with Ollama/i }));
 
-    expect(await screen.findByText("Use kg-enabled-rag with source evidence.")).toBeInTheDocument();
+    expect(await screen.findByText("Use knowledge-graph-rag with source evidence.")).toBeInTheDocument();
     expect(screen.getByText("Model: test-model")).toBeInTheDocument();
     expect(lastQueryRequest).toMatchObject({ model: "qwen3:1.7b" });
     const queryResult = screen.getByRole("article", { name: /Graph query result/i });
-    expect(within(queryResult).getByText("kg-enabled-rag")).toBeInTheDocument();
+    expect(within(queryResult).getByText("knowledge-graph-rag")).toBeInTheDocument();
+  });
+
+  it("renders direct lookup evidence when the backend does not return recommendations", async () => {
+    render(<App />);
+    await screen.findByRole("heading", { name: "Ask the Skills Graph" });
+
+    fireEvent.click(screen.getByRole("button", { name: /Load Ollama models/i }));
+    await screen.findByLabelText(/Ollama model/i);
+    fireEvent.change(screen.getByLabelText(/Ollama model/i), {
+      target: { value: "qwen3:1.7b" },
+    });
+    fireEvent.change(screen.getByLabelText(/Graph query/i), {
+      target: { value: "Tell me about knowledge-graph-rag" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /Query graph with Ollama/i }));
+
+    expect(await screen.findByText("knowledge-graph-rag is the direct skill profile.")).toBeInTheDocument();
+    const queryResult = screen.getByRole("article", { name: /Graph query result/i });
+    expect(within(queryResult).getByText("Routing decision")).toBeInTheDocument();
+    expect(within(queryResult).getByText("Route: direct_lookup")).toBeInTheDocument();
+    expect(within(queryResult).getByText("Resolved skill: skill:knowledge-graph-rag")).toBeInTheDocument();
+    expect(
+      within(queryResult).getByText("Source: skills/data-architecture/knowledge-graph-rag/SKILL.md"),
+    ).toBeInTheDocument();
+    expect(within(queryResult).getByText("Related graph context")).toBeInTheDocument();
   });
 
   it("requires a user-selected Ollama model before querying", async () => {

@@ -11,20 +11,20 @@ Use this category when the task is mainly about asynchronous events, CDC, stream
 ## Skills in this category
 
 - `event-driven-architecture`
-- `event-modelling`
+- `event-modeling`
 - `event-streaming-platform-design`
 - `schema-registry-and-contracts`
 - `cdc-and-source-to-stream-ingestion`
 - `stream-processing-patterns`
 - `event-governance-and-lineage`
-- `real-time-operability`
+- `streaming-operations-and-slos`
 
 ## Choose the smallest fit
 
-- Start with `event-modelling` to find business events and commands.
+- Start with `event-modeling` to find business events and commands.
 - Use `schema-registry-and-contracts` when producer-consumer compatibility matters.
 - Use `stream-processing-patterns` for enrichment, joins, windows and state.
-- Use `real-time-operability` when runtime freshness and replay are core concerns.
+- Use `streaming-operations-and-slos` when runtime freshness and replay are core concerns.
 
 ## Next step
 

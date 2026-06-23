@@ -29,11 +29,11 @@ class HybridRetrievalTests(unittest.TestCase):
             query_text="semantically similar request",
             vector_candidates=(
                 retrieval.VectorCandidate(
-                    retrieval_unit_id="retrieval:skill:kg-enabled-rag:section:1:kg",
+                    retrieval_unit_id="retrieval:skill:knowledge-graph-rag:section:1:kg",
                     score=0.72,
-                    source_path="skills/data-architecture/kg-enabled-rag/SKILL.md",
-                    section_id="skill:kg-enabled-rag:section:0-objective",
-                    skill_id="skill:kg-enabled-rag",
+                    source_path="skills/data-architecture/knowledge-graph-rag/SKILL.md",
+                    section_id="skill:knowledge-graph-rag:section:0-objective",
+                    skill_id="skill:knowledge-graph-rag",
                     text="Use KG-enabled RAG for graph-grounded retrieval.",
                     embedding_provider="deterministic-test-embedding",
                     embedding_dimensions=8,
@@ -43,14 +43,14 @@ class HybridRetrievalTests(unittest.TestCase):
         )
 
         self.assertFalse(result.uncertain)
-        self.assertEqual("skill:kg-enabled-rag", result.recommendations[0].skill_id)
+        self.assertEqual("skill:knowledge-graph-rag", result.recommendations[0].skill_id)
         self.assertIn("graph-grounded retrieval", result.recommendations[0].evidence_snippets[0])
         self.assertIn(
-            "skills/data-architecture/kg-enabled-rag/SKILL.md",
+            "skills/data-architecture/knowledge-graph-rag/SKILL.md",
             result.recommendations[0].source_paths,
         )
         self.assertIn(
-            "skill:kg-enabled-rag:section:0-objective", result.recommendations[0].section_ids
+            "skill:knowledge-graph-rag:section:0-objective", result.recommendations[0].section_ids
         )
         self.assertTrue(result.recommendations[0].evidence_paths)
 
@@ -73,11 +73,11 @@ class HybridRetrievalTests(unittest.TestCase):
                     embedding_dimensions=8,
                 ),
                 retrieval.VectorCandidate(
-                    retrieval_unit_id="retrieval:skill:kg-enabled-rag:section:1:kg",
+                    retrieval_unit_id="retrieval:skill:knowledge-graph-rag:section:1:kg",
                     score=0.72,
-                    source_path="skills/data-architecture/kg-enabled-rag/SKILL.md",
-                    section_id="skill:kg-enabled-rag:section:0-objective",
-                    skill_id="skill:kg-enabled-rag",
+                    source_path="skills/data-architecture/knowledge-graph-rag/SKILL.md",
+                    section_id="skill:knowledge-graph-rag:section:0-objective",
+                    skill_id="skill:knowledge-graph-rag",
                     text="KG-enabled RAG connects graph retrieval with ontology evidence.",
                     embedding_provider="deterministic-test-embedding",
                     embedding_dimensions=8,
@@ -86,7 +86,7 @@ class HybridRetrievalTests(unittest.TestCase):
             limit=2,
         )
 
-        self.assertEqual("skill:kg-enabled-rag", result.recommendations[0].skill_id)
+        self.assertEqual("skill:knowledge-graph-rag", result.recommendations[0].skill_id)
         self.assertGreater(
             result.recommendations[0].graph_score,
             result.recommendations[1].graph_score,
@@ -173,13 +173,13 @@ class HybridRetrievalTests(unittest.TestCase):
         plan = retrieval.fixture_load_plan()
         irrelevant = retrieval.load_skills_neo4j.GraphNode(
             "RetrievalUnit",
-            "retrieval:skill:kg-enabled-rag:section:9:irrelevant",
+            "retrieval:skill:knowledge-graph-rag:section:9:irrelevant",
             {
-                "id": "retrieval:skill:kg-enabled-rag:section:9:irrelevant",
-                "skill_id": "skill:kg-enabled-rag",
+                "id": "retrieval:skill:knowledge-graph-rag:section:9:irrelevant",
+                "skill_id": "skill:knowledge-graph-rag",
                 "text": "Unrelated release notes.",
-                "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
-                "section_id": "skill:kg-enabled-rag:section:9-notes",
+                "source_path": "skills/data-architecture/knowledge-graph-rag/SKILL.md",
+                "section_id": "skill:knowledge-graph-rag:section:9-notes",
             },
         )
         plan = retrieval.load_skills_neo4j.LoadPlan(
@@ -195,6 +195,29 @@ class HybridRetrievalTests(unittest.TestCase):
         )
 
         self.assertIn("graph-grounded retrieval", result.recommendations[0].evidence_snippets[0])
+
+    def test_user_facing_web_application_query_lifts_ux_and_accessibility_skills(self) -> None:
+        retrieval = load_module()
+        plan = retrieval.embed_skill_chunks.build_embedded_repository_load_plan(REPO_ROOT / "skills")
+
+        result = retrieval.retrieve_hybrid_skills(
+            plan,
+            query_text=(
+                "Tell me about designing and building a user facing web application, "
+                "using best practice software engineering principles, with separate front "
+                "and back ends that leverage real time streaming for communication between "
+                "components. How should I best architect the solution?"
+            ),
+            vector_candidates=(),
+            limit=10,
+            max_depth=2,
+            token_budget=1200,
+        )
+
+        top_skill_names = [recommendation.skill_name for recommendation in result.recommendations]
+
+        self.assertIn("accessibility-wcag", top_skill_names)
+        self.assertIn("ux-design-principles", top_skill_names)
 
     def test_neo4j_hybrid_adapter_uses_fulltext_vector_and_fetches_plan(self) -> None:
         retrieval = load_module()
@@ -212,15 +235,15 @@ class HybridRetrievalTests(unittest.TestCase):
             def run(self, query: str, **parameters: object) -> tuple[dict[str, object], ...]:
                 self.queries.append((query, parameters))
                 if "db.index.fulltext.queryNodes" in query:
-                    return ({"skill_id": "skill:kg-enabled-rag"},)
+                    return ({"skill_id": "skill:knowledge-graph-rag"},)
                 if "db.index.vector.queryNodes" in query:
                     return (
                         {
-                            "retrieval_unit_id": "retrieval:skill:kg-enabled-rag:section:1:kg",
+                            "retrieval_unit_id": "retrieval:skill:knowledge-graph-rag:section:1:kg",
                             "score": 0.91,
-                            "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
-                            "section_id": "skill:kg-enabled-rag:section:0-objective",
-                            "skill_id": "skill:kg-enabled-rag",
+                            "source_path": "skills/data-architecture/knowledge-graph-rag/SKILL.md",
+                            "section_id": "skill:knowledge-graph-rag:section:0-objective",
+                            "skill_id": "skill:knowledge-graph-rag",
                             "text": "Use KG-enabled RAG for graph-grounded retrieval.",
                             "embedding_provider": "deterministic-test-embedding",
                             "embedding_dimensions": 8,
@@ -229,23 +252,23 @@ class HybridRetrievalTests(unittest.TestCase):
                 if "RETURN s.id AS id" in query:
                     return (
                         {
-                            "id": "skill:kg-enabled-rag",
+                            "id": "skill:knowledge-graph-rag",
                             "properties": {
-                                "id": "skill:kg-enabled-rag",
-                                "name": "kg-enabled-rag",
+                                "id": "skill:knowledge-graph-rag",
+                                "name": "knowledge-graph-rag",
                             },
                         },
                     )
                 if "RETURN unit.id AS id" in query:
                     return (
                         {
-                            "id": "retrieval:skill:kg-enabled-rag:section:1:kg",
+                            "id": "retrieval:skill:knowledge-graph-rag:section:1:kg",
                             "properties": {
-                                "id": "retrieval:skill:kg-enabled-rag:section:1:kg",
-                                "skill_id": "skill:kg-enabled-rag",
+                                "id": "retrieval:skill:knowledge-graph-rag:section:1:kg",
+                                "skill_id": "skill:knowledge-graph-rag",
                                 "text": "Use KG-enabled RAG for graph-grounded retrieval.",
-                                "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
-                                "section_id": "skill:kg-enabled-rag:section:0-objective",
+                                "source_path": "skills/data-architecture/knowledge-graph-rag/SKILL.md",
+                                "section_id": "skill:knowledge-graph-rag:section:0-objective",
                             },
                         },
                     )
@@ -254,7 +277,7 @@ class HybridRetrievalTests(unittest.TestCase):
                         {
                             "type": "HAS_CAPABILITY",
                             "source_label": "Skill",
-                            "source_id": "skill:kg-enabled-rag",
+                            "source_id": "skill:knowledge-graph-rag",
                             "target_label": "Capability",
                             "target_id": "graph-rag",
                             "properties": {},
@@ -282,7 +305,7 @@ class HybridRetrievalTests(unittest.TestCase):
         )
 
         self.assertFalse(result.uncertain)
-        self.assertEqual("skill:kg-enabled-rag", result.recommendations[0].skill_id)
+        self.assertEqual("skill:knowledge-graph-rag", result.recommendations[0].skill_id)
         queries = "\n".join(query for query, _parameters in driver.session_instance.queries)
         self.assertIn("db.index.fulltext.queryNodes", queries)
         self.assertIn("db.index.vector.queryNodes", queries)

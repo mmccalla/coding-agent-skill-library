@@ -31,7 +31,7 @@ DORA means **DevOps Research and Assessment** in this library.
 | CI/CD change | `ci-cd-and-automation` → `guardrails-safety-patterns` → `evaluation-and-monitoring` |
 | Toil reduction | `toil-reduction-and-automation` → `sre-practice` → `guardrails-safety-patterns` → `tdd-practice` |
 | Reliability regression | `slo-error-budget-management` → `observability-and-telemetry` → `incident-response-and-postmortems` |
-| Delivery performance review | `dora-four-keys` → `prioritisation` → `toil-reduction-and-automation` |
+| Delivery performance review | `dora-four-keys` → `prioritization` → `toil-reduction-and-automation` |
 | Release launch | `shipping-and-launch` → `release-engineering-and-progressive-delivery` → `observability-and-telemetry` |
 
 ## General rules

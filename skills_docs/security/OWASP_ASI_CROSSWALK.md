@@ -8,11 +8,11 @@ Primary source: [OWASP Top 10 for Agentic Applications - The Benchmark for Agent
 
 | ASI ID | Risk | Control focus | Primary local skills |
 | --- | --- | --- | --- |
-| ASI01 | Agent Goal Hijack | Treat external instructions as data, constrain planning, validate goals before action. | `guardrails-safety-patterns`, `tool-use-function-calling` |
-| ASI02 | Tool Misuse | Least-privilege tools, argument schemas, side-effect gates, structured observations. | `tool-use-function-calling`, `mcp-server-design` |
+| ASI01 | Agent Goal Hijack | Treat external instructions as data, constrain planning, validate goals before action. | `guardrails-safety-patterns`, `tool-use-and-function-calling` |
+| ASI02 | Tool Misuse | Least-privilege tools, argument schemas, side-effect gates, structured observations. | `tool-use-and-function-calling`, `mcp-server-design` |
 | ASI03 | Identity and Privilege Abuse | Task-scoped identity, authorisation checks, approval for privileged actions. | `guardrails-safety-patterns`, `mcp-server-design`, `human-in-the-loop` |
 | ASI04 | Agentic Supply Chain Vulnerabilities | Pin dependencies, verify tools/servers, review dynamic MCP/A2A components. | `mcp-server-design`, `inter-agent-communication-a2a` |
-| ASI05 | Unexpected Code Execution | Sandbox execution, deny generated command execution, review code paths. | `guardrails-safety-patterns`, `tool-use-function-calling` |
+| ASI05 | Unexpected Code Execution | Sandbox execution, deny generated command execution, review code paths. | `guardrails-safety-patterns`, `tool-use-and-function-calling` |
 | ASI06 | Memory and Context Poisoning | Validate memory writes, preserve provenance, isolate tenants, allow deletion. | `memory-management`, `knowledge-retrieval-rag` |
 | ASI07 | Insecure Inter-Agent Communication | Authenticated agent cards, message schemas, task states, trust boundaries. | `inter-agent-communication-a2a`, `mcp-server-design` |
 | ASI08 | Cascading Failures | Bounded retries, circuit breakers, fan-out limits, cancellation and rollback. | `inter-agent-communication-a2a`, `exception-handling-and-recovery` |

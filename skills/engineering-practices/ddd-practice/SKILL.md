@@ -1,6 +1,9 @@
 ---
 name: ddd-practice
 description: Applies domain-driven design with bounded contexts, aggregates, and ubiquitous language. Use when modelling complex business domains, defining boundaries, or protecting invariants.
+aliases:
+  - domain-driven-design
+  - ddd
 ---
 
 # Domain-Driven Design (DDD)
@@ -45,7 +48,7 @@ Create a maintainable domain model that reflects the business language, protects
 
 - `bdd-practice` — scenarios using ubiquitous language
 - `spec-driven-development` — bounded context in specs
-- `conceptual-data-modelling` — link domain concepts to data models
+- `conceptual-data-modeling` — link domain concepts to data models
 
 ## Verification
 
@@ -53,4 +56,3 @@ Create a maintainable domain model that reflects the business language, protects
 - [ ] Aggregate or boundary decisions documented.
 - [ ] Invariants protected identified.
 - [ ] Modelling assumptions requiring business validation noted.
-

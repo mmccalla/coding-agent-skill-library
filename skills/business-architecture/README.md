@@ -10,21 +10,21 @@ Use this category when the task is mainly about business structure, operating co
 
 ## Skills in this category
 
-- `business-capability-modelling`
-- `value-stream-modelling`
-- `process-modelling`
+- `business-capability-modeling`
+- `value-stream-modeling`
+- `process-modeling`
 - `operating-model-design`
 - `strategy-to-execution-traceability`
 - `capability-maturity-assessment`
-- `business-information-concept-modelling`
-- `organisation-and-role-design`
+- `business-information-concept-modeling`
+- `organization-and-role-design`
 
 ## Choose the smallest fit
 
-- Start with `business-capability-modelling` for stable business abilities.
-- Use `value-stream-modelling` for trigger-to-outcome flow.
-- Use `process-modelling` for operational steps, controls and hand-offs.
-- Use `business-information-concept-modelling` when the next step is conceptual data design.
+- Start with `business-capability-modeling` for stable business abilities.
+- Use `value-stream-modeling` for trigger-to-outcome flow.
+- Use `process-modeling` for operational steps, controls and hand-offs.
+- Use `business-information-concept-modeling` when the next step is conceptual data design.
 
 ## Next step
 

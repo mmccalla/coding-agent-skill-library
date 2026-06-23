@@ -110,7 +110,9 @@ def resolve_skill(plan: load_skills_neo4j.LoadPlan, name: str) -> dict[str, obje
         aliases = _aliases_for_skill(skill)
         if normalised_name in aliases:
             return _resolved_skill_response(plan, skill, "exact")
-        contained_aliases = [alias for alias in aliases if alias and alias in normalised_name]
+        contained_aliases = [
+            alias for alias in aliases if alias and _contains_alias_phrase(normalised_name, alias)
+        ]
         if contained_aliases:
             matches.append((max(len(alias) for alias in contained_aliases), skill))
 
@@ -186,6 +188,11 @@ def _aliases_for_skill(skill: load_skills_neo4j.GraphNode) -> set[str]:
     }
     if title:
         aliases.add(_normalise(title))
+    raw_aliases = skill.properties.get("aliases")
+    if isinstance(raw_aliases, list):
+        for alias in raw_aliases:
+            if isinstance(alias, str):
+                aliases.add(_normalise(alias))
     return {alias for alias in aliases if alias}
 
 
@@ -318,6 +325,11 @@ def _evidence_required(route: str) -> tuple[str, ...]:
 
 def _contains_any(text: str, candidates: frozenset[str]) -> bool:
     return any(candidate in text for candidate in candidates)
+
+
+def _contains_alias_phrase(normalised_text: str, alias: str) -> bool:
+    pattern = rf"(?:^|[-:]){re.escape(alias)}(?:$|[-:])"
+    return bool(re.search(pattern, normalised_text))
 
 
 def _normalise(value: str) -> str:

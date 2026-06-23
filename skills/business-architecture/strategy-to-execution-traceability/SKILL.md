@@ -1,6 +1,9 @@
 ---
 name: strategy-to-execution-traceability
 description: Traces objectives to outcomes, capabilities, initiatives, metrics and evidence. Use when linking strategy to delivery, KPIs, or architecture roadmaps.
+aliases:
+  - strategy-traceability
+  - outcome-traceability
 ---
 
 # Strategy-to-Execution Traceability
@@ -49,4 +52,3 @@ If the objective is reduce onboarding abandonment by 15%, trace it to the `Onboa
 - [ ] Decisions, assumptions and risks stated explicitly.
 - [ ] Quality checks or validation performed.
 - [ ] Files changed reported with traceability preserved.
-

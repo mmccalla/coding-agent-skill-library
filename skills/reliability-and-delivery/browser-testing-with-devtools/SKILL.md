@@ -1,6 +1,9 @@
 ---
 name: browser-testing-with-devtools
 description: Use when verifying browser-based behaviour with Chrome DevTools, including DOM state, console output, network activity and performance evidence.
+aliases:
+  - browser-debugging
+  - chrome-devtools-testing
 ---
 
 # Browser Testing With DevTools
@@ -33,4 +36,3 @@ Verify user-facing behaviour with DevTools evidence so frontend or browser issue
 - [ ] DOM, console, network or performance evidence captured.
 - [ ] Defects or regressions reported with reproduction steps.
 - [ ] Residual untested browser risks stated.
-

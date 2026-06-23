@@ -10,20 +10,20 @@ Use this category when the task is mainly about how an agent should work through
 
 ## Skills in this category
 
-- `using-agent-skills/`
-- `interview-me/`
-- `idea-refine/`
+- `skill-discovery-and-selection/`
+- `requirements-elicitation/`
+- `idea-refinement/`
 - `prompt-chaining/`
 - `routing/`
-- `parallelisation/`
+- `parallelization/`
 - `reflection-and-verification/`
 - `planning-and-task-decomposition/`
 - `spec-driven-development/`
 - `incremental-implementation/`
 - `context-engineering/`
 - `source-driven-development/`
-- `doubt-driven-development/`
-- `tool-use-function-calling/`
+- `uncertainty-driven-development/`
+- `tool-use-and-function-calling/`
 - `multi-agent-collaboration/`
 - `memory-management/`
 - `learning-and-adaptation/`
@@ -31,7 +31,7 @@ Use this category when the task is mainly about how an agent should work through
 
 ## Choose the smallest fit
 
-- Start with `using-agent-skills` when choosing among local skills.
+- Start with `skill-discovery-and-selection` when choosing among local skills.
 - Use `planning-and-task-decomposition` for multi-step delivery.
 - Use `spec-driven-development` when the feature needs a decision-complete spec.
 - Use `source-driven-development` when correctness depends on authoritative source material.

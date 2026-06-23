@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from contextlib import asynccontextmanager
 import json
 import logging
 import os
@@ -147,10 +148,25 @@ def create_app(
     answer_query = query_provider or skills_ollama.answer_graph_query
     list_models = model_provider or skills_ollama.list_ollama_models
     _record_graph_snapshot_metrics(skills_server)
+    # The FastMCP HTTP app defaults to serving at "/mcp". When we mount it under
+    # "/mcp" in this API, override the inner path so the external endpoint stays
+    # cleanly at "/mcp" rather than "/mcp/mcp".
+    mounted_mcp_server = build_fastmcp_server(skills_server)
+    mounted_mcp_server.settings.streamable_http_path = "/"
+
+    @asynccontextmanager
+    async def lifespan(_: FastAPI):
+        # Mounted Starlette sub-app lifespans are not sufficient here; manage the
+        # MCP session manager at the FastAPI boundary so the deployed /mcp transport
+        # is initialized before requests arrive.
+        async with mounted_mcp_server.session_manager.run():
+            yield
+
     app = FastAPI(
         title="Skills KG GraphRAG",
         version="0.1.0",
         description="Read-only Neo4j-backed Skills KG GraphRAG API and MCP transport.",
+        lifespan=lifespan,
     )
     app.add_middleware(
         CORSMiddleware,
@@ -381,7 +397,7 @@ def create_app(
                 ),
             ) from exc
 
-    app.mount("/mcp", build_fastmcp_server(skills_server).streamable_http_app())
+    app.mount("/mcp", mounted_mcp_server.streamable_http_app())
     return app
 
 

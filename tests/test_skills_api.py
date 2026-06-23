@@ -59,7 +59,7 @@ class SkillsApiTests(unittest.TestCase):
         payload = response.json()
         self.assertEqual("ok", payload["status"])
         self.assertEqual(1, len(payload["recommendations"]))
-        self.assertEqual("kg-enabled-rag", payload["recommendations"][0]["skill_name"])
+        self.assertEqual("knowledge-graph-rag", payload["recommendations"][0]["skill_name"])
         self.assertNotIn("MATCH ", response.text)
         self.assertNotIn("embedding", response.text.lower())
         metrics_response = client.get("/metrics")
@@ -133,6 +133,13 @@ Use when validating uploads.
         self.assertIn("recommend_skills", payload["tools"])
         self.assertNotIn("raw_embeddings", response.text)
 
+    def test_mcp_mount_exposes_streamable_http_at_clean_mcp_path(self) -> None:
+        app = create_app(SkillsMcpServer.for_test_fixture())
+        mounted_route = next(route for route in app.routes if getattr(route, "path", None) == "/mcp")
+
+        self.assertEqual("/mcp", mounted_route.path)
+        self.assertEqual("/", mounted_route.app.routes[0].path)
+
     def test_cors_preflight_allows_separate_local_ui_deployable(self) -> None:
         client = TestClient(create_app(SkillsMcpServer.for_test_fixture()))
 
@@ -154,7 +161,7 @@ Use when validating uploads.
         ) -> Mapping[str, object]:
             return {
                 "status": "ok",
-                "answer": "Use kg-enabled-rag with source evidence.",
+                "answer": "Use knowledge-graph-rag with source evidence.",
                 "model": "test-model",
                 "ollama_endpoint": request.ollama_endpoint,
                 "evidence": recommendations,
@@ -176,7 +183,7 @@ Use when validating uploads.
         payload = response.json()
         self.assertEqual("ok", payload["status"])
         self.assertEqual("test-model", payload["model"])
-        self.assertIn("kg-enabled-rag", response.text)
+        self.assertIn("knowledge-graph-rag", response.text)
         self.assertNotIn("secret", response.text.lower())
 
     def test_query_endpoint_passes_user_selected_model_to_provider(self) -> None:
@@ -186,7 +193,7 @@ Use when validating uploads.
         ) -> Mapping[str, object]:
             return {
                 "status": "ok",
-                "answer": "Use kg-enabled-rag with source evidence.",
+                "answer": "Use knowledge-graph-rag with source evidence.",
                 "model": request.model,
                 "ollama_endpoint": request.ollama_endpoint,
                 "evidence": recommendations,
@@ -215,7 +222,7 @@ Use when validating uploads.
         ) -> Mapping[str, object]:
             return {
                 "status": "ok",
-                "answer": "kg-enabled-rag is the direct skill profile.",
+                "answer": "knowledge-graph-rag is the direct skill profile.",
                 "model": request.model,
                 "ollama_endpoint": request.ollama_endpoint,
                 "evidence": evidence,
@@ -228,7 +235,7 @@ Use when validating uploads.
         response = client.post(
             "/skills/query",
             json={
-                "query": "Tell me about kg-enabled-rag",
+                "query": "Tell me about knowledge-graph-rag",
                 "ollama_endpoint": "http://127.0.0.1:11434",
                 "model": "qwen3:1.7b",
             },
@@ -237,7 +244,7 @@ Use when validating uploads.
         self.assertEqual(200, response.status_code)
         evidence = response.json()["evidence"]
         self.assertEqual("direct_lookup", evidence["route"])
-        self.assertEqual("skill:kg-enabled-rag", evidence["skill"]["skill_id"])
+        self.assertEqual("skill:knowledge-graph-rag", evidence["skill"]["skill_id"])
         self.assertIn("retrieval_units", evidence["skill"])
         self.assertNotIn("chunks", evidence["skill"])
         self.assertNotIn("recommendations", evidence)
@@ -246,15 +253,15 @@ Use when validating uploads.
         client = TestClient(create_app(SkillsMcpServer.for_test_fixture()))
 
         route_response = client.post(
-            "/skills/route", json={"query": "How do I apply kg-enabled-rag?"}
+            "/skills/route", json={"query": "How do I apply knowledge-graph-rag?"}
         )
-        resolve_response = client.get("/skills/resolve", params={"name": "kg-enabled-rag"})
-        guide_response = client.get("/skills/skill:kg-enabled-rag/execution-guide")
+        resolve_response = client.get("/skills/resolve", params={"name": "knowledge-graph-rag"})
+        guide_response = client.get("/skills/skill:knowledge-graph-rag/execution-guide")
 
         self.assertEqual(200, route_response.status_code)
         self.assertEqual("execution_plan", route_response.json()["route"])
         self.assertEqual(200, resolve_response.status_code)
-        self.assertEqual("skill:kg-enabled-rag", resolve_response.json()["skill_id"])
+        self.assertEqual("skill:knowledge-graph-rag", resolve_response.json()["skill_id"])
         self.assertEqual(200, guide_response.status_code)
         self.assertTrue(guide_response.json()["verification_checklist"])
 

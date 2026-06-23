@@ -18,15 +18,15 @@ This is a local library, not a replica of any external skill pack.
 
 ### Added in this pass
 
-- `kg-enabled-rag`
-- `using-agent-skills`
-- `interview-me`
-- `idea-refine`
+- `knowledge-graph-rag`
+- `skill-discovery-and-selection`
+- `requirements-elicitation`
+- `idea-refinement`
 - `spec-driven-development`
 - `incremental-implementation`
 - `context-engineering`
 - `source-driven-development`
-- `doubt-driven-development`
+- `uncertainty-driven-development`
 - `browser-testing-with-devtools`
 - `code-review-and-quality`
 - `git-workflow-and-versioning`
@@ -37,10 +37,10 @@ This is a local library, not a replica of any external skill pack.
 
 ### Already covered by existing local skills
 
-- `prompt-chaining`, `routing`, `parallelisation`, `reflection-and-verification`, `tool-use-function-calling`, `planning-and-task-decomposition`, `multi-agent-collaboration`, `memory-management`, `learning-and-adaptation` and `mcp-server-design`.
+- `prompt-chaining`, `routing`, `parallelization`, `reflection-and-verification`, `tool-use-and-function-calling`, `planning-and-task-decomposition`, `multi-agent-collaboration`, `memory-management`, `learning-and-adaptation` and `mcp-server-design`.
 - `tdd-practice` for `test-driven-development`.
 - `guardrails-safety-patterns` for safety and policy controls.
-- `resource-aware-optimisation` for cost, latency, context and compute tradeoffs.
+- `resource-aware-optimization` for cost, latency, context and compute tradeoffs.
 - `kiss-principle` and `dry-principle` for code simplification and over-complexity removal.
 - `exception-handling-and-recovery` and `reflection-and-verification` for debugging and recovery-oriented review.
 
@@ -49,8 +49,8 @@ This is a local library, not a replica of any external skill pack.
 - `frontend-ui-engineering` is represented by the local UX skill set: `ux-design-principles`, `accessibility-wcag`, `ui-component-design` and `frontend-state-and-interaction-design`.
 - `api-and-interface-design` is represented by `data-contract-design`, `ui-component-design` and `solid-principles`.
 - `security-and-hardening` is represented by `guardrails-safety-patterns` plus `data-security-and-privacy-architecture`.
-- `performance-optimization` is represented by `resource-aware-optimisation` plus `observability-and-telemetry`.
-- `graph-enabled-rag` is represented by the specialist `kg-enabled-rag` skill plus the existing `knowledge-retrieval-rag`, `ontology-and-knowledge-graph-modelling` and `data-lineage-and-provenance` skills.
+- `performance-optimization` is represented by `resource-aware-optimization` plus `observability-and-telemetry`.
+- `graph-enabled-rag` is represented by the specialist `knowledge-graph-rag` skill plus the existing `knowledge-retrieval-rag`, `ontology-and-knowledge-graph-modeling` and `data-lineage-and-provenance` skills.
 
 ## Directory model
 
@@ -73,9 +73,9 @@ Place these existing skill folders under `skills/agentic-patterns/`.
 |---|---|---|
 | `prompt-chaining` | A task needs a deterministic sequence of smaller LLM or tool steps. | A single direct implementation is clearer. |
 | `routing` | Inputs need conditional dispatch to different tools, models, workflows or agents. | The path is fixed and does not need conditional logic. |
-| `parallelisation` | Independent branches can run concurrently to reduce latency. | Steps depend on each other or shared mutable state makes concurrency unsafe. |
+| `parallelization` | Independent branches can run concurrently to reduce latency. | Steps depend on each other or shared mutable state makes concurrency unsafe. |
 | `reflection-and-verification` | Output needs critique, repair, tests or quality gates. | The task is trivial and already covered by deterministic validation. |
-| `tool-use-function-calling` | An agent needs to call external tools, APIs, commands, databases or services. | The answer can be produced safely without external execution. |
+| `tool-use-and-function-calling` | An agent needs to call external tools, APIs, commands, databases or services. | The answer can be produced safely without external execution. |
 | `planning-and-task-decomposition` | A complex goal needs an ordered executable plan. | The implementation path is obvious and small. |
 | `multi-agent-collaboration` | Specialist roles and hand-offs materially improve the result. | A single module or agent can do the work more simply. |
 | `memory-management` | State, session history or long-term retrievable knowledge must be managed. | The task is stateless. |
@@ -92,13 +92,13 @@ Place these existing skill folders under `skills/agent-control-patterns/`.
 | `goal-setting-and-monitoring` | Objectives, success criteria, stop conditions or progress tracking are needed. | The task has a simple one-shot outcome. |
 | `exception-handling-and-recovery` | Workflows need retries, fallbacks, rollback, graceful degradation or escalation. | Failure has no material impact and normal exceptions are enough. |
 | `human-in-the-loop` | Human judgement, approval, review or escalation is required. | Fully automated execution is safe, tested and reversible. |
-| `knowledge-retrieval-rag` | Answers or actions must be grounded in repository, document or knowledge-base content. Use `kg-enabled-rag` when retrieval must be graph-native, Neo4j-backed or provenance-first. | The task does not need external grounding. |
+| `knowledge-retrieval-rag` | Answers or actions must be grounded in repository, document or knowledge-base content. Use `knowledge-graph-rag` when retrieval must be graph-native, Neo4j-backed or provenance-first. | The task does not need external grounding. |
 | `inter-agent-communication-a2a` | Agents need task exchange, agent cards, messages or artefacts. | Direct function calls or simple orchestration are enough. |
-| `resource-aware-optimisation` | Cost, latency, context, model, compute or token budgets matter. | There is no meaningful resource constraint. |
+| `resource-aware-optimization` | Cost, latency, context, model, compute or token budgets matter. | There is no meaningful resource constraint. |
 | `reasoning-techniques` | Complex analysis, debugging, ReAct, code-aided reasoning or alternatives are needed. | Deterministic implementation or tests are enough. |
 | `guardrails-safety-patterns` | Inputs, outputs, tools, policies or security controls need safeguards. | The work is low-risk and already validated. |
 | `evaluation-and-monitoring` | Metrics, baselines, regression checks, observability or drift detection are needed. | The code is not operationally monitored and has no ongoing behaviour. |
-| `prioritisation` | Tasks, risks, bugs, alerts or actions need ranking. | There is only one viable next action. |
+| `prioritization` | Tasks, risks, bugs, alerts or actions need ranking. | There is only one viable next action. |
 
 ## Engineering practices
 
@@ -169,13 +169,13 @@ These skills are fully included under `skills/event-driven-and-real-time-data/`.
 | Skill | Use when | Avoid when |
 |---|---|---|
 | `event-driven-architecture` | Designing asynchronous event-first systems, event-driven integration or decoupled producer/consumer flows. | A simple synchronous request/response call is sufficient and safer. |
-| `event-modelling` | Discovering business events, commands, decisions, state changes and event timelines. | The task is purely technical plumbing with no business event semantics. |
+| `event-modeling` | Discovering business events, commands, decisions, state changes and event timelines. | The task is purely technical plumbing with no business event semantics. |
 | `event-streaming-platform-design` | Designing Kafka, Pulsar, Event Hubs or similar shared streaming platforms, topics, partitions, retention and replay. | A simple queue or direct integration is sufficient. |
 | `schema-registry-and-contracts` | Defining event schemas, compatibility, versioning and producer/consumer obligations. | Payloads are local, temporary and not consumed by others. |
 | `cdc-and-source-to-stream-ingestion` | Designing CDC or source-to-stream ingestion from databases, files, APIs or operational systems. | Batch extraction is sufficient and latency does not matter. |
 | `stream-processing-patterns` | Designing filtering, enrichment, joins, windows, aggregation, stateful processing or event-time logic. | The transformation is simple and better handled in batch. |
 | `event-governance-and-lineage` | Governing event ownership, classification, metadata, lineage, quality, retention and lifecycle. | Events are local implementation details with no reuse or compliance need. |
-| `real-time-operability` | Designing lag, freshness, replay, back-pressure, SLOs, alerts and incident response for streaming systems. | The stream is non-critical and not operationally monitored. |
+| `streaming-operations-and-slos` | Designing lag, freshness, replay, back-pressure, SLOs, alerts and incident response for streaming systems. | The stream is non-critical and not operationally monitored. |
 
 ### Event-driven rules
 
@@ -190,14 +190,14 @@ These skills are fully included under `skills/business-architecture/`.
 
 | Skill | Use when | Avoid when |
 |---|---|---|
-| `business-capability-modelling` | Defining stable business abilities, capability maps, capability levels, ownership and heatmaps. | The work is purely technical and has no business capability context. |
-| `value-stream-modelling` | Mapping trigger-to-outcome value creation across stakeholders, stages, capabilities, data and systems. | The task only needs a local implementation workflow. |
-| `process-modelling` | Modelling operational steps, decisions, hand-offs, controls, exceptions or automation opportunities. | The concern is stable business ability rather than procedural flow. |
+| `business-capability-modeling` | Defining stable business abilities, capability maps, capability levels, ownership and heatmaps. | The work is purely technical and has no business capability context. |
+| `value-stream-modeling` | Mapping trigger-to-outcome value creation across stakeholders, stages, capabilities, data and systems. | The task only needs a local implementation workflow. |
+| `process-modeling` | Modelling operational steps, decisions, hand-offs, controls, exceptions or automation opportunities. | The concern is stable business ability rather than procedural flow. |
 | `operating-model-design` | Designing how people, process, technology, data, governance, funding and delivery work together. | The task is a narrow component-level design. |
 | `strategy-to-execution-traceability` | Linking objectives, outcomes, capabilities, value streams, initiatives, metrics and evidence. | There is no strategic objective or portfolio context. |
 | `capability-maturity-assessment` | Assessing current/target maturity, gaps, risks and roadmap priorities. | The user only needs a descriptive model. |
-| `business-information-concept-modelling` | Deriving business concepts, entities and relationships from capabilities, value streams and processes. | The task is physical database design only. |
-| `organisation-and-role-design` | Defining roles, decision rights, accountabilities, team boundaries or ownership. | Organisation design is out of scope. |
+| `business-information-concept-modeling` | Deriving business concepts, entities and relationships from capabilities, value streams and processes. | The task is physical database design only. |
+| `organization-and-role-design` | Defining roles, decision rights, accountabilities, team boundaries or ownership. | Organisation design is out of scope. |
 
 ### Business architecture rules
 
@@ -215,8 +215,8 @@ The data architecture skills apply DAMA-DMBOK2-style separation of data manageme
 
 | Skill | Use when | Avoid when |
 |---|---|---|
-| `conceptual-data-modelling` | Identifying business concepts, entities and relationships independent of implementation. | The task is only physical schema tuning. |
-| `logical-data-modelling` | Defining logical entities, attributes, identifiers, keys, relationships, constraints and reference data. | The work only needs a high-level conceptual model. |
+| `conceptual-data-modeling` | Identifying business concepts, entities and relationships independent of implementation. | The task is only physical schema tuning. |
+| `logical-data-modeling` | Defining logical entities, attributes, identifiers, keys, relationships, constraints and reference data. | The work only needs a high-level conceptual model. |
 | `data-product-design` | Designing domain-owned, governed, discoverable and reusable data products. | The dataset is temporary or single-use. |
 | `data-contract-design` | Defining producer-consumer schema, semantics, quality, compatibility and operational obligations. | There is no stable producer-consumer boundary. |
 | `metadata-management` | Designing business, technical, operational, governance, quality and lineage metadata. | Metadata is not needed beyond local code comments. |
@@ -226,8 +226,8 @@ The data architecture skills apply DAMA-DMBOK2-style separation of data manageme
 | `data-integration-and-interoperability` | Designing batch, API, event, CDC, semantic or file-based integration patterns. | No system, domain, product or platform boundary is crossed. |
 | `lakehouse-and-medallion-architecture` | Designing raw, quarantine, cleansed, refined and serving layers. | A simple transactional store is sufficient. |
 | `master-and-reference-data-management` | Designing golden records, controlled values, identifiers, hierarchies, survivorship and stewardship. | There is no shared identity or controlled vocabulary problem. |
-| `ontology-and-knowledge-graph-modelling` | Designing ontologies, semantic models, knowledge graphs, inference-ready structures or RDF/OWL-style models. | A relational/logical model is sufficient. |
-| `kg-enabled-rag` | Building Neo4j-native GraphRAG or KG-enabled RAG with text-to-Cypher, provenance, conceptual schema control and hybrid graph/vector retrieval. Load its one-level `reference/` files only when detailed lifecycle, code-pattern or testing guidance is needed. | Generic document RAG or ontology-only work is sufficient. |
+| `ontology-and-knowledge-graph-modeling` | Designing ontologies, semantic models, knowledge graphs, inference-ready structures or RDF/OWL-style models. | A relational/logical model is sufficient. |
+| `knowledge-graph-rag` | Building Neo4j-native GraphRAG or KG-enabled RAG with text-to-Cypher, provenance, conceptual schema control and hybrid graph/vector retrieval. Load its one-level `reference/` files only when detailed lifecycle, code-pattern or testing guidance is needed. | Generic document RAG or ontology-only work is sufficient. |
 | `data-lineage-and-provenance` | Tracking source-to-target lineage, transformation history, evidence, ownership and provenance. | The data is local, disposable and not reused. |
 
 ### Data architecture rules
@@ -244,10 +244,10 @@ The data architecture skills apply DAMA-DMBOK2-style separation of data manageme
 | New business-facing feature | `bdd-practice` → `ddd-practice` where domain complexity warrants it → `tdd-practice` → `reflection-and-verification` |
 | Bug fix | `tdd-practice` → `exception-handling-and-recovery` if failure handling is involved → `reflection-and-verification` |
 | Refactor | `tdd-practice` safety net → `kiss-principle` → `solid-principles` where boundaries are weak → `dry-principle` where duplication is harmful |
-| Agent tool integration | `tool-use-function-calling` → `guardrails-safety-patterns` → `exception-handling-and-recovery` → `evaluation-and-monitoring` |
-| RAG feature | `knowledge-retrieval-rag` → `guardrails-safety-patterns` → `evaluation-and-monitoring` → `resource-aware-optimisation` |
-| GraphRAG feature | `kg-enabled-rag` → `knowledge-retrieval-rag` → `guardrails-safety-patterns` → `evaluation-and-monitoring` |
-| MCP feature | `mcp-server-design` → `tool-use-function-calling` → `guardrails-safety-patterns` → `exception-handling-and-recovery` |
+| Agent tool integration | `tool-use-and-function-calling` → `guardrails-safety-patterns` → `exception-handling-and-recovery` → `evaluation-and-monitoring` |
+| RAG feature | `knowledge-retrieval-rag` → `guardrails-safety-patterns` → `evaluation-and-monitoring` → `resource-aware-optimization` |
+| GraphRAG feature | `knowledge-graph-rag` → `knowledge-retrieval-rag` → `guardrails-safety-patterns` → `evaluation-and-monitoring` |
+| MCP feature | `mcp-server-design` → `tool-use-and-function-calling` → `guardrails-safety-patterns` → `exception-handling-and-recovery` |
 | Multi-agent workflow | `planning-and-task-decomposition` → `routing` → `multi-agent-collaboration` → `inter-agent-communication-a2a` where interoperability is needed |
 | User-facing feature | `ux-design-principles` → `accessibility-wcag` → `frontend-state-and-interaction-design` → `ui-component-design` → `tdd-practice` |
 | Data quality dashboard | `data-product-dashboard-design` → `accessibility-wcag` → `frontend-state-and-interaction-design` → `ui-component-design` |
@@ -262,13 +262,13 @@ The data architecture skills apply DAMA-DMBOK2-style separation of data manageme
 | Release pipeline improvement | `release-engineering-and-progressive-delivery` → `dora-four-keys` → `evaluation-and-monitoring` |
 | Toil reduction | `toil-reduction-and-automation` → `sre-practice` → `guardrails-safety-patterns` → `tdd-practice` |
 | Reliability regression | `slo-error-budget-management` → `observability-and-telemetry` → `incident-response-and-postmortems` |
-| Delivery performance review | `dora-four-keys` → `prioritisation` → `toil-reduction-and-automation` |
-| Strategy to governed data product | `strategy-to-execution-traceability` → `business-capability-modelling` → `value-stream-modelling` → `data-product-design` → `data-contract-design` |
-| BCM to conceptual data model | `business-capability-modelling` → `business-information-concept-modelling` → `conceptual-data-modelling` |
-| Value stream to events | `value-stream-modelling` → `event-modelling` → `schema-registry-and-contracts` |
+| Delivery performance review | `dora-four-keys` → `prioritization` → `toil-reduction-and-automation` |
+| Strategy to governed data product | `strategy-to-execution-traceability` → `business-capability-modeling` → `value-stream-modeling` → `data-product-design` → `data-contract-design` |
+| BCM to conceptual data model | `business-capability-modeling` → `business-information-concept-modeling` → `conceptual-data-modeling` |
+| Value stream to events | `value-stream-modeling` → `event-modeling` → `schema-registry-and-contracts` |
 | Source-to-refined data pipeline | `lakehouse-and-medallion-architecture` → `data-contract-design` → `data-governance-and-quality` → `data-lineage-and-provenance` |
-| Real-time data product | `event-modelling` → `data-product-design` → `schema-registry-and-contracts` → `event-governance-and-lineage` |
-| Knowledge graph | `business-information-concept-modelling` → `conceptual-data-modelling` → `ontology-and-knowledge-graph-modelling` |
+| Real-time data product | `event-modeling` → `data-product-design` → `schema-registry-and-contracts` → `event-governance-and-lineage` |
+| Knowledge graph | `business-information-concept-modeling` → `conceptual-data-modeling` → `ontology-and-knowledge-graph-modeling` |
 | Cloud/shared data control design | `data-security-and-privacy-architecture` → `metadata-management` → `data-lifecycle-and-retention-management` → `data-lineage-and-provenance` |
 
 ## Governance rule

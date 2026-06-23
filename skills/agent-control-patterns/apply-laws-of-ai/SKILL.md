@@ -1,6 +1,9 @@
 ---
 name: apply-laws-of-ai
 description: Mandatory immutable baseline applying an Asimov-inspired hierarchy of AI safety laws. Use when at every session start and before any other skill, plan, routing decision, tool use, or material edit. Also known as apply_laws_of_AI.
+aliases:
+  - ai-safety-laws
+  - apply laws of ai
 ---
 
 # Apply Laws of AI
@@ -100,7 +103,7 @@ Never optimise a lower-priority objective at the expense of a higher-priority la
 
 ## Related skills
 
-- `using-agent-skills` — route to task skills after baseline gates pass
+- `skill-discovery-and-selection` — route to task skills after baseline gates pass
 - `guardrails-safety-patterns` — layered deterministic controls
 - `human-in-the-loop` — escalation when gates constrain action
 
@@ -109,4 +112,3 @@ Never optimise a lower-priority objective at the expense of a higher-priority la
 - [ ] All six quality gates evaluated (Humanity, Human Safety, Authority, Security, Proportionality, Auditability).
 - [ ] Refusals, constraints or escalations reported where applicable.
 - [ ] Confirmation that this skill ran before all other reasoning.
-
