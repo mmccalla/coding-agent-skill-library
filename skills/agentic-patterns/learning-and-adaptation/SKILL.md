@@ -1,6 +1,9 @@
 ---
 name: learning-and-adaptation
 description: Use when building measured improvement loops for coding agents, including benchmark-driven repair, preference-data feedback, self-improvement archives, prompt optimisation and pattern learning.
+aliases:
+  - agent-improvement
+  - feedback-loops
 ---
 
 # Learning and Adaptation

@@ -14,6 +14,24 @@ Before planning, routing, tool use, or edits, execute in this order:
 
 See `skills_docs/LIBRARY_CONTRACT.md` for portable consistency rules.
 
+## Discovery-first metadata policy
+
+Agents should treat skill frontmatter as the primary discovery surface. Match against, in order:
+
+1. `name`
+2. `aliases`
+3. `description`
+4. category and manifest context
+
+Folder structure helps human navigation, but frontmatter is authoritative for real-world agent discoverability.
+
+When authoring or changing skills:
+
+- Prefer canonical US-English spellings in skill IDs.
+- Prefer clear noun-phrase or gerund names over conversational or imperative labels.
+- Prefer industry-standard terms over repository-local shorthand.
+- Add aliases for acronyms, alternate spellings, synonymous phrasings and superseded names.
+
 ## Skill directory structure
 
 Search recursively for skills under:
@@ -54,15 +72,15 @@ Do not assume a skill from its name alone. Use category `README.md` files for ro
 
 - Use `prompt-chaining` for multi-stage sequential workflows where each step produces a hand-off for the next step.
 - Use `routing` for conditional path, model, tool, workflow or sub-agent selection.
-- Use `parallelisation` for independent concurrent operations where concurrency improves latency without reducing determinism or safety.
+- Use `parallelization` for independent concurrent operations where concurrency improves latency without reducing determinism or safety.
 - Use `reflection-and-verification` for critique, repair, tests, review loops and quality gates.
 - Use `planning-and-task-decomposition` when a complex objective must become an executable, ordered plan.
 - Use `multi-agent-collaboration` only when specialised roles and explicit hand-offs materially improve the outcome.
-- Use `using-agent-skills`, `interview-me`, `idea-refine`, `spec-driven-development`, `incremental-implementation`, `context-engineering`, `source-driven-development` and `doubt-driven-development` when the work needs the local discovery/spec/implementation spine.
+- Use `skill-discovery-and-selection`, `requirements-elicitation`, `idea-refinement`, `spec-driven-development`, `incremental-implementation`, `context-engineering`, `source-driven-development` and `uncertainty-driven-development` when the work needs the local discovery/spec/implementation spine.
 
 ### Tooling, integration and knowledge access
 
-- Use `tool-use-function-calling` for safe external tool, API, database, command or service execution.
+- Use `tool-use-and-function-calling` for safe external tool, API, database, command or service execution.
 - Use `mcp-server-design` when exposing agent-friendly tools, resources or prompts through MCP.
 - Use `knowledge-retrieval-rag` when repository, document or knowledge-base grounding is required.
 - Use `inter-agent-communication-a2a` for cross-agent delegation, agent cards, task exchange, artefact exchange or A2A-style interoperability.
@@ -80,9 +98,9 @@ Do not assume a skill from its name alone. Use category `README.md` files for ro
 
 ### Optimisation and advanced intelligence
 
-- Use `resource-aware-optimisation` for cost, latency, context-window, token, compute, model-selection and budget trade-offs.
+- Use `resource-aware-optimization` for cost, latency, context-window, token, compute, model-selection and budget trade-offs.
 - Use `reasoning-techniques` for complex debugging, design reasoning, code-aided reasoning, ReAct-style tool loops and alternative-path exploration.
-- Use `prioritisation` for ranking tasks, bugs, risks, requirements, alerts or next actions.
+- Use `prioritization` for ranking tasks, bugs, risks, requirements, alerts or next actions.
 - Use `learning-and-adaptation` only when improvement is measured, bounded, reversible and validated.
 
 ### Engineering design and delivery practices
@@ -106,19 +124,19 @@ skills/event-driven-and-real-time-data/
 
 Use business architecture skills to clarify capabilities, value streams, processes, operating models, maturity, organisation design and strategy-to-execution traceability:
 
-- Use `business-capability-modelling` for stable business abilities, capability maps, decomposition, ownership and heatmaps.
-- Use `value-stream-modelling` for trigger-to-outcome value flow across stakeholders, capabilities, data and systems.
-- Use `process-modelling` for operational steps, decisions, hand-offs, controls, exceptions and automation opportunities.
+- Use `business-capability-modeling` for stable business abilities, capability maps, decomposition, ownership and heatmaps.
+- Use `value-stream-modeling` for trigger-to-outcome value flow across stakeholders, capabilities, data and systems.
+- Use `process-modeling` for operational steps, decisions, hand-offs, controls, exceptions and automation opportunities.
 - Use `operating-model-design` for people, process, technology, data, governance, funding and delivery alignment.
 - Use `strategy-to-execution-traceability` for linking objectives, outcomes, capabilities, initiatives, metrics and evidence.
 - Use `capability-maturity-assessment` for current/target maturity, gaps, risks and roadmap priorities.
-- Use `business-information-concept-modelling` for deriving business concepts and relationships from business architecture artefacts.
-- Use `organisation-and-role-design` for roles, decision rights, accountabilities and team boundaries.
+- Use `business-information-concept-modeling` for deriving business concepts and relationships from business architecture artefacts.
+- Use `organization-and-role-design` for roles, decision rights, accountabilities and team boundaries.
 
 Use data architecture skills to define conceptual/logical models, data products, contracts, metadata, governance, quality, security/privacy, lifecycle/retention, integration/interoperability, lakehouse layers, MDM/RDM, ontologies, knowledge graphs and lineage. For data architecture, apply DAMA-DMBOK2-style separation of data management concerns across governance, architecture, modelling, security, integration/interoperability, master/reference data, metadata and quality. For cloud or shared data, apply CDMC-style control expectations: ownership, classification, entitlement/access evidence, lineage/provenance, lifecycle/retention, quality controls and auditable evidence.
 
-- Use `conceptual-data-modelling` for implementation-independent business concepts and relationships.
-- Use `logical-data-modelling` for logical entities, attributes, identifiers, keys, relationships and constraints.
+- Use `conceptual-data-modeling` for implementation-independent business concepts and relationships.
+- Use `logical-data-modeling` for logical entities, attributes, identifiers, keys, relationships and constraints.
 - Use `data-product-design` for domain-owned, governed, discoverable and reusable data products.
 - Use `data-contract-design` for producer-consumer schema, semantics, quality, compatibility and operational obligations.
 - Use `metadata-management` for business, technical, operational, governance, quality and lineage metadata.
@@ -128,20 +146,20 @@ Use data architecture skills to define conceptual/logical models, data products,
 - Use `data-integration-and-interoperability` for batch, API, event, CDC and semantic interoperability patterns.
 - Use `lakehouse-and-medallion-architecture` for raw, quarantine, cleansed, refined and serving-layer design.
 - Use `master-and-reference-data-management` for golden records, controlled values, identifiers, hierarchies and survivorship.
-- Use `ontology-and-knowledge-graph-modelling` for semantic models, ontologies, knowledge graphs and inference-ready structures.
-- Use `kg-enabled-rag` for Neo4j-native GraphRAG, KG-backed retrieval, text-to-Cypher, graph provenance and graph-grounded answer generation.
+- Use `ontology-and-knowledge-graph-modeling` for semantic models, ontologies, knowledge graphs and inference-ready structures.
+- Use `knowledge-graph-rag` for Neo4j-native GraphRAG, KG-backed retrieval, text-to-Cypher, graph provenance and graph-grounded answer generation.
 - Use `data-lineage-and-provenance` for source-to-target lineage, transformation evidence and provenance.
 
 Use event-driven and real-time data skills to define business events, event schemas, streaming platforms, CDC, stream processing, event governance, lineage and real-time operability:
 
 - Use `event-driven-architecture` for asynchronous event-first system design.
-- Use `event-modelling` for business events, commands, decisions and event timelines.
+- Use `event-modeling` for business events, commands, decisions and event timelines.
 - Use `event-streaming-platform-design` for Kafka/Pulsar/Event Hubs-style shared streaming platforms.
 - Use `schema-registry-and-contracts` for event schemas, compatibility, versioning and contracts.
 - Use `cdc-and-source-to-stream-ingestion` for change-data-capture and streaming ingestion.
 - Use `stream-processing-patterns` for enrichment, joins, windows, stateful processing and event-time logic.
 - Use `event-governance-and-lineage` for event ownership, metadata, classification, lineage and discoverability.
-- Use `real-time-operability` for lag, freshness, replay, back-pressure, SLOs and streaming operations.
+- Use `streaming-operations-and-slos` for lag, freshness, replay, back-pressure, SLOs and streaming operations.
 
 For architecture work, preserve traceability:
 

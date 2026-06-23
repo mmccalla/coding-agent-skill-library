@@ -14,6 +14,17 @@ Before planning, routing, tool use, or edits:
 
 See `skills_docs/LIBRARY_CONTRACT.md` for portable consistency rules.
 
+## Discovery-first metadata policy
+
+Treat skill frontmatter as the primary selection surface:
+
+1. `name`
+2. `aliases`
+3. `description`
+4. category and manifest context
+
+This repository uses progressive disclosure. Match on metadata first, then load the selected `SKILL.md` body. Prefer canonical US-English, industry-standard names and add aliases for acronyms, alternate spellings, superseded names and likely user phrasings.
+
 ## Default behaviour
 
 - Inspect the repository before proposing major changes.
@@ -33,7 +44,7 @@ Use these skills when the task shape matches:
 - `kiss-principle` before adding new abstractions.
 - `solid-principles` when refactoring modules, services, classes, tools, agents or dependency boundaries.
 - `dry-principle` when repeated knowledge, rules, schemas or validation create maintenance risk.
-- `using-agent-skills`, `interview-me`, `idea-refine`, `spec-driven-development`, `incremental-implementation`, `context-engineering`, `source-driven-development` and `doubt-driven-development` for the workflow spine from session start through spec and implementation.
+- `skill-discovery-and-selection`, `requirements-elicitation`, `idea-refinement`, `spec-driven-development`, `incremental-implementation`, `context-engineering`, `source-driven-development` and `uncertainty-driven-development` for the workflow spine from session start through spec and implementation.
 - **`apply-laws-of-ai` first at every session** — mandatory immutable baseline before any other skill.
 - Agentic workflow and control skills when building or modifying agents, tools, MCP servers, A2A integrations, RAG systems, guardrails, memory, evaluation, recovery or monitoring.
 - Architecture skills when working on capabilities, value streams, processes, operating models, data models, data products, data contracts, metadata, governance, quality, lineage, event-driven architecture, CDC, streams or real-time data.

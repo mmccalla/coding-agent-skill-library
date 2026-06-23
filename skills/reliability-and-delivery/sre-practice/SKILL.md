@@ -1,6 +1,9 @@
 ---
 name: sre-practice
 description: Applies SRE practices for reliability, operability and resilience objectives. Use when owning production services, defining SLOs, or improving operational maturity.
+aliases:
+  - site-reliability-engineering
+  - service-reliability
 ---
 
 # SRE Practice
@@ -61,4 +64,3 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 - [ ] Reliability controls added or changed described.
 - [ ] Tests, checks and observability evidence reported.
 - [ ] Runbook updates and residual reliability risk stated.
-

@@ -101,6 +101,7 @@ export interface GraphQueryResponse {
       confidence?: number;
       suggested_tool?: string;
       resolved_skill_id?: string;
+      rationale?: string;
     };
     recommendations?: Array<{
       skill_id: string;
@@ -108,6 +109,34 @@ export interface GraphQueryResponse {
       rationale: string;
       source_paths: string[];
       evidence_snippets: string[];
+      evidence_paths?: string[];
     }>;
+    skill?: {
+      skill_id: string;
+      skill_name: string;
+      aliases?: string[];
+      retrieval_units?: Array<{
+        retrieval_unit_id: string;
+        text: string;
+        source_path: string;
+        section_id: string;
+      }>;
+    };
+    context?: {
+      skill_id?: string;
+      skill_name?: string;
+      related_skill_ids?: string[];
+      evidence_paths?: string[];
+    };
+    execution_guide?: {
+      skill_id?: string;
+      skill_name?: string;
+      when_to_use?: string;
+      objective?: string;
+      procedure?: string;
+      rules?: string;
+      related_skill_ids?: string[];
+      evidence_paths?: string[];
+    };
   };
 }

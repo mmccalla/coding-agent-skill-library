@@ -18,7 +18,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 4. Define decision rights.
 5. Define processes/value streams.
 6. Define technology and data enablers.
-7. Define funding and prioritisation.
+7. Define funding and prioritization.
 8. Define metrics and transition path.
 
 ## Required outputs

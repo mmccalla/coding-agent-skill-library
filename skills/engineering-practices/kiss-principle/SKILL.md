@@ -1,6 +1,9 @@
 ---
 name: kiss-principle
 description: Applies KISS to simplify code, architecture, workflows and agent designs without losing required behaviour. Use when reducing over-engineering, speculative abstractions, or unnecessary agent complexity.
+aliases:
+  - keep-it-simple
+  - kiss
 ---
 
 # KISS Principle
@@ -36,4 +39,3 @@ Deliver the simplest maintainable solution that satisfies the current requiremen
 - [ ] Retained complexity justified.
 - [ ] Tests or checks run reported.
 - [ ] Residual risks or assumptions stated.
-

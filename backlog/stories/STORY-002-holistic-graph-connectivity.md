@@ -12,7 +12,7 @@ Agents must rely on the skills graph as a connected operating model. Category me
 
 **Acceptance Criteria**:  
 - **Given** all 87 skills have been exported as graph records, **When** connectivity validation runs, **Then** no `Skill` node is isolated and all skills are reachable from the startup/root spine.  
-  **Example**: `apply-laws-of-ai` can reach `kg-enabled-rag` through startup, routing, data-architecture and graph-retrieval bridge paths.
+  **Example**: `apply-laws-of-ai` can reach `knowledge-graph-rag` through startup, routing, data-architecture and graph-retrieval bridge paths.
 - **Given** a skill lacks task/capability or semantic bridge coverage, **When** validation runs, **Then** the validation report fails and names the affected skill.  
   **Example**: `shipping-and-launch` missing a workflow-stage edge is reported as an outlier.
 - **Given** reference documents or external sources are not directly connected to all bridge nodes, **When** connectivity validation runs, **Then** they are exempt only when marked intentionally external and not counted as skill fragments.  

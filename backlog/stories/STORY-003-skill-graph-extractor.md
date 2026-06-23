@@ -14,7 +14,7 @@ The repository already validates 87 skills. The extractor must preserve source p
 - **Given** the `skills/` tree exists, **When** the extractor runs, **Then** it emits one deterministic `Skill` record per `SKILL.md`.  
   **Example**: The output contains 87 skill records including `apply-laws-of-ai`.
 - **Given** a skill has `## Related skills` entries, **When** the extractor parses the file, **Then** related-skill relationships are emitted with source evidence.  
-  **Example**: `mcp-server-design` emits relationships to `tool-use-function-calling`, `guardrails-safety-patterns` and `knowledge-retrieval-rag`.
+  **Example**: `mcp-server-design` emits relationships to `tool-use-and-function-calling`, `guardrails-safety-patterns` and `knowledge-retrieval-rag`.
 - **Given** the extractor is run twice without file changes, **When** outputs are compared, **Then** record IDs and content hashes are identical.  
   **Example**: The same `SkillSection.id` values are produced on both runs.
 

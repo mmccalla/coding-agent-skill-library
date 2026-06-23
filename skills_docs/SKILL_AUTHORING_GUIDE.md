@@ -6,6 +6,7 @@ Use this guide when creating or revising skills in this library. It complements 
 
 - Start from a concrete agent task, not a technology label.
 - Write the `description` as routing metadata: include `Use when`, trigger terms, and the boundary where the skill applies.
+- Treat `name`, `aliases` and `description` as the main runtime discovery surface; weak metadata causes missed or noisy matches.
 - Keep `SKILL.md` concise enough for routine context loading; move long examples, schemas and implementation details into one-level reference files.
 - Prefer deterministic checklists, templates, schemas and tests over broad advice.
 - Keep product-specific or project-specific guidance in `skills_docs/overlays/`, not in portable core skills.
@@ -19,6 +20,8 @@ Every skill must use:
 ---
 name: folder-name
 description: Use when ...
+aliases:
+  - old-or-alternate-name
 ---
 
 # Human Title
@@ -34,7 +37,23 @@ description: Use when ...
 - [ ] ...
 ```
 
-`name` must match the parent folder. The only supported frontmatter keys are `name` and `description`.
+`name` must match the parent folder. Supported frontmatter keys are defined in `skills_docs/LIBRARY_CONTRACT.md`; `aliases` are strongly recommended when a skill has an acronym, alternate spelling, superseded name or commonly used synonym.
+
+## Naming And Alias Rules
+
+- Prefer canonical US-English kebab-case for `name`.
+- Prefer stable industry terms over repository-local shorthand.
+- Use `aliases` for old names, alternate spellings, acronym expansions and likely user prompt phrasing.
+- Keep renamed canonical IDs as aliases for at least one release cycle.
+- Avoid aliases that could plausibly refer to a different existing skill.
+
+## Selection Boundaries
+
+Strong skills are easy to select and easy to reject. Include:
+
+- a precise `description` with a clear `Use when` trigger;
+- a focused `## When to use` section;
+- a short `## When not to use` section whenever neighbouring skills are easy to confuse.
 
 ## Progressive Disclosure
 

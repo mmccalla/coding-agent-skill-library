@@ -1,6 +1,9 @@
 ---
 name: reasoning-techniques
 description: Use when a coding agent needs robust problem solving, explicit decomposition, alternative-path exploration, program-aided reasoning, ReAct loops, or self-correction.
+aliases:
+  - problem-solving
+  - reasoning-patterns
 ---
 
 # Reasoning Techniques
@@ -48,4 +51,3 @@ Prefer externally verifiable reasoning over persuasive explanation. For code, th
 - [ ] Reasoning method matches task complexity.
 - [ ] Tool observations influenced the plan.
 - [ ] Final answer includes verification evidence.
-

@@ -24,6 +24,11 @@ import type {
   UploadPreview,
 } from "./types";
 
+interface EvidenceEntry {
+  title: string;
+  body: string[];
+}
+
 type LoadState<T> =
   | { status: "loading" }
   | { status: "error"; message: string }
@@ -558,7 +563,7 @@ function GraphQueryPanel({
   onLoadModels,
   onSubmit,
 }: GraphQueryPanelProps) {
-  const recommendations = result?.evidence.recommendations ?? [];
+  const evidenceEntries = result ? buildEvidenceEntries(result.evidence) : [];
   return (
     <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-xl">
       <div className="flex items-center gap-3">
@@ -673,18 +678,116 @@ function GraphQueryPanel({
             {result.answer}
           </p>
           <h4 className="mt-4 text-sm font-semibold text-white">Supporting graph evidence</h4>
-          <ul className="mt-2 grid gap-2 text-sm text-slate-300">
-            {recommendations.map((recommendation) => (
-              <li key={recommendation.skill_id} className="rounded-xl bg-slate-900 p-3">
-                <span className="font-semibold text-white">{recommendation.skill_name}</span>
-                <span className="ml-2 text-slate-400">{recommendation.rationale}</span>
-              </li>
-            ))}
-          </ul>
+          {evidenceEntries.length > 0 ? (
+            <ul className="mt-2 grid gap-2 text-sm text-slate-300">
+              {evidenceEntries.map((entry) => (
+                <li key={entry.title} className="rounded-xl bg-slate-900 p-3">
+                  <h5 className="font-semibold text-white">{entry.title}</h5>
+                  {entry.body.map((line) => (
+                    <p key={line} className="mt-1 break-words text-slate-300">
+                      {line}
+                    </p>
+                  ))}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-2 rounded-xl bg-slate-900 p-3 text-sm text-slate-300">
+              No structured evidence was returned for this route.
+            </p>
+          )}
         </article>
       )}
     </section>
   );
+}
+
+function buildEvidenceEntries(evidence: GraphQueryResponse["evidence"]): EvidenceEntry[] {
+  const entries: EvidenceEntry[] = [];
+  const route = evidence.route ?? evidence.routing?.route;
+  const routeDetails = compactLines([
+    route ? `Route: ${route}` : "",
+    evidence.routing?.suggested_tool ? `Suggested tool: ${evidence.routing.suggested_tool}` : "",
+    evidence.routing?.resolved_skill_id
+      ? `Resolved skill: ${evidence.routing.resolved_skill_id}`
+      : "",
+    typeof evidence.routing?.confidence === "number"
+      ? `Confidence: ${Math.round(evidence.routing.confidence * 100)}%`
+      : "",
+  ]);
+  if (routeDetails.length > 0) {
+    entries.push({ title: "Routing decision", body: routeDetails });
+  }
+
+  for (const recommendation of evidence.recommendations ?? []) {
+    entries.push({
+      title: recommendation.skill_name,
+      body: compactLines([
+        recommendation.rationale,
+        ...recommendation.source_paths.slice(0, 2).map((path) => `Source: ${path}`),
+        ...recommendation.evidence_snippets.slice(0, 1).map((snippet) => `Snippet: ${snippet}`),
+        ...(recommendation.evidence_paths ?? [])
+          .slice(0, 1)
+          .map((path) => `Graph path: ${path}`),
+      ]),
+    });
+  }
+
+  if (evidence.skill) {
+    entries.push({
+      title: evidence.skill.skill_name,
+      body: compactLines([
+        ...(evidence.skill.aliases ?? []).slice(0, 3).map((alias) => `Alias: ${alias}`),
+        ...(evidence.skill.retrieval_units ?? [])
+          .slice(0, 2)
+          .flatMap((unit) =>
+            compactLines([
+              unit.section_id ? `Section: ${unit.section_id}` : "",
+              unit.source_path ? `Source: ${unit.source_path}` : "",
+              unit.text ? `Snippet: ${unit.text}` : "",
+            ]),
+          ),
+      ]),
+    });
+  }
+
+  if (evidence.context) {
+    entries.push({
+      title: "Related graph context",
+      body: compactLines([
+        ...(evidence.context.related_skill_ids ?? [])
+          .slice(0, 4)
+          .map((skillId) => `Related: ${skillId}`),
+        ...(evidence.context.evidence_paths ?? [])
+          .slice(0, 2)
+          .map((path) => `Graph path: ${path}`),
+      ]),
+    });
+  }
+
+  if (evidence.execution_guide) {
+    entries.push({
+      title: evidence.execution_guide.skill_name || "Execution guide",
+      body: compactLines([
+        evidence.execution_guide.when_to_use
+          ? `When to use: ${evidence.execution_guide.when_to_use}`
+          : "",
+        evidence.execution_guide.objective
+          ? `Objective: ${evidence.execution_guide.objective}`
+          : "",
+        evidence.execution_guide.procedure
+          ? `Procedure: ${evidence.execution_guide.procedure}`
+          : "",
+        evidence.execution_guide.rules ? `Rules: ${evidence.execution_guide.rules}` : "",
+      ]),
+    });
+  }
+
+  return entries;
+}
+
+function compactLines(lines: string[]): string[] {
+  return lines.filter((line) => line.trim().length > 0);
 }
 
 function DiagnosticAlert({ error }: { error: DisplayError }) {

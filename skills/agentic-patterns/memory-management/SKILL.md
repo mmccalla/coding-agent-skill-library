@@ -1,6 +1,9 @@
 ---
 name: memory-management
 description: Use when implementing short-term state, conversation history, long-term memory, RAG, user preferences, episodic examples, procedural instructions or memory update policies for agents.
+aliases:
+  - agent-memory
+  - conversational-memory
 ---
 
 # Memory Management

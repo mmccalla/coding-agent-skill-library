@@ -64,6 +64,12 @@ def _string(value: object) -> str:
     return value if isinstance(value, str) else ""
 
 
+def _string_list(value: object) -> tuple[str, ...]:
+    if not isinstance(value, list):
+        return ()
+    return tuple(item for item in value if isinstance(item, str) and item.strip())
+
+
 class SkillsMcpServer:
     """Read-only MCP-style facade over the skills retrieval graph."""
 
@@ -450,7 +456,7 @@ class SkillsMcpServer:
                         "tool_sequence": ["route_skill_query", "recommend_skills"],
                     },
                     {
-                        "query": "what is related to kg-enabled-rag?",
+                        "query": "what is related to knowledge-graph-rag?",
                         "route": "context",
                         "tool_sequence": [
                             "route_skill_query",
@@ -531,6 +537,7 @@ class SkillsMcpServer:
             haystack = " ".join(
                 [
                     skill_name,
+                    *(_string_list(skill.properties.get("aliases"))),
                     *(_string(unit.properties.get("text")) for unit in retrieval_units),
                 ]
             ).lower()
@@ -539,6 +546,7 @@ class SkillsMcpServer:
                     {
                         "skill_id": skill.id,
                         "skill_name": skill_name,
+                        "aliases": list(_string_list(skill.properties.get("aliases"))),
                         "source_paths": sorted(
                             {
                                 _string(unit.properties.get("source_path"))
@@ -563,6 +571,7 @@ class SkillsMcpServer:
             "status": "ok",
             "skill_id": skill.id,
             "skill_name": _string(skill.properties.get("name")),
+            "aliases": list(_string_list(skill.properties.get("aliases"))),
             "retrieval_units": [
                 {
                     "retrieval_unit_id": unit.id,

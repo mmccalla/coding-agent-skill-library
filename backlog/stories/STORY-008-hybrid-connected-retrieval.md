@@ -12,7 +12,7 @@ Retrieval should prefer connected evidence, not isolated high-similarity chunks.
 
 **Acceptance Criteria**:  
 - **Given** a task query is submitted, **When** hybrid retrieval runs, **Then** results include ranked skills, evidence snippets and relationship paths.  
-  **Example**: A GraphRAG query returns `kg-enabled-rag`, `ontology-and-knowledge-graph-modelling` and `knowledge-retrieval-rag` with evidence paths.
+  **Example**: A GraphRAG query returns `knowledge-graph-rag`, `ontology-and-knowledge-graph-modeling` and `knowledge-retrieval-rag` with evidence paths.
 - **Given** a vector result is semantically similar but poorly connected, **When** ranking is calculated, **Then** connected skills with stronger graph evidence rank higher.  
   **Example**: A generic documentation chunk does not outrank a domain-specific skill with bridge coverage.
 - **Given** no confident skill match exists, **When** retrieval runs, **Then** the response states uncertainty and suggests clarification rather than fabricating a route.  

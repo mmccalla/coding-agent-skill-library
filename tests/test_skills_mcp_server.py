@@ -72,7 +72,7 @@ class SkillsMcpServerTests(unittest.TestCase):
         self.assertEqual("ok", response["status"])
         self.assertLessEqual(len(response["recommendations"]), 2)
         first = response["recommendations"][0]
-        self.assertEqual("kg-enabled-rag", first["skill_name"])
+        self.assertEqual("knowledge-graph-rag", first["skill_name"])
         self.assertTrue(first["evidence_snippets"])
         self.assertTrue(first["evidence_paths"])
         self.assertTrue(first["source_paths"])
@@ -83,7 +83,7 @@ class SkillsMcpServerTests(unittest.TestCase):
         mcp = load_module()
         server = mcp.SkillsMcpServer.for_test_fixture()
 
-        response = server.call_tool("get_skill", {"skill_id": "skill:kg-enabled-rag"})
+        response = server.call_tool("get_skill", {"skill_id": "skill:knowledge-graph-rag"})
 
         self.assertEqual("ok", response["status"])
         self.assertIn("retrieval_units", response)
@@ -98,11 +98,11 @@ class SkillsMcpServerTests(unittest.TestCase):
 
         response = server.call_tool(
             "get_skill_context",
-            {"skill_id": "skill:kg-enabled-rag", "limit": 5},
+            {"skill_id": "skill:knowledge-graph-rag", "limit": 5},
         )
 
         self.assertEqual("ok", response["status"])
-        self.assertEqual("skill:kg-enabled-rag", response["skill_id"])
+        self.assertEqual("skill:knowledge-graph-rag", response["skill_id"])
         self.assertIn("skill:knowledge-retrieval-rag", response["related_skill_ids"])
         self.assertTrue(response["evidence_paths"])
 
@@ -110,19 +110,19 @@ class SkillsMcpServerTests(unittest.TestCase):
         mcp = load_module()
         server = mcp.SkillsMcpServer.for_test_fixture()
 
-        direct = server.call_tool("route_skill_query", {"query": "tell me about kg-enabled-rag"})
+        direct = server.call_tool("route_skill_query", {"query": "tell me about knowledge-graph-rag"})
         recommendation = server.call_tool(
             "route_skill_query", {"query": "Which skills should I use for graph retrieval?"}
         )
         context = server.call_tool(
-            "route_skill_query", {"query": "What skills are related to kg-enabled-rag?"}
+            "route_skill_query", {"query": "What skills are related to knowledge-graph-rag?"}
         )
         execution_plan = server.call_tool(
-            "route_skill_query", {"query": "How do I apply kg-enabled-rag as an execution plan?"}
+            "route_skill_query", {"query": "How do I apply knowledge-graph-rag as an execution plan?"}
         )
 
         self.assertEqual("direct_lookup", direct["route"])
-        self.assertEqual("skill:kg-enabled-rag", direct["resolved_skill_id"])
+        self.assertEqual("skill:knowledge-graph-rag", direct["resolved_skill_id"])
         self.assertEqual("recommendation", recommendation["route"])
         self.assertEqual("context", context["route"])
         self.assertEqual("execution_plan", execution_plan["route"])
@@ -134,23 +134,62 @@ class SkillsMcpServerTests(unittest.TestCase):
         mcp = load_module()
         server = mcp.SkillsMcpServer.for_test_fixture()
 
+        response = server.call_tool("resolve_skill", {"name": "knowledge-graph-rag"})
+
+        self.assertEqual("ok", response["status"])
+        self.assertEqual("skill:knowledge-graph-rag", response["skill_id"])
+        self.assertEqual("knowledge-graph-rag", response["skill_name"])
+        self.assertTrue(response["source_paths"])
+
+    def test_resolve_skill_accepts_aliases(self) -> None:
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+
         response = server.call_tool("resolve_skill", {"name": "kg-enabled-rag"})
 
         self.assertEqual("ok", response["status"])
-        self.assertEqual("skill:kg-enabled-rag", response["skill_id"])
-        self.assertEqual("kg-enabled-rag", response["skill_name"])
-        self.assertTrue(response["source_paths"])
+        self.assertEqual("skill:knowledge-graph-rag", response["skill_id"])
+        self.assertEqual("knowledge-graph-rag", response["skill_name"])
+
+    def test_route_skill_query_does_not_false_positive_short_aliases_inside_other_words(self) -> None:
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+
+        response = server.call_tool(
+            "route_skill_query",
+            {
+                "query": (
+                    "Tell me about designing and building a web application using best practice "
+                    "software engineering principles with separate front and back ends that "
+                    "leverage real time streaming for communication between components."
+                )
+            },
+        )
+
+        self.assertEqual("recommendation", response["route"])
+        self.assertIsNone(response["resolved_skill_id"])
+
+    def test_get_skill_and_search_include_aliases(self) -> None:
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+
+        get_response = server.call_tool("get_skill", {"skill_id": "skill:knowledge-graph-rag"})
+        search_response = server.call_tool("search_skills", {"query": "kg-enabled-rag", "limit": 3})
+
+        self.assertIn("kg-enabled-rag", get_response["aliases"])
+        self.assertEqual("knowledge-graph-rag", search_response["results"][0]["skill_name"])
+        self.assertIn("kg-enabled-rag", search_response["results"][0]["aliases"])
 
     def test_get_skill_execution_guide_returns_actionable_sections(self) -> None:
         mcp = load_module()
         server = mcp.SkillsMcpServer.for_test_fixture()
 
         response = server.call_tool(
-            "get_skill_execution_guide", {"skill_id": "skill:kg-enabled-rag"}
+            "get_skill_execution_guide", {"skill_id": "skill:knowledge-graph-rag"}
         )
 
         self.assertEqual("ok", response["status"])
-        self.assertEqual("skill:kg-enabled-rag", response["skill_id"])
+        self.assertEqual("skill:knowledge-graph-rag", response["skill_id"])
         self.assertTrue(response["when_to_use"])
         self.assertTrue(response["objective"])
         self.assertTrue(response["procedure"])
@@ -283,7 +322,7 @@ class SkillsMcpServerTests(unittest.TestCase):
                     )
 
             serialised = repr(result)
-            self.assertIn("kg-enabled-rag", serialised)
+            self.assertIn("knowledge-graph-rag", serialised)
             self.assertNotIn("MATCH ", serialised)
             self.assertNotIn("embedding=", serialised)
 

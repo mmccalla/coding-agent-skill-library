@@ -1,6 +1,9 @@
 ---
 name: dry-principle
 description: Applies DRY to remove harmful duplication while avoiding misleading abstraction. Use when refactoring repeated knowledge, schemas, validation rules, or agent instructions.
+aliases:
+  - dont-repeat-yourself
+  - dry
 ---
 
 # DRY Principle
@@ -35,4 +38,3 @@ Remove duplication of knowledge and behaviour where it creates maintenance risk,
 - [ ] Any new abstraction justified as safe.
 - [ ] Tests or checks run reported.
 - [ ] Residual risks or assumptions stated.
-

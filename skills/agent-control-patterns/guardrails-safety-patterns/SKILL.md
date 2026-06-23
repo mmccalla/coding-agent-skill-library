@@ -1,6 +1,9 @@
 ---
 name: guardrails-safety-patterns
 description: Use when implementing input validation, output filtering, tool restrictions, policy enforcement, secure coding controls, or safe agent behaviour.
+aliases:
+  - safety-guardrails
+  - ai-safety-controls
 ---
 
 # Guardrails and Safety Patterns
@@ -56,7 +59,7 @@ Use `skills_docs/security/OWASP_ASI_CROSSWALK.md` for the shared risk map.
 
 - `apply-laws-of-ai` — immutable safety baseline
 - `human-in-the-loop` — approval for high-risk actions
-- `tool-use-function-calling` — least-privilege tool execution
+- `tool-use-and-function-calling` — least-privilege tool execution
 
 ## Verification
 

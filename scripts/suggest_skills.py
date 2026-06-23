@@ -20,6 +20,7 @@ class SkillSuggestion(NamedTuple):
     score: int
     matched_terms: tuple[str, ...]
     description: str
+    aliases: tuple[str, ...]
 
 
 def tokenise(text: str) -> set[str]:
@@ -41,6 +42,20 @@ def read_description(text: str) -> str:
 
     match = re.search(r"^description:\s*(.+)$", text, flags=re.MULTILINE)
     return match.group(1).strip() if match else ""
+
+
+def read_aliases(text: str) -> tuple[str, ...]:
+    block_match = re.search(r"^aliases:\s*$\n((?:  - .+\n?)*)", text, flags=re.MULTILINE)
+    if block_match:
+        return tuple(
+            line.strip()[2:].strip()
+            for line in block_match.group(1).splitlines()
+            if line.strip().startswith("- ")
+        )
+    inline_match = re.search(r"^aliases:\s*(.+)$", text, flags=re.MULTILINE)
+    if inline_match:
+        return tuple(part.strip() for part in inline_match.group(1).split(",") if part.strip())
+    return ()
 
 
 def iter_skill_files(repo_root: Path) -> list[Path]:
@@ -65,12 +80,18 @@ def suggest_skills(
     for path in iter_skill_files(repo_root):
         text = path.read_text(encoding="utf-8")
         description = read_description(text)
-        primary_terms = tokenise(" ".join((path.parent.name, description)))
+        aliases = read_aliases(text)
+        primary_terms = tokenise(" ".join((path.parent.name, description, *aliases)))
         body_terms = tokenise(text)
         matched_terms = tuple(sorted(query_terms & (primary_terms | body_terms)))
         if not matched_terms:
             continue
-        score = len(query_terms & body_terms) + (2 * len(query_terms & primary_terms))
+        alias_terms = tokenise(" ".join(aliases))
+        score = (
+            len(query_terms & body_terms)
+            + (2 * len(query_terms & primary_terms))
+            + (3 * len(query_terms & alias_terms))
+        )
         suggestions.append(
             SkillSuggestion(
                 name=path.parent.name,
@@ -78,6 +99,7 @@ def suggest_skills(
                 score=score,
                 matched_terms=matched_terms,
                 description=description,
+                aliases=aliases,
             )
         )
 

@@ -1,6 +1,9 @@
 ---
 name: knowledge-retrieval-rag
 description: Use when implementing retrieval-augmented generation, document-grounded coding agents, semantic search, citation-backed answers, or repository/document knowledge lookup.
+aliases:
+  - rag
+  - retrieval-augmented-generation
 ---
 
 # Knowledge Retrieval (RAG)
@@ -9,7 +12,7 @@ description: Use when implementing retrieval-augmented generation, document-grou
 
 Use this skill when an agent needs facts from external documents, code repositories, wikis, tickets, logs, APIs, or other knowledge stores before answering or modifying code.
 
-For GraphRAG, Neo4j-native retrieval, text-to-Cypher, provenance-first graph ingestion, or KG-backed answer generation, pair this skill with `skills/data-architecture/kg-enabled-rag/SKILL.md`.
+For GraphRAG, Neo4j-native retrieval, text-to-Cypher, provenance-first graph ingestion, or KG-backed answer generation, pair this skill with `skills/data-architecture/knowledge-graph-rag/SKILL.md`.
 
 ## Objective
 
@@ -50,7 +53,7 @@ Add retrieval tests with known questions and expected source files. Measure reca
 
 ## Related skills
 
-- `kg-enabled-rag` — graph-native retrieval when Neo4j applies
+- `knowledge-graph-rag` — graph-native retrieval when Neo4j applies
 - `context-engineering` — assemble retrieval context efficiently
 - `guardrails-safety-patterns` — validate retrieved and generated content
 

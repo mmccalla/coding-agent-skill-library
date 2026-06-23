@@ -32,12 +32,12 @@ DESCRIPTIONS: dict[str, str] = {
         "visible behaviour, acceptance criteria, or user-facing workflows before "
         "implementation."
     ),
-    "business-capability-modelling": (
+    "business-capability-modeling": (
         "Models stable business capabilities, levels, ownership, maturity and "
         "heatmaps. Use when mapping organisational abilities, decomposing strategy, "
         "or assigning capability ownership."
     ),
-    "business-information-concept-modelling": (
+    "business-information-concept-modeling": (
         "Derives business concepts and relationships from capabilities, value "
         "streams and processes. Use when linking business architecture artefacts "
         "to information concepts for data modelling."
@@ -52,7 +52,7 @@ DESCRIPTIONS: dict[str, str] = {
         "streams. Use when capturing database changes, replicating operational data, "
         "or building source-to-stream pipelines."
     ),
-    "conceptual-data-modelling": (
+    "conceptual-data-modeling": (
         "Identifies business concepts, entities and relationships without premature "
         "physical design. Use when starting data architecture or aligning business "
         "language with information models."
@@ -127,7 +127,7 @@ DESCRIPTIONS: dict[str, str] = {
         "lifecycle. Use when governing shared event catalogues, schemas, or stream "
         "ownership."
     ),
-    "event-modelling": (
+    "event-modeling": (
         "Discovers and models business events, commands, decisions and state "
         "changes. Use when event-storming, designing event timelines, or defining "
         "domain events."
@@ -147,7 +147,7 @@ DESCRIPTIONS: dict[str, str] = {
         "blameless, evidence-led practice. Use when responding to outages, writing "
         "postmortems, or defining incident runbooks."
     ),
-    "kg-enabled-rag": (
+    "knowledge-graph-rag": (
         "Builds, refactors and hardens Neo4j-native KG-enabled RAG with LangGraph, "
         "hybrid retrieval, text-to-Cypher, and provenance. Use when implementing "
         "GraphRAG, graph-backed retrieval, or guarded text-to-Cypher pipelines."
@@ -162,7 +162,7 @@ DESCRIPTIONS: dict[str, str] = {
         "Use when structuring medallion pipelines, lakehouse zones, or batch and "
         "stream serving layers."
     ),
-    "logical-data-modelling": (
+    "logical-data-modeling": (
         "Defines logical entities, attributes, identifiers, relationships and "
         "constraints. Use when translating conceptual models to logical schemas or "
         "normalising entity designs."
@@ -182,7 +182,7 @@ DESCRIPTIONS: dict[str, str] = {
         "reliable operations. Use when instrumenting services, defining SLIs, or "
         "improving on-call signal quality."
     ),
-    "ontology-and-knowledge-graph-modelling": (
+    "ontology-and-knowledge-graph-modeling": (
         "Designs ontology-driven knowledge graphs for explainable KG-RAG. Use when "
         "modelling semantic graphs, ontologies, or graph schemas for retrieval."
     ),
@@ -191,17 +191,17 @@ DESCRIPTIONS: dict[str, str] = {
         "align. Use when defining operating models, ways of working, or organisation-"
         "to-technology alignment."
     ),
-    "organisation-and-role-design": (
+    "organization-and-role-design": (
         "Defines roles, decision rights, accountabilities, team boundaries and "
         "ownership. Use when designing teams, RACI matrices, or architecture "
         "governance roles."
     ),
-    "process-modelling": (
+    "process-modeling": (
         "Models operational steps, decisions, hand-offs, controls, exceptions and "
         "automation opportunities. Use when documenting processes, BPMN workflows, or "
         "automation candidates."
     ),
-    "real-time-operability": (
+    "streaming-operations-and-slos": (
         "Designs operational controls for streaming: lag, freshness, replay, back-"
         "pressure and SLOs. Use when operating Kafka or streaming platforms or "
         "defining stream SLOs."
@@ -265,7 +265,7 @@ DESCRIPTIONS: dict[str, str] = {
         "forms. Use when designing new screens, workflows, information architecture, "
         "or user journeys."
     ),
-    "value-stream-modelling": (
+    "value-stream-modeling": (
         "Models value from trigger to outcome across stakeholders, capabilities and "
         "systems. Use when mapping end-to-end value flow or identifying waste and "
         "bottlenecks."

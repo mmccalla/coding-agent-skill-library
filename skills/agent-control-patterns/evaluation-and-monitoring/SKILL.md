@@ -21,7 +21,7 @@ Measure agent or system quality with explicit metrics, representative scenarios,
 4. Run baseline evaluation before changes.
 5. Evaluate after each material change.
 6. Monitor production behaviour continuously.
-7. Feed results into prioritisation, rollback, tuning or human review.
+7. Feed results into prioritization, rollback, tuning or human review.
 
 ## Metrics catalogue
 

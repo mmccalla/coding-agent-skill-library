@@ -69,14 +69,34 @@ def _relative_source_path(path: Path, skills_root: Path) -> str:
 
 
 def _frontmatter_value(text: str, key: str, source_path: str) -> str:
+    value = _frontmatter_values(text, key, source_path)
+    return value[0] if value else ""
+
+
+def _frontmatter_values(text: str, key: str, source_path: str) -> tuple[str, ...]:
     if not text.startswith("---\n"):
         raise ValueError(f"{source_path}: missing YAML frontmatter start")
     frontmatter_end = text.find("\n---\n", 4)
     if frontmatter_end == -1:
         raise ValueError(f"{source_path}: missing YAML frontmatter end")
     frontmatter = text[4:frontmatter_end]
-    match = re.search(rf"^{re.escape(key)}:\s*(.+)$", frontmatter, flags=re.M)
-    return match.group(1).strip() if match else ""
+    match = re.search(rf"^{re.escape(key)}:[ \t]*([^\n]+)$", frontmatter, flags=re.M)
+    if match:
+        return _unique(tuple(item.strip() for item in match.group(1).split(",") if item.strip()))
+    block_match = re.search(
+        rf"^{re.escape(key)}:\s*$\n((?:  - .+\n?)*)",
+        frontmatter,
+        flags=re.M,
+    )
+    if not block_match:
+        return ()
+    return _unique(
+        tuple(
+            line.strip()[2:].strip()
+            for line in block_match.group(1).splitlines()
+            if line.strip().startswith("- ")
+        )
+    )
 
 
 def _section_text(text: str, heading: str) -> str:
@@ -148,14 +168,27 @@ def _workflow_stages(profile_text: str) -> tuple[str, ...]:
     return _unique(stages)
 
 
-def _task_shapes(name: str, description: str) -> tuple[str, ...]:
+def _task_shapes(name: str, description: str, aliases: Sequence[str]) -> tuple[str, ...]:
     description_tokens = _slug_tokens(description)
     name_tokens = _slug_tokens(name)
-    return _unique((*name_tokens[:3], *description_tokens[:6]))
+    alias_tokens: list[str] = []
+    for alias in aliases:
+        alias_tokens.extend(_slug_tokens(alias))
+    return _unique((*name_tokens[:3], *alias_tokens[:4], *description_tokens[:6]))
 
 
-def _capabilities(name: str, category: str, description: str) -> tuple[str, ...]:
-    return _unique((*_slug_tokens(name), *_slug_tokens(category), *_slug_tokens(description)[:4]))
+def _capabilities(
+    name: str,
+    category: str,
+    description: str,
+    aliases: Sequence[str],
+) -> tuple[str, ...]:
+    alias_tokens: list[str] = []
+    for alias in aliases:
+        alias_tokens.extend(_slug_tokens(alias))
+    return _unique(
+        (*_slug_tokens(name), *alias_tokens[:6], *_slug_tokens(category), *_slug_tokens(description)[:4])
+    )
 
 
 def _section_id_for_heading(sections: Sequence[SkillSection], heading: str) -> str:
@@ -253,6 +286,7 @@ def extract_skills_graph_records(skills_root: Path) -> dict[str, object]:
         text = path.read_text(encoding="utf-8")
         source_path = _relative_source_path(path, resolved_root)
         name = _frontmatter_value(text, "name", source_path) or path.parent.name
+        aliases = _frontmatter_values(text, "aliases", source_path)
         category = path.parent.parent.name
         description = _frontmatter_value(text, "description", source_path)
         skill_id = f"skill:{name}"
@@ -261,9 +295,9 @@ def extract_skills_graph_records(skills_root: Path) -> dict[str, object]:
         skill_sections = _extract_sections(text, skill_id)
         related_names = _related_skill_names(text, known_skill_names)
         related_section_id = _section_id_for_heading(skill_sections, "Related skills")
-        task_shapes = _task_shapes(name, description)
+        task_shapes = _task_shapes(name, description, aliases)
         workflow_stages = _workflow_stages(f"{name} {description}")
-        capabilities = _capabilities(name, category, description)
+        capabilities = _capabilities(name, category, description, aliases)
         control_themes = (category,)
         knowledge_domains = (category,)
 
@@ -271,6 +305,7 @@ def extract_skills_graph_records(skills_root: Path) -> dict[str, object]:
             {
                 "id": skill_id,
                 "name": name,
+                "aliases": list(aliases),
                 "title": _title(text),
                 "description": description,
                 "category": category,

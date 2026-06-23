@@ -16,7 +16,7 @@ class EvaluateSkillRetrievalTests(unittest.TestCase):
 
         self.assertEqual(5, len(cases))
         self.assertEqual("kg_rag", cases[0].id)
-        self.assertEqual(("skill:kg-enabled-rag",), cases[0].expected_skill_ids)
+        self.assertEqual(("skill:knowledge-graph-rag",), cases[0].expected_skill_ids)
         self.assertEqual("event_streaming_iceberg_pipeline", cases[3].id)
         self.assertIn("skill:event-streaming-platform-design", cases[3].required_skill_ids)
         self.assertIn("skill:accessibility-wcag", cases[3].excluded_skill_ids)

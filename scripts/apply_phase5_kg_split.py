@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apply Phase 5: split kg-enabled-rag into progressive-disclosure files."""
+"""Apply Phase 5: split knowledge-graph-rag into progressive-disclosure files."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL_DIR = ROOT / "skills" / "data-architecture" / "kg-enabled-rag"
+SKILL_DIR = ROOT / "skills" / "data-architecture" / "knowledge-graph-rag"
 SKILL = SKILL_DIR / "SKILL.md"
 REFERENCE = SKILL_DIR / "reference"
 
@@ -26,7 +26,7 @@ def write(path: Path, content: str) -> None:
 def main() -> int:
     original = SKILL.read_text(encoding="utf-8")
     if "## 0. Agent Execution Contract" not in original:
-        print("kg-enabled-rag already appears to use progressive disclosure; no changes made")
+        print("knowledge-graph-rag already appears to use progressive disclosure; no changes made")
         return 0
 
     frontmatter_match = re.match(r"---\n(.*?)\n---\n", original, flags=re.S)
@@ -53,7 +53,7 @@ def main() -> int:
     write(
         REFERENCE / "implementation-lifecycle.md",
         "# KG-Enabled RAG Implementation Lifecycle\n\n"
-        "Detailed execution guidance for `kg-enabled-rag/SKILL.md`. Load this file "
+        "Detailed execution guidance for `knowledge-graph-rag/SKILL.md`. Load this file "
         "when implementation, architecture alignment, invariants, lifecycle steps, "
         "security guardrails or done criteria are needed.\n\n"
         + "\n\n".join(lifecycle_parts),
@@ -61,7 +61,7 @@ def main() -> int:
     write(
         REFERENCE / "code-patterns.md",
         "# KG-Enabled RAG Code Patterns\n\n"
-        "Detailed code and query patterns for `kg-enabled-rag/SKILL.md`. Load this "
+        "Detailed code and query patterns for `knowledge-graph-rag/SKILL.md`. Load this "
         "file when generating or reviewing KG-RAG schemas, persistence, retrieval "
         "or evaluator code.\n\n"
         + code_patterns,
@@ -69,13 +69,13 @@ def main() -> int:
     write(
         REFERENCE / "testing-contract.md",
         "# KG-Enabled RAG Testing Contract\n\n"
-        "Testing expectations for `kg-enabled-rag/SKILL.md`. Load this file before "
+        "Testing expectations for `knowledge-graph-rag/SKILL.md`. Load this file before "
         "claiming a KG-RAG implementation, refactor or hardening task is complete.\n\n"
         + testing_contract,
     )
 
     new_skill = """---
-name: kg-enabled-rag
+name: knowledge-graph-rag
 description: Builds, refactors and hardens Neo4j-native KG-enabled RAG with LangGraph, hybrid retrieval, text-to-Cypher, and provenance. Use when implementing GraphRAG, graph-backed retrieval, or guarded text-to-Cypher pipelines.
 ---
 
@@ -85,7 +85,7 @@ description: Builds, refactors and hardens Neo4j-native KG-enabled RAG with Lang
 
 Use this skill when building, refactoring, reviewing or hardening Neo4j-native GraphRAG or KG-enabled RAG systems that require graph-aware retrieval, provenance-first ingestion, guarded text-to-Cypher, conceptual schema control or graph-backed answer generation.
 
-Do not use it for generic document RAG, vector-only retrieval, or ontology-only design work where `knowledge-retrieval-rag` or `ontology-and-knowledge-graph-modelling` is sufficient.
+Do not use it for generic document RAG, vector-only retrieval, or ontology-only design work where `knowledge-retrieval-rag` or `ontology-and-knowledge-graph-modeling` is sufficient.
 
 ## Objective
 
@@ -124,7 +124,7 @@ Keep responsibilities separated: configuration, domain models, ingestion, graph 
 ## Related skills
 
 - `knowledge-retrieval-rag` — generic document-grounded RAG patterns.
-- `ontology-and-knowledge-graph-modelling` — semantic modelling and competency questions.
+- `ontology-and-knowledge-graph-modeling` — semantic modelling and competency questions.
 - `data-lineage-and-provenance` — traceability for graph facts, retrieval evidence and generated answers.
 - `guardrails-safety-patterns` — validation, policy and tool-use controls.
 - `evaluation-and-monitoring` — retrieval, answer and operational quality measurement.
@@ -139,7 +139,7 @@ Keep responsibilities separated: configuration, domain models, ingestion, graph 
 """
 
     write(SKILL, new_skill)
-    print("Updated kg-enabled-rag progressive disclosure files")
+    print("Updated knowledge-graph-rag progressive disclosure files")
     for path in [
         SKILL,
         REFERENCE / "metadata.yaml",

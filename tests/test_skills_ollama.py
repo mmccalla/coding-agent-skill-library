@@ -35,9 +35,9 @@ class SkillsOllamaTests(unittest.TestCase):
             "status": "ok",
             "recommendations": [
                 {
-                    "skill_name": "kg-enabled-rag",
+                    "skill_name": "knowledge-graph-rag",
                     "rationale": "Relevant to graph retrieval.",
-                    "source_paths": ["skills/data-architecture/kg-enabled-rag/SKILL.md"],
+                    "source_paths": ["skills/data-architecture/knowledge-graph-rag/SKILL.md"],
                     "evidence_snippets": ["Use graph-grounded retrieval with provenance."],
                 }
             ],
@@ -45,7 +45,7 @@ class SkillsOllamaTests(unittest.TestCase):
 
         evidence = skills_ollama._evidence_from_recommendations(recommendations)
 
-        self.assertIn("kg-enabled-rag", evidence)
+        self.assertIn("knowledge-graph-rag", evidence)
         self.assertNotIn(request.query, evidence)
 
     def test_direct_lookup_evidence_is_formatted_with_route_context(self) -> None:
@@ -54,21 +54,21 @@ class SkillsOllamaTests(unittest.TestCase):
             "route": "direct_lookup",
             "routing": {"route": "direct_lookup", "confidence": 0.9},
             "skill": {
-                "skill_id": "skill:kg-enabled-rag",
-                "skill_name": "kg-enabled-rag",
+                "skill_id": "skill:knowledge-graph-rag",
+                "skill_name": "knowledge-graph-rag",
                 "retrieval_units": [
                     {
-                        "retrieval_unit_id": "retrieval:skill:kg-enabled-rag:section:0:objective",
+                        "retrieval_unit_id": "retrieval:skill:knowledge-graph-rag:section:0:objective",
                         "text": "Use KG-enabled RAG for graph-grounded retrieval.",
-                        "source_path": "skills/data-architecture/kg-enabled-rag/SKILL.md",
-                        "section_id": "skill:kg-enabled-rag:section:0-objective",
+                        "source_path": "skills/data-architecture/knowledge-graph-rag/SKILL.md",
+                        "section_id": "skill:knowledge-graph-rag:section:0-objective",
                     }
                 ],
             },
             "context": {
                 "related_skill_ids": ["skill:knowledge-retrieval-rag"],
                 "evidence_paths": [
-                    "skill:kg-enabled-rag -[COMPLEMENTS]-> skill:knowledge-retrieval-rag"
+                    "skill:knowledge-graph-rag -[COMPLEMENTS]-> skill:knowledge-retrieval-rag"
                 ],
             },
         }
@@ -76,7 +76,7 @@ class SkillsOllamaTests(unittest.TestCase):
         evidence = skills_ollama._evidence_from_payload(evidence_payload)
 
         self.assertIn("Evidence route: direct_lookup", evidence)
-        self.assertIn("skill=kg-enabled-rag", evidence)
+        self.assertIn("skill=knowledge-graph-rag", evidence)
         self.assertIn("related=skill:knowledge-retrieval-rag", evidence)
         self.assertNotIn("No recommendations were available", evidence)
 

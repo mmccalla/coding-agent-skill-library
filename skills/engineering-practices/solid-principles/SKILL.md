@@ -1,6 +1,9 @@
 ---
 name: solid-principles
 description: Applies SOLID for modularity, dependency boundaries and testability without over-engineering. Use when refactoring modules, services, agents, or dependency boundaries.
+aliases:
+  - solid-design
+  - solid
 ---
 
 # SOLID Principles
@@ -37,4 +40,3 @@ Improve maintainability and testability by ensuring code has clear responsibilit
 - [ ] Design boundary change described.
 - [ ] Tests or checks run reported.
 - [ ] Residual risks or assumptions stated.
-

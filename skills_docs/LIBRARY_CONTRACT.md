@@ -24,7 +24,7 @@ Steps 1–3 are non-negotiable. No task skill may run before step 3 completes.
 
 | Artefact | Convention |
 | --- | --- |
-| Skill files | `SKILL.md` only, with YAML frontmatter (`name`, `description`); `name` must match the parent folder name |
+| Skill files | `SKILL.md` only, with YAML frontmatter. Required: `name`, `description`. Supported and strongly recommended where useful: `aliases`, `tags`, `invocation_mode`, `canonical_terms`. `name` must match the parent folder name |
 | Skill sections | Canonical headings: `## When to use`, `## Objective` and `## Verification`; `## Verification` must include at least one `- [ ]` checklist item |
 | Skill length | Non-baseline skills must contain at least 200 words; `apply-laws-of-ai` is exempt because it is governed by the mandatory baseline contract |
 | Related skills | Optional `## Related skills` section before `## Verification`; backtick skill names must match installed skill folder names |
@@ -40,6 +40,39 @@ Steps 1–3 are non-negotiable. No task skill may run before step 3 completes.
 
 With all eight categories installed, the library contains **87** skills, including the mandatory `apply-laws-of-ai` baseline.
 
+## Discovery metadata contract
+
+Agents should discover skills from frontmatter before reading the body. Discovery ranking should prefer:
+
+1. `name`
+2. `aliases`
+3. `description`
+4. category and manifest context
+
+Folder structure helps humans navigate the library, but frontmatter is the authoritative discovery surface for agent selection.
+
+## Naming rules
+
+- Use lowercase kebab-case for `name`.
+- Use canonical US-English spellings for skill IDs.
+- Prefer stable, industry-recognized terms over repository-local shorthand.
+- Prefer noun phrases or gerunds over conversational, imperative, or ambiguous labels.
+- Avoid opaque abbreviations unless the abbreviation is the market-standard term.
+- Keep superseded or alternate names in `aliases` during migration.
+
+## Alias rules
+
+- Use `aliases` for old names, alternate spellings, acronym expansions and prompt-likely phrasings.
+- For acronym-heavy skills, include both the acronym and its expanded form when the expanded form is commonly searched.
+- For renamed skills, keep the previous canonical name as an alias for at least one release cycle.
+- Do not create aliases that collide with unrelated skill identities.
+
+## Folder structure guidance
+
+- Top-level categories exist for human scanning and coarse routing.
+- Agent discoverability should be solved first with frontmatter, not folder nesting alone.
+- Reorganizing folders is optional; changing metadata is the lower-blast-radius lever and should usually happen first.
+
 ## Validation
 
 Run structural validation after material library changes:
@@ -48,7 +81,7 @@ Run structural validation after material library changes:
 python3 scripts/validate_skills.py
 ```
 
-The validator checks frontmatter, canonical section headings, non-baseline minimum length, duplication risk, presence of the baseline skill, description quality (`Use when` trigger, 80–1024 characters), unsupported frontmatter keys, folder/name alignment, Verification checklist items, Related skills references, removal of legacy procedure/generic guidance headings, product-specific overlay isolation, and `SKILL.md` line limits.
+The validator checks frontmatter, canonical section headings, non-baseline minimum length, duplication risk, presence of the baseline skill, description quality (`Use when` trigger, 80–1024 characters), supported frontmatter keys, folder/name alignment, alias format, Verification checklist items, Related skills references, removal of legacy procedure/generic guidance headings, product-specific overlay isolation, and `SKILL.md` line limits.
 
 Run the same checks locally as CI:
 
@@ -72,7 +105,7 @@ Do not skip step 1 — agents must execute the baseline skill before any other r
 ## What this library deliberately excludes
 
 - IDE-specific rules, hooks, or dotfiles (portability over tool coupling)
-- Generated code or runtime dependencies as defaults for skills (except documented reference artefacts such as `kg-enabled-rag` schemas)
+- Generated code or runtime dependencies as defaults for skills (except documented reference artefacts such as `knowledge-graph-rag` schemas)
 
 ## Sync rule for entrypoints
 

@@ -416,10 +416,10 @@
     },
     {
       "bridge_kind": "capability",
-      "bridge_value": "event-modelling",
+      "bridge_value": "event-modeling",
       "confidence": 0.9,
-      "id": "category:event-driven-and-real-time-data:capability:event-modelling",
-      "rationale": "Category event-driven-and-real-time-data is curated as evidence for capability event-modelling.",
+      "id": "category:event-driven-and-real-time-data:capability:event-modeling",
+      "rationale": "Category event-driven-and-real-time-data is curated as evidence for capability event-modeling.",
       "scope": "category",
       "source": "event-driven-and-real-time-data"
     },
@@ -434,10 +434,10 @@
     },
     {
       "bridge_kind": "control_theme",
-      "bridge_value": "real-time-operability",
+      "bridge_value": "streaming-operations-and-slos",
       "confidence": 0.9,
-      "id": "category:event-driven-and-real-time-data:control_theme:real-time-operability",
-      "rationale": "Category event-driven-and-real-time-data is curated as evidence for control_theme real-time-operability.",
+      "id": "category:event-driven-and-real-time-data:control_theme:streaming-operations-and-slos",
+      "rationale": "Category event-driven-and-real-time-data is curated as evidence for control_theme streaming-operations-and-slos.",
       "scope": "category",
       "source": "event-driven-and-real-time-data"
     },
@@ -620,6 +620,42 @@
       "rationale": "Category user-experience is curated as evidence for knowledge_domain accessibility.",
       "scope": "category",
       "source": "user-experience"
+    },
+    {
+      "bridge_kind": "capability",
+      "bridge_value": "user-facing-web-application-accessibility",
+      "confidence": 1.0,
+      "id": "skill:accessibility-wcag:capability:user-facing-web-application-accessibility",
+      "rationale": "Accessibility WCAG is directly relevant when designing a user-facing web application UI.",
+      "scope": "skill",
+      "source": "accessibility-wcag"
+    },
+    {
+      "bridge_kind": "knowledge_domain",
+      "bridge_value": "web-accessibility",
+      "confidence": 1.0,
+      "id": "skill:accessibility-wcag:knowledge_domain:web-accessibility",
+      "rationale": "WCAG governs accessibility requirements for user-facing web application interfaces.",
+      "scope": "skill",
+      "source": "accessibility-wcag"
+    },
+    {
+      "bridge_kind": "capability",
+      "bridge_value": "user-facing-web-application-ux",
+      "confidence": 1.0,
+      "id": "skill:ux-design-principles:capability:user-facing-web-application-ux",
+      "rationale": "UX design principles are directly relevant when designing a user-facing web application.",
+      "scope": "skill",
+      "source": "ux-design-principles"
+    },
+    {
+      "bridge_kind": "task_shape",
+      "bridge_value": "web-application-user-journey-design",
+      "confidence": 0.95,
+      "id": "skill:ux-design-principles:task_shape:web-application-user-journey-design",
+      "rationale": "User-facing web application architecture should account for user journeys, flows and information architecture.",
+      "scope": "skill",
+      "source": "ux-design-principles"
     },
     {
       "bridge_kind": "task_shape",
@@ -825,38 +861,38 @@
       "bridge_kind": "task_shape",
       "bridge_value": "skill-routing",
       "confidence": 1.0,
-      "id": "skill:using-agent-skills:task_shape:skill-routing",
-      "rationale": "Skill using-agent-skills explicitly maps to task_shape skill-routing.",
+      "id": "skill:skill-discovery-and-selection:task_shape:skill-routing",
+      "rationale": "Skill skill-discovery-and-selection explicitly maps to task_shape skill-routing.",
       "scope": "skill",
-      "source": "using-agent-skills"
+      "source": "skill-discovery-and-selection"
     },
     {
       "bridge_kind": "workflow_stage",
       "bridge_value": "routing",
       "confidence": 1.0,
-      "id": "skill:using-agent-skills:workflow_stage:routing",
-      "rationale": "Skill using-agent-skills explicitly maps to workflow_stage routing.",
+      "id": "skill:skill-discovery-and-selection:workflow_stage:routing",
+      "rationale": "Skill skill-discovery-and-selection explicitly maps to workflow_stage routing.",
       "scope": "skill",
-      "source": "using-agent-skills"
+      "source": "skill-discovery-and-selection"
     },
     {
       "bridge_kind": "capability",
       "bridge_value": "skill-discovery",
       "confidence": 1.0,
-      "id": "skill:using-agent-skills:capability:skill-discovery",
-      "rationale": "Skill using-agent-skills explicitly maps to capability skill-discovery.",
+      "id": "skill:skill-discovery-and-selection:capability:skill-discovery",
+      "rationale": "Skill skill-discovery-and-selection explicitly maps to capability skill-discovery.",
       "scope": "skill",
-      "source": "using-agent-skills"
+      "source": "skill-discovery-and-selection"
     },
     {
       "bridge_kind": "relationship",
       "bridge_value": "skill:apply-laws-of-ai",
       "confidence": 1.0,
-      "id": "skill:using-agent-skills:relationship:apply-laws-of-ai",
-      "rationale": "Skill using-agent-skills has a curated REQUIRES relationship to skill:apply-laws-of-ai.",
+      "id": "skill:skill-discovery-and-selection:relationship:apply-laws-of-ai",
+      "rationale": "Skill skill-discovery-and-selection has a curated REQUIRES relationship to skill:apply-laws-of-ai.",
       "relationship_type": "REQUIRES",
       "scope": "skill",
-      "source": "using-agent-skills"
+      "source": "skill-discovery-and-selection"
     }
   ]
 }

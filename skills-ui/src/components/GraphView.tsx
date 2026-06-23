@@ -31,6 +31,11 @@ const nodeColour: Record<string, string> = {
 
 export function GraphView({ nodes, links }: GraphViewProps) {
   const svgRef = useRef<SVGSVGElement | null>(null);
+  const svgSelectionRef = useRef<d3.Selection<SVGSVGElement, unknown, null, undefined> | null>(
+    null,
+  );
+  const zoomBehaviourRef = useRef<d3.ZoomBehavior<SVGSVGElement, unknown> | null>(null);
+  const [zoomScale, setZoomScale] = useState(1);
   const [enabledTypes, setEnabledTypes] = useState<Set<string>>(
     () => new Set([...new Set(nodes.map((node) => node.label))]),
   );
@@ -146,7 +151,9 @@ export function GraphView({ nodes, links }: GraphViewProps) {
       return;
     }
     const svg = d3.select<SVGSVGElement, unknown>(svgElement);
+    svgSelectionRef.current = svg;
     svg.selectAll("*").remove();
+    setZoomScale(1);
 
     const width = 960;
     const height = 560;
@@ -157,14 +164,15 @@ export function GraphView({ nodes, links }: GraphViewProps) {
       .map((linkItem) => ({ ...linkItem }));
     const viewport = svg.append("g");
 
-    svg.call(
-      d3
-        .zoom<SVGSVGElement, unknown>()
-        .scaleExtent([0.2, 4])
-        .on("zoom", (event) => {
-          viewport.attr("transform", event.transform.toString());
-        }),
-    );
+    const zoomBehaviour = d3
+      .zoom<SVGSVGElement, unknown>()
+      .scaleExtent([0.2, 4])
+      .on("zoom", (event) => {
+        viewport.attr("transform", event.transform.toString());
+        setZoomScale(event.transform.k);
+      });
+    zoomBehaviourRef.current = zoomBehaviour;
+    svg.call(zoomBehaviour);
 
     const simulation = d3
       .forceSimulation(graphNodes)
@@ -281,6 +289,8 @@ export function GraphView({ nodes, links }: GraphViewProps) {
     });
 
     return () => {
+      svgSelectionRef.current = null;
+      zoomBehaviourRef.current = null;
       simulation.stop();
     };
   }, [selectedNodeId, showEdgeLabels, showNodeLabels, visibleLinks, visibleNodes]);
@@ -297,6 +307,16 @@ export function GraphView({ nodes, links }: GraphViewProps) {
     });
   }
 
+  function adjustZoom(direction: "in" | "out") {
+    const svg = svgSelectionRef.current;
+    const zoomBehaviour = zoomBehaviourRef.current;
+    if (!svg || !zoomBehaviour) {
+      return;
+    }
+    const factor = direction === "in" ? 1.2 : 1 / 1.2;
+    svg.transition().duration(180).call(zoomBehaviour.scaleBy, factor);
+  }
+
   return (
     <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-xl">
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
@@ -304,9 +324,38 @@ export function GraphView({ nodes, links }: GraphViewProps) {
           <h2 className="text-xl font-semibold text-white">Skills Knowledge Graph</h2>
           <p className="text-sm text-slate-300">{summary}</p>
         </div>
-        <span className="rounded-full bg-sky-400/10 px-3 py-1 text-sm font-medium text-sky-200">
-          Pan, zoom and drag nodes
-        </span>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="rounded-full bg-sky-400/10 px-3 py-1 text-sm font-medium text-sky-200">
+            Pan, zoom and drag nodes
+          </span>
+          <div
+            className="flex items-center gap-2 rounded-full border border-slate-700 bg-slate-950/80 px-2 py-1"
+            aria-label="Graph zoom controls"
+          >
+            <button
+              type="button"
+              onClick={() => adjustZoom("out")}
+              className="rounded-full border border-slate-700 px-3 py-1 text-sm text-slate-100 hover:bg-slate-800"
+              aria-label="Zoom out graph"
+            >
+              Zoom out
+            </button>
+            <output
+              aria-live="polite"
+              className="min-w-14 text-center text-xs font-semibold text-slate-300"
+            >
+              {Math.round(zoomScale * 100)}%
+            </output>
+            <button
+              type="button"
+              onClick={() => adjustZoom("in")}
+              className="rounded-full border border-slate-700 px-3 py-1 text-sm text-slate-100 hover:bg-slate-800"
+              aria-label="Zoom in graph"
+            >
+              Zoom in
+            </button>
+          </div>
+        </div>
       </div>
       <div className="mb-4 grid gap-4 lg:grid-cols-[1fr_0.6fr]">
         <fieldset className="rounded-2xl border border-slate-800 bg-slate-950 p-4">

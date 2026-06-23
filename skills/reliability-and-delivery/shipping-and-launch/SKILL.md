@@ -1,6 +1,9 @@
 ---
 name: shipping-and-launch
 description: Use when preparing a change for launch, staged rollout or post-launch monitoring.
+aliases:
+  - release-readiness
+  - launch-readiness
 ---
 
 # Shipping and Launch
@@ -38,4 +41,3 @@ Before publishing a skill-library release, confirm the branch is merged, CI pass
 - [ ] Pre-launch checks and monitoring plan documented.
 - [ ] Rollback or mitigation path defined.
 - [ ] Residual launch risks stated.
-

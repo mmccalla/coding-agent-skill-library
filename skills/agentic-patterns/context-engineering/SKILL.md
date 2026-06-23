@@ -1,6 +1,9 @@
 ---
 name: context-engineering
 description: Use when a task needs the right repository, file and document context assembled without unnecessary noise.
+aliases:
+  - context-selection
+  - context-assembly
 ---
 
 # Context Engineering
@@ -37,4 +40,3 @@ For a validator change, load the validator, its tests, the library contract and 
 - [ ] Excluded or truncated context noted.
 - [ ] Token or noise trade-offs stated.
 - [ ] Residual context gaps or risks reported.
-

@@ -361,6 +361,99 @@ class ValidateSkillsTests(unittest.TestCase):
                 module.BASELINE_SKILL = original_baseline
             self.assertEqual(rc, 1)
 
+    def test_aliases_frontmatter_is_allowed(self) -> None:
+        module = load_validator_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
+            skill_dir.mkdir(parents=True)
+            (skill_dir / "SKILL.md").write_text(
+                "---\n"
+                "name: apply-laws-of-ai\n"
+                "description: " + ("x" * 70) + ". Use when testing aliases frontmatter allowance.\n"
+                "aliases:\n"
+                "  - ai-safety-laws\n"
+                "  - baseline-ai-safety\n"
+                "---\n\n"
+                "# Apply Laws of AI\n\n"
+                "## When to use\n\n"
+                "Every session.\n\n"
+                "## Objective\n\n"
+                "Test objective.\n\n"
+                "## Procedure\n\n"
+                "1. Test.\n\n"
+                "## Verification\n\n"
+                "- [ ] Report gates.\n" + ("word " * 150),
+                encoding="utf-8",
+            )
+            original_root = module.ROOT
+            original_baseline = module.BASELINE_SKILL
+            try:
+                module.ROOT = "skills"
+                module.BASELINE_SKILL = os.path.join(
+                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                )
+                os.chdir(tmp)
+                rc = module.main()
+            finally:
+                module.ROOT = original_root
+                module.BASELINE_SKILL = original_baseline
+            self.assertEqual(rc, 0)
+
+    def test_alias_collision_with_existing_skill_name_fails(self) -> None:
+        module = load_validator_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            baseline_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
+            baseline_dir.mkdir(parents=True)
+            (baseline_dir / "SKILL.md").write_text(
+                "---\n"
+                "name: apply-laws-of-ai\n"
+                "description: " + ("x" * 70) + ". Use when testing alias collisions.\n"
+                "---\n\n"
+                "# Apply Laws of AI\n\n"
+                "## When to use\n\n"
+                "Every session.\n\n"
+                "## Objective\n\n"
+                "Test objective.\n\n"
+                "## Procedure\n\n"
+                "1. Test.\n\n"
+                "## Verification\n\n"
+                "- [ ] Report gates.\n" + ("baselineword " * 210),
+                encoding="utf-8",
+            )
+            skill_dir = Path(tmp) / "skills" / "agentic-patterns" / "test-skill"
+            skill_dir.mkdir(parents=True)
+            (skill_dir / "SKILL.md").write_text(
+                "---\n"
+                "name: test-skill\n"
+                "description: " + ("x" * 70) + ". Use when testing alias collisions.\n"
+                "aliases:\n"
+                "  - apply-laws-of-ai\n"
+                "---\n\n"
+                "# Test Skill\n\n"
+                "## When to use\n\n"
+                "Use when testing.\n\n"
+                "## Objective\n\n"
+                "Test objective.\n\n"
+                "## Procedure\n\n"
+                "1. Test.\n\n"
+                "## Verification\n\n"
+                "- [ ] Report gates.\n" + ("thinword " * 210),
+                encoding="utf-8",
+            )
+            original_root = module.ROOT
+            original_baseline = module.BASELINE_SKILL
+            try:
+                module.ROOT = "skills"
+                module.BASELINE_SKILL = os.path.join(
+                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                )
+                os.chdir(tmp)
+                rc = module.main()
+            finally:
+                module.ROOT = original_root
+                module.BASELINE_SKILL = original_baseline
+            self.assertEqual(rc, 1)
+
     def test_skill_over_max_line_limit_fails(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:

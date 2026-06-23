@@ -57,6 +57,8 @@ class SkillsGraphExtractorTests(unittest.TestCase):
         self.assertGreater(skill["lineCount"], 0)
         self.assertNotIn("source_path", skill)
         self.assertNotIn("source_hash", skill)
+        self.assertIn("aliases", skill)
+        self.assertIsInstance(skill["aliases"], list)
 
     def test_extracts_canonical_sections_with_stable_hashes(self) -> None:
         module = load_extractor_module()
@@ -160,7 +162,7 @@ class SkillsGraphExtractorTests(unittest.TestCase):
         }
 
         for target in (
-            "skill:tool-use-function-calling",
+            "skill:tool-use-and-function-calling",
             "skill:guardrails-safety-patterns",
             "skill:knowledge-retrieval-rag",
         ):
@@ -178,6 +180,16 @@ class SkillsGraphExtractorTests(unittest.TestCase):
         second = module.extract_skills_graph_records(REPO_ROOT / "skills")
 
         self.assertEqual(first, second)
+
+    def test_extracts_aliases_from_frontmatter_lists(self) -> None:
+        module = load_extractor_module()
+        records = module.extract_skills_graph_records(REPO_ROOT / "skills")
+        skill = next(
+            skill for skill in records["skills"] if skill["id"] == "skill:knowledge-graph-rag"
+        )
+
+        self.assertIn("kg-enabled-rag", skill["aliases"])
+        self.assertIn("graph-rag", skill["aliases"])
 
 
 if __name__ == "__main__":

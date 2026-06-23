@@ -1,6 +1,9 @@
 ---
 name: inter-agent-communication-a2a
 description: Use when designing agent-to-agent communication, delegation protocols, agent cards, asynchronous task exchange, or interoperable multi-agent systems.
+aliases:
+  - agent-to-agent-communication
+  - a2a
 ---
 
 # Inter-Agent Communication (A2A)

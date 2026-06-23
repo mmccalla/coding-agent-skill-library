@@ -14,12 +14,50 @@ WARN_SKILL_LINES = 500
 MAX_SKILL_LINES = 600
 SIMILARITY_FAIL = 0.82
 WHEN_TRIGGER = re.compile(r"\buse when\b", re.I)
-ALLOWED_FRONTMATTER_KEYS = {"name", "description"}
+ALLOWED_FRONTMATTER_KEYS = {
+    "name",
+    "description",
+    "aliases",
+    "tags",
+    "invocation_mode",
+    "canonical_terms",
+}
+LIST_KEYS = {"aliases", "tags", "canonical_terms"}
+INVOCATION_MODES = {"auto", "manual", "approval-required"}
 
 
 def read(path: str) -> str:
     with open(path, encoding="utf-8") as f:
         return f.read()
+
+
+def parse_frontmatter(raw: str) -> dict[str, object]:
+    data: dict[str, object] = {}
+    current_key: str | None = None
+    for line in raw.splitlines():
+        if not line.strip():
+            current_key = None
+            continue
+        if line.startswith("  - "):
+            if current_key in LIST_KEYS:
+                items = data.setdefault(current_key, [])
+                assert isinstance(items, list)
+                items.append(line[4:].strip())
+            continue
+        if line.startswith("  "):
+            continue
+        if ":" not in line:
+            current_key = None
+            continue
+        key, value = line.split(":", 1)
+        key = key.strip()
+        value = value.strip()
+        current_key = key if key in LIST_KEYS and not value else None
+        if key in LIST_KEYS:
+            data[key] = [] if not value else [item.strip() for item in value.split(",") if item.strip()]
+        else:
+            data[key] = value
+    return data
 
 
 def tokenise_for_similarity(text: str) -> list[str]:
@@ -54,6 +92,7 @@ def main() -> int:
     paths.sort()
 
     skill_names = {os.path.basename(os.path.dirname(p)) for p in paths}
+    alias_owners: dict[str, str] = {}
     vectors: dict[str, Counter[str]] = {}
 
     for p in paths:
@@ -69,11 +108,8 @@ def main() -> int:
             errors.append(f"{p}: missing YAML frontmatter end")
             continue
         fm = text[4:fm_end]
-        frontmatter_keys = {
-            line.split(":", 1)[0].strip()
-            for line in fm.splitlines()
-            if line and not line.startswith(" ") and ":" in line
-        }
+        parsed_fm = parse_frontmatter(fm)
+        frontmatter_keys = set(parsed_fm)
         for key in sorted(frontmatter_keys - ALLOWED_FRONTMATTER_KEYS):
             errors.append(f"{p}: unsupported frontmatter key '{key}'")
 
@@ -92,6 +128,30 @@ def main() -> int:
                 errors.append(f"{p}: description must include 'Use when' trigger phrase")
 
         folder_name = os.path.basename(os.path.dirname(p))
+
+        aliases = parsed_fm.get("aliases", [])
+        if aliases and not isinstance(aliases, list):
+            errors.append(f"{p}: aliases must be a YAML list or comma-separated list")
+        elif isinstance(aliases, list):
+            for alias in aliases:
+                if not re.fullmatch(r"[-a-z0-9 ]+", alias):
+                    errors.append(
+                        f"{p}: alias '{alias}' must use lowercase letters, digits, spaces or hyphens"
+                    )
+                owner = alias_owners.get(alias)
+                if owner and owner != folder_name:
+                    errors.append(f"{p}: alias '{alias}' already belongs to skill '{owner}'")
+                elif alias in skill_names and alias != folder_name:
+                    errors.append(f"{p}: alias '{alias}' collides with existing skill '{alias}'")
+                else:
+                    alias_owners[alias] = folder_name
+
+        invocation_mode = parsed_fm.get("invocation_mode")
+        if invocation_mode and invocation_mode not in INVOCATION_MODES:
+            errors.append(
+                f"{p}: invocation_mode '{invocation_mode}' must be one of {sorted(INVOCATION_MODES)}"
+            )
+
         name_match = re.search(r"^name:\s*([-a-z0-9]+)\s*$", fm, flags=re.M)
         if name_match and name_match.group(1) != folder_name:
             errors.append(

@@ -1,6 +1,9 @@
 ---
 name: agentic-ux-patterns
 description: Designs interfaces for supervising, approving, steering and auditing AI agent actions with evidence and uncertainty surfaced. Use when building agent workflows, approval gates, or audit surfaces.
+aliases:
+  - ai-agent-ux
+  - human-ai-supervision-ux
 ---
 
 # Agentic UX Patterns
@@ -49,4 +52,3 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 - [ ] Evidence, approval mechanism and uncertainty display documented.
 - [ ] Auditability considered.
 - [ ] Residual safety or UX risks stated.
-

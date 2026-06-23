@@ -11,8 +11,8 @@ Use this category when the task is mainly about data meaning, governance, exchan
 
 ## Skills in this category
 
-- `conceptual-data-modelling`
-- `logical-data-modelling`
+- `conceptual-data-modeling`
+- `logical-data-modeling`
 - `data-product-design`
 - `data-contract-design`
 - `metadata-management`
@@ -22,16 +22,16 @@ Use this category when the task is mainly about data meaning, governance, exchan
 - `data-integration-and-interoperability`
 - `lakehouse-and-medallion-architecture`
 - `master-and-reference-data-management`
-- `ontology-and-knowledge-graph-modelling`
-- `kg-enabled-rag`
+- `ontology-and-knowledge-graph-modeling`
+- `knowledge-graph-rag`
 - `data-lineage-and-provenance`
 
 ## Choose the smallest fit
 
-- Start with `conceptual-data-modelling` or `logical-data-modelling` for core structure.
+- Start with `conceptual-data-modeling` or `logical-data-modeling` for core structure.
 - Use `data-product-design` or `data-contract-design` for producer-consumer boundaries.
-- Use `ontology-and-knowledge-graph-modelling` for semantic graph design.
-- Use `kg-enabled-rag` for Neo4j-native GraphRAG, text-to-Cypher and provenance-first graph retrieval; load its `reference/` files only when detailed implementation guidance is needed.
+- Use `ontology-and-knowledge-graph-modeling` for semantic graph design.
+- Use `knowledge-graph-rag` for Neo4j-native GraphRAG, text-to-Cypher and provenance-first graph retrieval; load its `reference/` files only when detailed implementation guidance is needed.
 
 ## Next step
 

@@ -9,3 +9,8 @@ tests/test_suggest_skills.py
 skills-ui/*.tsbuildinfo
 skills-ui/dist/
 skills-ui/node_modules/
+/data/prometheus/data
+/data
+/.vscode
+/.continue
+/backlog

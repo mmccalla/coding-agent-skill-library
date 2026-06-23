@@ -1,6 +1,6 @@
 # Agent Control Patterns
 
-Use this category when the task is mainly about safety, approval, recovery, evaluation, prioritisation or grounded retrieval.
+Use this category when the task is mainly about safety, approval, recovery, evaluation, prioritization or grounded retrieval.
 
 ## Mandatory baseline (every session)
 
@@ -20,11 +20,11 @@ Execute **`apply-laws-of-ai/SKILL.md` first** — before routing, planning, edit
 - `human-in-the-loop/`
 - `knowledge-retrieval-rag/`
 - `inter-agent-communication-a2a/`
-- `resource-aware-optimisation/`
+- `resource-aware-optimization/`
 - `reasoning-techniques/`
 - `guardrails-safety-patterns/`
 - `evaluation-and-monitoring/`
-- `prioritisation/`
+- `prioritization/`
 
 ## Choose the smallest fit
 
