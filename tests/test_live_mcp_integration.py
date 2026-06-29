@@ -36,7 +36,9 @@ async def _call_tool(
     return payload
 
 
-@pytest.mark.skipif(not _live_environment_configured(), reason="live Neo4j environment is not configured")
+@pytest.mark.skipif(
+    not _live_environment_configured(), reason="live Neo4j environment is not configured"
+)
 def test_live_streamable_http_mcp_tools_cover_balanced_query_shapes() -> None:
     async def run_client() -> None:
         try:
@@ -93,17 +95,26 @@ def test_live_streamable_http_mcp_tools_cover_balanced_query_shapes() -> None:
                 routed_recommendation = await _call_tool(
                     session,
                     "route_skill_query",
-                    {"query": "Which skills should I use for graph retrieval with ontology and provenance?"},
+                    {
+                        "query": "Which skills should I use for graph retrieval with ontology and provenance?"
+                    },
                 )
                 assert routed_recommendation["route"] == "recommendation"
 
                 recommendation_payload = await _call_tool(
                     session,
                     "recommend_skills",
-                    {"query": "graph retrieval ontology provenance", "limit": 3, "token_budget": 200},
+                    {
+                        "query": "graph retrieval ontology provenance",
+                        "limit": 3,
+                        "token_budget": 200,
+                    },
                 )
                 assert recommendation_payload["recommendations"]
-                assert recommendation_payload["recommendations"][0]["skill_name"] == "knowledge-graph-rag"
+                assert (
+                    recommendation_payload["recommendations"][0]["skill_name"]
+                    == "knowledge-graph-rag"
+                )
 
                 routed_context = await _call_tool(
                     session,

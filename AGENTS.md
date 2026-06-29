@@ -45,7 +45,8 @@ skills/
 ├── reliability-and-delivery/
 ├── event-driven-and-real-time-data/
 ├── business-architecture/
-└── data-architecture/
+├── data-architecture/
+└── krag-systems/
 ```
 
 Do not assume a skill from its name alone. Use category `README.md` files for routing, category `MANIFEST.md` files for fuller inventory, and the relevant `SKILL.md` for execution guidance.
@@ -85,6 +86,21 @@ Do not assume a skill from its name alone. Use category `README.md` files for ro
 - Use `knowledge-retrieval-rag` when repository, document or knowledge-base grounding is required.
 - Use `inter-agent-communication-a2a` for cross-agent delegation, agent cards, task exchange, artefact exchange or A2A-style interoperability.
 - Use `memory-management` for short-term state, long-term memory, retrieval, summarisation or persistence across sessions.
+
+### KRAG systems
+
+For KRAG architecture, ingestion, retrieval or evaluation work, load the smallest relevant skill from:
+
+```text
+skills/krag-systems/
+```
+
+- Use `krag-system-design` for end-to-end KRAG architecture, graph role definition, retrieval role design and implementation slicing.
+- Use `krag-ingestion-graph-construction` for evidence anchoring, extraction, entity resolution, graph construction and validation.
+- Use `krag-retrieval-answering` for retrieval planning, graph traversal, hybrid ranking, grounded answer synthesis and abstention.
+- Use `krag-evaluation-governance` for retrieval, graph, answer and operational evaluation, governance and release gates.
+
+For KRAG work, do not treat a manually curated routing overlay as sufficient evidence that the graph materially improves retrieval.
 
 ### Reliability, control and governance
 

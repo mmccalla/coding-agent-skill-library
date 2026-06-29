@@ -1,20 +1,86 @@
 [
   {
     "id": "kg_rag",
-    "query": "graph rag ontology retrieval",
-    "expected_skill_ids": ["skill:knowledge-graph-rag"],
+    "query": "neo4j-native kg-backed retrieval with text-to-cypher and provenance",
+    "expected_skill_ids": [
+      "skill:knowledge-graph-rag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_system_design",
+    "query": "KRAG architecture summary graph schema outline retrieval strategy implementation backlog thin vertical slices",
+    "expected_skill_ids": [
+      "skill:krag-system-design"
+    ],
+    "required_skill_ids": [
+      "skill:krag-system-design"
+    ],
+    "excluded_skill_ids": [
+      "skill:accessibility-wcag",
+      "skill:ci-cd-and-automation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_ingestion_graph_construction",
+    "query": "KRAG ingestion design graph schema changes validation rules idempotency strategy failure handling",
+    "expected_skill_ids": [
+      "skill:krag-ingestion-graph-construction"
+    ],
+    "required_skill_ids": [
+      "skill:krag-ingestion-graph-construction"
+    ],
+    "excluded_skill_ids": [
+      "skill:ux-design-principles",
+      "skill:dora-four-keys"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_retrieval_answering",
+    "query": "KRAG retrieval plan queries pseudocode evidence set citations uncertainty follow up data gaps",
+    "expected_skill_ids": [
+      "skill:krag-retrieval-answering"
+    ],
+    "required_skill_ids": [
+      "skill:krag-retrieval-answering"
+    ],
+    "excluded_skill_ids": [
+      "skill:release-engineering-and-progressive-delivery",
+      "skill:business-capability-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_evaluation_governance",
+    "query": "KRAG evaluation plan metrics acceptance thresholds release gates monitoring signals remediation actions",
+    "expected_skill_ids": [
+      "skill:krag-evaluation-governance"
+    ],
+    "required_skill_ids": [
+      "skill:krag-evaluation-governance"
+    ],
+    "excluded_skill_ids": [
+      "skill:ui-component-design",
+      "skill:event-modeling"
+    ],
     "expect_uncertain": false
   },
   {
     "id": "human_approval",
     "query": "approval before destructive command human review",
-    "expected_skill_ids": ["skill:human-in-the-loop"],
+    "expected_skill_ids": [
+      "skill:human-in-the-loop"
+    ],
     "expect_uncertain": false
   },
   {
     "id": "accessibility",
     "query": "keyboard focus accessible form labels",
-    "expected_skill_ids": ["skill:accessibility-wcag"],
+    "expected_skill_ids": [
+      "skill:accessibility-wcag"
+    ],
     "expect_uncertain": false
   },
   {
@@ -39,8 +105,6368 @@
     "expect_uncertain": false
   },
   {
-    "id": "absent",
-    "query": "zzzz qqqq nonsense",
+    "id": "apply_laws_of_ai_generated_01",
+    "query": "apply-laws-of-ai",
+    "expected_skill_ids": [
+      "skill:apply-laws-of-ai"
+    ],
+    "required_skill_ids": [
+      "skill:apply-laws-of-ai"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "apply_laws_of_ai_generated_02",
+    "query": "tell me about apply laws of ai",
+    "expected_skill_ids": [
+      "skill:apply-laws-of-ai"
+    ],
+    "required_skill_ids": [
+      "skill:apply-laws-of-ai"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "apply_laws_of_ai_generated_03",
+    "query": "when should I use ai-safety-laws",
+    "expected_skill_ids": [
+      "skill:apply-laws-of-ai"
+    ],
+    "required_skill_ids": [
+      "skill:apply-laws-of-ai"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "apply_laws_of_ai_generated_04",
+    "query": "agent control patterns guidance for apply laws of ai",
+    "expected_skill_ids": [
+      "skill:apply-laws-of-ai"
+    ],
+    "required_skill_ids": [
+      "skill:apply-laws-of-ai"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "apply_laws_of_ai_generated_05",
+    "query": "apply laws of ai operating procedure Mandatory immutable baseline applying an Asimov-inspired hierarchy of AI safety laws. at",
+    "expected_skill_ids": [
+      "skill:apply-laws-of-ai"
+    ],
+    "required_skill_ids": [
+      "skill:apply-laws-of-ai"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "apply_laws_of_ai_generated_06",
+    "query": "how do I apply apply laws of ai in practice for Mandatory immutable baseline applying an Asimov-inspired hierarchy of AI safety laws. at",
+    "expected_skill_ids": [
+      "skill:apply-laws-of-ai"
+    ],
+    "required_skill_ids": [
+      "skill:apply-laws-of-ai"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "evaluation_and_monitoring_generated_01",
+    "query": "evaluation-and-monitoring",
+    "expected_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "required_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "evaluation_and_monitoring_generated_02",
+    "query": "tell me about evaluation and monitoring",
+    "expected_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "required_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "evaluation_and_monitoring_generated_03",
+    "query": "when should I use evaluation and monitoring",
+    "expected_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "required_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "evaluation_and_monitoring_generated_04",
+    "query": "agent control patterns guidance for evaluation and monitoring",
+    "expected_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "required_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "evaluation_and_monitoring_generated_05",
+    "query": "evaluation and monitoring operating procedure measuring coding-agent quality, regression risk, latency, cost, reliability, safety, drift, or production",
+    "expected_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "required_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "evaluation_and_monitoring_generated_06",
+    "query": "how do I apply evaluation and monitoring in practice for measuring coding-agent quality, regression risk, latency, cost, reliability, safety, drift, or production",
+    "expected_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "required_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "exception_handling_and_recovery_generated_01",
+    "query": "exception-handling-and-recovery",
+    "expected_skill_ids": [
+      "skill:exception-handling-and-recovery"
+    ],
+    "required_skill_ids": [
+      "skill:exception-handling-and-recovery"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "exception_handling_and_recovery_generated_02",
+    "query": "tell me about exception handling and recovery",
+    "expected_skill_ids": [
+      "skill:exception-handling-and-recovery"
+    ],
+    "required_skill_ids": [
+      "skill:exception-handling-and-recovery"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "exception_handling_and_recovery_generated_03",
+    "query": "when should I use exception handling and recovery",
+    "expected_skill_ids": [
+      "skill:exception-handling-and-recovery"
+    ],
+    "required_skill_ids": [
+      "skill:exception-handling-and-recovery"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "exception_handling_and_recovery_generated_04",
+    "query": "agent control patterns guidance for exception handling and recovery",
+    "expected_skill_ids": [
+      "skill:exception-handling-and-recovery"
+    ],
+    "required_skill_ids": [
+      "skill:exception-handling-and-recovery"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "exception_handling_and_recovery_generated_05",
+    "query": "exception handling and recovery operating procedure building resilient agent workflows that must detect failures, retry safely, degrade gracefully,",
+    "expected_skill_ids": [
+      "skill:exception-handling-and-recovery"
+    ],
+    "required_skill_ids": [
+      "skill:exception-handling-and-recovery"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "exception_handling_and_recovery_generated_06",
+    "query": "how do I apply exception handling and recovery in practice for building resilient agent workflows that must detect failures, retry safely, degrade gracefully,",
+    "expected_skill_ids": [
+      "skill:exception-handling-and-recovery"
+    ],
+    "required_skill_ids": [
+      "skill:exception-handling-and-recovery"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "goal_setting_and_monitoring_generated_01",
+    "query": "goal-setting-and-monitoring",
+    "expected_skill_ids": [
+      "skill:goal-setting-and-monitoring"
+    ],
+    "required_skill_ids": [
+      "skill:goal-setting-and-monitoring"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "goal_setting_and_monitoring_generated_02",
+    "query": "tell me about goal setting and monitoring",
+    "expected_skill_ids": [
+      "skill:goal-setting-and-monitoring"
+    ],
+    "required_skill_ids": [
+      "skill:goal-setting-and-monitoring"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "goal_setting_and_monitoring_generated_03",
+    "query": "when should I use goal setting and monitoring",
+    "expected_skill_ids": [
+      "skill:goal-setting-and-monitoring"
+    ],
+    "required_skill_ids": [
+      "skill:goal-setting-and-monitoring"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "goal_setting_and_monitoring_generated_04",
+    "query": "agent control patterns guidance for goal setting and monitoring",
+    "expected_skill_ids": [
+      "skill:goal-setting-and-monitoring"
+    ],
+    "required_skill_ids": [
+      "skill:goal-setting-and-monitoring"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "goal_setting_and_monitoring_generated_05",
+    "query": "goal setting and monitoring operating procedure implementing agents that need explicit objectives, measurable success criteria, progress tracking, stop",
+    "expected_skill_ids": [
+      "skill:goal-setting-and-monitoring"
+    ],
+    "required_skill_ids": [
+      "skill:goal-setting-and-monitoring"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "goal_setting_and_monitoring_generated_06",
+    "query": "how do I apply goal setting and monitoring in practice for implementing agents that need explicit objectives, measurable success criteria, progress tracking, stop",
+    "expected_skill_ids": [
+      "skill:goal-setting-and-monitoring"
+    ],
+    "required_skill_ids": [
+      "skill:goal-setting-and-monitoring"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "guardrails_safety_patterns_generated_01",
+    "query": "guardrails-safety-patterns",
+    "expected_skill_ids": [
+      "skill:guardrails-safety-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:guardrails-safety-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "guardrails_safety_patterns_generated_02",
+    "query": "tell me about guardrails safety patterns",
+    "expected_skill_ids": [
+      "skill:guardrails-safety-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:guardrails-safety-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "guardrails_safety_patterns_generated_03",
+    "query": "when should I use safety-guardrails",
+    "expected_skill_ids": [
+      "skill:guardrails-safety-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:guardrails-safety-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "guardrails_safety_patterns_generated_04",
+    "query": "agent control patterns guidance for guardrails safety patterns",
+    "expected_skill_ids": [
+      "skill:guardrails-safety-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:guardrails-safety-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "guardrails_safety_patterns_generated_05",
+    "query": "guardrails safety patterns operating procedure implementing input validation, output filtering, tool restrictions, policy enforcement, secure coding controls,",
+    "expected_skill_ids": [
+      "skill:guardrails-safety-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:guardrails-safety-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "guardrails_safety_patterns_generated_06",
+    "query": "how do I apply guardrails safety patterns in practice for implementing input validation, output filtering, tool restrictions, policy enforcement, secure coding controls,",
+    "expected_skill_ids": [
+      "skill:guardrails-safety-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:guardrails-safety-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "human_in_the_loop_generated_01",
+    "query": "human-in-the-loop",
+    "expected_skill_ids": [
+      "skill:human-in-the-loop"
+    ],
+    "required_skill_ids": [
+      "skill:human-in-the-loop"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "human_in_the_loop_generated_02",
+    "query": "tell me about human in the loop",
+    "expected_skill_ids": [
+      "skill:human-in-the-loop"
+    ],
+    "required_skill_ids": [
+      "skill:human-in-the-loop"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "human_in_the_loop_generated_03",
+    "query": "when should I use human in the loop",
+    "expected_skill_ids": [
+      "skill:human-in-the-loop"
+    ],
+    "required_skill_ids": [
+      "skill:human-in-the-loop"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "human_in_the_loop_generated_04",
+    "query": "agent control patterns guidance for human in the loop",
+    "expected_skill_ids": [
+      "skill:human-in-the-loop"
+    ],
+    "required_skill_ids": [
+      "skill:human-in-the-loop"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "human_in_the_loop_generated_05",
+    "query": "human in the loop operating procedure a coding agent must request approval, expert judgement, clarification, review, or intervention",
+    "expected_skill_ids": [
+      "skill:human-in-the-loop"
+    ],
+    "required_skill_ids": [
+      "skill:human-in-the-loop"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "human_in_the_loop_generated_06",
+    "query": "how do I apply human in the loop in practice for a coding agent must request approval, expert judgement, clarification, review, or intervention",
+    "expected_skill_ids": [
+      "skill:human-in-the-loop"
+    ],
+    "required_skill_ids": [
+      "skill:human-in-the-loop"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "inter_agent_communication_a2a_generated_01",
+    "query": "inter-agent-communication-a2a",
+    "expected_skill_ids": [
+      "skill:inter-agent-communication-a2a"
+    ],
+    "required_skill_ids": [
+      "skill:inter-agent-communication-a2a"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "inter_agent_communication_a2a_generated_02",
+    "query": "tell me about inter agent communication a2a",
+    "expected_skill_ids": [
+      "skill:inter-agent-communication-a2a"
+    ],
+    "required_skill_ids": [
+      "skill:inter-agent-communication-a2a"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "inter_agent_communication_a2a_generated_03",
+    "query": "when should I use agent-to-agent-communication",
+    "expected_skill_ids": [
+      "skill:inter-agent-communication-a2a"
+    ],
+    "required_skill_ids": [
+      "skill:inter-agent-communication-a2a"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "inter_agent_communication_a2a_generated_04",
+    "query": "agent control patterns guidance for inter agent communication a2a",
+    "expected_skill_ids": [
+      "skill:inter-agent-communication-a2a"
+    ],
+    "required_skill_ids": [
+      "skill:inter-agent-communication-a2a"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "inter_agent_communication_a2a_generated_05",
+    "query": "inter agent communication a2a operating procedure designing agent-to-agent communication, delegation protocols, agent cards, asynchronous task exchange, or interoperable",
+    "expected_skill_ids": [
+      "skill:inter-agent-communication-a2a"
+    ],
+    "required_skill_ids": [
+      "skill:inter-agent-communication-a2a"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "inter_agent_communication_a2a_generated_06",
+    "query": "how do I apply inter agent communication a2a in practice for designing agent-to-agent communication, delegation protocols, agent cards, asynchronous task exchange, or interoperable",
+    "expected_skill_ids": [
+      "skill:inter-agent-communication-a2a"
+    ],
+    "required_skill_ids": [
+      "skill:inter-agent-communication-a2a"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "knowledge_retrieval_rag_generated_01",
+    "query": "knowledge-retrieval-rag",
+    "expected_skill_ids": [
+      "skill:knowledge-retrieval-rag"
+    ],
+    "required_skill_ids": [
+      "skill:knowledge-retrieval-rag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "knowledge_retrieval_rag_generated_02",
+    "query": "tell me about knowledge retrieval rag",
+    "expected_skill_ids": [
+      "skill:knowledge-retrieval-rag"
+    ],
+    "required_skill_ids": [
+      "skill:knowledge-retrieval-rag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "knowledge_retrieval_rag_generated_03",
+    "query": "when should I use rag",
+    "expected_skill_ids": [
+      "skill:knowledge-retrieval-rag"
+    ],
+    "required_skill_ids": [
+      "skill:knowledge-retrieval-rag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "knowledge_retrieval_rag_generated_04",
+    "query": "agent control patterns guidance for knowledge retrieval rag",
+    "expected_skill_ids": [
+      "skill:knowledge-retrieval-rag"
+    ],
+    "required_skill_ids": [
+      "skill:knowledge-retrieval-rag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "knowledge_retrieval_rag_generated_05",
+    "query": "knowledge retrieval rag operating procedure implementing retrieval-augmented generation, document-grounded coding agents, semantic search, citation-backed answers, or repository/document",
+    "expected_skill_ids": [
+      "skill:knowledge-retrieval-rag"
+    ],
+    "required_skill_ids": [
+      "skill:knowledge-retrieval-rag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "knowledge_retrieval_rag_generated_06",
+    "query": "how do I apply knowledge retrieval rag in practice for implementing retrieval-augmented generation, document-grounded coding agents, semantic search, citation-backed answers, or repository/document",
+    "expected_skill_ids": [
+      "skill:knowledge-retrieval-rag"
+    ],
+    "required_skill_ids": [
+      "skill:knowledge-retrieval-rag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "prioritization_generated_01",
+    "query": "prioritization",
+    "expected_skill_ids": [
+      "skill:prioritization"
+    ],
+    "required_skill_ids": [
+      "skill:prioritization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "prioritization_generated_02",
+    "query": "tell me about prioritization",
+    "expected_skill_ids": [
+      "skill:prioritization"
+    ],
+    "required_skill_ids": [
+      "skill:prioritization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "prioritization_generated_03",
+    "query": "when should I use prioritisation",
+    "expected_skill_ids": [
+      "skill:prioritization"
+    ],
+    "required_skill_ids": [
+      "skill:prioritization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "prioritization_generated_04",
+    "query": "agent control patterns guidance for prioritization",
+    "expected_skill_ids": [
+      "skill:prioritization"
+    ],
+    "required_skill_ids": [
+      "skill:prioritization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "prioritization_generated_05",
+    "query": "prioritization operating procedure an agent must rank tasks, goals, files, bugs, actions, alerts, or implementation",
+    "expected_skill_ids": [
+      "skill:prioritization"
+    ],
+    "required_skill_ids": [
+      "skill:prioritization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "prioritization_generated_06",
+    "query": "how do I apply prioritization in practice for an agent must rank tasks, goals, files, bugs, actions, alerts, or implementation",
+    "expected_skill_ids": [
+      "skill:prioritization"
+    ],
+    "required_skill_ids": [
+      "skill:prioritization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "reasoning_techniques_generated_01",
+    "query": "reasoning-techniques",
+    "expected_skill_ids": [
+      "skill:reasoning-techniques"
+    ],
+    "required_skill_ids": [
+      "skill:reasoning-techniques"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "reasoning_techniques_generated_02",
+    "query": "tell me about reasoning techniques",
+    "expected_skill_ids": [
+      "skill:reasoning-techniques"
+    ],
+    "required_skill_ids": [
+      "skill:reasoning-techniques"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "reasoning_techniques_generated_03",
+    "query": "when should I use problem-solving",
+    "expected_skill_ids": [
+      "skill:reasoning-techniques"
+    ],
+    "required_skill_ids": [
+      "skill:reasoning-techniques"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "reasoning_techniques_generated_04",
+    "query": "agent control patterns guidance for reasoning techniques",
+    "expected_skill_ids": [
+      "skill:reasoning-techniques"
+    ],
+    "required_skill_ids": [
+      "skill:reasoning-techniques"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "reasoning_techniques_generated_05",
+    "query": "reasoning techniques operating procedure a coding agent needs robust problem solving, explicit decomposition, alternative-path exploration, program-aided",
+    "expected_skill_ids": [
+      "skill:reasoning-techniques"
+    ],
+    "required_skill_ids": [
+      "skill:reasoning-techniques"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "reasoning_techniques_generated_06",
+    "query": "how do I apply reasoning techniques in practice for a coding agent needs robust problem solving, explicit decomposition, alternative-path exploration, program-aided",
+    "expected_skill_ids": [
+      "skill:reasoning-techniques"
+    ],
+    "required_skill_ids": [
+      "skill:reasoning-techniques"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "resource_aware_optimization_generated_01",
+    "query": "resource-aware-optimization",
+    "expected_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "required_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "resource_aware_optimization_generated_02",
+    "query": "tell me about resource aware optimization",
+    "expected_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "required_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "resource_aware_optimization_generated_03",
+    "query": "when should I use resource-aware-optimisation",
+    "expected_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "required_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "resource_aware_optimization_generated_04",
+    "query": "agent control patterns guidance for resource aware optimization",
+    "expected_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "required_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "resource_aware_optimization_generated_05",
+    "query": "resource aware optimization operating procedure an agent must balance quality, cost, latency, compute, memory, model choice, bandwidth,",
+    "expected_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "required_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "resource_aware_optimization_generated_06",
+    "query": "how do I apply resource aware optimization in practice for an agent must balance quality, cost, latency, compute, memory, model choice, bandwidth,",
+    "expected_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "required_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "context_engineering_generated_01",
+    "query": "context-engineering",
+    "expected_skill_ids": [
+      "skill:context-engineering"
+    ],
+    "required_skill_ids": [
+      "skill:context-engineering"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "context_engineering_generated_02",
+    "query": "tell me about context engineering",
+    "expected_skill_ids": [
+      "skill:context-engineering"
+    ],
+    "required_skill_ids": [
+      "skill:context-engineering"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "context_engineering_generated_03",
+    "query": "when should I use context-selection",
+    "expected_skill_ids": [
+      "skill:context-engineering"
+    ],
+    "required_skill_ids": [
+      "skill:context-engineering"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "context_engineering_generated_04",
+    "query": "agentic patterns guidance for context engineering",
+    "expected_skill_ids": [
+      "skill:context-engineering"
+    ],
+    "required_skill_ids": [
+      "skill:context-engineering"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "context_engineering_generated_05",
+    "query": "context engineering operating procedure a task needs the right repository, file and document context assembled without",
+    "expected_skill_ids": [
+      "skill:context-engineering"
+    ],
+    "required_skill_ids": [
+      "skill:context-engineering"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "context_engineering_generated_06",
+    "query": "how do I apply context engineering in practice for a task needs the right repository, file and document context assembled without",
+    "expected_skill_ids": [
+      "skill:context-engineering"
+    ],
+    "required_skill_ids": [
+      "skill:context-engineering"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "idea_refinement_generated_01",
+    "query": "idea-refinement",
+    "expected_skill_ids": [
+      "skill:idea-refinement"
+    ],
+    "required_skill_ids": [
+      "skill:idea-refinement"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "idea_refinement_generated_02",
+    "query": "tell me about idea refinement",
+    "expected_skill_ids": [
+      "skill:idea-refinement"
+    ],
+    "required_skill_ids": [
+      "skill:idea-refinement"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "idea_refinement_generated_03",
+    "query": "when should I use idea-refine",
+    "expected_skill_ids": [
+      "skill:idea-refinement"
+    ],
+    "required_skill_ids": [
+      "skill:idea-refinement"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "idea_refinement_generated_04",
+    "query": "agentic patterns guidance for idea refinement",
+    "expected_skill_ids": [
+      "skill:idea-refinement"
+    ],
+    "required_skill_ids": [
+      "skill:idea-refinement"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "idea_refinement_generated_05",
+    "query": "idea refinement operating procedure a rough idea needs to be shaped into a concrete, testable proposal",
+    "expected_skill_ids": [
+      "skill:idea-refinement"
+    ],
+    "required_skill_ids": [
+      "skill:idea-refinement"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "idea_refinement_generated_06",
+    "query": "how do I apply idea refinement in practice for a rough idea needs to be shaped into a concrete, testable proposal",
+    "expected_skill_ids": [
+      "skill:idea-refinement"
+    ],
+    "required_skill_ids": [
+      "skill:idea-refinement"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "incremental_implementation_generated_01",
+    "query": "incremental-implementation",
+    "expected_skill_ids": [
+      "skill:incremental-implementation"
+    ],
+    "required_skill_ids": [
+      "skill:incremental-implementation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "incremental_implementation_generated_02",
+    "query": "tell me about incremental implementation",
+    "expected_skill_ids": [
+      "skill:incremental-implementation"
+    ],
+    "required_skill_ids": [
+      "skill:incremental-implementation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "incremental_implementation_generated_03",
+    "query": "when should I use incremental implementation",
+    "expected_skill_ids": [
+      "skill:incremental-implementation"
+    ],
+    "required_skill_ids": [
+      "skill:incremental-implementation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "incremental_implementation_generated_04",
+    "query": "agentic patterns guidance for incremental implementation",
+    "expected_skill_ids": [
+      "skill:incremental-implementation"
+    ],
+    "required_skill_ids": [
+      "skill:incremental-implementation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "incremental_implementation_generated_05",
+    "query": "incremental implementation operating procedure a change should land as a sequence of small, verifiable slices instead",
+    "expected_skill_ids": [
+      "skill:incremental-implementation"
+    ],
+    "required_skill_ids": [
+      "skill:incremental-implementation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "incremental_implementation_generated_06",
+    "query": "how do I apply incremental implementation in practice for a change should land as a sequence of small, verifiable slices instead",
+    "expected_skill_ids": [
+      "skill:incremental-implementation"
+    ],
+    "required_skill_ids": [
+      "skill:incremental-implementation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "learning_and_adaptation_generated_01",
+    "query": "learning-and-adaptation",
+    "expected_skill_ids": [
+      "skill:learning-and-adaptation"
+    ],
+    "required_skill_ids": [
+      "skill:learning-and-adaptation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "learning_and_adaptation_generated_02",
+    "query": "tell me about learning and adaptation",
+    "expected_skill_ids": [
+      "skill:learning-and-adaptation"
+    ],
+    "required_skill_ids": [
+      "skill:learning-and-adaptation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "learning_and_adaptation_generated_03",
+    "query": "when should I use agent-improvement",
+    "expected_skill_ids": [
+      "skill:learning-and-adaptation"
+    ],
+    "required_skill_ids": [
+      "skill:learning-and-adaptation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "learning_and_adaptation_generated_04",
+    "query": "agentic patterns guidance for learning and adaptation",
+    "expected_skill_ids": [
+      "skill:learning-and-adaptation"
+    ],
+    "required_skill_ids": [
+      "skill:learning-and-adaptation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "learning_and_adaptation_generated_05",
+    "query": "learning and adaptation operating procedure building measured improvement loops for coding agents, including benchmark-driven repair, preference-data feedback,",
+    "expected_skill_ids": [
+      "skill:learning-and-adaptation"
+    ],
+    "required_skill_ids": [
+      "skill:learning-and-adaptation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "learning_and_adaptation_generated_06",
+    "query": "how do I apply learning and adaptation in practice for building measured improvement loops for coding agents, including benchmark-driven repair, preference-data feedback,",
+    "expected_skill_ids": [
+      "skill:learning-and-adaptation"
+    ],
+    "required_skill_ids": [
+      "skill:learning-and-adaptation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "mcp_server_design_generated_01",
+    "query": "mcp-server-design",
+    "expected_skill_ids": [
+      "skill:mcp-server-design"
+    ],
+    "required_skill_ids": [
+      "skill:mcp-server-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "mcp_server_design_generated_02",
+    "query": "tell me about mcp server design",
+    "expected_skill_ids": [
+      "skill:mcp-server-design"
+    ],
+    "required_skill_ids": [
+      "skill:mcp-server-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "mcp_server_design_generated_03",
+    "query": "when should I use mcp-server",
+    "expected_skill_ids": [
+      "skill:mcp-server-design"
+    ],
+    "required_skill_ids": [
+      "skill:mcp-server-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "mcp_server_design_generated_04",
+    "query": "agentic patterns guidance for mcp server design",
+    "expected_skill_ids": [
+      "skill:mcp-server-design"
+    ],
+    "required_skill_ids": [
+      "skill:mcp-server-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "mcp_server_design_generated_05",
+    "query": "mcp server design operating procedure designing, implementing, reviewing or securing Model Context Protocol servers/clients, including tools, resources,",
+    "expected_skill_ids": [
+      "skill:mcp-server-design"
+    ],
+    "required_skill_ids": [
+      "skill:mcp-server-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "mcp_server_design_generated_06",
+    "query": "how do I apply mcp server design in practice for designing, implementing, reviewing or securing Model Context Protocol servers/clients, including tools, resources,",
+    "expected_skill_ids": [
+      "skill:mcp-server-design"
+    ],
+    "required_skill_ids": [
+      "skill:mcp-server-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "memory_management_generated_01",
+    "query": "memory-management",
+    "expected_skill_ids": [
+      "skill:memory-management"
+    ],
+    "required_skill_ids": [
+      "skill:memory-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "memory_management_generated_02",
+    "query": "tell me about memory management",
+    "expected_skill_ids": [
+      "skill:memory-management"
+    ],
+    "required_skill_ids": [
+      "skill:memory-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "memory_management_generated_03",
+    "query": "when should I use agent-memory",
+    "expected_skill_ids": [
+      "skill:memory-management"
+    ],
+    "required_skill_ids": [
+      "skill:memory-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "memory_management_generated_04",
+    "query": "agentic patterns guidance for memory management",
+    "expected_skill_ids": [
+      "skill:memory-management"
+    ],
+    "required_skill_ids": [
+      "skill:memory-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "memory_management_generated_05",
+    "query": "memory management operating procedure implementing short-term state, conversation history, long-term memory, RAG, user preferences, episodic examples,",
+    "expected_skill_ids": [
+      "skill:memory-management"
+    ],
+    "required_skill_ids": [
+      "skill:memory-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "memory_management_generated_06",
+    "query": "how do I apply memory management in practice for implementing short-term state, conversation history, long-term memory, RAG, user preferences, episodic examples,",
+    "expected_skill_ids": [
+      "skill:memory-management"
+    ],
+    "required_skill_ids": [
+      "skill:memory-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "multi_agent_collaboration_generated_01",
+    "query": "multi-agent-collaboration",
+    "expected_skill_ids": [
+      "skill:multi-agent-collaboration"
+    ],
+    "required_skill_ids": [
+      "skill:multi-agent-collaboration"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "multi_agent_collaboration_generated_02",
+    "query": "tell me about multi agent collaboration",
+    "expected_skill_ids": [
+      "skill:multi-agent-collaboration"
+    ],
+    "required_skill_ids": [
+      "skill:multi-agent-collaboration"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "multi_agent_collaboration_generated_03",
+    "query": "when should I use multi agent collaboration",
+    "expected_skill_ids": [
+      "skill:multi-agent-collaboration"
+    ],
+    "required_skill_ids": [
+      "skill:multi-agent-collaboration"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "multi_agent_collaboration_generated_04",
+    "query": "agentic patterns guidance for multi agent collaboration",
+    "expected_skill_ids": [
+      "skill:multi-agent-collaboration"
+    ],
+    "required_skill_ids": [
+      "skill:multi-agent-collaboration"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "multi_agent_collaboration_generated_05",
+    "query": "multi agent collaboration operating procedure designing or implementing systems with multiple specialised agents, including supervisor-worker, sequential hand-off,",
+    "expected_skill_ids": [
+      "skill:multi-agent-collaboration"
+    ],
+    "required_skill_ids": [
+      "skill:multi-agent-collaboration"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "multi_agent_collaboration_generated_06",
+    "query": "how do I apply multi agent collaboration in practice for designing or implementing systems with multiple specialised agents, including supervisor-worker, sequential hand-off,",
+    "expected_skill_ids": [
+      "skill:multi-agent-collaboration"
+    ],
+    "required_skill_ids": [
+      "skill:multi-agent-collaboration"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "parallelization_generated_01",
+    "query": "parallelization",
+    "expected_skill_ids": [
+      "skill:parallelization"
+    ],
+    "required_skill_ids": [
+      "skill:parallelization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "parallelization_generated_02",
+    "query": "tell me about parallelization",
+    "expected_skill_ids": [
+      "skill:parallelization"
+    ],
+    "required_skill_ids": [
+      "skill:parallelization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "parallelization_generated_03",
+    "query": "when should I use parallelisation",
+    "expected_skill_ids": [
+      "skill:parallelization"
+    ],
+    "required_skill_ids": [
+      "skill:parallelization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "parallelization_generated_04",
+    "query": "agentic patterns guidance for parallelization",
+    "expected_skill_ids": [
+      "skill:parallelization"
+    ],
+    "required_skill_ids": [
+      "skill:parallelization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "parallelization_generated_05",
+    "query": "parallelization operating procedure independent coding-agent tasks, LLM calls, file analyses, API calls or sub-agents can",
+    "expected_skill_ids": [
+      "skill:parallelization"
+    ],
+    "required_skill_ids": [
+      "skill:parallelization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "parallelization_generated_06",
+    "query": "how do I apply parallelization in practice for independent coding-agent tasks, LLM calls, file analyses, API calls or sub-agents can",
+    "expected_skill_ids": [
+      "skill:parallelization"
+    ],
+    "required_skill_ids": [
+      "skill:parallelization"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "planning_and_task_decomposition_generated_01",
+    "query": "planning-and-task-decomposition",
+    "expected_skill_ids": [
+      "skill:planning-and-task-decomposition"
+    ],
+    "required_skill_ids": [
+      "skill:planning-and-task-decomposition"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "planning_and_task_decomposition_generated_02",
+    "query": "tell me about planning and task decomposition",
+    "expected_skill_ids": [
+      "skill:planning-and-task-decomposition"
+    ],
+    "required_skill_ids": [
+      "skill:planning-and-task-decomposition"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "planning_and_task_decomposition_generated_03",
+    "query": "when should I use planning and task decomposition",
+    "expected_skill_ids": [
+      "skill:planning-and-task-decomposition"
+    ],
+    "required_skill_ids": [
+      "skill:planning-and-task-decomposition"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "planning_and_task_decomposition_generated_04",
+    "query": "agentic patterns guidance for planning and task decomposition",
+    "expected_skill_ids": [
+      "skill:planning-and-task-decomposition"
+    ],
+    "required_skill_ids": [
+      "skill:planning-and-task-decomposition"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "planning_and_task_decomposition_generated_05",
+    "query": "planning and task decomposition operating procedure a coding request is too complex for a single edit or command",
+    "expected_skill_ids": [
+      "skill:planning-and-task-decomposition"
+    ],
+    "required_skill_ids": [
+      "skill:planning-and-task-decomposition"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "planning_and_task_decomposition_generated_06",
+    "query": "how do I apply planning and task decomposition in practice for a coding request is too complex for a single edit or command",
+    "expected_skill_ids": [
+      "skill:planning-and-task-decomposition"
+    ],
+    "required_skill_ids": [
+      "skill:planning-and-task-decomposition"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "prompt_chaining_generated_01",
+    "query": "prompt-chaining",
+    "expected_skill_ids": [
+      "skill:prompt-chaining"
+    ],
+    "required_skill_ids": [
+      "skill:prompt-chaining"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "prompt_chaining_generated_02",
+    "query": "tell me about prompt chaining",
+    "expected_skill_ids": [
+      "skill:prompt-chaining"
+    ],
+    "required_skill_ids": [
+      "skill:prompt-chaining"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "prompt_chaining_generated_03",
+    "query": "when should I use prompt chaining",
+    "expected_skill_ids": [
+      "skill:prompt-chaining"
+    ],
+    "required_skill_ids": [
+      "skill:prompt-chaining"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "prompt_chaining_generated_04",
+    "query": "agentic patterns guidance for prompt chaining",
+    "expected_skill_ids": [
+      "skill:prompt-chaining"
+    ],
+    "required_skill_ids": [
+      "skill:prompt-chaining"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "prompt_chaining_generated_05",
+    "query": "prompt chaining operating procedure implementing or refactoring multi-step LLM workflows where outputs from one step feed",
+    "expected_skill_ids": [
+      "skill:prompt-chaining"
+    ],
+    "required_skill_ids": [
+      "skill:prompt-chaining"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "prompt_chaining_generated_06",
+    "query": "how do I apply prompt chaining in practice for implementing or refactoring multi-step LLM workflows where outputs from one step feed",
+    "expected_skill_ids": [
+      "skill:prompt-chaining"
+    ],
+    "required_skill_ids": [
+      "skill:prompt-chaining"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "reflection_and_verification_generated_01",
+    "query": "reflection-and-verification",
+    "expected_skill_ids": [
+      "skill:reflection-and-verification"
+    ],
+    "required_skill_ids": [
+      "skill:reflection-and-verification"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "reflection_and_verification_generated_02",
+    "query": "tell me about reflection and verification",
+    "expected_skill_ids": [
+      "skill:reflection-and-verification"
+    ],
+    "required_skill_ids": [
+      "skill:reflection-and-verification"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "reflection_and_verification_generated_03",
+    "query": "when should I use reflection and verification",
+    "expected_skill_ids": [
+      "skill:reflection-and-verification"
+    ],
+    "required_skill_ids": [
+      "skill:reflection-and-verification"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "reflection_and_verification_generated_04",
+    "query": "agentic patterns guidance for reflection and verification",
+    "expected_skill_ids": [
+      "skill:reflection-and-verification"
+    ],
+    "required_skill_ids": [
+      "skill:reflection-and-verification"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "reflection_and_verification_generated_05",
+    "query": "reflection and verification operating procedure generated code, plans, tests, prompts or architecture need critique, repair and verification",
+    "expected_skill_ids": [
+      "skill:reflection-and-verification"
+    ],
+    "required_skill_ids": [
+      "skill:reflection-and-verification"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "reflection_and_verification_generated_06",
+    "query": "how do I apply reflection and verification in practice for generated code, plans, tests, prompts or architecture need critique, repair and verification",
+    "expected_skill_ids": [
+      "skill:reflection-and-verification"
+    ],
+    "required_skill_ids": [
+      "skill:reflection-and-verification"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "requirements_elicitation_generated_01",
+    "query": "requirements-elicitation",
+    "expected_skill_ids": [
+      "skill:requirements-elicitation"
+    ],
+    "required_skill_ids": [
+      "skill:requirements-elicitation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "requirements_elicitation_generated_02",
+    "query": "tell me about requirements elicitation",
+    "expected_skill_ids": [
+      "skill:requirements-elicitation"
+    ],
+    "required_skill_ids": [
+      "skill:requirements-elicitation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "requirements_elicitation_generated_03",
+    "query": "when should I use interview-me",
+    "expected_skill_ids": [
+      "skill:requirements-elicitation"
+    ],
+    "required_skill_ids": [
+      "skill:requirements-elicitation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "requirements_elicitation_generated_04",
+    "query": "agentic patterns guidance for requirements elicitation",
+    "expected_skill_ids": [
+      "skill:requirements-elicitation"
+    ],
+    "required_skill_ids": [
+      "skill:requirements-elicitation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "requirements_elicitation_generated_05",
+    "query": "requirements elicitation operating procedure a request is underspecified and the user's actual goal, constraints or success",
+    "expected_skill_ids": [
+      "skill:requirements-elicitation"
+    ],
+    "required_skill_ids": [
+      "skill:requirements-elicitation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "requirements_elicitation_generated_06",
+    "query": "how do I apply requirements elicitation in practice for a request is underspecified and the user's actual goal, constraints or success",
+    "expected_skill_ids": [
+      "skill:requirements-elicitation"
+    ],
+    "required_skill_ids": [
+      "skill:requirements-elicitation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "routing_generated_01",
+    "query": "routing",
+    "expected_skill_ids": [
+      "skill:routing"
+    ],
+    "required_skill_ids": [
+      "skill:routing"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "routing_generated_02",
+    "query": "tell me about routing",
+    "expected_skill_ids": [
+      "skill:routing"
+    ],
+    "required_skill_ids": [
+      "skill:routing"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "routing_generated_03",
+    "query": "when should I use routing",
+    "expected_skill_ids": [
+      "skill:routing"
+    ],
+    "required_skill_ids": [
+      "skill:routing"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "routing_generated_04",
+    "query": "agentic patterns guidance for routing",
+    "expected_skill_ids": [
+      "skill:routing"
+    ],
+    "required_skill_ids": [
+      "skill:routing"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "routing_generated_05",
+    "query": "routing operating procedure implementing conditional control flow in an agent or coding workflow, including intent",
+    "expected_skill_ids": [
+      "skill:routing"
+    ],
+    "required_skill_ids": [
+      "skill:routing"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "routing_generated_06",
+    "query": "how do I apply routing in practice for implementing conditional control flow in an agent or coding workflow, including intent",
+    "expected_skill_ids": [
+      "skill:routing"
+    ],
+    "required_skill_ids": [
+      "skill:routing"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "skill_discovery_and_selection_generated_01",
+    "query": "skill-discovery-and-selection",
+    "expected_skill_ids": [
+      "skill:skill-discovery-and-selection"
+    ],
+    "required_skill_ids": [
+      "skill:skill-discovery-and-selection"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "skill_discovery_and_selection_generated_02",
+    "query": "tell me about skill discovery and selection",
+    "expected_skill_ids": [
+      "skill:skill-discovery-and-selection"
+    ],
+    "required_skill_ids": [
+      "skill:skill-discovery-and-selection"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "skill_discovery_and_selection_generated_03",
+    "query": "when should I use using-agent-skills",
+    "expected_skill_ids": [
+      "skill:skill-discovery-and-selection"
+    ],
+    "required_skill_ids": [
+      "skill:skill-discovery-and-selection"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "skill_discovery_and_selection_generated_04",
+    "query": "agentic patterns guidance for skill discovery and selection",
+    "expected_skill_ids": [
+      "skill:skill-discovery-and-selection"
+    ],
+    "required_skill_ids": [
+      "skill:skill-discovery-and-selection"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "skill_discovery_and_selection_generated_05",
+    "query": "skill discovery and selection operating procedure starting a session or deciding which local skill applies; acts as the",
+    "expected_skill_ids": [
+      "skill:skill-discovery-and-selection"
+    ],
+    "required_skill_ids": [
+      "skill:skill-discovery-and-selection"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "skill_discovery_and_selection_generated_06",
+    "query": "how do I apply skill discovery and selection in practice for starting a session or deciding which local skill applies; acts as the",
+    "expected_skill_ids": [
+      "skill:skill-discovery-and-selection"
+    ],
+    "required_skill_ids": [
+      "skill:skill-discovery-and-selection"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "source_driven_development_generated_01",
+    "query": "source-driven-development",
+    "expected_skill_ids": [
+      "skill:source-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:source-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "source_driven_development_generated_02",
+    "query": "tell me about source driven development",
+    "expected_skill_ids": [
+      "skill:source-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:source-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "source_driven_development_generated_03",
+    "query": "when should I use source driven development",
+    "expected_skill_ids": [
+      "skill:source-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:source-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "source_driven_development_generated_04",
+    "query": "agentic patterns guidance for source driven development",
+    "expected_skill_ids": [
+      "skill:source-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:source-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "source_driven_development_generated_05",
+    "query": "source driven development operating procedure a decision must be grounded in authoritative source material before implementation or",
+    "expected_skill_ids": [
+      "skill:source-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:source-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "source_driven_development_generated_06",
+    "query": "how do I apply source driven development in practice for a decision must be grounded in authoritative source material before implementation or",
+    "expected_skill_ids": [
+      "skill:source-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:source-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "spec_driven_development_generated_01",
+    "query": "spec-driven-development",
+    "expected_skill_ids": [
+      "skill:spec-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:spec-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "spec_driven_development_generated_02",
+    "query": "tell me about spec driven development",
+    "expected_skill_ids": [
+      "skill:spec-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:spec-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "spec_driven_development_generated_03",
+    "query": "when should I use spec driven development",
+    "expected_skill_ids": [
+      "skill:spec-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:spec-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "spec_driven_development_generated_04",
+    "query": "agentic patterns guidance for spec driven development",
+    "expected_skill_ids": [
+      "skill:spec-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:spec-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "spec_driven_development_generated_05",
+    "query": "spec driven development operating procedure a feature or significant change needs a decision-complete specification before implementation begins",
+    "expected_skill_ids": [
+      "skill:spec-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:spec-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "spec_driven_development_generated_06",
+    "query": "how do I apply spec driven development in practice for a feature or significant change needs a decision-complete specification before implementation begins",
+    "expected_skill_ids": [
+      "skill:spec-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:spec-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "tool_use_and_function_calling_generated_01",
+    "query": "tool-use-and-function-calling",
+    "expected_skill_ids": [
+      "skill:tool-use-and-function-calling"
+    ],
+    "required_skill_ids": [
+      "skill:tool-use-and-function-calling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "tool_use_and_function_calling_generated_02",
+    "query": "tell me about tool use and function calling",
+    "expected_skill_ids": [
+      "skill:tool-use-and-function-calling"
+    ],
+    "required_skill_ids": [
+      "skill:tool-use-and-function-calling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "tool_use_and_function_calling_generated_03",
+    "query": "when should I use tool-use-function-calling",
+    "expected_skill_ids": [
+      "skill:tool-use-and-function-calling"
+    ],
+    "required_skill_ids": [
+      "skill:tool-use-and-function-calling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "tool_use_and_function_calling_generated_04",
+    "query": "agentic patterns guidance for tool use and function calling",
+    "expected_skill_ids": [
+      "skill:tool-use-and-function-calling"
+    ],
+    "required_skill_ids": [
+      "skill:tool-use-and-function-calling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "tool_use_and_function_calling_generated_05",
+    "query": "tool use and function calling operating procedure implementing external tool/API/database/code-execution access for an LLM or coding agent, including tool",
+    "expected_skill_ids": [
+      "skill:tool-use-and-function-calling"
+    ],
+    "required_skill_ids": [
+      "skill:tool-use-and-function-calling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "tool_use_and_function_calling_generated_06",
+    "query": "how do I apply tool use and function calling in practice for implementing external tool/API/database/code-execution access for an LLM or coding agent, including tool",
+    "expected_skill_ids": [
+      "skill:tool-use-and-function-calling"
+    ],
+    "required_skill_ids": [
+      "skill:tool-use-and-function-calling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "uncertainty_driven_development_generated_01",
+    "query": "uncertainty-driven-development",
+    "expected_skill_ids": [
+      "skill:uncertainty-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:uncertainty-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "uncertainty_driven_development_generated_02",
+    "query": "tell me about uncertainty driven development",
+    "expected_skill_ids": [
+      "skill:uncertainty-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:uncertainty-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "uncertainty_driven_development_generated_03",
+    "query": "when should I use doubt-driven-development",
+    "expected_skill_ids": [
+      "skill:uncertainty-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:uncertainty-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "uncertainty_driven_development_generated_04",
+    "query": "agentic patterns guidance for uncertainty driven development",
+    "expected_skill_ids": [
+      "skill:uncertainty-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:uncertainty-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "uncertainty_driven_development_generated_05",
+    "query": "uncertainty driven development operating procedure a high-stakes, unfamiliar or overconfident decision should be challenged before implementation proceeds",
+    "expected_skill_ids": [
+      "skill:uncertainty-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:uncertainty-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "uncertainty_driven_development_generated_06",
+    "query": "how do I apply uncertainty driven development in practice for a high-stakes, unfamiliar or overconfident decision should be challenged before implementation proceeds",
+    "expected_skill_ids": [
+      "skill:uncertainty-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:uncertainty-driven-development"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "business_capability_modeling_generated_01",
+    "query": "business-capability-modeling",
+    "expected_skill_ids": [
+      "skill:business-capability-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:business-capability-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "business_capability_modeling_generated_02",
+    "query": "tell me about business capability modeling",
+    "expected_skill_ids": [
+      "skill:business-capability-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:business-capability-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "business_capability_modeling_generated_03",
+    "query": "when should I use business-capability-modelling",
+    "expected_skill_ids": [
+      "skill:business-capability-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:business-capability-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "business_capability_modeling_generated_04",
+    "query": "business architecture guidance for business capability modeling",
+    "expected_skill_ids": [
+      "skill:business-capability-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:business-capability-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "business_capability_modeling_generated_05",
+    "query": "business capability modeling operating procedure Models stable business capabilities, levels, ownership, maturity and heatmaps. mapping organisational abilities,",
+    "expected_skill_ids": [
+      "skill:business-capability-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:business-capability-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "business_capability_modeling_generated_06",
+    "query": "how do I apply business capability modeling in practice for Models stable business capabilities, levels, ownership, maturity and heatmaps. mapping organisational abilities,",
+    "expected_skill_ids": [
+      "skill:business-capability-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:business-capability-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "business_information_concept_modeling_generated_01",
+    "query": "business-information-concept-modeling",
+    "expected_skill_ids": [
+      "skill:business-information-concept-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:business-information-concept-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "business_information_concept_modeling_generated_02",
+    "query": "tell me about business information concept modeling",
+    "expected_skill_ids": [
+      "skill:business-information-concept-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:business-information-concept-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "business_information_concept_modeling_generated_03",
+    "query": "when should I use business-information-concept-modelling",
+    "expected_skill_ids": [
+      "skill:business-information-concept-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:business-information-concept-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "business_information_concept_modeling_generated_04",
+    "query": "business architecture guidance for business information concept modeling",
+    "expected_skill_ids": [
+      "skill:business-information-concept-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:business-information-concept-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "business_information_concept_modeling_generated_05",
+    "query": "business information concept modeling operating procedure Derives business concepts and relationships from capabilities, value streams and processes. linking",
+    "expected_skill_ids": [
+      "skill:business-information-concept-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:business-information-concept-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "business_information_concept_modeling_generated_06",
+    "query": "how do I apply business information concept modeling in practice for Derives business concepts and relationships from capabilities, value streams and processes. linking",
+    "expected_skill_ids": [
+      "skill:business-information-concept-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:business-information-concept-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "capability_maturity_assessment_generated_01",
+    "query": "capability-maturity-assessment",
+    "expected_skill_ids": [
+      "skill:capability-maturity-assessment"
+    ],
+    "required_skill_ids": [
+      "skill:capability-maturity-assessment"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "capability_maturity_assessment_generated_02",
+    "query": "tell me about capability maturity assessment",
+    "expected_skill_ids": [
+      "skill:capability-maturity-assessment"
+    ],
+    "required_skill_ids": [
+      "skill:capability-maturity-assessment"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "capability_maturity_assessment_generated_03",
+    "query": "when should I use capability maturity assessment",
+    "expected_skill_ids": [
+      "skill:capability-maturity-assessment"
+    ],
+    "required_skill_ids": [
+      "skill:capability-maturity-assessment"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "capability_maturity_assessment_generated_04",
+    "query": "business architecture guidance for capability maturity assessment",
+    "expected_skill_ids": [
+      "skill:capability-maturity-assessment"
+    ],
+    "required_skill_ids": [
+      "skill:capability-maturity-assessment"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "capability_maturity_assessment_generated_05",
+    "query": "capability maturity assessment operating procedure Assesses current and target maturity, gaps, risks and roadmap priorities. prioritising capability",
+    "expected_skill_ids": [
+      "skill:capability-maturity-assessment"
+    ],
+    "required_skill_ids": [
+      "skill:capability-maturity-assessment"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "capability_maturity_assessment_generated_06",
+    "query": "how do I apply capability maturity assessment in practice for Assesses current and target maturity, gaps, risks and roadmap priorities. prioritising capability",
+    "expected_skill_ids": [
+      "skill:capability-maturity-assessment"
+    ],
+    "required_skill_ids": [
+      "skill:capability-maturity-assessment"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "operating_model_design_generated_01",
+    "query": "operating-model-design",
+    "expected_skill_ids": [
+      "skill:operating-model-design"
+    ],
+    "required_skill_ids": [
+      "skill:operating-model-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "operating_model_design_generated_02",
+    "query": "tell me about operating model design",
+    "expected_skill_ids": [
+      "skill:operating-model-design"
+    ],
+    "required_skill_ids": [
+      "skill:operating-model-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "operating_model_design_generated_03",
+    "query": "when should I use operating model design",
+    "expected_skill_ids": [
+      "skill:operating-model-design"
+    ],
+    "required_skill_ids": [
+      "skill:operating-model-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "operating_model_design_generated_04",
+    "query": "business architecture guidance for operating model design",
+    "expected_skill_ids": [
+      "skill:operating-model-design"
+    ],
+    "required_skill_ids": [
+      "skill:operating-model-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "operating_model_design_generated_05",
+    "query": "operating model design operating procedure Designs how people, process, technology, data, governance and delivery align. defining operating",
+    "expected_skill_ids": [
+      "skill:operating-model-design"
+    ],
+    "required_skill_ids": [
+      "skill:operating-model-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "operating_model_design_generated_06",
+    "query": "how do I apply operating model design in practice for Designs how people, process, technology, data, governance and delivery align. defining operating",
+    "expected_skill_ids": [
+      "skill:operating-model-design"
+    ],
+    "required_skill_ids": [
+      "skill:operating-model-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "organization_and_role_design_generated_01",
+    "query": "organization-and-role-design",
+    "expected_skill_ids": [
+      "skill:organization-and-role-design"
+    ],
+    "required_skill_ids": [
+      "skill:organization-and-role-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "organization_and_role_design_generated_02",
+    "query": "tell me about organization and role design",
+    "expected_skill_ids": [
+      "skill:organization-and-role-design"
+    ],
+    "required_skill_ids": [
+      "skill:organization-and-role-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "organization_and_role_design_generated_03",
+    "query": "when should I use organisation-and-role-design",
+    "expected_skill_ids": [
+      "skill:organization-and-role-design"
+    ],
+    "required_skill_ids": [
+      "skill:organization-and-role-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "organization_and_role_design_generated_04",
+    "query": "business architecture guidance for organization and role design",
+    "expected_skill_ids": [
+      "skill:organization-and-role-design"
+    ],
+    "required_skill_ids": [
+      "skill:organization-and-role-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "organization_and_role_design_generated_05",
+    "query": "organization and role design operating procedure Defines roles, decision rights, accountabilities, team boundaries and ownership. designing teams, RACI",
+    "expected_skill_ids": [
+      "skill:organization-and-role-design"
+    ],
+    "required_skill_ids": [
+      "skill:organization-and-role-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "organization_and_role_design_generated_06",
+    "query": "how do I apply organization and role design in practice for Defines roles, decision rights, accountabilities, team boundaries and ownership. designing teams, RACI",
+    "expected_skill_ids": [
+      "skill:organization-and-role-design"
+    ],
+    "required_skill_ids": [
+      "skill:organization-and-role-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "process_modeling_generated_01",
+    "query": "process-modeling",
+    "expected_skill_ids": [
+      "skill:process-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:process-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "process_modeling_generated_02",
+    "query": "tell me about process modeling",
+    "expected_skill_ids": [
+      "skill:process-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:process-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "process_modeling_generated_03",
+    "query": "when should I use process-modelling",
+    "expected_skill_ids": [
+      "skill:process-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:process-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "process_modeling_generated_04",
+    "query": "business architecture guidance for process modeling",
+    "expected_skill_ids": [
+      "skill:process-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:process-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "process_modeling_generated_05",
+    "query": "process modeling operating procedure Models operational steps, decisions, hand-offs, controls, exceptions and automation opportunities. documenting processes,",
+    "expected_skill_ids": [
+      "skill:process-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:process-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "process_modeling_generated_06",
+    "query": "how do I apply process modeling in practice for Models operational steps, decisions, hand-offs, controls, exceptions and automation opportunities. documenting processes,",
+    "expected_skill_ids": [
+      "skill:process-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:process-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "strategy_to_execution_traceability_generated_01",
+    "query": "strategy-to-execution-traceability",
+    "expected_skill_ids": [
+      "skill:strategy-to-execution-traceability"
+    ],
+    "required_skill_ids": [
+      "skill:strategy-to-execution-traceability"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "strategy_to_execution_traceability_generated_02",
+    "query": "tell me about strategy to execution traceability",
+    "expected_skill_ids": [
+      "skill:strategy-to-execution-traceability"
+    ],
+    "required_skill_ids": [
+      "skill:strategy-to-execution-traceability"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "strategy_to_execution_traceability_generated_03",
+    "query": "when should I use strategy-traceability",
+    "expected_skill_ids": [
+      "skill:strategy-to-execution-traceability"
+    ],
+    "required_skill_ids": [
+      "skill:strategy-to-execution-traceability"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "strategy_to_execution_traceability_generated_04",
+    "query": "business architecture guidance for strategy to execution traceability",
+    "expected_skill_ids": [
+      "skill:strategy-to-execution-traceability"
+    ],
+    "required_skill_ids": [
+      "skill:strategy-to-execution-traceability"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "strategy_to_execution_traceability_generated_05",
+    "query": "strategy to execution traceability operating procedure Traces objectives to outcomes, capabilities, initiatives, metrics and evidence. linking strategy to",
+    "expected_skill_ids": [
+      "skill:strategy-to-execution-traceability"
+    ],
+    "required_skill_ids": [
+      "skill:strategy-to-execution-traceability"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "strategy_to_execution_traceability_generated_06",
+    "query": "how do I apply strategy to execution traceability in practice for Traces objectives to outcomes, capabilities, initiatives, metrics and evidence. linking strategy to",
+    "expected_skill_ids": [
+      "skill:strategy-to-execution-traceability"
+    ],
+    "required_skill_ids": [
+      "skill:strategy-to-execution-traceability"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "value_stream_modeling_generated_01",
+    "query": "value-stream-modeling",
+    "expected_skill_ids": [
+      "skill:value-stream-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:value-stream-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "value_stream_modeling_generated_02",
+    "query": "tell me about value stream modeling",
+    "expected_skill_ids": [
+      "skill:value-stream-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:value-stream-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "value_stream_modeling_generated_03",
+    "query": "when should I use value-stream-modelling",
+    "expected_skill_ids": [
+      "skill:value-stream-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:value-stream-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "value_stream_modeling_generated_04",
+    "query": "business architecture guidance for value stream modeling",
+    "expected_skill_ids": [
+      "skill:value-stream-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:value-stream-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "value_stream_modeling_generated_05",
+    "query": "value stream modeling operating procedure Models value from trigger to outcome across stakeholders, capabilities and systems. mapping",
+    "expected_skill_ids": [
+      "skill:value-stream-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:value-stream-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "value_stream_modeling_generated_06",
+    "query": "how do I apply value stream modeling in practice for Models value from trigger to outcome across stakeholders, capabilities and systems. mapping",
+    "expected_skill_ids": [
+      "skill:value-stream-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:value-stream-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "conceptual_data_modeling_generated_01",
+    "query": "conceptual-data-modeling",
+    "expected_skill_ids": [
+      "skill:conceptual-data-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:conceptual-data-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "conceptual_data_modeling_generated_02",
+    "query": "tell me about conceptual data modeling",
+    "expected_skill_ids": [
+      "skill:conceptual-data-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:conceptual-data-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "conceptual_data_modeling_generated_03",
+    "query": "when should I use conceptual-data-modelling",
+    "expected_skill_ids": [
+      "skill:conceptual-data-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:conceptual-data-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "conceptual_data_modeling_generated_04",
+    "query": "data architecture guidance for conceptual data modeling",
+    "expected_skill_ids": [
+      "skill:conceptual-data-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:conceptual-data-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "conceptual_data_modeling_generated_05",
+    "query": "conceptual data modeling operating procedure Identifies business concepts, entities and relationships without premature physical design. starting data",
+    "expected_skill_ids": [
+      "skill:conceptual-data-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:conceptual-data-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "conceptual_data_modeling_generated_06",
+    "query": "how do I apply conceptual data modeling in practice for Identifies business concepts, entities and relationships without premature physical design. starting data",
+    "expected_skill_ids": [
+      "skill:conceptual-data-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:conceptual-data-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_contract_design_generated_01",
+    "query": "data-contract-design",
+    "expected_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_contract_design_generated_02",
+    "query": "tell me about data contract design",
+    "expected_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_contract_design_generated_03",
+    "query": "when should I use data contract design",
+    "expected_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_contract_design_generated_04",
+    "query": "data architecture guidance for data contract design",
+    "expected_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_contract_design_generated_05",
+    "query": "data contract design operating procedure Defines producer-consumer contracts for schema, semantics, quality, compatibility and operations. formalising API,",
+    "expected_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_contract_design_generated_06",
+    "query": "how do I apply data contract design in practice for Defines producer-consumer contracts for schema, semantics, quality, compatibility and operations. formalising API,",
+    "expected_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_governance_and_quality_generated_01",
+    "query": "data-governance-and-quality",
+    "expected_skill_ids": [
+      "skill:data-governance-and-quality"
+    ],
+    "required_skill_ids": [
+      "skill:data-governance-and-quality"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_governance_and_quality_generated_02",
+    "query": "tell me about data governance and quality",
+    "expected_skill_ids": [
+      "skill:data-governance-and-quality"
+    ],
+    "required_skill_ids": [
+      "skill:data-governance-and-quality"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_governance_and_quality_generated_03",
+    "query": "when should I use data governance and quality",
+    "expected_skill_ids": [
+      "skill:data-governance-and-quality"
+    ],
+    "required_skill_ids": [
+      "skill:data-governance-and-quality"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_governance_and_quality_generated_04",
+    "query": "data architecture guidance for data governance and quality",
+    "expected_skill_ids": [
+      "skill:data-governance-and-quality"
+    ],
+    "required_skill_ids": [
+      "skill:data-governance-and-quality"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_governance_and_quality_generated_05",
+    "query": "data governance and quality operating procedure Defines ownership, policies, quality rules, controls, monitoring and remediation. establishing data governance,",
+    "expected_skill_ids": [
+      "skill:data-governance-and-quality"
+    ],
+    "required_skill_ids": [
+      "skill:data-governance-and-quality"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_governance_and_quality_generated_06",
+    "query": "how do I apply data governance and quality in practice for Defines ownership, policies, quality rules, controls, monitoring and remediation. establishing data governance,",
+    "expected_skill_ids": [
+      "skill:data-governance-and-quality"
+    ],
+    "required_skill_ids": [
+      "skill:data-governance-and-quality"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_integration_and_interoperability_generated_01",
+    "query": "data-integration-and-interoperability",
+    "expected_skill_ids": [
+      "skill:data-integration-and-interoperability"
+    ],
+    "required_skill_ids": [
+      "skill:data-integration-and-interoperability"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_integration_and_interoperability_generated_02",
+    "query": "tell me about data integration and interoperability",
+    "expected_skill_ids": [
+      "skill:data-integration-and-interoperability"
+    ],
+    "required_skill_ids": [
+      "skill:data-integration-and-interoperability"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_integration_and_interoperability_generated_03",
+    "query": "when should I use data integration and interoperability",
+    "expected_skill_ids": [
+      "skill:data-integration-and-interoperability"
+    ],
+    "required_skill_ids": [
+      "skill:data-integration-and-interoperability"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_integration_and_interoperability_generated_04",
+    "query": "data architecture guidance for data integration and interoperability",
+    "expected_skill_ids": [
+      "skill:data-integration-and-interoperability"
+    ],
+    "required_skill_ids": [
+      "skill:data-integration-and-interoperability"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_integration_and_interoperability_generated_05",
+    "query": "data integration and interoperability operating procedure Designs batch, API, event, CDC, semantic and file-based integration patterns. connecting systems,",
+    "expected_skill_ids": [
+      "skill:data-integration-and-interoperability"
+    ],
+    "required_skill_ids": [
+      "skill:data-integration-and-interoperability"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_integration_and_interoperability_generated_06",
+    "query": "how do I apply data integration and interoperability in practice for Designs batch, API, event, CDC, semantic and file-based integration patterns. connecting systems,",
+    "expected_skill_ids": [
+      "skill:data-integration-and-interoperability"
+    ],
+    "required_skill_ids": [
+      "skill:data-integration-and-interoperability"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_lifecycle_and_retention_management_generated_01",
+    "query": "data-lifecycle-and-retention-management",
+    "expected_skill_ids": [
+      "skill:data-lifecycle-and-retention-management"
+    ],
+    "required_skill_ids": [
+      "skill:data-lifecycle-and-retention-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_lifecycle_and_retention_management_generated_02",
+    "query": "tell me about data lifecycle and retention management",
+    "expected_skill_ids": [
+      "skill:data-lifecycle-and-retention-management"
+    ],
+    "required_skill_ids": [
+      "skill:data-lifecycle-and-retention-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_lifecycle_and_retention_management_generated_03",
+    "query": "when should I use data lifecycle and retention management",
+    "expected_skill_ids": [
+      "skill:data-lifecycle-and-retention-management"
+    ],
+    "required_skill_ids": [
+      "skill:data-lifecycle-and-retention-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_lifecycle_and_retention_management_generated_04",
+    "query": "data architecture guidance for data lifecycle and retention management",
+    "expected_skill_ids": [
+      "skill:data-lifecycle-and-retention-management"
+    ],
+    "required_skill_ids": [
+      "skill:data-lifecycle-and-retention-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_lifecycle_and_retention_management_generated_05",
+    "query": "data lifecycle and retention management operating procedure Designs lifecycle, retention, archival, deletion, legal hold and disposal controls. defining data",
+    "expected_skill_ids": [
+      "skill:data-lifecycle-and-retention-management"
+    ],
+    "required_skill_ids": [
+      "skill:data-lifecycle-and-retention-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_lifecycle_and_retention_management_generated_06",
+    "query": "how do I apply data lifecycle and retention management in practice for Designs lifecycle, retention, archival, deletion, legal hold and disposal controls. defining data",
+    "expected_skill_ids": [
+      "skill:data-lifecycle-and-retention-management"
+    ],
+    "required_skill_ids": [
+      "skill:data-lifecycle-and-retention-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_lineage_and_provenance_generated_01",
+    "query": "data-lineage-and-provenance",
+    "expected_skill_ids": [
+      "skill:data-lineage-and-provenance"
+    ],
+    "required_skill_ids": [
+      "skill:data-lineage-and-provenance"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_lineage_and_provenance_generated_02",
+    "query": "tell me about data lineage and provenance",
+    "expected_skill_ids": [
+      "skill:data-lineage-and-provenance"
+    ],
+    "required_skill_ids": [
+      "skill:data-lineage-and-provenance"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_lineage_and_provenance_generated_03",
+    "query": "when should I use data lineage and provenance",
+    "expected_skill_ids": [
+      "skill:data-lineage-and-provenance"
+    ],
+    "required_skill_ids": [
+      "skill:data-lineage-and-provenance"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_lineage_and_provenance_generated_04",
+    "query": "data architecture guidance for data lineage and provenance",
+    "expected_skill_ids": [
+      "skill:data-lineage-and-provenance"
+    ],
+    "required_skill_ids": [
+      "skill:data-lineage-and-provenance"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_lineage_and_provenance_generated_05",
+    "query": "data lineage and provenance operating procedure Tracks source-to-target lineage, transformation history, evidence, ownership and provenance. documenting data flows,",
+    "expected_skill_ids": [
+      "skill:data-lineage-and-provenance"
+    ],
+    "required_skill_ids": [
+      "skill:data-lineage-and-provenance"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_lineage_and_provenance_generated_06",
+    "query": "how do I apply data lineage and provenance in practice for Tracks source-to-target lineage, transformation history, evidence, ownership and provenance. documenting data flows,",
+    "expected_skill_ids": [
+      "skill:data-lineage-and-provenance"
+    ],
+    "required_skill_ids": [
+      "skill:data-lineage-and-provenance"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_product_design_generated_01",
+    "query": "data-product-design",
+    "expected_skill_ids": [
+      "skill:data-product-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-product-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_product_design_generated_02",
+    "query": "tell me about data product design",
+    "expected_skill_ids": [
+      "skill:data-product-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-product-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_product_design_generated_03",
+    "query": "when should I use data product design",
+    "expected_skill_ids": [
+      "skill:data-product-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-product-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_product_design_generated_04",
+    "query": "data architecture guidance for data product design",
+    "expected_skill_ids": [
+      "skill:data-product-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-product-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_product_design_generated_05",
+    "query": "data product design operating procedure Designs governed, domain-owned, discoverable and reusable data products. packaging datasets as products,",
+    "expected_skill_ids": [
+      "skill:data-product-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-product-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_product_design_generated_06",
+    "query": "how do I apply data product design in practice for Designs governed, domain-owned, discoverable and reusable data products. packaging datasets as products,",
+    "expected_skill_ids": [
+      "skill:data-product-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-product-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_security_and_privacy_architecture_generated_01",
+    "query": "data-security-and-privacy-architecture",
+    "expected_skill_ids": [
+      "skill:data-security-and-privacy-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:data-security-and-privacy-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_security_and_privacy_architecture_generated_02",
+    "query": "tell me about data security and privacy architecture",
+    "expected_skill_ids": [
+      "skill:data-security-and-privacy-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:data-security-and-privacy-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_security_and_privacy_architecture_generated_03",
+    "query": "when should I use data security and privacy architecture",
+    "expected_skill_ids": [
+      "skill:data-security-and-privacy-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:data-security-and-privacy-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_security_and_privacy_architecture_generated_04",
+    "query": "data architecture guidance for data security and privacy architecture",
+    "expected_skill_ids": [
+      "skill:data-security-and-privacy-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:data-security-and-privacy-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_security_and_privacy_architecture_generated_05",
+    "query": "data security and privacy architecture operating procedure Designs classification, access, masking, privacy, entitlement and sensitive-data controls. securing shared data,",
+    "expected_skill_ids": [
+      "skill:data-security-and-privacy-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:data-security-and-privacy-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_security_and_privacy_architecture_generated_06",
+    "query": "how do I apply data security and privacy architecture in practice for Designs classification, access, masking, privacy, entitlement and sensitive-data controls. securing shared data,",
+    "expected_skill_ids": [
+      "skill:data-security-and-privacy-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:data-security-and-privacy-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "knowledge_graph_rag_generated_01",
+    "query": "knowledge-graph-rag",
+    "expected_skill_ids": [
+      "skill:knowledge-graph-rag"
+    ],
+    "required_skill_ids": [
+      "skill:knowledge-graph-rag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "knowledge_graph_rag_generated_02",
+    "query": "tell me about knowledge graph rag",
+    "expected_skill_ids": [
+      "skill:knowledge-graph-rag"
+    ],
+    "required_skill_ids": [
+      "skill:knowledge-graph-rag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "knowledge_graph_rag_generated_03",
+    "query": "when should I use kg-enabled-rag",
+    "expected_skill_ids": [
+      "skill:knowledge-graph-rag"
+    ],
+    "required_skill_ids": [
+      "skill:knowledge-graph-rag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "knowledge_graph_rag_generated_04",
+    "query": "data architecture guidance for knowledge graph rag",
+    "expected_skill_ids": [
+      "skill:knowledge-graph-rag"
+    ],
+    "required_skill_ids": [
+      "skill:knowledge-graph-rag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "knowledge_graph_rag_generated_05",
+    "query": "knowledge graph rag operating procedure Builds, refactors and hardens Neo4j-native KG-enabled RAG with LangGraph, hybrid retrieval, text-to-Cypher,",
+    "expected_skill_ids": [
+      "skill:knowledge-graph-rag"
+    ],
+    "required_skill_ids": [
+      "skill:knowledge-graph-rag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "knowledge_graph_rag_generated_06",
+    "query": "how do I apply knowledge graph rag in practice for Builds, refactors and hardens Neo4j-native KG-enabled RAG with LangGraph, hybrid retrieval, text-to-Cypher,",
+    "expected_skill_ids": [
+      "skill:knowledge-graph-rag"
+    ],
+    "required_skill_ids": [
+      "skill:knowledge-graph-rag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "lakehouse_and_medallion_architecture_generated_01",
+    "query": "lakehouse-and-medallion-architecture",
+    "expected_skill_ids": [
+      "skill:lakehouse-and-medallion-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:lakehouse-and-medallion-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "lakehouse_and_medallion_architecture_generated_02",
+    "query": "tell me about lakehouse and medallion architecture",
+    "expected_skill_ids": [
+      "skill:lakehouse-and-medallion-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:lakehouse-and-medallion-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "lakehouse_and_medallion_architecture_generated_03",
+    "query": "when should I use lakehouse and medallion architecture",
+    "expected_skill_ids": [
+      "skill:lakehouse-and-medallion-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:lakehouse-and-medallion-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "lakehouse_and_medallion_architecture_generated_04",
+    "query": "data architecture guidance for lakehouse and medallion architecture",
+    "expected_skill_ids": [
+      "skill:lakehouse-and-medallion-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:lakehouse-and-medallion-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "lakehouse_and_medallion_architecture_generated_05",
+    "query": "lakehouse and medallion architecture operating procedure Designs raw, quarantine, cleansed, refined and serving lakehouse layers. structuring medallion pipelines,",
+    "expected_skill_ids": [
+      "skill:lakehouse-and-medallion-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:lakehouse-and-medallion-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "lakehouse_and_medallion_architecture_generated_06",
+    "query": "how do I apply lakehouse and medallion architecture in practice for Designs raw, quarantine, cleansed, refined and serving lakehouse layers. structuring medallion pipelines,",
+    "expected_skill_ids": [
+      "skill:lakehouse-and-medallion-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:lakehouse-and-medallion-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "logical_data_modeling_generated_01",
+    "query": "logical-data-modeling",
+    "expected_skill_ids": [
+      "skill:logical-data-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:logical-data-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "logical_data_modeling_generated_02",
+    "query": "tell me about logical data modeling",
+    "expected_skill_ids": [
+      "skill:logical-data-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:logical-data-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "logical_data_modeling_generated_03",
+    "query": "when should I use logical-data-modelling",
+    "expected_skill_ids": [
+      "skill:logical-data-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:logical-data-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "logical_data_modeling_generated_04",
+    "query": "data architecture guidance for logical data modeling",
+    "expected_skill_ids": [
+      "skill:logical-data-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:logical-data-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "logical_data_modeling_generated_05",
+    "query": "logical data modeling operating procedure Defines logical entities, attributes, identifiers, relationships and constraints. translating conceptual models to",
+    "expected_skill_ids": [
+      "skill:logical-data-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:logical-data-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "logical_data_modeling_generated_06",
+    "query": "how do I apply logical data modeling in practice for Defines logical entities, attributes, identifiers, relationships and constraints. translating conceptual models to",
+    "expected_skill_ids": [
+      "skill:logical-data-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:logical-data-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "master_and_reference_data_management_generated_01",
+    "query": "master-and-reference-data-management",
+    "expected_skill_ids": [
+      "skill:master-and-reference-data-management"
+    ],
+    "required_skill_ids": [
+      "skill:master-and-reference-data-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "master_and_reference_data_management_generated_02",
+    "query": "tell me about master and reference data management",
+    "expected_skill_ids": [
+      "skill:master-and-reference-data-management"
+    ],
+    "required_skill_ids": [
+      "skill:master-and-reference-data-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "master_and_reference_data_management_generated_03",
+    "query": "when should I use master and reference data management",
+    "expected_skill_ids": [
+      "skill:master-and-reference-data-management"
+    ],
+    "required_skill_ids": [
+      "skill:master-and-reference-data-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "master_and_reference_data_management_generated_04",
+    "query": "data architecture guidance for master and reference data management",
+    "expected_skill_ids": [
+      "skill:master-and-reference-data-management"
+    ],
+    "required_skill_ids": [
+      "skill:master-and-reference-data-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "master_and_reference_data_management_generated_05",
+    "query": "master and reference data management operating procedure Designs master data, reference data, identifiers, hierarchies, survivorship and stewardship. defining golden",
+    "expected_skill_ids": [
+      "skill:master-and-reference-data-management"
+    ],
+    "required_skill_ids": [
+      "skill:master-and-reference-data-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "master_and_reference_data_management_generated_06",
+    "query": "how do I apply master and reference data management in practice for Designs master data, reference data, identifiers, hierarchies, survivorship and stewardship. defining golden",
+    "expected_skill_ids": [
+      "skill:master-and-reference-data-management"
+    ],
+    "required_skill_ids": [
+      "skill:master-and-reference-data-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "metadata_management_generated_01",
+    "query": "metadata-management",
+    "expected_skill_ids": [
+      "skill:metadata-management"
+    ],
+    "required_skill_ids": [
+      "skill:metadata-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "metadata_management_generated_02",
+    "query": "tell me about metadata management",
+    "expected_skill_ids": [
+      "skill:metadata-management"
+    ],
+    "required_skill_ids": [
+      "skill:metadata-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "metadata_management_generated_03",
+    "query": "when should I use metadata management",
+    "expected_skill_ids": [
+      "skill:metadata-management"
+    ],
+    "required_skill_ids": [
+      "skill:metadata-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "metadata_management_generated_04",
+    "query": "data architecture guidance for metadata management",
+    "expected_skill_ids": [
+      "skill:metadata-management"
+    ],
+    "required_skill_ids": [
+      "skill:metadata-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "metadata_management_generated_05",
+    "query": "metadata management operating procedure Designs metadata for discoverability, governance, quality, lineage and operations. building catalogues, data",
+    "expected_skill_ids": [
+      "skill:metadata-management"
+    ],
+    "required_skill_ids": [
+      "skill:metadata-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "metadata_management_generated_06",
+    "query": "how do I apply metadata management in practice for Designs metadata for discoverability, governance, quality, lineage and operations. building catalogues, data",
+    "expected_skill_ids": [
+      "skill:metadata-management"
+    ],
+    "required_skill_ids": [
+      "skill:metadata-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ontology_and_knowledge_graph_modeling_generated_01",
+    "query": "ontology-and-knowledge-graph-modeling",
+    "expected_skill_ids": [
+      "skill:ontology-and-knowledge-graph-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:ontology-and-knowledge-graph-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ontology_and_knowledge_graph_modeling_generated_02",
+    "query": "tell me about ontology and knowledge graph modeling",
+    "expected_skill_ids": [
+      "skill:ontology-and-knowledge-graph-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:ontology-and-knowledge-graph-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ontology_and_knowledge_graph_modeling_generated_03",
+    "query": "when should I use ontology-and-knowledge-graph-modelling",
+    "expected_skill_ids": [
+      "skill:ontology-and-knowledge-graph-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:ontology-and-knowledge-graph-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ontology_and_knowledge_graph_modeling_generated_04",
+    "query": "data architecture guidance for ontology and knowledge graph modeling",
+    "expected_skill_ids": [
+      "skill:ontology-and-knowledge-graph-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:ontology-and-knowledge-graph-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ontology_and_knowledge_graph_modeling_generated_05",
+    "query": "ontology and knowledge graph modeling operating procedure Designs ontology-driven knowledge graphs for explainable KG-RAG. modelling semantic graphs, ontologies, or",
+    "expected_skill_ids": [
+      "skill:ontology-and-knowledge-graph-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:ontology-and-knowledge-graph-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ontology_and_knowledge_graph_modeling_generated_06",
+    "query": "how do I apply ontology and knowledge graph modeling in practice for Designs ontology-driven knowledge graphs for explainable KG-RAG. modelling semantic graphs, ontologies, or",
+    "expected_skill_ids": [
+      "skill:ontology-and-knowledge-graph-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:ontology-and-knowledge-graph-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "bdd_practice_generated_01",
+    "query": "bdd-practice",
+    "expected_skill_ids": [
+      "skill:bdd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:bdd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "bdd_practice_generated_02",
+    "query": "tell me about bdd practice",
+    "expected_skill_ids": [
+      "skill:bdd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:bdd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "bdd_practice_generated_03",
+    "query": "when should I use behavior-driven-development",
+    "expected_skill_ids": [
+      "skill:bdd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:bdd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "bdd_practice_generated_04",
+    "query": "engineering practices guidance for bdd practice",
+    "expected_skill_ids": [
+      "skill:bdd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:bdd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "bdd_practice_generated_05",
+    "query": "bdd practice operating procedure Applies behaviour-driven development with business-readable scenarios linked to executable acceptance tests. defining",
+    "expected_skill_ids": [
+      "skill:bdd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:bdd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "bdd_practice_generated_06",
+    "query": "how do I apply bdd practice in practice for Applies behaviour-driven development with business-readable scenarios linked to executable acceptance tests. defining",
+    "expected_skill_ids": [
+      "skill:bdd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:bdd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "code_review_and_quality_generated_01",
+    "query": "code-review-and-quality",
+    "expected_skill_ids": [
+      "skill:code-review-and-quality"
+    ],
+    "required_skill_ids": [
+      "skill:code-review-and-quality"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "code_review_and_quality_generated_02",
+    "query": "tell me about code review and quality",
+    "expected_skill_ids": [
+      "skill:code-review-and-quality"
+    ],
+    "required_skill_ids": [
+      "skill:code-review-and-quality"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "code_review_and_quality_generated_03",
+    "query": "when should I use code review and quality",
+    "expected_skill_ids": [
+      "skill:code-review-and-quality"
+    ],
+    "required_skill_ids": [
+      "skill:code-review-and-quality"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "code_review_and_quality_generated_04",
+    "query": "engineering practices guidance for code review and quality",
+    "expected_skill_ids": [
+      "skill:code-review-and-quality"
+    ],
+    "required_skill_ids": [
+      "skill:code-review-and-quality"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "code_review_and_quality_generated_05",
+    "query": "code review and quality operating procedure reviewing code before merge to assess correctness, tests, maintainability, security and user",
+    "expected_skill_ids": [
+      "skill:code-review-and-quality"
+    ],
+    "required_skill_ids": [
+      "skill:code-review-and-quality"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "code_review_and_quality_generated_06",
+    "query": "how do I apply code review and quality in practice for reviewing code before merge to assess correctness, tests, maintainability, security and user",
+    "expected_skill_ids": [
+      "skill:code-review-and-quality"
+    ],
+    "required_skill_ids": [
+      "skill:code-review-and-quality"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ddd_practice_generated_01",
+    "query": "ddd-practice",
+    "expected_skill_ids": [
+      "skill:ddd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:ddd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ddd_practice_generated_02",
+    "query": "tell me about ddd practice",
+    "expected_skill_ids": [
+      "skill:ddd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:ddd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ddd_practice_generated_03",
+    "query": "when should I use domain-driven-design",
+    "expected_skill_ids": [
+      "skill:ddd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:ddd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ddd_practice_generated_04",
+    "query": "engineering practices guidance for ddd practice",
+    "expected_skill_ids": [
+      "skill:ddd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:ddd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ddd_practice_generated_05",
+    "query": "ddd practice operating procedure Applies domain-driven design with bounded contexts, aggregates, and ubiquitous language. modelling complex",
+    "expected_skill_ids": [
+      "skill:ddd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:ddd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ddd_practice_generated_06",
+    "query": "how do I apply ddd practice in practice for Applies domain-driven design with bounded contexts, aggregates, and ubiquitous language. modelling complex",
+    "expected_skill_ids": [
+      "skill:ddd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:ddd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "dry_principle_generated_01",
+    "query": "dry-principle",
+    "expected_skill_ids": [
+      "skill:dry-principle"
+    ],
+    "required_skill_ids": [
+      "skill:dry-principle"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "dry_principle_generated_02",
+    "query": "tell me about dry principle",
+    "expected_skill_ids": [
+      "skill:dry-principle"
+    ],
+    "required_skill_ids": [
+      "skill:dry-principle"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "dry_principle_generated_03",
+    "query": "when should I use dont-repeat-yourself",
+    "expected_skill_ids": [
+      "skill:dry-principle"
+    ],
+    "required_skill_ids": [
+      "skill:dry-principle"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "dry_principle_generated_04",
+    "query": "engineering practices guidance for dry principle",
+    "expected_skill_ids": [
+      "skill:dry-principle"
+    ],
+    "required_skill_ids": [
+      "skill:dry-principle"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "dry_principle_generated_05",
+    "query": "dry principle operating procedure Applies DRY to remove harmful duplication while avoiding misleading abstraction. refactoring repeated",
+    "expected_skill_ids": [
+      "skill:dry-principle"
+    ],
+    "required_skill_ids": [
+      "skill:dry-principle"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "dry_principle_generated_06",
+    "query": "how do I apply dry principle in practice for Applies DRY to remove harmful duplication while avoiding misleading abstraction. refactoring repeated",
+    "expected_skill_ids": [
+      "skill:dry-principle"
+    ],
+    "required_skill_ids": [
+      "skill:dry-principle"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "git_workflow_and_versioning_generated_01",
+    "query": "git-workflow-and-versioning",
+    "expected_skill_ids": [
+      "skill:git-workflow-and-versioning"
+    ],
+    "required_skill_ids": [
+      "skill:git-workflow-and-versioning"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "git_workflow_and_versioning_generated_02",
+    "query": "tell me about git workflow and versioning",
+    "expected_skill_ids": [
+      "skill:git-workflow-and-versioning"
+    ],
+    "required_skill_ids": [
+      "skill:git-workflow-and-versioning"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "git_workflow_and_versioning_generated_03",
+    "query": "when should I use git workflow and versioning",
+    "expected_skill_ids": [
+      "skill:git-workflow-and-versioning"
+    ],
+    "required_skill_ids": [
+      "skill:git-workflow-and-versioning"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "git_workflow_and_versioning_generated_04",
+    "query": "engineering practices guidance for git workflow and versioning",
+    "expected_skill_ids": [
+      "skill:git-workflow-and-versioning"
+    ],
+    "required_skill_ids": [
+      "skill:git-workflow-and-versioning"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "git_workflow_and_versioning_generated_05",
+    "query": "git workflow and versioning operating procedure making code changes that should stay atomic, reversible and easy to review",
+    "expected_skill_ids": [
+      "skill:git-workflow-and-versioning"
+    ],
+    "required_skill_ids": [
+      "skill:git-workflow-and-versioning"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "git_workflow_and_versioning_generated_06",
+    "query": "how do I apply git workflow and versioning in practice for making code changes that should stay atomic, reversible and easy to review",
+    "expected_skill_ids": [
+      "skill:git-workflow-and-versioning"
+    ],
+    "required_skill_ids": [
+      "skill:git-workflow-and-versioning"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "kiss_principle_generated_01",
+    "query": "kiss-principle",
+    "expected_skill_ids": [
+      "skill:kiss-principle"
+    ],
+    "required_skill_ids": [
+      "skill:kiss-principle"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "kiss_principle_generated_02",
+    "query": "tell me about kiss principle",
+    "expected_skill_ids": [
+      "skill:kiss-principle"
+    ],
+    "required_skill_ids": [
+      "skill:kiss-principle"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "kiss_principle_generated_03",
+    "query": "when should I use keep-it-simple",
+    "expected_skill_ids": [
+      "skill:kiss-principle"
+    ],
+    "required_skill_ids": [
+      "skill:kiss-principle"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "kiss_principle_generated_04",
+    "query": "engineering practices guidance for kiss principle",
+    "expected_skill_ids": [
+      "skill:kiss-principle"
+    ],
+    "required_skill_ids": [
+      "skill:kiss-principle"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "kiss_principle_generated_05",
+    "query": "kiss principle operating procedure Applies KISS to simplify code, architecture, workflows and agent designs without losing",
+    "expected_skill_ids": [
+      "skill:kiss-principle"
+    ],
+    "required_skill_ids": [
+      "skill:kiss-principle"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "kiss_principle_generated_06",
+    "query": "how do I apply kiss principle in practice for Applies KISS to simplify code, architecture, workflows and agent designs without losing",
+    "expected_skill_ids": [
+      "skill:kiss-principle"
+    ],
+    "required_skill_ids": [
+      "skill:kiss-principle"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "solid_principles_generated_01",
+    "query": "solid-principles",
+    "expected_skill_ids": [
+      "skill:solid-principles"
+    ],
+    "required_skill_ids": [
+      "skill:solid-principles"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "solid_principles_generated_02",
+    "query": "tell me about solid principles",
+    "expected_skill_ids": [
+      "skill:solid-principles"
+    ],
+    "required_skill_ids": [
+      "skill:solid-principles"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "solid_principles_generated_03",
+    "query": "when should I use solid-design",
+    "expected_skill_ids": [
+      "skill:solid-principles"
+    ],
+    "required_skill_ids": [
+      "skill:solid-principles"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "solid_principles_generated_04",
+    "query": "engineering practices guidance for solid principles",
+    "expected_skill_ids": [
+      "skill:solid-principles"
+    ],
+    "required_skill_ids": [
+      "skill:solid-principles"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "solid_principles_generated_05",
+    "query": "solid principles operating procedure Applies SOLID for modularity, dependency boundaries and testability without over-engineering. refactoring modules,",
+    "expected_skill_ids": [
+      "skill:solid-principles"
+    ],
+    "required_skill_ids": [
+      "skill:solid-principles"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "solid_principles_generated_06",
+    "query": "how do I apply solid principles in practice for Applies SOLID for modularity, dependency boundaries and testability without over-engineering. refactoring modules,",
+    "expected_skill_ids": [
+      "skill:solid-principles"
+    ],
+    "required_skill_ids": [
+      "skill:solid-principles"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "tdd_practice_generated_01",
+    "query": "tdd-practice",
+    "expected_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "tdd_practice_generated_02",
+    "query": "tell me about tdd practice",
+    "expected_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "tdd_practice_generated_03",
+    "query": "when should I use test-driven-development",
+    "expected_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "tdd_practice_generated_04",
+    "query": "engineering practices guidance for tdd practice",
+    "expected_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "tdd_practice_generated_05",
+    "query": "tdd practice operating procedure Applies TDD: failing test first, smallest passing change, refactor under test protection.",
+    "expected_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "tdd_practice_generated_06",
+    "query": "how do I apply tdd practice in practice for Applies TDD: failing test first, smallest passing change, refactor under test protection.",
+    "expected_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "cdc_and_source_to_stream_ingestion_generated_01",
+    "query": "cdc-and-source-to-stream-ingestion",
+    "expected_skill_ids": [
+      "skill:cdc-and-source-to-stream-ingestion"
+    ],
+    "required_skill_ids": [
+      "skill:cdc-and-source-to-stream-ingestion"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "cdc_and_source_to_stream_ingestion_generated_02",
+    "query": "tell me about cdc and source to stream ingestion",
+    "expected_skill_ids": [
+      "skill:cdc-and-source-to-stream-ingestion"
+    ],
+    "required_skill_ids": [
+      "skill:cdc-and-source-to-stream-ingestion"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "cdc_and_source_to_stream_ingestion_generated_03",
+    "query": "when should I use cdc and source to stream ingestion",
+    "expected_skill_ids": [
+      "skill:cdc-and-source-to-stream-ingestion"
+    ],
+    "required_skill_ids": [
+      "skill:cdc-and-source-to-stream-ingestion"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "cdc_and_source_to_stream_ingestion_generated_04",
+    "query": "event driven and real time data guidance for cdc and source to stream ingestion",
+    "expected_skill_ids": [
+      "skill:cdc-and-source-to-stream-ingestion"
+    ],
+    "required_skill_ids": [
+      "skill:cdc-and-source-to-stream-ingestion"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "cdc_and_source_to_stream_ingestion_generated_05",
+    "query": "cdc and source to stream ingestion operating procedure Designs CDC and streaming ingestion from operational sources to event streams. capturing",
+    "expected_skill_ids": [
+      "skill:cdc-and-source-to-stream-ingestion"
+    ],
+    "required_skill_ids": [
+      "skill:cdc-and-source-to-stream-ingestion"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "cdc_and_source_to_stream_ingestion_generated_06",
+    "query": "how do I apply cdc and source to stream ingestion in practice for Designs CDC and streaming ingestion from operational sources to event streams. capturing",
+    "expected_skill_ids": [
+      "skill:cdc-and-source-to-stream-ingestion"
+    ],
+    "required_skill_ids": [
+      "skill:cdc-and-source-to-stream-ingestion"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_driven_architecture_generated_01",
+    "query": "event-driven-architecture",
+    "expected_skill_ids": [
+      "skill:event-driven-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:event-driven-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_driven_architecture_generated_02",
+    "query": "tell me about event driven architecture",
+    "expected_skill_ids": [
+      "skill:event-driven-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:event-driven-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_driven_architecture_generated_03",
+    "query": "when should I use event driven architecture",
+    "expected_skill_ids": [
+      "skill:event-driven-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:event-driven-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_driven_architecture_generated_04",
+    "query": "event driven and real time data guidance for event driven architecture",
+    "expected_skill_ids": [
+      "skill:event-driven-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:event-driven-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_driven_architecture_generated_05",
+    "query": "event driven architecture operating procedure Designs event-driven systems with asynchronous flows, brokers, producers, consumers and contracts. architecting",
+    "expected_skill_ids": [
+      "skill:event-driven-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:event-driven-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_driven_architecture_generated_06",
+    "query": "how do I apply event driven architecture in practice for Designs event-driven systems with asynchronous flows, brokers, producers, consumers and contracts. architecting",
+    "expected_skill_ids": [
+      "skill:event-driven-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:event-driven-architecture"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_governance_and_lineage_generated_01",
+    "query": "event-governance-and-lineage",
+    "expected_skill_ids": [
+      "skill:event-governance-and-lineage"
+    ],
+    "required_skill_ids": [
+      "skill:event-governance-and-lineage"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_governance_and_lineage_generated_02",
+    "query": "tell me about event governance and lineage",
+    "expected_skill_ids": [
+      "skill:event-governance-and-lineage"
+    ],
+    "required_skill_ids": [
+      "skill:event-governance-and-lineage"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_governance_and_lineage_generated_03",
+    "query": "when should I use event governance and lineage",
+    "expected_skill_ids": [
+      "skill:event-governance-and-lineage"
+    ],
+    "required_skill_ids": [
+      "skill:event-governance-and-lineage"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_governance_and_lineage_generated_04",
+    "query": "event driven and real time data guidance for event governance and lineage",
+    "expected_skill_ids": [
+      "skill:event-governance-and-lineage"
+    ],
+    "required_skill_ids": [
+      "skill:event-governance-and-lineage"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_governance_and_lineage_generated_05",
+    "query": "event governance and lineage operating procedure Governs event ownership, classification, metadata, lineage, quality and lifecycle. governing shared event",
+    "expected_skill_ids": [
+      "skill:event-governance-and-lineage"
+    ],
+    "required_skill_ids": [
+      "skill:event-governance-and-lineage"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_governance_and_lineage_generated_06",
+    "query": "how do I apply event governance and lineage in practice for Governs event ownership, classification, metadata, lineage, quality and lifecycle. governing shared event",
+    "expected_skill_ids": [
+      "skill:event-governance-and-lineage"
+    ],
+    "required_skill_ids": [
+      "skill:event-governance-and-lineage"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_modeling_generated_01",
+    "query": "event-modeling",
+    "expected_skill_ids": [
+      "skill:event-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:event-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_modeling_generated_02",
+    "query": "tell me about event modeling",
+    "expected_skill_ids": [
+      "skill:event-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:event-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_modeling_generated_03",
+    "query": "when should I use event-modelling",
+    "expected_skill_ids": [
+      "skill:event-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:event-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_modeling_generated_04",
+    "query": "event driven and real time data guidance for event modeling",
+    "expected_skill_ids": [
+      "skill:event-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:event-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_modeling_generated_05",
+    "query": "event modeling operating procedure Discovers and models business events, commands, decisions and state changes. event-storming, designing",
+    "expected_skill_ids": [
+      "skill:event-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:event-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_modeling_generated_06",
+    "query": "how do I apply event modeling in practice for Discovers and models business events, commands, decisions and state changes. event-storming, designing",
+    "expected_skill_ids": [
+      "skill:event-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:event-modeling"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_streaming_platform_design_generated_01",
+    "query": "event-streaming-platform-design",
+    "expected_skill_ids": [
+      "skill:event-streaming-platform-design"
+    ],
+    "required_skill_ids": [
+      "skill:event-streaming-platform-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_streaming_platform_design_generated_02",
+    "query": "tell me about event streaming platform design",
+    "expected_skill_ids": [
+      "skill:event-streaming-platform-design"
+    ],
+    "required_skill_ids": [
+      "skill:event-streaming-platform-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_streaming_platform_design_generated_03",
+    "query": "when should I use event streaming platform design",
+    "expected_skill_ids": [
+      "skill:event-streaming-platform-design"
+    ],
+    "required_skill_ids": [
+      "skill:event-streaming-platform-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_streaming_platform_design_generated_04",
+    "query": "event driven and real time data guidance for event streaming platform design",
+    "expected_skill_ids": [
+      "skill:event-streaming-platform-design"
+    ],
+    "required_skill_ids": [
+      "skill:event-streaming-platform-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_streaming_platform_design_generated_05",
+    "query": "event streaming platform design operating procedure Designs shared streaming platforms, topics, partitions, tenancy, retention and replay. selecting or",
+    "expected_skill_ids": [
+      "skill:event-streaming-platform-design"
+    ],
+    "required_skill_ids": [
+      "skill:event-streaming-platform-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_streaming_platform_design_generated_06",
+    "query": "how do I apply event streaming platform design in practice for Designs shared streaming platforms, topics, partitions, tenancy, retention and replay. selecting or",
+    "expected_skill_ids": [
+      "skill:event-streaming-platform-design"
+    ],
+    "required_skill_ids": [
+      "skill:event-streaming-platform-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "schema_registry_and_contracts_generated_01",
+    "query": "schema-registry-and-contracts",
+    "expected_skill_ids": [
+      "skill:schema-registry-and-contracts"
+    ],
+    "required_skill_ids": [
+      "skill:schema-registry-and-contracts"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "schema_registry_and_contracts_generated_02",
+    "query": "tell me about schema registry and contracts",
+    "expected_skill_ids": [
+      "skill:schema-registry-and-contracts"
+    ],
+    "required_skill_ids": [
+      "skill:schema-registry-and-contracts"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "schema_registry_and_contracts_generated_03",
+    "query": "when should I use schema registry and contracts",
+    "expected_skill_ids": [
+      "skill:schema-registry-and-contracts"
+    ],
+    "required_skill_ids": [
+      "skill:schema-registry-and-contracts"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "schema_registry_and_contracts_generated_04",
+    "query": "event driven and real time data guidance for schema registry and contracts",
+    "expected_skill_ids": [
+      "skill:schema-registry-and-contracts"
+    ],
+    "required_skill_ids": [
+      "skill:schema-registry-and-contracts"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "schema_registry_and_contracts_generated_05",
+    "query": "schema registry and contracts operating procedure Defines event schemas, compatibility, versioning and producer-consumer obligations. governing Avro, JSON, or",
+    "expected_skill_ids": [
+      "skill:schema-registry-and-contracts"
+    ],
+    "required_skill_ids": [
+      "skill:schema-registry-and-contracts"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "schema_registry_and_contracts_generated_06",
+    "query": "how do I apply schema registry and contracts in practice for Defines event schemas, compatibility, versioning and producer-consumer obligations. governing Avro, JSON, or",
+    "expected_skill_ids": [
+      "skill:schema-registry-and-contracts"
+    ],
+    "required_skill_ids": [
+      "skill:schema-registry-and-contracts"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "stream_processing_patterns_generated_01",
+    "query": "stream-processing-patterns",
+    "expected_skill_ids": [
+      "skill:stream-processing-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:stream-processing-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "stream_processing_patterns_generated_02",
+    "query": "tell me about stream processing patterns",
+    "expected_skill_ids": [
+      "skill:stream-processing-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:stream-processing-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "stream_processing_patterns_generated_03",
+    "query": "when should I use stream processing patterns",
+    "expected_skill_ids": [
+      "skill:stream-processing-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:stream-processing-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "stream_processing_patterns_generated_04",
+    "query": "event driven and real time data guidance for stream processing patterns",
+    "expected_skill_ids": [
+      "skill:stream-processing-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:stream-processing-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "stream_processing_patterns_generated_05",
+    "query": "stream processing patterns operating procedure Designs stream filtering, enrichment, joins, windows and stateful processing. implementing Flink, Spark",
+    "expected_skill_ids": [
+      "skill:stream-processing-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:stream-processing-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "stream_processing_patterns_generated_06",
+    "query": "how do I apply stream processing patterns in practice for Designs stream filtering, enrichment, joins, windows and stateful processing. implementing Flink, Spark",
+    "expected_skill_ids": [
+      "skill:stream-processing-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:stream-processing-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "streaming_operations_and_slos_generated_01",
+    "query": "streaming-operations-and-slos",
+    "expected_skill_ids": [
+      "skill:streaming-operations-and-slos"
+    ],
+    "required_skill_ids": [
+      "skill:streaming-operations-and-slos"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "streaming_operations_and_slos_generated_02",
+    "query": "tell me about streaming operations and slos",
+    "expected_skill_ids": [
+      "skill:streaming-operations-and-slos"
+    ],
+    "required_skill_ids": [
+      "skill:streaming-operations-and-slos"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "streaming_operations_and_slos_generated_03",
+    "query": "when should I use real-time-operability",
+    "expected_skill_ids": [
+      "skill:streaming-operations-and-slos"
+    ],
+    "required_skill_ids": [
+      "skill:streaming-operations-and-slos"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "streaming_operations_and_slos_generated_04",
+    "query": "event driven and real time data guidance for streaming operations and slos",
+    "expected_skill_ids": [
+      "skill:streaming-operations-and-slos"
+    ],
+    "required_skill_ids": [
+      "skill:streaming-operations-and-slos"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "streaming_operations_and_slos_generated_05",
+    "query": "streaming operations and slos operating procedure Designs operational controls for streaming: lag, freshness, replay, back-pressure and SLOs. operating",
+    "expected_skill_ids": [
+      "skill:streaming-operations-and-slos"
+    ],
+    "required_skill_ids": [
+      "skill:streaming-operations-and-slos"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "streaming_operations_and_slos_generated_06",
+    "query": "how do I apply streaming operations and slos in practice for Designs operational controls for streaming: lag, freshness, replay, back-pressure and SLOs. operating",
+    "expected_skill_ids": [
+      "skill:streaming-operations-and-slos"
+    ],
+    "required_skill_ids": [
+      "skill:streaming-operations-and-slos"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_evaluation_governance_generated_01",
+    "query": "krag-evaluation-governance",
+    "expected_skill_ids": [
+      "skill:krag-evaluation-governance"
+    ],
+    "required_skill_ids": [
+      "skill:krag-evaluation-governance"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_evaluation_governance_generated_02",
+    "query": "tell me about krag evaluation governance",
+    "expected_skill_ids": [
+      "skill:krag-evaluation-governance"
+    ],
+    "required_skill_ids": [
+      "skill:krag-evaluation-governance"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_evaluation_governance_generated_03",
+    "query": "when should I use krag evaluation governance",
+    "expected_skill_ids": [
+      "skill:krag-evaluation-governance"
+    ],
+    "required_skill_ids": [
+      "skill:krag-evaluation-governance"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_evaluation_governance_generated_04",
+    "query": "krag systems guidance for krag evaluation governance",
+    "expected_skill_ids": [
+      "skill:krag-evaluation-governance"
+    ],
+    "required_skill_ids": [
+      "skill:krag-evaluation-governance"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_evaluation_governance_generated_05",
+    "query": "krag evaluation governance operating procedure Evaluate and govern KRAG systems. defining quality gates, test design, observability, safety,",
+    "expected_skill_ids": [
+      "skill:krag-evaluation-governance"
+    ],
+    "required_skill_ids": [
+      "skill:krag-evaluation-governance"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_evaluation_governance_generated_06",
+    "query": "how do I apply krag evaluation governance in practice for Evaluate and govern KRAG systems. defining quality gates, test design, observability, safety,",
+    "expected_skill_ids": [
+      "skill:krag-evaluation-governance"
+    ],
+    "required_skill_ids": [
+      "skill:krag-evaluation-governance"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_ingestion_graph_construction_generated_01",
+    "query": "krag-ingestion-graph-construction",
+    "expected_skill_ids": [
+      "skill:krag-ingestion-graph-construction"
+    ],
+    "required_skill_ids": [
+      "skill:krag-ingestion-graph-construction"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_ingestion_graph_construction_generated_02",
+    "query": "tell me about krag ingestion graph construction",
+    "expected_skill_ids": [
+      "skill:krag-ingestion-graph-construction"
+    ],
+    "required_skill_ids": [
+      "skill:krag-ingestion-graph-construction"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_ingestion_graph_construction_generated_03",
+    "query": "when should I use krag ingestion graph construction",
+    "expected_skill_ids": [
+      "skill:krag-ingestion-graph-construction"
+    ],
+    "required_skill_ids": [
+      "skill:krag-ingestion-graph-construction"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_ingestion_graph_construction_generated_04",
+    "query": "krag systems guidance for krag ingestion graph construction",
+    "expected_skill_ids": [
+      "skill:krag-ingestion-graph-construction"
+    ],
+    "required_skill_ids": [
+      "skill:krag-ingestion-graph-construction"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_ingestion_graph_construction_generated_05",
+    "query": "krag ingestion graph construction operating procedure Build KRAG ingestion and graph-construction pipelines from documents, records, metadata, ontologies, or",
+    "expected_skill_ids": [
+      "skill:krag-ingestion-graph-construction"
+    ],
+    "required_skill_ids": [
+      "skill:krag-ingestion-graph-construction"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_ingestion_graph_construction_generated_06",
+    "query": "how do I apply krag ingestion graph construction in practice for Build KRAG ingestion and graph-construction pipelines from documents, records, metadata, ontologies, or",
+    "expected_skill_ids": [
+      "skill:krag-ingestion-graph-construction"
+    ],
+    "required_skill_ids": [
+      "skill:krag-ingestion-graph-construction"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_retrieval_answering_generated_01",
+    "query": "krag-retrieval-answering",
+    "expected_skill_ids": [
+      "skill:krag-retrieval-answering"
+    ],
+    "required_skill_ids": [
+      "skill:krag-retrieval-answering"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_retrieval_answering_generated_02",
+    "query": "tell me about krag retrieval answering",
+    "expected_skill_ids": [
+      "skill:krag-retrieval-answering"
+    ],
+    "required_skill_ids": [
+      "skill:krag-retrieval-answering"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_retrieval_answering_generated_03",
+    "query": "when should I use krag retrieval answering",
+    "expected_skill_ids": [
+      "skill:krag-retrieval-answering"
+    ],
+    "required_skill_ids": [
+      "skill:krag-retrieval-answering"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_retrieval_answering_generated_04",
+    "query": "krag systems guidance for krag retrieval answering",
+    "expected_skill_ids": [
+      "skill:krag-retrieval-answering"
+    ],
+    "required_skill_ids": [
+      "skill:krag-retrieval-answering"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_retrieval_answering_generated_05",
+    "query": "krag retrieval answering operating procedure Implement KRAG retrieval, graph traversal, query planning, hybrid search, answer synthesis, citations,",
+    "expected_skill_ids": [
+      "skill:krag-retrieval-answering"
+    ],
+    "required_skill_ids": [
+      "skill:krag-retrieval-answering"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_retrieval_answering_generated_06",
+    "query": "how do I apply krag retrieval answering in practice for Implement KRAG retrieval, graph traversal, query planning, hybrid search, answer synthesis, citations,",
+    "expected_skill_ids": [
+      "skill:krag-retrieval-answering"
+    ],
+    "required_skill_ids": [
+      "skill:krag-retrieval-answering"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_system_design_generated_01",
+    "query": "krag-system-design",
+    "expected_skill_ids": [
+      "skill:krag-system-design"
+    ],
+    "required_skill_ids": [
+      "skill:krag-system-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_system_design_generated_02",
+    "query": "tell me about krag system design",
+    "expected_skill_ids": [
+      "skill:krag-system-design"
+    ],
+    "required_skill_ids": [
+      "skill:krag-system-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_system_design_generated_03",
+    "query": "when should I use krag system design",
+    "expected_skill_ids": [
+      "skill:krag-system-design"
+    ],
+    "required_skill_ids": [
+      "skill:krag-system-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_system_design_generated_04",
+    "query": "krag systems guidance for krag system design",
+    "expected_skill_ids": [
+      "skill:krag-system-design"
+    ],
+    "required_skill_ids": [
+      "skill:krag-system-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_system_design_generated_05",
+    "query": "krag system design operating procedure Design compact, production-sensible Knowledge Graph-Augmented Retrieval systems. defining KRAG or GraphRAG architecture,",
+    "expected_skill_ids": [
+      "skill:krag-system-design"
+    ],
+    "required_skill_ids": [
+      "skill:krag-system-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_system_design_generated_06",
+    "query": "how do I apply krag system design in practice for Design compact, production-sensible Knowledge Graph-Augmented Retrieval systems. defining KRAG or GraphRAG architecture,",
+    "expected_skill_ids": [
+      "skill:krag-system-design"
+    ],
+    "required_skill_ids": [
+      "skill:krag-system-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "browser_testing_with_devtools_generated_01",
+    "query": "browser-testing-with-devtools",
+    "expected_skill_ids": [
+      "skill:browser-testing-with-devtools"
+    ],
+    "required_skill_ids": [
+      "skill:browser-testing-with-devtools"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "browser_testing_with_devtools_generated_02",
+    "query": "tell me about browser testing with devtools",
+    "expected_skill_ids": [
+      "skill:browser-testing-with-devtools"
+    ],
+    "required_skill_ids": [
+      "skill:browser-testing-with-devtools"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "browser_testing_with_devtools_generated_03",
+    "query": "when should I use browser-debugging",
+    "expected_skill_ids": [
+      "skill:browser-testing-with-devtools"
+    ],
+    "required_skill_ids": [
+      "skill:browser-testing-with-devtools"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "browser_testing_with_devtools_generated_04",
+    "query": "reliability and delivery guidance for browser testing with devtools",
+    "expected_skill_ids": [
+      "skill:browser-testing-with-devtools"
+    ],
+    "required_skill_ids": [
+      "skill:browser-testing-with-devtools"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "browser_testing_with_devtools_generated_05",
+    "query": "browser testing with devtools operating procedure verifying browser-based behaviour with Chrome DevTools, including DOM state, console output, network",
+    "expected_skill_ids": [
+      "skill:browser-testing-with-devtools"
+    ],
+    "required_skill_ids": [
+      "skill:browser-testing-with-devtools"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "browser_testing_with_devtools_generated_06",
+    "query": "how do I apply browser testing with devtools in practice for verifying browser-based behaviour with Chrome DevTools, including DOM state, console output, network",
+    "expected_skill_ids": [
+      "skill:browser-testing-with-devtools"
+    ],
+    "required_skill_ids": [
+      "skill:browser-testing-with-devtools"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ci_cd_and_automation_generated_01",
+    "query": "ci-cd-and-automation",
+    "expected_skill_ids": [
+      "skill:ci-cd-and-automation"
+    ],
+    "required_skill_ids": [
+      "skill:ci-cd-and-automation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ci_cd_and_automation_generated_02",
+    "query": "tell me about ci cd and automation",
+    "expected_skill_ids": [
+      "skill:ci-cd-and-automation"
+    ],
+    "required_skill_ids": [
+      "skill:ci-cd-and-automation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ci_cd_and_automation_generated_03",
+    "query": "when should I use ci cd and automation",
+    "expected_skill_ids": [
+      "skill:ci-cd-and-automation"
+    ],
+    "required_skill_ids": [
+      "skill:ci-cd-and-automation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ci_cd_and_automation_generated_04",
+    "query": "reliability and delivery guidance for ci cd and automation",
+    "expected_skill_ids": [
+      "skill:ci-cd-and-automation"
+    ],
+    "required_skill_ids": [
+      "skill:ci-cd-and-automation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ci_cd_and_automation_generated_05",
+    "query": "ci cd and automation operating procedure designing or changing build, test or deployment automation that needs explicit safety,",
+    "expected_skill_ids": [
+      "skill:ci-cd-and-automation"
+    ],
+    "required_skill_ids": [
+      "skill:ci-cd-and-automation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ci_cd_and_automation_generated_06",
+    "query": "how do I apply ci cd and automation in practice for designing or changing build, test or deployment automation that needs explicit safety,",
+    "expected_skill_ids": [
+      "skill:ci-cd-and-automation"
+    ],
+    "required_skill_ids": [
+      "skill:ci-cd-and-automation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "deprecation_and_migration_generated_01",
+    "query": "deprecation-and-migration",
+    "expected_skill_ids": [
+      "skill:deprecation-and-migration"
+    ],
+    "required_skill_ids": [
+      "skill:deprecation-and-migration"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "deprecation_and_migration_generated_02",
+    "query": "tell me about deprecation and migration",
+    "expected_skill_ids": [
+      "skill:deprecation-and-migration"
+    ],
+    "required_skill_ids": [
+      "skill:deprecation-and-migration"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "deprecation_and_migration_generated_03",
+    "query": "when should I use deprecation and migration",
+    "expected_skill_ids": [
+      "skill:deprecation-and-migration"
+    ],
+    "required_skill_ids": [
+      "skill:deprecation-and-migration"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "deprecation_and_migration_generated_04",
+    "query": "reliability and delivery guidance for deprecation and migration",
+    "expected_skill_ids": [
+      "skill:deprecation-and-migration"
+    ],
+    "required_skill_ids": [
+      "skill:deprecation-and-migration"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "deprecation_and_migration_generated_05",
+    "query": "deprecation and migration operating procedure retiring an old path, replacing a legacy behaviour or moving users to",
+    "expected_skill_ids": [
+      "skill:deprecation-and-migration"
+    ],
+    "required_skill_ids": [
+      "skill:deprecation-and-migration"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "deprecation_and_migration_generated_06",
+    "query": "how do I apply deprecation and migration in practice for retiring an old path, replacing a legacy behaviour or moving users to",
+    "expected_skill_ids": [
+      "skill:deprecation-and-migration"
+    ],
+    "required_skill_ids": [
+      "skill:deprecation-and-migration"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "documentation_and_adrs_generated_01",
+    "query": "documentation-and-adrs",
+    "expected_skill_ids": [
+      "skill:documentation-and-adrs"
+    ],
+    "required_skill_ids": [
+      "skill:documentation-and-adrs"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "documentation_and_adrs_generated_02",
+    "query": "tell me about documentation and adrs",
+    "expected_skill_ids": [
+      "skill:documentation-and-adrs"
+    ],
+    "required_skill_ids": [
+      "skill:documentation-and-adrs"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "documentation_and_adrs_generated_03",
+    "query": "when should I use architecture-decision-records",
+    "expected_skill_ids": [
+      "skill:documentation-and-adrs"
+    ],
+    "required_skill_ids": [
+      "skill:documentation-and-adrs"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "documentation_and_adrs_generated_04",
+    "query": "reliability and delivery guidance for documentation and adrs",
+    "expected_skill_ids": [
+      "skill:documentation-and-adrs"
+    ],
+    "required_skill_ids": [
+      "skill:documentation-and-adrs"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "documentation_and_adrs_generated_05",
+    "query": "documentation and adrs operating procedure a change needs durable documentation, an architecture decision record or maintainership guidance",
+    "expected_skill_ids": [
+      "skill:documentation-and-adrs"
+    ],
+    "required_skill_ids": [
+      "skill:documentation-and-adrs"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "documentation_and_adrs_generated_06",
+    "query": "how do I apply documentation and adrs in practice for a change needs durable documentation, an architecture decision record or maintainership guidance",
+    "expected_skill_ids": [
+      "skill:documentation-and-adrs"
+    ],
+    "required_skill_ids": [
+      "skill:documentation-and-adrs"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "dora_four_keys_generated_01",
+    "query": "dora-four-keys",
+    "expected_skill_ids": [
+      "skill:dora-four-keys"
+    ],
+    "required_skill_ids": [
+      "skill:dora-four-keys"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "dora_four_keys_generated_02",
+    "query": "tell me about dora four keys",
+    "expected_skill_ids": [
+      "skill:dora-four-keys"
+    ],
+    "required_skill_ids": [
+      "skill:dora-four-keys"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "dora_four_keys_generated_03",
+    "query": "when should I use devops-four-keys",
+    "expected_skill_ids": [
+      "skill:dora-four-keys"
+    ],
+    "required_skill_ids": [
+      "skill:dora-four-keys"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "dora_four_keys_generated_04",
+    "query": "reliability and delivery guidance for dora four keys",
+    "expected_skill_ids": [
+      "skill:dora-four-keys"
+    ],
+    "required_skill_ids": [
+      "skill:dora-four-keys"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "dora_four_keys_generated_05",
+    "query": "dora four keys operating procedure Uses DevOps Research and Assessment Four Keys to improve delivery performance without",
+    "expected_skill_ids": [
+      "skill:dora-four-keys"
+    ],
+    "required_skill_ids": [
+      "skill:dora-four-keys"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "dora_four_keys_generated_06",
+    "query": "how do I apply dora four keys in practice for Uses DevOps Research and Assessment Four Keys to improve delivery performance without",
+    "expected_skill_ids": [
+      "skill:dora-four-keys"
+    ],
+    "required_skill_ids": [
+      "skill:dora-four-keys"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "incident_response_and_postmortems_generated_01",
+    "query": "incident-response-and-postmortems",
+    "expected_skill_ids": [
+      "skill:incident-response-and-postmortems"
+    ],
+    "required_skill_ids": [
+      "skill:incident-response-and-postmortems"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "incident_response_and_postmortems_generated_02",
+    "query": "tell me about incident response and postmortems",
+    "expected_skill_ids": [
+      "skill:incident-response-and-postmortems"
+    ],
+    "required_skill_ids": [
+      "skill:incident-response-and-postmortems"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "incident_response_and_postmortems_generated_03",
+    "query": "when should I use incident response and postmortems",
+    "expected_skill_ids": [
+      "skill:incident-response-and-postmortems"
+    ],
+    "required_skill_ids": [
+      "skill:incident-response-and-postmortems"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "incident_response_and_postmortems_generated_04",
+    "query": "reliability and delivery guidance for incident response and postmortems",
+    "expected_skill_ids": [
+      "skill:incident-response-and-postmortems"
+    ],
+    "required_skill_ids": [
+      "skill:incident-response-and-postmortems"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "incident_response_and_postmortems_generated_05",
+    "query": "incident response and postmortems operating procedure Handles incidents, recovery, postmortems and corrective actions with blameless, evidence-led practice. responding",
+    "expected_skill_ids": [
+      "skill:incident-response-and-postmortems"
+    ],
+    "required_skill_ids": [
+      "skill:incident-response-and-postmortems"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "incident_response_and_postmortems_generated_06",
+    "query": "how do I apply incident response and postmortems in practice for Handles incidents, recovery, postmortems and corrective actions with blameless, evidence-led practice. responding",
+    "expected_skill_ids": [
+      "skill:incident-response-and-postmortems"
+    ],
+    "required_skill_ids": [
+      "skill:incident-response-and-postmortems"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "observability_and_telemetry_generated_01",
+    "query": "observability-and-telemetry",
+    "expected_skill_ids": [
+      "skill:observability-and-telemetry"
+    ],
+    "required_skill_ids": [
+      "skill:observability-and-telemetry"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "observability_and_telemetry_generated_02",
+    "query": "tell me about observability and telemetry",
+    "expected_skill_ids": [
+      "skill:observability-and-telemetry"
+    ],
+    "required_skill_ids": [
+      "skill:observability-and-telemetry"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "observability_and_telemetry_generated_03",
+    "query": "when should I use observability and telemetry",
+    "expected_skill_ids": [
+      "skill:observability-and-telemetry"
+    ],
+    "required_skill_ids": [
+      "skill:observability-and-telemetry"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "observability_and_telemetry_generated_04",
+    "query": "reliability and delivery guidance for observability and telemetry",
+    "expected_skill_ids": [
+      "skill:observability-and-telemetry"
+    ],
+    "required_skill_ids": [
+      "skill:observability-and-telemetry"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "observability_and_telemetry_generated_05",
+    "query": "observability and telemetry operating procedure Designs actionable logs, metrics, traces, dashboards and alerts for reliable operations. instrumenting",
+    "expected_skill_ids": [
+      "skill:observability-and-telemetry"
+    ],
+    "required_skill_ids": [
+      "skill:observability-and-telemetry"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "observability_and_telemetry_generated_06",
+    "query": "how do I apply observability and telemetry in practice for Designs actionable logs, metrics, traces, dashboards and alerts for reliable operations. instrumenting",
+    "expected_skill_ids": [
+      "skill:observability-and-telemetry"
+    ],
+    "required_skill_ids": [
+      "skill:observability-and-telemetry"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "release_engineering_and_progressive_delivery_generated_01",
+    "query": "release-engineering-and-progressive-delivery",
+    "expected_skill_ids": [
+      "skill:release-engineering-and-progressive-delivery"
+    ],
+    "required_skill_ids": [
+      "skill:release-engineering-and-progressive-delivery"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "release_engineering_and_progressive_delivery_generated_02",
+    "query": "tell me about release engineering and progressive delivery",
+    "expected_skill_ids": [
+      "skill:release-engineering-and-progressive-delivery"
+    ],
+    "required_skill_ids": [
+      "skill:release-engineering-and-progressive-delivery"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "release_engineering_and_progressive_delivery_generated_03",
+    "query": "when should I use release engineering and progressive delivery",
+    "expected_skill_ids": [
+      "skill:release-engineering-and-progressive-delivery"
+    ],
+    "required_skill_ids": [
+      "skill:release-engineering-and-progressive-delivery"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "release_engineering_and_progressive_delivery_generated_04",
+    "query": "reliability and delivery guidance for release engineering and progressive delivery",
+    "expected_skill_ids": [
+      "skill:release-engineering-and-progressive-delivery"
+    ],
+    "required_skill_ids": [
+      "skill:release-engineering-and-progressive-delivery"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "release_engineering_and_progressive_delivery_generated_05",
+    "query": "release engineering and progressive delivery operating procedure Improves deployment safety with canary, blue/green, feature flags and rollback. designing release",
+    "expected_skill_ids": [
+      "skill:release-engineering-and-progressive-delivery"
+    ],
+    "required_skill_ids": [
+      "skill:release-engineering-and-progressive-delivery"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "release_engineering_and_progressive_delivery_generated_06",
+    "query": "how do I apply release engineering and progressive delivery in practice for Improves deployment safety with canary, blue/green, feature flags and rollback. designing release",
+    "expected_skill_ids": [
+      "skill:release-engineering-and-progressive-delivery"
+    ],
+    "required_skill_ids": [
+      "skill:release-engineering-and-progressive-delivery"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "shipping_and_launch_generated_01",
+    "query": "shipping-and-launch",
+    "expected_skill_ids": [
+      "skill:shipping-and-launch"
+    ],
+    "required_skill_ids": [
+      "skill:shipping-and-launch"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "shipping_and_launch_generated_02",
+    "query": "tell me about shipping and launch",
+    "expected_skill_ids": [
+      "skill:shipping-and-launch"
+    ],
+    "required_skill_ids": [
+      "skill:shipping-and-launch"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "shipping_and_launch_generated_03",
+    "query": "when should I use release-readiness",
+    "expected_skill_ids": [
+      "skill:shipping-and-launch"
+    ],
+    "required_skill_ids": [
+      "skill:shipping-and-launch"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "shipping_and_launch_generated_04",
+    "query": "reliability and delivery guidance for shipping and launch",
+    "expected_skill_ids": [
+      "skill:shipping-and-launch"
+    ],
+    "required_skill_ids": [
+      "skill:shipping-and-launch"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "shipping_and_launch_generated_05",
+    "query": "shipping and launch operating procedure preparing a change for launch, staged rollout or post-launch monitoring",
+    "expected_skill_ids": [
+      "skill:shipping-and-launch"
+    ],
+    "required_skill_ids": [
+      "skill:shipping-and-launch"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "shipping_and_launch_generated_06",
+    "query": "how do I apply shipping and launch in practice for preparing a change for launch, staged rollout or post-launch monitoring",
+    "expected_skill_ids": [
+      "skill:shipping-and-launch"
+    ],
+    "required_skill_ids": [
+      "skill:shipping-and-launch"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "slo_error_budget_management_generated_01",
+    "query": "slo-error-budget-management",
+    "expected_skill_ids": [
+      "skill:slo-error-budget-management"
+    ],
+    "required_skill_ids": [
+      "skill:slo-error-budget-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "slo_error_budget_management_generated_02",
+    "query": "tell me about slo error budget management",
+    "expected_skill_ids": [
+      "skill:slo-error-budget-management"
+    ],
+    "required_skill_ids": [
+      "skill:slo-error-budget-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "slo_error_budget_management_generated_03",
+    "query": "when should I use slo error budget management",
+    "expected_skill_ids": [
+      "skill:slo-error-budget-management"
+    ],
+    "required_skill_ids": [
+      "skill:slo-error-budget-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "slo_error_budget_management_generated_04",
+    "query": "reliability and delivery guidance for slo error budget management",
+    "expected_skill_ids": [
+      "skill:slo-error-budget-management"
+    ],
+    "required_skill_ids": [
+      "skill:slo-error-budget-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "slo_error_budget_management_generated_05",
+    "query": "slo error budget management operating procedure Defines SLIs, SLOs, error budgets, burn rates and release gates. setting reliability",
+    "expected_skill_ids": [
+      "skill:slo-error-budget-management"
+    ],
+    "required_skill_ids": [
+      "skill:slo-error-budget-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "slo_error_budget_management_generated_06",
+    "query": "how do I apply slo error budget management in practice for Defines SLIs, SLOs, error budgets, burn rates and release gates. setting reliability",
+    "expected_skill_ids": [
+      "skill:slo-error-budget-management"
+    ],
+    "required_skill_ids": [
+      "skill:slo-error-budget-management"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "sre_practice_generated_01",
+    "query": "sre-practice",
+    "expected_skill_ids": [
+      "skill:sre-practice"
+    ],
+    "required_skill_ids": [
+      "skill:sre-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "sre_practice_generated_02",
+    "query": "tell me about sre practice",
+    "expected_skill_ids": [
+      "skill:sre-practice"
+    ],
+    "required_skill_ids": [
+      "skill:sre-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "sre_practice_generated_03",
+    "query": "when should I use site-reliability-engineering",
+    "expected_skill_ids": [
+      "skill:sre-practice"
+    ],
+    "required_skill_ids": [
+      "skill:sre-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "sre_practice_generated_04",
+    "query": "reliability and delivery guidance for sre practice",
+    "expected_skill_ids": [
+      "skill:sre-practice"
+    ],
+    "required_skill_ids": [
+      "skill:sre-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "sre_practice_generated_05",
+    "query": "sre practice operating procedure Applies SRE practices for reliability, operability and resilience objectives. owning production services,",
+    "expected_skill_ids": [
+      "skill:sre-practice"
+    ],
+    "required_skill_ids": [
+      "skill:sre-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "sre_practice_generated_06",
+    "query": "how do I apply sre practice in practice for Applies SRE practices for reliability, operability and resilience objectives. owning production services,",
+    "expected_skill_ids": [
+      "skill:sre-practice"
+    ],
+    "required_skill_ids": [
+      "skill:sre-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "toil_reduction_and_automation_generated_01",
+    "query": "toil-reduction-and-automation",
+    "expected_skill_ids": [
+      "skill:toil-reduction-and-automation"
+    ],
+    "required_skill_ids": [
+      "skill:toil-reduction-and-automation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "toil_reduction_and_automation_generated_02",
+    "query": "tell me about toil reduction and automation",
+    "expected_skill_ids": [
+      "skill:toil-reduction-and-automation"
+    ],
+    "required_skill_ids": [
+      "skill:toil-reduction-and-automation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "toil_reduction_and_automation_generated_03",
+    "query": "when should I use toil reduction and automation",
+    "expected_skill_ids": [
+      "skill:toil-reduction-and-automation"
+    ],
+    "required_skill_ids": [
+      "skill:toil-reduction-and-automation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "toil_reduction_and_automation_generated_04",
+    "query": "reliability and delivery guidance for toil reduction and automation",
+    "expected_skill_ids": [
+      "skill:toil-reduction-and-automation"
+    ],
+    "required_skill_ids": [
+      "skill:toil-reduction-and-automation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "toil_reduction_and_automation_generated_05",
+    "query": "toil reduction and automation operating procedure Reduces repetitive operational work through safe, tested, observable automation. identifying toil, automating",
+    "expected_skill_ids": [
+      "skill:toil-reduction-and-automation"
+    ],
+    "required_skill_ids": [
+      "skill:toil-reduction-and-automation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "toil_reduction_and_automation_generated_06",
+    "query": "how do I apply toil reduction and automation in practice for Reduces repetitive operational work through safe, tested, observable automation. identifying toil, automating",
+    "expected_skill_ids": [
+      "skill:toil-reduction-and-automation"
+    ],
+    "required_skill_ids": [
+      "skill:toil-reduction-and-automation"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "accessibility_wcag_generated_01",
+    "query": "accessibility-wcag",
+    "expected_skill_ids": [
+      "skill:accessibility-wcag"
+    ],
+    "required_skill_ids": [
+      "skill:accessibility-wcag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "accessibility_wcag_generated_02",
+    "query": "tell me about accessibility wcag",
+    "expected_skill_ids": [
+      "skill:accessibility-wcag"
+    ],
+    "required_skill_ids": [
+      "skill:accessibility-wcag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "accessibility_wcag_generated_03",
+    "query": "when should I use accessibility",
+    "expected_skill_ids": [
+      "skill:accessibility-wcag"
+    ],
+    "required_skill_ids": [
+      "skill:accessibility-wcag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "accessibility_wcag_generated_04",
+    "query": "user experience guidance for accessibility wcag",
+    "expected_skill_ids": [
+      "skill:accessibility-wcag"
+    ],
+    "required_skill_ids": [
+      "skill:accessibility-wcag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "accessibility_wcag_generated_05",
+    "query": "accessibility wcag operating procedure Applies WCAG 2.2 AA-aligned accessibility checks to interfaces, forms, dashboards and components.",
+    "expected_skill_ids": [
+      "skill:accessibility-wcag"
+    ],
+    "required_skill_ids": [
+      "skill:accessibility-wcag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "accessibility_wcag_generated_06",
+    "query": "how do I apply accessibility wcag in practice for Applies WCAG 2.2 AA-aligned accessibility checks to interfaces, forms, dashboards and components.",
+    "expected_skill_ids": [
+      "skill:accessibility-wcag"
+    ],
+    "required_skill_ids": [
+      "skill:accessibility-wcag"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "agentic_ux_patterns_generated_01",
+    "query": "agentic-ux-patterns",
+    "expected_skill_ids": [
+      "skill:agentic-ux-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:agentic-ux-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "agentic_ux_patterns_generated_02",
+    "query": "tell me about agentic ux patterns",
+    "expected_skill_ids": [
+      "skill:agentic-ux-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:agentic-ux-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "agentic_ux_patterns_generated_03",
+    "query": "when should I use ai-agent-ux",
+    "expected_skill_ids": [
+      "skill:agentic-ux-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:agentic-ux-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "agentic_ux_patterns_generated_04",
+    "query": "user experience guidance for agentic ux patterns",
+    "expected_skill_ids": [
+      "skill:agentic-ux-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:agentic-ux-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "agentic_ux_patterns_generated_05",
+    "query": "agentic ux patterns operating procedure Designs interfaces for supervising, approving, steering and auditing AI agent actions with",
+    "expected_skill_ids": [
+      "skill:agentic-ux-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:agentic-ux-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "agentic_ux_patterns_generated_06",
+    "query": "how do I apply agentic ux patterns in practice for Designs interfaces for supervising, approving, steering and auditing AI agent actions with",
+    "expected_skill_ids": [
+      "skill:agentic-ux-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:agentic-ux-patterns"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_product_dashboard_design_generated_01",
+    "query": "data-product-dashboard-design",
+    "expected_skill_ids": [
+      "skill:data-product-dashboard-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-product-dashboard-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_product_dashboard_design_generated_02",
+    "query": "tell me about data product dashboard design",
+    "expected_skill_ids": [
+      "skill:data-product-dashboard-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-product-dashboard-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_product_dashboard_design_generated_03",
+    "query": "when should I use data product dashboard design",
+    "expected_skill_ids": [
+      "skill:data-product-dashboard-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-product-dashboard-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_product_dashboard_design_generated_04",
+    "query": "user experience guidance for data product dashboard design",
+    "expected_skill_ids": [
+      "skill:data-product-dashboard-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-product-dashboard-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_product_dashboard_design_generated_05",
+    "query": "data product dashboard design operating procedure Designs actionable data product dashboards for quality, lineage, validation, quarantine and operations.",
+    "expected_skill_ids": [
+      "skill:data-product-dashboard-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-product-dashboard-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "data_product_dashboard_design_generated_06",
+    "query": "how do I apply data product dashboard design in practice for Designs actionable data product dashboards for quality, lineage, validation, quarantine and operations.",
+    "expected_skill_ids": [
+      "skill:data-product-dashboard-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-product-dashboard-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "design_system_practice_generated_01",
+    "query": "design-system-practice",
+    "expected_skill_ids": [
+      "skill:design-system-practice"
+    ],
+    "required_skill_ids": [
+      "skill:design-system-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "design_system_practice_generated_02",
+    "query": "tell me about design system practice",
+    "expected_skill_ids": [
+      "skill:design-system-practice"
+    ],
+    "required_skill_ids": [
+      "skill:design-system-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "design_system_practice_generated_03",
+    "query": "when should I use design system practice",
+    "expected_skill_ids": [
+      "skill:design-system-practice"
+    ],
+    "required_skill_ids": [
+      "skill:design-system-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "design_system_practice_generated_04",
+    "query": "user experience guidance for design system practice",
+    "expected_skill_ids": [
+      "skill:design-system-practice"
+    ],
+    "required_skill_ids": [
+      "skill:design-system-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "design_system_practice_generated_05",
+    "query": "design system practice operating procedure Maintains consistent, accessible design systems using tokens, components and documented patterns. creating",
+    "expected_skill_ids": [
+      "skill:design-system-practice"
+    ],
+    "required_skill_ids": [
+      "skill:design-system-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "design_system_practice_generated_06",
+    "query": "how do I apply design system practice in practice for Maintains consistent, accessible design systems using tokens, components and documented patterns. creating",
+    "expected_skill_ids": [
+      "skill:design-system-practice"
+    ],
+    "required_skill_ids": [
+      "skill:design-system-practice"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "frontend_state_and_interaction_design_generated_01",
+    "query": "frontend-state-and-interaction-design",
+    "expected_skill_ids": [
+      "skill:frontend-state-and-interaction-design"
+    ],
+    "required_skill_ids": [
+      "skill:frontend-state-and-interaction-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "frontend_state_and_interaction_design_generated_02",
+    "query": "tell me about frontend state and interaction design",
+    "expected_skill_ids": [
+      "skill:frontend-state-and-interaction-design"
+    ],
+    "required_skill_ids": [
+      "skill:frontend-state-and-interaction-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "frontend_state_and_interaction_design_generated_03",
+    "query": "when should I use frontend state and interaction design",
+    "expected_skill_ids": [
+      "skill:frontend-state-and-interaction-design"
+    ],
+    "required_skill_ids": [
+      "skill:frontend-state-and-interaction-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "frontend_state_and_interaction_design_generated_04",
+    "query": "user experience guidance for frontend state and interaction design",
+    "expected_skill_ids": [
+      "skill:frontend-state-and-interaction-design"
+    ],
+    "required_skill_ids": [
+      "skill:frontend-state-and-interaction-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "frontend_state_and_interaction_design_generated_05",
+    "query": "frontend state and interaction design operating procedure Designs predictable states for loading, empty, error, partial, long-running and approval workflows.",
+    "expected_skill_ids": [
+      "skill:frontend-state-and-interaction-design"
+    ],
+    "required_skill_ids": [
+      "skill:frontend-state-and-interaction-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "frontend_state_and_interaction_design_generated_06",
+    "query": "how do I apply frontend state and interaction design in practice for Designs predictable states for loading, empty, error, partial, long-running and approval workflows.",
+    "expected_skill_ids": [
+      "skill:frontend-state-and-interaction-design"
+    ],
+    "required_skill_ids": [
+      "skill:frontend-state-and-interaction-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ui_component_design_generated_01",
+    "query": "ui-component-design",
+    "expected_skill_ids": [
+      "skill:ui-component-design"
+    ],
+    "required_skill_ids": [
+      "skill:ui-component-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ui_component_design_generated_02",
+    "query": "tell me about ui component design",
+    "expected_skill_ids": [
+      "skill:ui-component-design"
+    ],
+    "required_skill_ids": [
+      "skill:ui-component-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ui_component_design_generated_03",
+    "query": "when should I use ui component design",
+    "expected_skill_ids": [
+      "skill:ui-component-design"
+    ],
+    "required_skill_ids": [
+      "skill:ui-component-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ui_component_design_generated_04",
+    "query": "user experience guidance for ui component design",
+    "expected_skill_ids": [
+      "skill:ui-component-design"
+    ],
+    "required_skill_ids": [
+      "skill:ui-component-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ui_component_design_generated_05",
+    "query": "ui component design operating procedure Designs reusable, accessible UI components with clear props, states, variants and tests.",
+    "expected_skill_ids": [
+      "skill:ui-component-design"
+    ],
+    "required_skill_ids": [
+      "skill:ui-component-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ui_component_design_generated_06",
+    "query": "how do I apply ui component design in practice for Designs reusable, accessible UI components with clear props, states, variants and tests.",
+    "expected_skill_ids": [
+      "skill:ui-component-design"
+    ],
+    "required_skill_ids": [
+      "skill:ui-component-design"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "user_research_and_usability_testing_generated_01",
+    "query": "user-research-and-usability-testing",
+    "expected_skill_ids": [
+      "skill:user-research-and-usability-testing"
+    ],
+    "required_skill_ids": [
+      "skill:user-research-and-usability-testing"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "user_research_and_usability_testing_generated_02",
+    "query": "tell me about user research and usability testing",
+    "expected_skill_ids": [
+      "skill:user-research-and-usability-testing"
+    ],
+    "required_skill_ids": [
+      "skill:user-research-and-usability-testing"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "user_research_and_usability_testing_generated_03",
+    "query": "when should I use user research and usability testing",
+    "expected_skill_ids": [
+      "skill:user-research-and-usability-testing"
+    ],
+    "required_skill_ids": [
+      "skill:user-research-and-usability-testing"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "user_research_and_usability_testing_generated_04",
+    "query": "user experience guidance for user research and usability testing",
+    "expected_skill_ids": [
+      "skill:user-research-and-usability-testing"
+    ],
+    "required_skill_ids": [
+      "skill:user-research-and-usability-testing"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "user_research_and_usability_testing_generated_05",
+    "query": "user research and usability testing operating procedure Plans lightweight research and usability testing for workflows and dashboards. validating UX",
+    "expected_skill_ids": [
+      "skill:user-research-and-usability-testing"
+    ],
+    "required_skill_ids": [
+      "skill:user-research-and-usability-testing"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "user_research_and_usability_testing_generated_06",
+    "query": "how do I apply user research and usability testing in practice for Plans lightweight research and usability testing for workflows and dashboards. validating UX",
+    "expected_skill_ids": [
+      "skill:user-research-and-usability-testing"
+    ],
+    "required_skill_ids": [
+      "skill:user-research-and-usability-testing"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ux_design_principles_generated_01",
+    "query": "ux-design-principles",
+    "expected_skill_ids": [
+      "skill:ux-design-principles"
+    ],
+    "required_skill_ids": [
+      "skill:ux-design-principles"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ux_design_principles_generated_02",
+    "query": "tell me about ux design principles",
+    "expected_skill_ids": [
+      "skill:ux-design-principles"
+    ],
+    "required_skill_ids": [
+      "skill:ux-design-principles"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ux_design_principles_generated_03",
+    "query": "when should I use user-experience-design",
+    "expected_skill_ids": [
+      "skill:ux-design-principles"
+    ],
+    "required_skill_ids": [
+      "skill:ux-design-principles"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ux_design_principles_generated_04",
+    "query": "user experience guidance for ux design principles",
+    "expected_skill_ids": [
+      "skill:ux-design-principles"
+    ],
+    "required_skill_ids": [
+      "skill:ux-design-principles"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ux_design_principles_generated_05",
+    "query": "ux design principles operating procedure Applies UX principles for clear, task-centred journeys, navigation and forms. designing new",
+    "expected_skill_ids": [
+      "skill:ux-design-principles"
+    ],
+    "required_skill_ids": [
+      "skill:ux-design-principles"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "ux_design_principles_generated_06",
+    "query": "how do I apply ux design principles in practice for Applies UX principles for clear, task-centred journeys, navigation and forms. designing new",
+    "expected_skill_ids": [
+      "skill:ux-design-principles"
+    ],
+    "required_skill_ids": [
+      "skill:ux-design-principles"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "library_negative_01",
+    "query": "qxvlar skarnyx praxium 01",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_02",
+    "query": "mptora tholven glednor 02",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_03",
+    "query": "zindle cravix trivala 03",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_04",
+    "query": "frastik jurnalo xandrel 04",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_05",
+    "query": "wovence vextari borlith 05",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_06",
+    "query": "plunaret nolmec quensar 06",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_07",
+    "query": "drimble praxium mydrik 07",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_08",
+    "query": "skarnyx glednor halvorn 08",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_09",
+    "query": "tholven trivala sintrex 09",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_10",
+    "query": "cravix xandrel vorlani 10",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_11",
+    "query": "jurnalo borlith craxilo 11",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_12",
+    "query": "vextari quensar qxvlar 12",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_13",
+    "query": "nolmec mydrik mptora 13",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_14",
+    "query": "praxium halvorn zindle 14",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_15",
+    "query": "glednor sintrex frastik 15",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_16",
+    "query": "trivala vorlani wovence 16",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_17",
+    "query": "xandrel craxilo plunaret 17",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_18",
+    "query": "borlith qxvlar drimble 18",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_19",
+    "query": "quensar mptora skarnyx 19",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_20",
+    "query": "mydrik zindle tholven 20",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_21",
+    "query": "halvorn frastik cravix 21",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_22",
+    "query": "sintrex wovence jurnalo 22",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_23",
+    "query": "vorlani plunaret vextari 23",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_24",
+    "query": "craxilo drimble nolmec 24",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_25",
+    "query": "qxvlar skarnyx praxium 25",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_26",
+    "query": "mptora tholven glednor 26",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_27",
+    "query": "zindle cravix trivala 27",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_28",
+    "query": "frastik jurnalo xandrel 28",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_29",
+    "query": "wovence vextari borlith 29",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_30",
+    "query": "plunaret nolmec quensar 30",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_31",
+    "query": "drimble praxium mydrik 31",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_32",
+    "query": "skarnyx glednor halvorn 32",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_33",
+    "query": "tholven trivala sintrex 33",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_34",
+    "query": "cravix xandrel vorlani 34",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_35",
+    "query": "jurnalo borlith craxilo 35",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_36",
+    "query": "vextari quensar qxvlar 36",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_37",
+    "query": "nolmec mydrik mptora 37",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_38",
+    "query": "praxium halvorn zindle 38",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_39",
+    "query": "glednor sintrex frastik 39",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_40",
+    "query": "trivala vorlani wovence 40",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_41",
+    "query": "xandrel craxilo plunaret 41",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_42",
+    "query": "borlith qxvlar drimble 42",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_43",
+    "query": "quensar mptora skarnyx 43",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_44",
+    "query": "mydrik zindle tholven 44",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_45",
+    "query": "halvorn frastik cravix 45",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_46",
+    "query": "sintrex wovence jurnalo 46",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_47",
+    "query": "vorlani plunaret vextari 47",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_48",
+    "query": "craxilo drimble nolmec 48",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_49",
+    "query": "qxvlar skarnyx praxium 49",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_50",
+    "query": "mptora tholven glednor 50",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_51",
+    "query": "zindle cravix trivala 51",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_52",
+    "query": "frastik jurnalo xandrel 52",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_53",
+    "query": "wovence vextari borlith 53",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_54",
+    "query": "plunaret nolmec quensar 54",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_55",
+    "query": "drimble praxium mydrik 55",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_56",
+    "query": "skarnyx glednor halvorn 56",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_57",
+    "query": "tholven trivala sintrex 57",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_58",
+    "query": "cravix xandrel vorlani 58",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_59",
+    "query": "jurnalo borlith craxilo 59",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  },
+  {
+    "id": "library_negative_60",
+    "query": "vextari quensar qxvlar 60",
     "expected_skill_ids": [],
     "expect_uncertain": true
   }

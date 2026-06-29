@@ -35,3 +35,4 @@ See `../skills_docs/LIBRARY_CONTRACT.md` for the full portable startup order.
 - `event-driven-and-real-time-data/README.md`
 - `business-architecture/README.md`
 - `data-architecture/README.md`
+- `krag-systems/README.md`

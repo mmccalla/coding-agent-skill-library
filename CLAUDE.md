@@ -48,6 +48,7 @@ Use these skills when the task shape matches:
 - **`apply-laws-of-ai` first at every session** — mandatory immutable baseline before any other skill.
 - Agentic workflow and control skills when building or modifying agents, tools, MCP servers, A2A integrations, RAG systems, guardrails, memory, evaluation, recovery or monitoring.
 - Architecture skills when working on capabilities, value streams, processes, operating models, data models, data products, data contracts, metadata, governance, quality, lineage, event-driven architecture, CDC, streams or real-time data.
+- `krag-system-design`, `krag-ingestion-graph-construction`, `krag-retrieval-answering` and `krag-evaluation-governance` for end-to-end KRAG system development and delivery.
 - `browser-testing-with-devtools`, `code-review-and-quality`, `git-workflow-and-versioning`, `ci-cd-and-automation`, `documentation-and-adrs`, `deprecation-and-migration` and `shipping-and-launch` for browser evidence, review, delivery automation, durable documentation and release readiness.
 
 ## Business, data and event-driven architecture guidance
@@ -67,6 +68,14 @@ Use data architecture skills to define conceptual/logical models, data products,
 For data architecture, apply DAMA-DMBOK2-style discipline across governance, architecture, modelling, security, integration/interoperability, master/reference data, metadata and quality. For cloud or shared data, apply CDMC-style expectations: ownership, classification, entitlement/access evidence, lineage/provenance, lifecycle/retention, quality controls and auditable evidence.
 
 Use event-driven and real-time data skills to define business events, event schemas, streaming platforms, CDC, stream processing, event governance, lineage and real-time operability.
+
+When the task is specifically about building, delivering or governing a KRAG system, also load the smallest relevant skill from:
+
+```text
+skills/krag-systems/
+```
+
+Use these skills for KRAG architecture, ingestion and graph construction, retrieval and answering, and KRAG-specific evaluation and governance.
 
 Before implementation, preserve traceability:
 

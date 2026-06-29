@@ -135,7 +135,9 @@ Use when validating uploads.
 
     def test_mcp_mount_exposes_streamable_http_at_clean_mcp_path(self) -> None:
         app = create_app(SkillsMcpServer.for_test_fixture())
-        mounted_route = next(route for route in app.routes if getattr(route, "path", None) == "/mcp")
+        mounted_route = next(
+            route for route in app.routes if getattr(route, "path", None) == "/mcp"
+        )
 
         self.assertEqual("/mcp", mounted_route.path)
         self.assertEqual("/", mounted_route.app.routes[0].path)

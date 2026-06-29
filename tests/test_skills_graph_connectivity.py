@@ -7,6 +7,7 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+EXPECTED_SKILL_COUNT = len(tuple((REPO_ROOT / "skills").glob("*/*/SKILL.md")))
 VALIDATOR = REPO_ROOT / "scripts" / "validate_skills_graph.py"
 CONNECTIVITY_CYPHER = REPO_ROOT / "neo4j" / "skills_connectivity_checks.cypher"
 GDS_CONNECTIVITY_CYPHER = REPO_ROOT / "neo4j" / "skills_gds_connectivity_checks.cypher"
@@ -410,7 +411,7 @@ class SkillsGraphConnectivityTests(unittest.TestCase):
         records = module.build_records_from_skills(REPO_ROOT / "skills")
         result = module.validate_graph_records(records)
 
-        self.assertEqual(len(records["skills"]), 87)
+        self.assertEqual(len(records["skills"]), EXPECTED_SKILL_COUNT)
         self.assertTrue(result.valid, "\n".join(result.errors))
 
     def test_local_ci_runs_skills_graph_validation(self) -> None:

@@ -54,7 +54,9 @@ def parse_frontmatter(raw: str) -> dict[str, object]:
         value = value.strip()
         current_key = key if key in LIST_KEYS and not value else None
         if key in LIST_KEYS:
-            data[key] = [] if not value else [item.strip() for item in value.split(",") if item.strip()]
+            data[key] = (
+                [] if not value else [item.strip() for item in value.split(",") if item.strip()]
+            )
         else:
             data[key] = value
     return data
