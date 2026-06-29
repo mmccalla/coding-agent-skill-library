@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 
 import pytest
 
@@ -15,6 +16,9 @@ from scripts import (
 )
 
 pytestmark = pytest.mark.live_neo4j
+EXPECTED_SKILL_COUNT = len(
+    tuple((Path(__file__).resolve().parents[1] / "skills").glob("*/*/SKILL.md"))
+)
 
 
 def _has_live_neo4j_env() -> bool:
@@ -52,8 +56,8 @@ def test_live_neo4j_load_is_idempotent_and_indexes_are_ready() -> None:
         graph.driver.close()
 
     assert first.logical_counts == second.logical_counts
-    assert first.logical_counts["node:Skill"] == 87
-    assert first.logical_counts["node:RetrievalUnit"] >= 87
+    assert first.logical_counts["node:Skill"] == EXPECTED_SKILL_COUNT
+    assert first.logical_counts["node:RetrievalUnit"] >= EXPECTED_SKILL_COUNT
     assert readiness.ready, readiness.errors
     assert readiness.vector_query_ok
     assert not retrieval.uncertain

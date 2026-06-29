@@ -8,7 +8,7 @@ Use this command to list installed skills:
 find skills -name "SKILL.md" | sort
 ```
 
-After the agentic, control, engineering, user-experience, reliability-and-delivery, event-driven, business-architecture and data-architecture skills are installed, the library should contain 87 skills (including mandatory `apply-laws-of-ai`).
+After the agentic, control, engineering, user-experience, reliability-and-delivery, event-driven, business-architecture, data-architecture and KRAG systems skills are installed, the library should contain 91 skills (including mandatory `apply-laws-of-ai`).
 
 ## Gap coverage map
 
@@ -64,6 +64,7 @@ This is a local library, not a replica of any external skill pack.
 | `skills/event-driven-and-real-time-data/` | Event-driven architecture, event modelling, streaming platform, schema contract, CDC, stream processing, event governance and real-time operability skills. | Fully populated. |
 | `skills/business-architecture/` | Capability, value-stream, process, operating-model, strategy traceability, maturity, business concept and organisation design skills. | Fully populated. |
 | `skills/data-architecture/` | DAMA-DMBOK2-aligned and CDMC-aware data modelling, products, contracts, metadata, governance, quality, security, lifecycle, integration, lakehouse, MDM/RDM, ontology and lineage skills. | Fully populated. |
+| `skills/krag-systems/` | KRAG system design, ingestion/graph construction, retrieval/answering and evaluation/governance skills. | Fully populated. |
 
 ## Agentic patterns
 
@@ -237,6 +238,24 @@ The data architecture skills apply DAMA-DMBOK2-style separation of data manageme
 - Treat data products as governed interfaces, not just datasets.
 - Do not generate physical schemas before preserving business meaning and ownership.
 
+## KRAG Systems
+
+These skills are fully included under `skills/krag-systems/`.
+
+| Skill | Use when | Avoid when |
+|---|---|---|
+| `krag-system-design` | Designing KRAG architecture, graph role, retrieval strategy, provenance model and implementation slices. | Generic document RAG or ontology-only discussion is sufficient. |
+| `krag-ingestion-graph-construction` | Building ingestion, extraction, evidence anchoring, entity resolution, graph construction and validation pipelines. | The work only needs lightweight chunking with no semantic graph. |
+| `krag-retrieval-answering` | Implementing graph traversal, hybrid retrieval, ranking, grounded answering and abstention. | The graph is not part of retrieval or answer grounding. |
+| `krag-evaluation-governance` | Defining KRAG-specific evaluation, observability, governance and release gates. | There is no KRAG runtime to evaluate or govern. |
+
+### KRAG system rules
+
+- The graph must materially improve retrieval, reasoning, provenance, navigation, governance or explainability.
+- Do not treat a manually curated routing overlay as proof of KRAG capability.
+- Keep source structure, semantic concepts, graph entities, claims and evidence anchors distinct.
+- Require evidence-backed answers and explicit abstention when the graph cannot support the answer.
+
 ## Common combinations
 
 | Scenario | Recommended skill sequence |
@@ -247,6 +266,7 @@ The data architecture skills apply DAMA-DMBOK2-style separation of data manageme
 | Agent tool integration | `tool-use-and-function-calling` → `guardrails-safety-patterns` → `exception-handling-and-recovery` → `evaluation-and-monitoring` |
 | RAG feature | `knowledge-retrieval-rag` → `guardrails-safety-patterns` → `evaluation-and-monitoring` → `resource-aware-optimization` |
 | GraphRAG feature | `knowledge-graph-rag` → `knowledge-retrieval-rag` → `guardrails-safety-patterns` → `evaluation-and-monitoring` |
+| KRAG system feature | `krag-system-design` → `krag-ingestion-graph-construction` → `krag-retrieval-answering` → `krag-evaluation-governance` |
 | MCP feature | `mcp-server-design` → `tool-use-and-function-calling` → `guardrails-safety-patterns` → `exception-handling-and-recovery` |
 | Multi-agent workflow | `planning-and-task-decomposition` → `routing` → `multi-agent-collaboration` → `inter-agent-communication-a2a` where interoperability is needed |
 | User-facing feature | `ux-design-principles` → `accessibility-wcag` → `frontend-state-and-interaction-design` → `ui-component-design` → `tdd-practice` |

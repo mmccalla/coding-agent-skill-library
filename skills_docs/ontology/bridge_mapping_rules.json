@@ -622,6 +622,114 @@
       "source": "user-experience"
     },
     {
+      "bridge_kind": "task_shape",
+      "bridge_value": "krag-system-delivery",
+      "confidence": 0.9,
+      "id": "category:krag-systems:task_shape:krag-system-delivery",
+      "rationale": "Category krag-systems is curated as evidence for task_shape krag-system-delivery.",
+      "scope": "category",
+      "source": "krag-systems"
+    },
+    {
+      "bridge_kind": "workflow_stage",
+      "bridge_value": "design",
+      "confidence": 0.9,
+      "id": "category:krag-systems:workflow_stage:design",
+      "rationale": "Category krag-systems is curated as evidence for workflow_stage design.",
+      "scope": "category",
+      "source": "krag-systems"
+    },
+    {
+      "bridge_kind": "workflow_stage",
+      "bridge_value": "implementation",
+      "confidence": 0.9,
+      "id": "category:krag-systems:workflow_stage:implementation",
+      "rationale": "Category krag-systems is curated as evidence for workflow_stage implementation.",
+      "scope": "category",
+      "source": "krag-systems"
+    },
+    {
+      "bridge_kind": "workflow_stage",
+      "bridge_value": "validation",
+      "confidence": 0.9,
+      "id": "category:krag-systems:workflow_stage:validation",
+      "rationale": "Category krag-systems is curated as evidence for workflow_stage validation.",
+      "scope": "category",
+      "source": "krag-systems"
+    },
+    {
+      "bridge_kind": "capability",
+      "bridge_value": "krag-system-design",
+      "confidence": 0.9,
+      "id": "category:krag-systems:capability:krag-system-design",
+      "rationale": "Category krag-systems is curated as evidence for capability krag-system-design.",
+      "scope": "category",
+      "source": "krag-systems"
+    },
+    {
+      "bridge_kind": "capability",
+      "bridge_value": "graph-grounded-retrieval",
+      "confidence": 0.9,
+      "id": "category:krag-systems:capability:graph-grounded-retrieval",
+      "rationale": "Category krag-systems is curated as evidence for capability graph-grounded-retrieval.",
+      "scope": "category",
+      "source": "krag-systems"
+    },
+    {
+      "bridge_kind": "capability",
+      "bridge_value": "evidence-grounded-answering",
+      "confidence": 0.9,
+      "id": "category:krag-systems:capability:evidence-grounded-answering",
+      "rationale": "Category krag-systems is curated as evidence for capability evidence-grounded-answering.",
+      "scope": "category",
+      "source": "krag-systems"
+    },
+    {
+      "bridge_kind": "control_theme",
+      "bridge_value": "provenance",
+      "confidence": 0.9,
+      "id": "category:krag-systems:control_theme:provenance",
+      "rationale": "Category krag-systems is curated as evidence for control_theme provenance.",
+      "scope": "category",
+      "source": "krag-systems"
+    },
+    {
+      "bridge_kind": "control_theme",
+      "bridge_value": "grounding",
+      "confidence": 0.9,
+      "id": "category:krag-systems:control_theme:grounding",
+      "rationale": "Category krag-systems is curated as evidence for control_theme grounding.",
+      "scope": "category",
+      "source": "krag-systems"
+    },
+    {
+      "bridge_kind": "knowledge_domain",
+      "bridge_value": "krag",
+      "confidence": 0.9,
+      "id": "category:krag-systems:knowledge_domain:krag",
+      "rationale": "Category krag-systems is curated as evidence for knowledge_domain krag.",
+      "scope": "category",
+      "source": "krag-systems"
+    },
+    {
+      "bridge_kind": "knowledge_domain",
+      "bridge_value": "graphrag",
+      "confidence": 0.9,
+      "id": "category:krag-systems:knowledge_domain:graphrag",
+      "rationale": "Category krag-systems is curated as evidence for knowledge_domain graphrag.",
+      "scope": "category",
+      "source": "krag-systems"
+    },
+    {
+      "bridge_kind": "knowledge_domain",
+      "bridge_value": "graph-grounded-answering",
+      "confidence": 0.9,
+      "id": "category:krag-systems:knowledge_domain:graph-grounded-answering",
+      "rationale": "Category krag-systems is curated as evidence for knowledge_domain graph-grounded-answering.",
+      "scope": "category",
+      "source": "krag-systems"
+    },
+    {
       "bridge_kind": "capability",
       "bridge_value": "user-facing-web-application-accessibility",
       "confidence": 1.0,

@@ -110,7 +110,9 @@ class SkillsMcpServerTests(unittest.TestCase):
         mcp = load_module()
         server = mcp.SkillsMcpServer.for_test_fixture()
 
-        direct = server.call_tool("route_skill_query", {"query": "tell me about knowledge-graph-rag"})
+        direct = server.call_tool(
+            "route_skill_query", {"query": "tell me about knowledge-graph-rag"}
+        )
         recommendation = server.call_tool(
             "route_skill_query", {"query": "Which skills should I use for graph retrieval?"}
         )
@@ -118,7 +120,8 @@ class SkillsMcpServerTests(unittest.TestCase):
             "route_skill_query", {"query": "What skills are related to knowledge-graph-rag?"}
         )
         execution_plan = server.call_tool(
-            "route_skill_query", {"query": "How do I apply knowledge-graph-rag as an execution plan?"}
+            "route_skill_query",
+            {"query": "How do I apply knowledge-graph-rag as an execution plan?"},
         )
 
         self.assertEqual("direct_lookup", direct["route"])
@@ -151,7 +154,9 @@ class SkillsMcpServerTests(unittest.TestCase):
         self.assertEqual("skill:knowledge-graph-rag", response["skill_id"])
         self.assertEqual("knowledge-graph-rag", response["skill_name"])
 
-    def test_route_skill_query_does_not_false_positive_short_aliases_inside_other_words(self) -> None:
+    def test_route_skill_query_does_not_false_positive_short_aliases_inside_other_words(
+        self,
+    ) -> None:
         mcp = load_module()
         server = mcp.SkillsMcpServer.for_test_fixture()
 

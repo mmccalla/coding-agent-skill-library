@@ -3,7 +3,6 @@
 
 from __future__ import annotations
 
-from contextlib import asynccontextmanager
 import json
 import logging
 import os
@@ -11,7 +10,8 @@ import re
 import sys
 import time
 import uuid
-from collections.abc import Awaitable, Callable, Mapping
+from collections.abc import AsyncIterator, Awaitable, Callable, Mapping
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Annotated
 
@@ -155,7 +155,7 @@ def create_app(
     mounted_mcp_server.settings.streamable_http_path = "/"
 
     @asynccontextmanager
-    async def lifespan(_: FastAPI):
+    async def lifespan(_: FastAPI) -> AsyncIterator[None]:
         # Mounted Starlette sub-app lifespans are not sufficient here; manage the
         # MCP session manager at the FastAPI boundary so the deployed /mcp transport
         # is initialized before requests arrive.

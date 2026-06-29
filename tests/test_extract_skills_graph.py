@@ -10,6 +10,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXTRACTOR = REPO_ROOT / "scripts" / "extract_skills_graph.py"
+EXPECTED_SKILL_COUNT = len(tuple((REPO_ROOT / "skills").glob("*/*/SKILL.md")))
 
 
 def load_extractor_module():
@@ -27,7 +28,7 @@ class SkillsGraphExtractorTests(unittest.TestCase):
         records = module.extract_skills_graph_records(REPO_ROOT / "skills")
         skill_ids = {skill["id"] for skill in records["skills"]}
 
-        self.assertEqual(len(records["skills"]), 87)
+        self.assertEqual(len(records["skills"]), EXPECTED_SKILL_COUNT)
         self.assertIn("skill:apply-laws-of-ai", skill_ids)
         self.assertEqual(records["root_skill"], "apply-laws-of-ai")
 

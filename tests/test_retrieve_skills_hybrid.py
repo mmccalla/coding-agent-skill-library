@@ -198,7 +198,9 @@ class HybridRetrievalTests(unittest.TestCase):
 
     def test_user_facing_web_application_query_lifts_ux_and_accessibility_skills(self) -> None:
         retrieval = load_module()
-        plan = retrieval.embed_skill_chunks.build_embedded_repository_load_plan(REPO_ROOT / "skills")
+        plan = retrieval.embed_skill_chunks.build_embedded_repository_load_plan(
+            REPO_ROOT / "skills"
+        )
 
         result = retrieval.retrieve_hybrid_skills(
             plan,

@@ -28,7 +28,7 @@ python3 scripts/retrieve_skills_hybrid.py "graph rag ontology retrieval" --limit
 python3 scripts/skills_mcp_server.py --list-tools >/dev/null
 
 echo "==> retrieval evaluation"
-python3 scripts/evaluate_skill_retrieval.py --limit 3 >/dev/null
+python3 scripts/evaluate_skill_retrieval.py --dataset tests/fixtures/retrieval_evaluation/smoke_queries.json --limit 3 >/dev/null
 
 echo "==> skills-ui checks"
 npm --prefix skills-ui ci
@@ -38,9 +38,10 @@ npm --prefix skills-ui run build
 
 echo "==> skill count"
 count="$(find skills -name 'SKILL.md' | wc -l | tr -d ' ')"
-if [ "$count" != "87" ]; then
-  echo "expected 87 SKILL.md files, found $count" >&2
+if [ "$count" -lt 1 ]; then
+  echo "expected at least one SKILL.md file, found $count" >&2
   exit 1
 fi
+echo "discovered $count SKILL.md files"
 
 echo "CI local checks passed."

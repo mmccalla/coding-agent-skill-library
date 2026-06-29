@@ -31,14 +31,14 @@ Steps 1–3 are non-negotiable. No task skill may run before step 3 completes.
 | Product-specific overlays | Product/project-specific guidance belongs under `skills_docs/overlays/`, with core skills linking to the overlay instead of embedding product sections |
 | Progressive disclosure | Keep `SKILL.md` concise; move deep examples, metadata and implementation details to one-level reference files under the skill folder |
 | Skill folders | One folder per skill under a category directory |
-| Categories | Eight fixed categories under `skills/` |
+| Categories | Nine fixed categories under `skills/` |
 | Entrypoints | `AGENTS.md` (full), `CLAUDE.md` (summary mirror) |
 | Routing | `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` |
 | Inventory | `skills/MANIFEST.md` and category `MANIFEST.md` files |
 
 ## Skill count invariant
 
-With all eight categories installed, the library contains **87** skills, including the mandatory `apply-laws-of-ai` baseline.
+With all nine categories installed, the library contains **91** skills, including the mandatory `apply-laws-of-ai` baseline.
 
 ## Discovery metadata contract
 
@@ -97,7 +97,7 @@ If a target repository installed an earlier drop-in without `apply-laws-of-ai`:
 
 1. Copy `skills/agent-control-patterns/apply-laws-of-ai/` from this library.
 2. Replace `AGENTS.md`, `CLAUDE.md`, and `skills_docs/` with the current versions (or merge the **Mandatory startup order** section).
-3. Update `skills/MANIFEST.md` and `skills/agent-control-patterns/MANIFEST.md` skill counts to **87**.
+3. Update `skills/MANIFEST.md` and `skills/agent-control-patterns/MANIFEST.md` skill counts to **91** where the full nine-category library is installed.
 4. Run `python3 scripts/validate_skills.py` and confirm PASS.
 
 Do not skip step 1 — agents must execute the baseline skill before any other reasoning.

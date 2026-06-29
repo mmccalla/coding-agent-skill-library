@@ -1,0 +1,79 @@
+[
+  {
+    "id": "kg_rag",
+    "query": "neo4j-native kg-backed retrieval with text-to-cypher and provenance",
+    "expected_skill_ids": ["skill:knowledge-graph-rag"],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_system_design",
+    "query": "KRAG architecture summary graph schema outline retrieval strategy implementation backlog thin vertical slices",
+    "expected_skill_ids": ["skill:krag-system-design"],
+    "required_skill_ids": ["skill:krag-system-design"],
+    "excluded_skill_ids": ["skill:accessibility-wcag", "skill:ci-cd-and-automation"],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_ingestion_graph_construction",
+    "query": "KRAG ingestion design graph schema changes validation rules idempotency strategy failure handling",
+    "expected_skill_ids": ["skill:krag-ingestion-graph-construction"],
+    "required_skill_ids": ["skill:krag-ingestion-graph-construction"],
+    "excluded_skill_ids": ["skill:ux-design-principles", "skill:dora-four-keys"],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_retrieval_answering",
+    "query": "KRAG retrieval plan queries pseudocode evidence set citations uncertainty follow up data gaps",
+    "expected_skill_ids": ["skill:krag-retrieval-answering"],
+    "required_skill_ids": ["skill:krag-retrieval-answering"],
+    "excluded_skill_ids": ["skill:release-engineering-and-progressive-delivery", "skill:business-capability-modeling"],
+    "expect_uncertain": false
+  },
+  {
+    "id": "krag_evaluation_governance",
+    "query": "KRAG evaluation plan metrics acceptance thresholds release gates monitoring signals remediation actions",
+    "expected_skill_ids": ["skill:krag-evaluation-governance"],
+    "required_skill_ids": ["skill:krag-evaluation-governance"],
+    "excluded_skill_ids": ["skill:ui-component-design", "skill:event-modeling"],
+    "expect_uncertain": false
+  },
+  {
+    "id": "human_approval",
+    "query": "approval before destructive command human review",
+    "expected_skill_ids": ["skill:human-in-the-loop"],
+    "expect_uncertain": false
+  },
+  {
+    "id": "accessibility",
+    "query": "keyboard focus accessible form labels",
+    "expected_skill_ids": ["skill:accessibility-wcag"],
+    "expect_uncertain": false
+  },
+  {
+    "id": "event_streaming_iceberg_pipeline",
+    "query": "I've been instructed to build an event driven and real time data streaming pipeline that stores data in iceberg tables using apache pulsar and apache flink. How should this be done?",
+    "expected_skill_ids": [
+      "skill:streaming-operations-and-slos",
+      "skill:event-streaming-platform-design",
+      "skill:stream-processing-patterns",
+      "skill:lakehouse-and-medallion-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:event-streaming-platform-design",
+      "skill:stream-processing-patterns"
+    ],
+    "excluded_skill_ids": [
+      "skill:accessibility-wcag",
+      "skill:ci-cd-and-automation",
+      "skill:ddd-practice",
+      "skill:dora-four-keys"
+    ],
+    "expect_uncertain": false
+  },
+  {
+    "id": "absent",
+    "query": "zzzz qqqq nonsense",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  }
+]

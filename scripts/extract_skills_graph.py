@@ -187,7 +187,12 @@ def _capabilities(
     for alias in aliases:
         alias_tokens.extend(_slug_tokens(alias))
     return _unique(
-        (*_slug_tokens(name), *alias_tokens[:6], *_slug_tokens(category), *_slug_tokens(description)[:4])
+        (
+            *_slug_tokens(name),
+            *alias_tokens[:6],
+            *_slug_tokens(category),
+            *_slug_tokens(description)[:4],
+        )
     )
 
 
