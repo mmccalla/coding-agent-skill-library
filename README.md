@@ -19,7 +19,7 @@ Mandatory session startup order:
 
 1. `AGENTIC_CODING_GLOBAL_SAFETY.md`
 2. `SECURE_AGENTIC_DEVELOPMENT.md`
-3. `skills/agent-control-patterns/apply-laws-of-ai/SKILL.md`
+3. `skills/apply-laws-of-ai/SKILL.md`
 4. `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`
 5. smallest relevant `SKILL.md` set for the task
 

@@ -10,7 +10,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXTRACTOR = REPO_ROOT / "scripts" / "extract_skills_graph.py"
-EXPECTED_SKILL_COUNT = len(tuple((REPO_ROOT / "skills").glob("*/*/SKILL.md")))
+EXPECTED_SKILL_COUNT = len(tuple((REPO_ROOT / "skills").glob("*/SKILL.md")))
 
 
 def load_extractor_module():
@@ -45,6 +45,8 @@ class SkillsGraphExtractorTests(unittest.TestCase):
             "name",
             "title",
             "description",
+            "skill_pack_id",
+            "skill_pack_version",
             "path",
             "contentHash",
             "wordCount",
@@ -52,7 +54,9 @@ class SkillsGraphExtractorTests(unittest.TestCase):
             "isBaselineSkill",
         ):
             self.assertIn(key, skill)
-        self.assertEqual(skill["path"], "skills/agent-control-patterns/apply-laws-of-ai/SKILL.md")
+        self.assertEqual(skill["path"], "skills/apply-laws-of-ai/SKILL.md")
+        self.assertEqual(skill["skill_pack_id"], "coding-agent-skill-library")
+        self.assertEqual(skill["skill_pack_version"], "2026-06-29")
         self.assertTrue(skill["isBaselineSkill"])
         self.assertGreater(skill["wordCount"], 0)
         self.assertGreater(skill["lineCount"], 0)
@@ -60,6 +64,7 @@ class SkillsGraphExtractorTests(unittest.TestCase):
         self.assertNotIn("source_hash", skill)
         self.assertIn("aliases", skill)
         self.assertIsInstance(skill["aliases"], list)
+        self.assertEqual(records["skill_pack"]["id"], "coding-agent-skill-library")
 
     def test_extracts_canonical_sections_with_stable_hashes(self) -> None:
         module = load_extractor_module()
@@ -145,6 +150,8 @@ class SkillsGraphExtractorTests(unittest.TestCase):
             self.assertNotIn("skill-operation", skill["task_shapes"])
             self.assertNotIn("skill-use", skill["workflow_stages"])
             self.assertNotIn("skill-governance", skill["control_themes"])
+            self.assertEqual([], skill["control_themes"])
+            self.assertEqual([], skill["knowledge_domains"])
 
         for field in ("task_shapes", "workflow_stages", "control_themes"):
             counts = Counter(value for skill in records["skills"] for value in skill[field])
@@ -170,7 +177,7 @@ class SkillsGraphExtractorTests(unittest.TestCase):
             relationship = relationships[("skill:mcp-server-design", target)]
             self.assertEqual(relationship["type"], "RELATED_TO")
             self.assertEqual(
-                relationship["source_path"], "skills/agentic-patterns/mcp-server-design/SKILL.md"
+                relationship["source_path"], "skills/mcp-server-design/SKILL.md"
             )
             self.assertTrue(relationship["source_section_id"].endswith("related-skills"))
 

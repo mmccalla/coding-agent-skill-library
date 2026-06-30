@@ -17,7 +17,7 @@ from scripts import (
 
 pytestmark = pytest.mark.live_neo4j
 EXPECTED_SKILL_COUNT = len(
-    tuple((Path(__file__).resolve().parents[1] / "skills").glob("*/*/SKILL.md"))
+    tuple((Path(__file__).resolve().parents[1] / "skills").glob("*/SKILL.md"))
 )
 
 

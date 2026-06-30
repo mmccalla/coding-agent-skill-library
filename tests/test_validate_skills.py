@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import os
 import re
 import subprocess
@@ -36,13 +37,28 @@ class ValidateSkillsTests(unittest.TestCase):
         self.assertIn("PASS", result.stdout)
 
     def test_baseline_skill_exists(self) -> None:
-        baseline = REPO_ROOT / "skills" / "agent-control-patterns" / "apply-laws-of-ai" / "SKILL.md"
+        baseline = REPO_ROOT / "skills" / "apply-laws-of-ai" / "SKILL.md"
         self.assertTrue(baseline.is_file())
+
+    def test_pack_metadata_exists_and_covers_repository_skills(self) -> None:
+        metadata_path = REPO_ROOT / "skills" / "PACK_METADATA.json"
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+
+        self.assertEqual("skill-pack-metadata/v1", metadata["schema_version"])
+        listed_skills = {
+            skill_name
+            for category in metadata["categories"]
+            for skill_name in category["skills"]
+        }
+        repository_skills = {
+            path.parent.name for path in (REPO_ROOT / "skills").glob("*/SKILL.md")
+        }
+        self.assertEqual(repository_skills, listed_skills)
 
     def test_missing_baseline_fails(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skills_dir = Path(tmp) / "skills" / "agent-control-patterns" / "dummy"
+            skills_dir = Path(tmp) / "skills" / "dummy"
             skills_dir.mkdir(parents=True)
             skill_path = skills_dir / "SKILL.md"
             skill_path.write_text(
@@ -62,7 +78,7 @@ class ValidateSkillsTests(unittest.TestCase):
             try:
                 module.ROOT = "skills"
                 module.BASELINE_SKILL = os.path.join(
-                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                    "skills", "apply-laws-of-ai", "SKILL.md"
                 )
                 os.chdir(tmp)
                 rc = module.main()
@@ -72,7 +88,7 @@ class ValidateSkillsTests(unittest.TestCase):
             self.assertEqual(rc, 1)
 
     def test_canonical_headings_on_baseline(self) -> None:
-        baseline = REPO_ROOT / "skills" / "agent-control-patterns" / "apply-laws-of-ai" / "SKILL.md"
+        baseline = REPO_ROOT / "skills" / "apply-laws-of-ai" / "SKILL.md"
         text = baseline.read_text(encoding="utf-8")
         self.assertIsNotNone(re.search(r"^## When to use\s*$", text, flags=re.M))
         self.assertIsNotNone(re.search(r"^## Verification\s*$", text, flags=re.M))
@@ -83,7 +99,7 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_description_requires_use_when_trigger(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
+            skill_dir = Path(tmp) / "skills" / "apply-laws-of-ai"
             skill_dir.mkdir(parents=True)
             baseline = skill_dir / "SKILL.md"
             baseline.write_text(
@@ -103,7 +119,7 @@ class ValidateSkillsTests(unittest.TestCase):
             try:
                 module.ROOT = "skills"
                 module.BASELINE_SKILL = os.path.join(
-                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                    "skills", "apply-laws-of-ai", "SKILL.md"
                 )
                 os.chdir(tmp)
                 rc = module.main()
@@ -115,7 +131,7 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_description_length_bounds(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
+            skill_dir = Path(tmp) / "skills" / "apply-laws-of-ai"
             skill_dir.mkdir(parents=True)
             baseline = skill_dir / "SKILL.md"
             baseline.write_text(
@@ -135,7 +151,7 @@ class ValidateSkillsTests(unittest.TestCase):
             try:
                 module.ROOT = "skills"
                 module.BASELINE_SKILL = os.path.join(
-                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                    "skills", "apply-laws-of-ai", "SKILL.md"
                 )
                 os.chdir(tmp)
                 rc = module.main()
@@ -147,7 +163,7 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_folder_name_must_match_frontmatter_name(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "wrong-folder-name"
+            skill_dir = Path(tmp) / "skills" / "wrong-folder-name"
             skill_dir.mkdir(parents=True)
             (skill_dir / "SKILL.md").write_text(
                 "---\n"
@@ -161,7 +177,7 @@ class ValidateSkillsTests(unittest.TestCase):
                 "Report gates.\n" + ("word " * 150),
                 encoding="utf-8",
             )
-            baseline_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
+            baseline_dir = Path(tmp) / "skills" / "apply-laws-of-ai"
             baseline_dir.mkdir(parents=True)
             (baseline_dir / "SKILL.md").write_text(
                 "---\n"
@@ -180,7 +196,7 @@ class ValidateSkillsTests(unittest.TestCase):
             try:
                 module.ROOT = "skills"
                 module.BASELINE_SKILL = os.path.join(
-                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                    "skills", "apply-laws-of-ai", "SKILL.md"
                 )
                 os.chdir(tmp)
                 rc = module.main()
@@ -192,7 +208,7 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_verification_requires_checklist_item(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
+            skill_dir = Path(tmp) / "skills" / "apply-laws-of-ai"
             skill_dir.mkdir(parents=True)
             (skill_dir / "SKILL.md").write_text(
                 "---\n"
@@ -211,7 +227,7 @@ class ValidateSkillsTests(unittest.TestCase):
             try:
                 module.ROOT = "skills"
                 module.BASELINE_SKILL = os.path.join(
-                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                    "skills", "apply-laws-of-ai", "SKILL.md"
                 )
                 os.chdir(tmp)
                 rc = module.main()
@@ -223,7 +239,7 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_objective_section_is_required(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
+            skill_dir = Path(tmp) / "skills" / "apply-laws-of-ai"
             skill_dir.mkdir(parents=True)
             (skill_dir / "SKILL.md").write_text(
                 "---\n"
@@ -242,7 +258,7 @@ class ValidateSkillsTests(unittest.TestCase):
             try:
                 module.ROOT = "skills"
                 module.BASELINE_SKILL = os.path.join(
-                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                    "skills", "apply-laws-of-ai", "SKILL.md"
                 )
                 os.chdir(tmp)
                 rc = module.main()
@@ -254,7 +270,7 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_legacy_procedure_headings_fail(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
+            skill_dir = Path(tmp) / "skills" / "apply-laws-of-ai"
             skill_dir.mkdir(parents=True)
             (skill_dir / "SKILL.md").write_text(
                 "---\n"
@@ -277,7 +293,7 @@ class ValidateSkillsTests(unittest.TestCase):
             try:
                 module.ROOT = "skills"
                 module.BASELINE_SKILL = os.path.join(
-                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                    "skills", "apply-laws-of-ai", "SKILL.md"
                 )
                 os.chdir(tmp)
                 rc = module.main()
@@ -289,7 +305,7 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_product_specific_overlay_content_fails_in_skills(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
+            skill_dir = Path(tmp) / "skills" / "apply-laws-of-ai"
             skill_dir.mkdir(parents=True)
             (skill_dir / "SKILL.md").write_text(
                 "---\n"
@@ -316,7 +332,7 @@ class ValidateSkillsTests(unittest.TestCase):
             try:
                 module.ROOT = "skills"
                 module.BASELINE_SKILL = os.path.join(
-                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                    "skills", "apply-laws-of-ai", "SKILL.md"
                 )
                 os.chdir(tmp)
                 rc = module.main()
@@ -328,7 +344,7 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_unsupported_frontmatter_key_fails(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
+            skill_dir = Path(tmp) / "skills" / "apply-laws-of-ai"
             skill_dir.mkdir(parents=True)
             (skill_dir / "SKILL.md").write_text(
                 "---\n"
@@ -352,7 +368,7 @@ class ValidateSkillsTests(unittest.TestCase):
             try:
                 module.ROOT = "skills"
                 module.BASELINE_SKILL = os.path.join(
-                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                    "skills", "apply-laws-of-ai", "SKILL.md"
                 )
                 os.chdir(tmp)
                 rc = module.main()
@@ -364,8 +380,29 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_aliases_frontmatter_is_allowed(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
+            skill_dir = Path(tmp) / "skills" / "apply-laws-of-ai"
             skill_dir.mkdir(parents=True)
+            (Path(tmp) / "skills" / "PACK_METADATA.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": "skill-pack-metadata/v1",
+                        "skill_pack_id": "test-pack",
+                        "display_name": "Test Pack",
+                        "version": "1.0.0",
+                        "owner": "test",
+                        "source_root": "skills",
+                        "categories": [
+                            {
+                                "id": "agent-control-patterns",
+                                "title": "Agent Control Patterns",
+                                "description": "Test category.",
+                                "skills": ["apply-laws-of-ai"],
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
             (skill_dir / "SKILL.md").write_text(
                 "---\n"
                 "name: apply-laws-of-ai\n"
@@ -390,7 +427,7 @@ class ValidateSkillsTests(unittest.TestCase):
             try:
                 module.ROOT = "skills"
                 module.BASELINE_SKILL = os.path.join(
-                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                    "skills", "apply-laws-of-ai", "SKILL.md"
                 )
                 os.chdir(tmp)
                 rc = module.main()
@@ -402,7 +439,7 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_alias_collision_with_existing_skill_name_fails(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            baseline_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
+            baseline_dir = Path(tmp) / "skills" / "apply-laws-of-ai"
             baseline_dir.mkdir(parents=True)
             (baseline_dir / "SKILL.md").write_text(
                 "---\n"
@@ -445,7 +482,7 @@ class ValidateSkillsTests(unittest.TestCase):
             try:
                 module.ROOT = "skills"
                 module.BASELINE_SKILL = os.path.join(
-                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                    "skills", "apply-laws-of-ai", "SKILL.md"
                 )
                 os.chdir(tmp)
                 rc = module.main()
@@ -457,7 +494,7 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_skill_over_max_line_limit_fails(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
+            skill_dir = Path(tmp) / "skills" / "apply-laws-of-ai"
             skill_dir.mkdir(parents=True)
             long_body = "\n".join(f"- [ ] Line {idx}" for idx in range(610))
             (skill_dir / "SKILL.md").write_text(
@@ -481,7 +518,7 @@ class ValidateSkillsTests(unittest.TestCase):
             try:
                 module.ROOT = "skills"
                 module.BASELINE_SKILL = os.path.join(
-                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                    "skills", "apply-laws-of-ai", "SKILL.md"
                 )
                 os.chdir(tmp)
                 rc = module.main()
@@ -493,8 +530,29 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_non_baseline_skill_under_200_words_fails(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            baseline_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
+            baseline_dir = Path(tmp) / "skills" / "apply-laws-of-ai"
             baseline_dir.mkdir(parents=True)
+            (Path(tmp) / "skills" / "PACK_METADATA.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": "skill-pack-metadata/v1",
+                        "skill_pack_id": "test-pack",
+                        "display_name": "Test Pack",
+                        "version": "1.0.0",
+                        "owner": "test",
+                        "source_root": "skills",
+                        "categories": [
+                            {
+                                "id": "agent-control-patterns",
+                                "title": "Agent Control Patterns",
+                                "description": "Test category.",
+                                "skills": ["apply-laws-of-ai"],
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
             (baseline_dir / "SKILL.md").write_text(
                 "---\n"
                 "name: apply-laws-of-ai\n"
@@ -540,7 +598,7 @@ class ValidateSkillsTests(unittest.TestCase):
             try:
                 module.ROOT = "skills"
                 module.BASELINE_SKILL = os.path.join(
-                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                    "skills", "apply-laws-of-ai", "SKILL.md"
                 )
                 os.chdir(tmp)
                 rc = module.main()
@@ -552,8 +610,29 @@ class ValidateSkillsTests(unittest.TestCase):
     def test_baseline_skill_is_exempt_from_minimum_word_count(self) -> None:
         module = load_validator_module()
         with tempfile.TemporaryDirectory() as tmp:
-            baseline_dir = Path(tmp) / "skills" / "agent-control-patterns" / "apply-laws-of-ai"
+            baseline_dir = Path(tmp) / "skills" / "apply-laws-of-ai"
             baseline_dir.mkdir(parents=True)
+            (Path(tmp) / "skills" / "PACK_METADATA.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": "skill-pack-metadata/v1",
+                        "skill_pack_id": "test-pack",
+                        "display_name": "Test Pack",
+                        "version": "1.0.0",
+                        "owner": "test",
+                        "source_root": "skills",
+                        "categories": [
+                            {
+                                "id": "agent-control-patterns",
+                                "title": "Agent Control Patterns",
+                                "description": "Test category.",
+                                "skills": ["apply-laws-of-ai"],
+                            }
+                        ],
+                    }
+                ),
+                encoding="utf-8",
+            )
             (baseline_dir / "SKILL.md").write_text(
                 "---\n"
                 "name: apply-laws-of-ai\n"
@@ -578,7 +657,7 @@ class ValidateSkillsTests(unittest.TestCase):
             try:
                 module.ROOT = "skills"
                 module.BASELINE_SKILL = os.path.join(
-                    "skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md"
+                    "skills", "apply-laws-of-ai", "SKILL.md"
                 )
                 os.chdir(tmp)
                 rc = module.main()

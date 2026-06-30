@@ -39,7 +39,8 @@ REQUIRED_SCHEMA_ITEMS = frozenset(
         "validation_rule_id_unique",
     }
 )
-DEFAULT_SCHEMA_PATH = Path("neo4j") / "skills_schema.cypher"
+REPO_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_SCHEMA_PATH = REPO_ROOT / "neo4j" / "skills_schema.cypher"
 SCHEMA_NAME_PATTERN = re.compile(
     r"^CREATE\s+(?:CONSTRAINT|INDEX|FULLTEXT\s+INDEX|VECTOR\s+INDEX)\s+([A-Za-z][A-Za-z0-9_]*)",
     flags=re.I,

@@ -12,7 +12,7 @@ aliases:
 
 Use this skill when an agent needs facts from external documents, code repositories, wikis, tickets, logs, APIs, or other knowledge stores before answering or modifying code.
 
-For GraphRAG, Neo4j-native retrieval, text-to-Cypher, provenance-first graph ingestion, or KG-backed answer generation, pair this skill with `skills/data-architecture/knowledge-graph-rag/SKILL.md`.
+For GraphRAG, Neo4j-native retrieval, text-to-Cypher, provenance-first graph ingestion, or KG-backed answer generation, pair this skill with `skills/knowledge-graph-rag/SKILL.md`.
 
 ## Objective
 

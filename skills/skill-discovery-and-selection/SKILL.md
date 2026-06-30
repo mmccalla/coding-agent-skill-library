@@ -17,7 +17,7 @@ Select the smallest relevant skill or skill combination and explain why it was c
 
 ## Procedure
 
-1. Confirm `skills/agent-control-patterns/apply-laws-of-ai/SKILL.md` has been executed in full for this session.
+1. Confirm `skills/apply-laws-of-ai/SKILL.md` has been executed in full for this session.
 2. Read `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` for routing by task shape.
 3. Open `skills/MANIFEST.md` or the relevant category `MANIFEST.md` when inventory detail is needed.
 4. Identify the task shape: discovery, refinement, planning, implementation, verification or release.

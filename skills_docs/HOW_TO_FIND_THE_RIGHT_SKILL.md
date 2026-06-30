@@ -8,32 +8,32 @@ Before using this routing guide:
 
 1. Read `AGENTIC_CODING_GLOBAL_SAFETY.md` when present.
 2. Read `SECURE_AGENTIC_DEVELOPMENT.md` when present.
-3. **Execute `skills/agent-control-patterns/apply-laws-of-ai/SKILL.md` in full** — immutable baseline for all reasoning.
+3. **Execute `skills/apply-laws-of-ai/SKILL.md` in full** — immutable baseline for all reasoning.
 
 Then continue with the steps below. See `LIBRARY_CONTRACT.md` for portable consistency rules.
 
 ## Start here
 
-1. Read `skills/README.md` for the structure of the portable subtree.
+1. Read `skills/README.md` for the structure of the portable flat library.
 2. Classify the task by shape, not by technology buzzwords.
-3. Choose the smallest category that matches the core problem.
-4. Open the category `README.md`.
-5. Open the category `MANIFEST.md` only if you need more inventory detail.
+3. Choose the smallest semantic category that matches the core problem.
+4. Use `skills/MANIFEST.md` to confirm category grouping when needed.
+5. Prefer frontmatter `name`, `aliases` and `description` over filesystem assumptions.
 6. Load the smallest relevant `SKILL.md` or skill combination.
 
 ## Choose by task shape
 
-| If the task is mainly about... | Start in |
+| If the task is mainly about... | Start with category group |
 |---|---|
-| Session setup, planning, specs, implementation flow, source grounding | `skills/agentic-patterns/` |
-| Safety baseline, approval, recovery, RAG, evaluation, prioritization | `skills/agent-control-patterns/` (`apply-laws-of-ai` first) |
-| Code quality, testing, refactoring, domain modelling, review | `skills/engineering-practices/` |
-| UI, accessibility, dashboards, interaction states, agent supervision | `skills/user-experience/` |
-| Reliability, incidents, observability, CI/CD, release, launch | `skills/reliability-and-delivery/` |
-| Events, CDC, stream processing, real-time operations | `skills/event-driven-and-real-time-data/` |
-| Capabilities, value streams, processes, operating model, traceability | `skills/business-architecture/` |
-| Data models, products, contracts, governance, lineage, knowledge graphs | `skills/data-architecture/` |
-| End-to-end KRAG system design, graph construction, retrieval or KRAG evaluation | `skills/krag-systems/` |
+| Session setup, planning, specs, implementation flow, source grounding | `agentic-patterns` |
+| Safety baseline, approval, recovery, RAG, evaluation, prioritization | `agent-control-patterns` (`apply-laws-of-ai` first) |
+| Code quality, testing, refactoring, domain modelling, review | `engineering-practices` |
+| UI, accessibility, dashboards, interaction states, agent supervision | `user-experience` |
+| Reliability, incidents, observability, CI/CD, release, launch | `reliability-and-delivery` |
+| Events, CDC, stream processing, real-time operations | `event-driven-and-real-time-data` |
+| Capabilities, value streams, processes, operating model, traceability | `business-architecture` |
+| Data models, products, contracts, governance, lineage, knowledge graphs | `data-architecture` |
+| End-to-end KRAG system design, graph construction, retrieval or KRAG evaluation | `krag-systems` |
 
 ## Choose by common scenarios
 
@@ -64,15 +64,6 @@ Then continue with the steps below. See `LIBRARY_CONTRACT.md` for portable consi
 ## Navigation map
 
 - Library contract: `LIBRARY_CONTRACT.md`
-- Portable subtree index: `skills/README.md`
+- Portable flat-library index: `skills/README.md`
 - Full inventory: `skills/MANIFEST.md`
-- Category entrypoints:
-  - `skills/agentic-patterns/README.md`
-  - `skills/agent-control-patterns/README.md`
-  - `skills/engineering-practices/README.md`
-  - `skills/user-experience/README.md`
-  - `skills/reliability-and-delivery/README.md`
-  - `skills/event-driven-and-real-time-data/README.md`
-  - `skills/business-architecture/README.md`
-  - `skills/data-architecture/README.md`
-  - `skills/krag-systems/README.md`
+- Category grouping lives in `skills/MANIFEST.md` and in each skill's frontmatter metadata.

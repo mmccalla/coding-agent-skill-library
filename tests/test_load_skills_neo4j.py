@@ -29,7 +29,7 @@ def fixture_records() -> dict[str, object]:
                 "title": "Apply Laws of AI",
                 "description": "Baseline safety skill.",
                 "category": "agent-control-patterns",
-                "path": "skills/agent-control-patterns/apply-laws-of-ai/SKILL.md",
+                "path": "skills/apply-laws-of-ai/SKILL.md",
                 "task_shapes": ["safety"],
                 "workflow_stages": ["startup"],
                 "capabilities": ["governance"],
@@ -47,7 +47,7 @@ def fixture_records() -> dict[str, object]:
                 "title": "TDD Practice",
                 "description": "Test-driven development skill.",
                 "category": "engineering-practices",
-                "path": "skills/engineering-practices/tdd-practice/SKILL.md",
+                "path": "skills/tdd-practice/SKILL.md",
                 "task_shapes": ["testing"],
                 "workflow_stages": ["validation"],
                 "capabilities": ["test-design"],
@@ -78,7 +78,7 @@ def fixture_records() -> dict[str, object]:
                 "source": "skill:apply-laws-of-ai",
                 "type": "RELATED_TO",
                 "target": "skill:tdd-practice",
-                "source_path": "skills/agent-control-patterns/apply-laws-of-ai/SKILL.md",
+                "source_path": "skills/apply-laws-of-ai/SKILL.md",
                 "source_section_id": "skill:apply-laws-of-ai:section:0-objective",
             }
         ],
@@ -88,7 +88,7 @@ def fixture_records() -> dict[str, object]:
                 "skill_id": "skill:apply-laws-of-ai",
                 "label": "Evidence",
                 "target": "docs/evidence.md",
-                "source_path": "skills/agent-control-patterns/apply-laws-of-ai/SKILL.md",
+                "source_path": "skills/apply-laws-of-ai/SKILL.md",
             }
         ],
     }

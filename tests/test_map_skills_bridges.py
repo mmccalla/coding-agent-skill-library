@@ -121,7 +121,7 @@ class SkillsBridgeMapperTests(unittest.TestCase):
         self.assertEqual(relationship["source_scope"], "skill")
         self.assertEqual(
             relationship["source_path"],
-            "skills/agent-control-patterns/guardrails-safety-patterns/SKILL.md",
+            "skills/guardrails-safety-patterns/SKILL.md",
         )
 
     def test_mapper_is_stable_and_preserves_connectivity_validation(self) -> None:

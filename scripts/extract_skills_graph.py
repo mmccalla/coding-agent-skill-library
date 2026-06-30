@@ -11,6 +11,11 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import NamedTuple
 
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from scripts import skills_inventory
+
 STOP_WORDS = {
     "and",
     "any",
@@ -179,7 +184,6 @@ def _task_shapes(name: str, description: str, aliases: Sequence[str]) -> tuple[s
 
 def _capabilities(
     name: str,
-    category: str,
     description: str,
     aliases: Sequence[str],
 ) -> tuple[str, ...]:
@@ -190,7 +194,6 @@ def _capabilities(
         (
             *_slug_tokens(name),
             *alias_tokens[:6],
-            *_slug_tokens(category),
             *_slug_tokens(description)[:4],
         )
     )
@@ -279,20 +282,32 @@ def extract_skills_graph_records(skills_root: Path) -> dict[str, object]:
     """Extract all `SKILL.md` files under `skills_root` into graph records."""
 
     resolved_root = skills_root.resolve()
-    skill_paths = sorted(resolved_root.rglob("SKILL.md"))
+    skill_paths = list(skills_inventory.iter_skill_files(resolved_root))
+    pack_metadata_path = resolved_root / skills_inventory.PACK_METADATA_FILENAME
+    pack_metadata = (
+        skills_inventory.load_pack_metadata(resolved_root, pack_metadata_path)
+        if pack_metadata_path.is_file()
+        else None
+    )
     known_skill_names = {path.parent.name for path in skill_paths}
     skills: list[dict[str, object]] = []
     sections: list[dict[str, object]] = []
     relationships: list[dict[str, object]] = []
     references: list[dict[str, object]] = []
     bridges: list[dict[str, object]] = []
+    pack_hash_inputs: list[str] = []
 
     for path in skill_paths:
         text = path.read_text(encoding="utf-8")
         source_path = _relative_source_path(path, resolved_root)
+        pack_hash_inputs.append(f"{source_path}\n{text}")
         name = _frontmatter_value(text, "name", source_path) or path.parent.name
         aliases = _frontmatter_values(text, "aliases", source_path)
-        category = path.parent.parent.name
+        category = skills_inventory.category_for_skill_path(
+            path,
+            skills_root=resolved_root,
+            metadata_path=pack_metadata_path if pack_metadata_path.is_file() else None,
+        )
         description = _frontmatter_value(text, "description", source_path)
         skill_id = f"skill:{name}"
         content_hash = _sha256(text)
@@ -302,9 +317,9 @@ def extract_skills_graph_records(skills_root: Path) -> dict[str, object]:
         related_section_id = _section_id_for_heading(skill_sections, "Related skills")
         task_shapes = _task_shapes(name, description, aliases)
         workflow_stages = _workflow_stages(f"{name} {description}")
-        capabilities = _capabilities(name, category, description, aliases)
-        control_themes = (category,)
-        knowledge_domains = (category,)
+        capabilities = _capabilities(name, description, aliases)
+        control_themes: tuple[str, ...] = ()
+        knowledge_domains: tuple[str, ...] = ()
 
         skills.append(
             {
@@ -321,6 +336,12 @@ def extract_skills_graph_records(skills_root: Path) -> dict[str, object]:
                 "knowledge_domains": list(knowledge_domains),
                 "related_skill_ids": [f"skill:{related_name}" for related_name in related_names],
                 "path": source_path,
+                "skill_pack_id": str(pack_metadata.get("skill_pack_id", "")).strip()
+                if isinstance(pack_metadata, dict)
+                else "",
+                "skill_pack_version": str(pack_metadata.get("version", "")).strip()
+                if isinstance(pack_metadata, dict)
+                else "",
                 "contentHash": content_hash,
                 "wordCount": len(re.findall(r"\b\w+\b", text)),
                 "lineCount": len(lines),
@@ -352,8 +373,29 @@ def extract_skills_graph_records(skills_root: Path) -> dict[str, object]:
                 }
             )
 
+    skill_pack: dict[str, object] | None = None
+    if isinstance(pack_metadata, dict):
+        metadata_text = pack_metadata_path.read_text(encoding="utf-8")
+        pack_content_hash = _sha256("\n".join((metadata_text, *sorted(pack_hash_inputs))))
+        category_ids = [
+            category["id"]
+            for category in pack_metadata.get("categories", [])
+            if isinstance(category, dict) and isinstance(category.get("id"), str)
+        ]
+        skill_pack = {
+            "id": str(pack_metadata.get("skill_pack_id", "")).strip(),
+            "name": str(pack_metadata.get("display_name", "")).strip(),
+            "version": str(pack_metadata.get("version", "")).strip(),
+            "owner": str(pack_metadata.get("owner", "")).strip(),
+            "source_root": str(pack_metadata.get("source_root", "")).strip(),
+            "contentHash": pack_content_hash,
+            "categories": category_ids,
+            "skillCount": len(skills),
+        }
+
     return {
         "root_skill": "apply-laws-of-ai",
+        "skill_pack": skill_pack,
         "skills": skills,
         "sections": sections,
         "relationships": relationships,

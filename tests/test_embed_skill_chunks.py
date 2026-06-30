@@ -70,7 +70,7 @@ class EmbedSkillChunksTests(unittest.TestCase):
                     properties={
                         "id": "retrieval:skill:human-in-the-loop:section:0:approval",
                         "text": "approval before destructive command",
-                        "source_path": "skills/agent-control-patterns/human-in-the-loop/SKILL.md",
+                        "source_path": "skills/human-in-the-loop/SKILL.md",
                         "section_id": "skill:human-in-the-loop:section:0-objective",
                         "skill_id": "skill:human-in-the-loop",
                     },
@@ -81,7 +81,7 @@ class EmbedSkillChunksTests(unittest.TestCase):
                     properties={
                         "id": "retrieval:skill:design-system-practice:section:0:dashboard",
                         "text": "dashboard typography and layout",
-                        "source_path": "skills/user-experience/design-system-practice/SKILL.md",
+                        "source_path": "skills/design-system-practice/SKILL.md",
                         "section_id": "skill:design-system-practice:section:0-objective",
                         "skill_id": "skill:design-system-practice",
                     },
@@ -105,7 +105,7 @@ class EmbedSkillChunksTests(unittest.TestCase):
         )
         self.assertGreaterEqual(candidates[0].score, 0.0)
         self.assertEqual(
-            "skills/agent-control-patterns/human-in-the-loop/SKILL.md",
+            "skills/human-in-the-loop/SKILL.md",
             candidates[0].source_path,
         )
         self.assertEqual(
@@ -141,7 +141,7 @@ class EmbedSkillChunksTests(unittest.TestCase):
                     {
                         "retrieval_unit_id": "retrieval:skill:human-in-the-loop:section:0:approval",
                         "score": 0.91,
-                        "source_path": "skills/agent-control-patterns/human-in-the-loop/SKILL.md",
+                        "source_path": "skills/human-in-the-loop/SKILL.md",
                         "section_id": "skill:human-in-the-loop:section:0-objective",
                         "skill_id": "skill:human-in-the-loop",
                         "text": "approval before destructive command",
@@ -191,7 +191,7 @@ class EmbedSkillChunksTests(unittest.TestCase):
                     {
                         "retrieval_unit_id": "retrieval:skill:human-in-the-loop:section:0:approval",
                         "score": 0.91,
-                        "source_path": "skills/agent-control-patterns/human-in-the-loop/SKILL.md",
+                        "source_path": "skills/human-in-the-loop/SKILL.md",
                         "section_id": "skill:human-in-the-loop:section:0-objective",
                         "skill_id": "skill:human-in-the-loop",
                         "text": "approval before destructive command",

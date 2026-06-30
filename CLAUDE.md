@@ -1,6 +1,6 @@
 # Claude Code Project Guidance
 
-This repository uses a **hierarchical coding-agent skills library**.
+This repository uses a **flat one-level coding-agent skills library**.
 
 ## Mandatory startup order
 
@@ -8,8 +8,8 @@ Before planning, routing, tool use, or edits:
 
 1. Read `AGENTIC_CODING_GLOBAL_SAFETY.md`.
 2. Read `SECURE_AGENTIC_DEVELOPMENT.md`.
-3. **Execute `skills/agent-control-patterns/apply-laws-of-ai/SKILL.md` in full** — immutable baseline for all reasoning.
-4. Use `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` as the routing guide, `skills/README.md` as the subtree index, and `skills/MANIFEST.md` as the full inventory.
+3. **Execute `skills/apply-laws-of-ai/SKILL.md` in full** — immutable baseline for all reasoning.
+4. Use `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` as the routing guide, `skills/README.md` as the flat-library index, and `skills/MANIFEST.md` as the full inventory.
 5. Load only the smallest relevant skill or combination of skills for the task.
 
 See `skills_docs/LIBRARY_CONTRACT.md` for portable consistency rules.
@@ -21,7 +21,7 @@ Treat skill frontmatter as the primary selection surface:
 1. `name`
 2. `aliases`
 3. `description`
-4. category and manifest context
+4. explicit pack metadata and manifest context
 
 This repository uses progressive disclosure. Match on metadata first, then load the selected `SKILL.md` body. Prefer canonical US-English, industry-standard names and add aliases for acronyms, alternate spellings, superseded names and likely user phrasings.
 
@@ -53,13 +53,7 @@ Use these skills when the task shape matches:
 
 ## Business, data and event-driven architecture guidance
 
-When a task involves business architecture, data architecture, event-driven architecture or real-time data, load the smallest relevant skill from:
-
-```text
-skills/business-architecture/
-skills/data-architecture/
-skills/event-driven-and-real-time-data/
-```
+When a task involves business architecture, data architecture, event-driven architecture or real-time data, load the smallest relevant skill from the flat `skills/` directory using the semantic groupings in `skills/PACK_METADATA.json` and `skills/MANIFEST.md`.
 
 Use business architecture skills to clarify capabilities, value streams, processes, operating models, maturity, organisation design and strategy-to-execution traceability.
 
@@ -69,11 +63,7 @@ For data architecture, apply DAMA-DMBOK2-style discipline across governance, arc
 
 Use event-driven and real-time data skills to define business events, event schemas, streaming platforms, CDC, stream processing, event governance, lineage and real-time operability.
 
-When the task is specifically about building, delivering or governing a KRAG system, also load the smallest relevant skill from:
-
-```text
-skills/krag-systems/
-```
+When the task is specifically about building, delivering or governing a KRAG system, also load the smallest relevant KRAG skill from the flat `skills/` directory using the KRAG grouping in `skills/PACK_METADATA.json` and `skills/MANIFEST.md`.
 
 Use these skills for KRAG architecture, ingestion and graph construction, retrieval and answering, and KRAG-specific evaluation and governance.
 
@@ -92,11 +82,7 @@ Keep artefacts practical and concise. Prefer useful decision records, matrices, 
 
 ## User experience and interface design guidance
 
-When a task changes user-facing behaviour or creates UI, load the relevant UX skill from:
-
-```text
-skills/user-experience/
-```
+When a task changes user-facing behaviour or creates UI, load the relevant UX skill from the flat `skills/` directory using the `user-experience` grouping in `skills/PACK_METADATA.json` and `skills/MANIFEST.md`.
 
 Use the smallest relevant set of skills:
 
@@ -115,11 +101,7 @@ For agentic interfaces, do not make autonomous actions invisible or magical. Sur
 
 ## Reliability, SRE and DORA guidance
 
-When a task affects production reliability, operability, CI/CD, release safety, incidents, observability, toil or delivery performance, load the relevant skill from:
-
-```text
-skills/reliability-and-delivery/
-```
+When a task affects production reliability, operability, CI/CD, release safety, incidents, observability, toil or delivery performance, load the relevant skill from the flat `skills/` directory using the `reliability-and-delivery` grouping in `skills/PACK_METADATA.json` and `skills/MANIFEST.md`.
 
 Use the smallest relevant set of skills:
 

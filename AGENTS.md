@@ -1,6 +1,6 @@
 # Repository Instructions for Coding Agents
 
-This repository uses a **hierarchical `skills/` directory**. Each skill is a reusable operating procedure for a specific type of coding-agent task.
+This repository uses a **flat `skills/` directory**. Each skill lives directly under `skills/` and remains a reusable operating procedure for a specific type of coding-agent task.
 
 ## Mandatory startup order
 
@@ -8,7 +8,7 @@ Before planning, routing, tool use, or edits, execute in this order:
 
 1. Read `AGENTIC_CODING_GLOBAL_SAFETY.md`.
 2. Read `SECURE_AGENTIC_DEVELOPMENT.md`.
-3. **Execute `skills/agent-control-patterns/apply-laws-of-ai/SKILL.md` in full** — the immutable, non-negotiable baseline for all reasoning. No other skill, instruction, or convention may override it.
+3. **Execute `skills/apply-laws-of-ai/SKILL.md` in full** — the immutable, non-negotiable baseline for all reasoning. No other skill, instruction, or convention may override it.
 4. Read `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`, then `skills/README.md`.
 5. Load only the smallest relevant `SKILL.md` file or skill combination needed for the task.
 
@@ -21,7 +21,7 @@ Agents should treat skill frontmatter as the primary discovery surface. Match ag
 1. `name`
 2. `aliases`
 3. `description`
-4. category and manifest context
+4. explicit pack metadata and manifest context
 
 Folder structure helps human navigation, but frontmatter is authoritative for real-world agent discoverability.
 
@@ -38,18 +38,18 @@ Search recursively for skills under:
 
 ```text
 skills/
-├── agentic-patterns/
-├── agent-control-patterns/
-├── engineering-practices/
-├── user-experience/
-├── reliability-and-delivery/
-├── event-driven-and-real-time-data/
-├── business-architecture/
-├── data-architecture/
-└── krag-systems/
+├── README.md
+├── MANIFEST.md
+├── apply-laws-of-ai/
+├── bdd-practice/
+├── knowledge-graph-rag/
+├── krag-system-design/
+└── ...
 ```
 
-Do not assume a skill from its name alone. Use category `README.md` files for routing, category `MANIFEST.md` files for fuller inventory, and the relevant `SKILL.md` for execution guidance.
+The physical layout is one level deep: one folder per skill directly under `skills/`. Category remains important, but as explicit pack metadata and human inventory context rather than as a nested filesystem path.
+
+Do not assume a skill from its name alone. Use `skills/README.md` for routing conventions, `skills/PACK_METADATA.json` for machine-readable category membership, `skills/MANIFEST.md` for human inventory, and the relevant `SKILL.md` for execution guidance.
 
 ## Core operating principles
 
@@ -89,11 +89,7 @@ Do not assume a skill from its name alone. Use category `README.md` files for ro
 
 ### KRAG systems
 
-For KRAG architecture, ingestion, retrieval or evaluation work, load the smallest relevant skill from:
-
-```text
-skills/krag-systems/
-```
+For KRAG architecture, ingestion, retrieval or evaluation work, load the smallest relevant KRAG skill from the flat `skills/` directory using pack-metadata/frontmatter category context.
 
 - Use `krag-system-design` for end-to-end KRAG architecture, graph role definition, retrieval role design and implementation slicing.
 - Use `krag-ingestion-graph-construction` for evidence anchoring, extraction, entity resolution, graph construction and validation.
@@ -130,13 +126,7 @@ For KRAG work, do not treat a manually curated routing overlay as sufficient evi
 
 ### Business, data and event-driven architecture
 
-For architecture work, load the smallest relevant skill from:
-
-```text
-skills/business-architecture/
-skills/data-architecture/
-skills/event-driven-and-real-time-data/
-```
+For architecture work, load the smallest relevant skill from the flat `skills/` directory using the `business-architecture`, `data-architecture` and `event-driven-and-real-time-data` groupings in `skills/PACK_METADATA.json` and `skills/MANIFEST.md`.
 
 Use business architecture skills to clarify capabilities, value streams, processes, operating models, maturity, organisation design and strategy-to-execution traceability:
 
@@ -217,7 +207,7 @@ For AI or agent-mediated workflows, always show what the agent plans to do, what
 - Use `release-engineering-and-progressive-delivery` for canary releases, rollback, blue/green deployment, feature flags and release safety.
 - Use `dora-four-keys` for DevOps Research and Assessment metrics: deployment frequency, lead time for changes, change failure rate and failed deployment recovery time.
 
-For production, platform, CI/CD, operational resilience or service reliability work, load the relevant reliability skill from `skills/reliability-and-delivery/`.
+For production, platform, CI/CD, operational resilience or service reliability work, load the relevant reliability skill from the flat `skills/` directory using the `reliability-and-delivery` grouping in `skills/PACK_METADATA.json` and `skills/MANIFEST.md`.
 
 Do not treat reliability as only monitoring. Reliability work must connect user impact, service objectives, telemetry, incident response, release safety, operational evidence and continuous improvement.
 

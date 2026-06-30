@@ -1,0 +1,164 @@
+{
+  "schema_version": "skill-pack-metadata/v1",
+  "skill_pack_id": "coding-agent-skill-library",
+  "display_name": "Coding Agent Skill Library",
+  "version": "2026-06-29",
+  "owner": "repository-maintained",
+  "source_root": "skills",
+  "categories": [
+    {
+      "id": "agentic-patterns",
+      "title": "Agentic Patterns",
+      "description": "Workflow, orchestration and context-shaping skills for agent execution design.",
+      "skills": [
+        "prompt-chaining",
+        "routing",
+        "parallelization",
+        "reflection-and-verification",
+        "tool-use-and-function-calling",
+        "planning-and-task-decomposition",
+        "multi-agent-collaboration",
+        "skill-discovery-and-selection",
+        "requirements-elicitation",
+        "idea-refinement",
+        "spec-driven-development",
+        "incremental-implementation",
+        "context-engineering",
+        "source-driven-development",
+        "uncertainty-driven-development",
+        "memory-management",
+        "learning-and-adaptation",
+        "mcp-server-design"
+      ]
+    },
+    {
+      "id": "agent-control-patterns",
+      "title": "Agent Control Patterns",
+      "description": "Safety, governance, optimization and control skills for bounded agent behavior.",
+      "skills": [
+        "apply-laws-of-ai",
+        "goal-setting-and-monitoring",
+        "exception-handling-and-recovery",
+        "human-in-the-loop",
+        "knowledge-retrieval-rag",
+        "inter-agent-communication-a2a",
+        "resource-aware-optimization",
+        "reasoning-techniques",
+        "guardrails-safety-patterns",
+        "evaluation-and-monitoring",
+        "prioritization"
+      ]
+    },
+    {
+      "id": "engineering-practices",
+      "title": "Engineering Practices",
+      "description": "Core software engineering practices for design, testing, refactoring and code quality.",
+      "skills": [
+        "kiss-principle",
+        "solid-principles",
+        "dry-principle",
+        "tdd-practice",
+        "bdd-practice",
+        "ddd-practice"
+      ]
+    },
+    {
+      "id": "user-experience",
+      "title": "User Experience",
+      "description": "User-facing design, accessibility, interface and usability skills.",
+      "skills": [
+        "ux-design-principles",
+        "accessibility-wcag",
+        "ui-component-design",
+        "frontend-state-and-interaction-design",
+        "data-product-dashboard-design",
+        "design-system-practice",
+        "user-research-and-usability-testing",
+        "agentic-ux-patterns"
+      ]
+    },
+    {
+      "id": "reliability-and-delivery",
+      "title": "Reliability And Delivery",
+      "description": "Reliability engineering, CI/CD, observability and release-management skills.",
+      "skills": [
+        "sre-practice",
+        "slo-error-budget-management",
+        "incident-response-and-postmortems",
+        "observability-and-telemetry",
+        "browser-testing-with-devtools",
+        "ci-cd-and-automation",
+        "deprecation-and-migration",
+        "documentation-and-adrs",
+        "shipping-and-launch",
+        "code-review-and-quality",
+        "git-workflow-and-versioning",
+        "toil-reduction-and-automation",
+        "release-engineering-and-progressive-delivery",
+        "dora-four-keys"
+      ]
+    },
+    {
+      "id": "event-driven-and-real-time-data",
+      "title": "Event Driven And Real Time Data",
+      "description": "Event-driven architecture, streaming and real-time data system skills.",
+      "skills": [
+        "event-driven-architecture",
+        "event-modeling",
+        "event-streaming-platform-design",
+        "schema-registry-and-contracts",
+        "cdc-and-source-to-stream-ingestion",
+        "stream-processing-patterns",
+        "event-governance-and-lineage",
+        "streaming-operations-and-slos"
+      ]
+    },
+    {
+      "id": "business-architecture",
+      "title": "Business Architecture",
+      "description": "Capability, process, value-stream and operating-model architecture skills.",
+      "skills": [
+        "business-capability-modeling",
+        "value-stream-modeling",
+        "process-modeling",
+        "operating-model-design",
+        "strategy-to-execution-traceability",
+        "capability-maturity-assessment",
+        "business-information-concept-modeling",
+        "organization-and-role-design"
+      ]
+    },
+    {
+      "id": "data-architecture",
+      "title": "Data Architecture",
+      "description": "Data modeling, governance, metadata, lineage and knowledge-graph architecture skills.",
+      "skills": [
+        "conceptual-data-modeling",
+        "logical-data-modeling",
+        "data-product-design",
+        "data-contract-design",
+        "metadata-management",
+        "data-governance-and-quality",
+        "data-security-and-privacy-architecture",
+        "data-lifecycle-and-retention-management",
+        "data-integration-and-interoperability",
+        "lakehouse-and-medallion-architecture",
+        "master-and-reference-data-management",
+        "ontology-and-knowledge-graph-modeling",
+        "knowledge-graph-rag",
+        "data-lineage-and-provenance"
+      ]
+    },
+    {
+      "id": "krag-systems",
+      "title": "Krag Systems",
+      "description": "Knowledge-graph-augmented retrieval system design, ingestion, retrieval and evaluation skills.",
+      "skills": [
+        "krag-system-design",
+        "krag-ingestion-graph-construction",
+        "krag-retrieval-answering",
+        "krag-evaluation-governance"
+      ]
+    }
+  ]
+}

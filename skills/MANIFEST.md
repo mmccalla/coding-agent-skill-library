@@ -1,6 +1,6 @@
 # Skills Manifest
 
-This manifest indexes the categorised coding-agent skill library. Skills are stored recursively under `skills/`.
+This manifest indexes the coding-agent skill library. Skills are stored in a flat one-level layout under `skills/`, while categories remain semantic inventory groupings.
 
 Use this command to list installed skills:
 
@@ -52,23 +52,23 @@ This is a local library, not a replica of any external skill pack.
 - `performance-optimization` is represented by `resource-aware-optimization` plus `observability-and-telemetry`.
 - `graph-enabled-rag` is represented by the specialist `knowledge-graph-rag` skill plus the existing `knowledge-retrieval-rag`, `ontology-and-knowledge-graph-modeling` and `data-lineage-and-provenance` skills.
 
-## Directory model
+## Category model
 
-| Directory | Contents | Status in this package |
+| Category grouping | Contents | Status in this package |
 |---|---|---|
-| `skills/agentic-patterns/` | Core agent workflow patterns from Chapters 1-10 and the local session/spec/implementation spine. | Fully populated. |
-| `skills/agent-control-patterns/` | Advanced agent control patterns from Chapters 11-20. | Fully populated. |
-| `skills/engineering-practices/` | KISS, SOLID, DRY, TDD, BDD, DDD, code review and Git workflow skills. | Fully populated. |
-| `skills/user-experience/` | UX, accessibility, UI component, frontend-state, dashboard, design-system, usability-testing and agentic-UX skills. | Fully populated. |
-| `skills/reliability-and-delivery/` | SRE, SLO/error-budget, incident, observability, browser verification, CI/CD, deprecation, documentation, launch, toil-reduction, progressive-delivery and DORA Four Keys skills. | Fully populated. |
-| `skills/event-driven-and-real-time-data/` | Event-driven architecture, event modelling, streaming platform, schema contract, CDC, stream processing, event governance and real-time operability skills. | Fully populated. |
-| `skills/business-architecture/` | Capability, value-stream, process, operating-model, strategy traceability, maturity, business concept and organisation design skills. | Fully populated. |
-| `skills/data-architecture/` | DAMA-DMBOK2-aligned and CDMC-aware data modelling, products, contracts, metadata, governance, quality, security, lifecycle, integration, lakehouse, MDM/RDM, ontology and lineage skills. | Fully populated. |
-| `skills/krag-systems/` | KRAG system design, ingestion/graph construction, retrieval/answering and evaluation/governance skills. | Fully populated. |
+| `agentic-patterns` | Core agent workflow patterns from Chapters 1-10 and the local session/spec/implementation spine. | Fully populated. |
+| `agent-control-patterns` | Advanced agent control patterns from Chapters 11-20. | Fully populated. |
+| `engineering-practices` | KISS, SOLID, DRY, TDD, BDD, DDD, code review and Git workflow skills. | Fully populated. |
+| `user-experience` | UX, accessibility, UI component, frontend-state, dashboard, design-system, usability-testing and agentic-UX skills. | Fully populated. |
+| `reliability-and-delivery` | SRE, SLO/error-budget, incident, observability, browser verification, CI/CD, deprecation, documentation, launch, toil-reduction, progressive-delivery and DORA Four Keys skills. | Fully populated. |
+| `event-driven-and-real-time-data` | Event-driven architecture, event modelling, streaming platform, schema contract, CDC, stream processing, event governance and real-time operability skills. | Fully populated. |
+| `business-architecture` | Capability, value-stream, process, operating-model, strategy traceability, maturity, business concept and organisation design skills. | Fully populated. |
+| `data-architecture` | DAMA-DMBOK2-aligned and CDMC-aware data modelling, products, contracts, metadata, governance, quality, security, lifecycle, integration, lakehouse, MDM/RDM, ontology and lineage skills. | Fully populated. |
+| `krag-systems` | KRAG system design, ingestion/graph construction, retrieval/answering and evaluation/governance skills. | Fully populated. |
 
 ## Agentic patterns
 
-Place these existing skill folders under `skills/agentic-patterns/`.
+These skills belong to the semantic `agentic-patterns` grouping in the flat `skills/` directory.
 
 | Skill | Use when | Avoid when |
 |---|---|---|
@@ -79,13 +79,21 @@ Place these existing skill folders under `skills/agentic-patterns/`.
 | `tool-use-and-function-calling` | An agent needs to call external tools, APIs, commands, databases or services. | The answer can be produced safely without external execution. |
 | `planning-and-task-decomposition` | A complex goal needs an ordered executable plan. | The implementation path is obvious and small. |
 | `multi-agent-collaboration` | Specialist roles and hand-offs materially improve the result. | A single module or agent can do the work more simply. |
+| `skill-discovery-and-selection` | The agent must search a local skill library, compare candidates and choose the smallest valid skill set for the task. | The correct skill is already explicit and no discovery or routing work is needed. |
+| `requirements-elicitation` | The task is underspecified and requirements, constraints or acceptance criteria must be clarified before implementation. | The requirements are already explicit, stable and testable. |
+| `idea-refinement` | A rough concept needs shaping into a clearer problem statement, option set or implementation direction. | The problem and chosen direction are already concrete. |
+| `spec-driven-development` | Work should be anchored in an explicit specification, contract or executable design artifact before code changes start. | A tiny local fix is faster and safer without creating a full spec. |
+| `incremental-implementation` | A larger change needs to be broken into safe, reversible delivery slices. | The work is already minimal and can be completed in one verified step. |
+| `context-engineering` | Relevant context must be selected, framed and bounded so the agent loads the right evidence without excess noise. | The task is self-contained and does not depend on broader context selection. |
+| `source-driven-development` | Primary source material such as code, contracts, schemas or standards should drive the design and implementation. | There is no meaningful source corpus beyond the local change itself. |
+| `uncertainty-driven-development` | The work has meaningful unknowns that need explicit assumptions, probes, validation steps or staged risk reduction. | The path is already well understood and low uncertainty. |
 | `memory-management` | State, session history or long-term retrievable knowledge must be managed. | The task is stateless. |
 | `learning-and-adaptation` | Improvements are measured, bounded, reversible and validated. | Changes cannot be evaluated or safely rolled back. |
 | `mcp-server-design` | Capabilities need to be exposed as MCP tools, resources or prompts. | A local function or direct API call is sufficient. |
 
 ## Agent control patterns
 
-Place these existing skill folders under `skills/agent-control-patterns/`.
+These skills belong to the semantic `agent-control-patterns` grouping in the flat `skills/` directory.
 
 | Skill | Use when | Avoid when |
 |---|---|---|
@@ -103,7 +111,7 @@ Place these existing skill folders under `skills/agent-control-patterns/`.
 
 ## Engineering practices
 
-These skills are fully included in this package under `skills/engineering-practices/`.
+These skills are fully included in this package and grouped under `engineering-practices`.
 
 | Skill | Use when | Avoid when |
 |---|---|---|
@@ -116,7 +124,7 @@ These skills are fully included in this package under `skills/engineering-practi
 
 ## User experience and interface design
 
-These skills are fully included under `skills/user-experience/`.
+These skills are fully included in the flat library and grouped under `user-experience`.
 
 | Skill | Use when | Avoid when |
 |---|---|---|
@@ -139,7 +147,7 @@ These skills are fully included under `skills/user-experience/`.
 
 ## Reliability and Delivery
 
-These skills are fully included under `skills/reliability-and-delivery/`.
+These skills are fully included in the flat library and grouped under `reliability-and-delivery`.
 
 DORA means **DevOps Research and Assessment** in this library, not financial-services regulation.
 
@@ -149,6 +157,13 @@ DORA means **DevOps Research and Assessment** in this library, not financial-ser
 | `slo-error-budget-management` | Defining SLIs, SLOs, error budgets, burn rates, reliability targets or release gates. | There is no user-visible service or measurable reliability objective. |
 | `incident-response-and-postmortems` | Handling incidents, operational failures, recovery, postmortems, learning reviews or corrective actions. | The issue is a simple local development error with no service impact. |
 | `observability-and-telemetry` | Adding or reviewing logs, metrics, traces, dashboards, alerts or telemetry standards. | The task has no runtime behaviour or operational monitoring need. |
+| `browser-testing-with-devtools` | Verifying browser-rendered behaviour with DOM, console, network and performance evidence from DevTools. | Static code inspection alone is sufficient and no runtime browser evidence is needed. |
+| `ci-cd-and-automation` | Designing or improving CI pipelines, build automation, validation gates or delivery workflow automation. | The task does not affect build, test, release or automation workflows. |
+| `deprecation-and-migration` | Replacing legacy paths, retiring obsolete interfaces or planning safe migrations with compatibility controls. | No deprecation, cutover or compatibility concern exists. |
+| `documentation-and-adrs` | Durable technical documentation, ADRs or decision records are needed alongside implementation changes. | The task is a tiny local edit with no lasting decision or operational value. |
+| `shipping-and-launch` | The work needs release readiness, launch checks, rollout coordination or post-launch follow-through. | There is no user-visible release or launch event. |
+| `code-review-and-quality` | Changes need structured review for defects, regressions, risk and maintainability before acceptance. | The task is purely exploratory and not yet at a reviewable change point. |
+| `git-workflow-and-versioning` | Source-control hygiene, branching, commits, tags or release/version workflow decisions matter. | No repository history or version-control action is involved. |
 | `toil-reduction-and-automation` | Reducing repetitive manual operational work through safe, tested and auditable automation. | Automation would increase risk, hide judgement or remove necessary human approval. |
 | `release-engineering-and-progressive-delivery` | Improving deployment safety through rollback, canary, blue/green, feature flags, release gates or staged rollout. | The task has no deployment or release impact. |
 | `dora-four-keys` | Improving deployment frequency, lead time for changes, change failure rate or failed deployment recovery time. | The task is unrelated to software delivery performance. |
@@ -165,7 +180,7 @@ DORA means **DevOps Research and Assessment** in this library, not financial-ser
 
 ## Event-Driven and Real-Time Data
 
-These skills are fully included under `skills/event-driven-and-real-time-data/`.
+These skills are fully included in the flat library and grouped under `event-driven-and-real-time-data`.
 
 | Skill | Use when | Avoid when |
 |---|---|---|
@@ -187,7 +202,7 @@ These skills are fully included under `skills/event-driven-and-real-time-data/`.
 
 ## Business Architecture
 
-These skills are fully included under `skills/business-architecture/`.
+These skills are fully included in the flat library and grouped under `business-architecture`.
 
 | Skill | Use when | Avoid when |
 |---|---|---|
@@ -210,7 +225,7 @@ These skills are fully included under `skills/business-architecture/`.
 
 ## Data Architecture
 
-These skills are fully included under `skills/data-architecture/`.
+These skills are fully included in the flat library and grouped under `data-architecture`.
 
 The data architecture skills apply DAMA-DMBOK2-style separation of data management concerns and CDMC-style cloud/shared-data control expectations where relevant.
 
@@ -240,7 +255,7 @@ The data architecture skills apply DAMA-DMBOK2-style separation of data manageme
 
 ## KRAG Systems
 
-These skills are fully included under `skills/krag-systems/`.
+These skills are fully included in the flat library and grouped under `krag-systems`.
 
 | Skill | Use when | Avoid when |
 |---|---|---|

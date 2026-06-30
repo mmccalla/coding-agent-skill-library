@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import json
 import itertools
 import os
 import re
@@ -6,7 +7,8 @@ import sys
 from collections import Counter
 
 ROOT = "skills"
-BASELINE_SKILL = os.path.join("skills", "agent-control-patterns", "apply-laws-of-ai", "SKILL.md")
+BASELINE_SKILL = os.path.join("skills", "apply-laws-of-ai", "SKILL.md")
+PACK_METADATA = os.path.join("skills", "PACK_METADATA.json")
 MIN_WORDS = 200
 MIN_DESC_LEN = 80
 MAX_DESC_LEN = 1024
@@ -79,6 +81,90 @@ def cosine(counter_a: Counter[str], counter_b: Counter[str]) -> float:
     return num / (den_a * den_b)
 
 
+def validate_pack_metadata(paths: list[str]) -> list[str]:
+    errors: list[str] = []
+    if not os.path.isfile(PACK_METADATA):
+        errors.append(f"missing pack metadata file: {PACK_METADATA}")
+        return errors
+
+    try:
+        metadata = json.loads(read(PACK_METADATA))
+    except json.JSONDecodeError as exc:
+        errors.append(f"{PACK_METADATA}: invalid JSON ({exc})")
+        return errors
+
+    if not isinstance(metadata, dict):
+        errors.append(f"{PACK_METADATA}: root object must be a JSON object")
+        return errors
+
+    for key in (
+        "schema_version",
+        "skill_pack_id",
+        "display_name",
+        "version",
+        "owner",
+        "source_root",
+        "categories",
+    ):
+        if key not in metadata:
+            errors.append(f"{PACK_METADATA}: missing required field '{key}'")
+
+    if metadata.get("schema_version") != "skill-pack-metadata/v1":
+        errors.append(f"{PACK_METADATA}: schema_version must be 'skill-pack-metadata/v1'")
+    if metadata.get("source_root") != ROOT:
+        errors.append(f"{PACK_METADATA}: source_root must be '{ROOT}'")
+
+    categories = metadata.get("categories", [])
+    if not isinstance(categories, list) or not categories:
+        errors.append(f"{PACK_METADATA}: categories must be a non-empty array")
+        return errors
+
+    expected_skills = {os.path.basename(os.path.dirname(path)) for path in paths}
+    seen_category_ids: set[str] = set()
+    seen_skills: dict[str, str] = {}
+
+    for index, category in enumerate(categories):
+        if not isinstance(category, dict):
+            errors.append(f"{PACK_METADATA}: categories[{index}] must be an object")
+            continue
+        category_id = str(category.get("id", "")).strip()
+        if not category_id:
+            errors.append(f"{PACK_METADATA}: categories[{index}] missing id")
+            continue
+        if category_id in seen_category_ids:
+            errors.append(f"{PACK_METADATA}: duplicate category id '{category_id}'")
+        seen_category_ids.add(category_id)
+
+        skills = category.get("skills", [])
+        if not isinstance(skills, list) or not skills:
+            errors.append(f"{PACK_METADATA}: category '{category_id}' must list at least one skill")
+            continue
+        for skill in skills:
+            if not isinstance(skill, str) or not skill.strip():
+                errors.append(
+                    f"{PACK_METADATA}: category '{category_id}' contains an invalid skill entry"
+                )
+                continue
+            skill_name = skill.strip()
+            owner = seen_skills.get(skill_name)
+            if owner and owner != category_id:
+                errors.append(
+                    f"{PACK_METADATA}: skill '{skill_name}' assigned to multiple categories "
+                    f"('{owner}' and '{category_id}')"
+                )
+            else:
+                seen_skills[skill_name] = category_id
+
+    unknown_skills = sorted(set(seen_skills) - expected_skills)
+    missing_skills = sorted(expected_skills - set(seen_skills))
+    for skill_name in unknown_skills:
+        errors.append(f"{PACK_METADATA}: unknown skill '{skill_name}' in categories")
+    for skill_name in missing_skills:
+        errors.append(f"{PACK_METADATA}: missing category assignment for skill '{skill_name}'")
+
+    return errors
+
+
 def main() -> int:
     errors: list[str] = []
     warnings: list[str] = []
@@ -92,6 +178,7 @@ def main() -> int:
             if name == "SKILL.md":
                 paths.append(os.path.join(dirpath, name))
     paths.sort()
+    errors.extend(validate_pack_metadata(paths))
 
     skill_names = {os.path.basename(os.path.dirname(p)) for p in paths}
     alias_owners: dict[str, str] = {}
