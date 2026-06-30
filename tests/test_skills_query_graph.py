@@ -37,6 +37,8 @@ class SkillsQueryGraphTests(unittest.TestCase):
         self.assertEqual("exact_skill_lookup", result["query_family"])
         self.assertTrue(result["read_only"])
         self.assertEqual("skill_lookup_v1", result["cypher_template_id"])
+        self.assertIn("MATCH (s:Skill {id: $skill_id})", result["generated_cypher"])
+        self.assertIn("LIMIT $limit", result["generated_cypher"])
         self.assertEqual(7, result["result_bounds"]["limit"])
 
     def test_related_skill_traversal_execution_returns_paths(self) -> None:

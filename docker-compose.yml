@@ -99,7 +99,13 @@ services:
       OLLAMA_MODEL: ${OLLAMA_MODEL:-}
       OLLAMA_CHAT_MODEL: ${OLLAMA_CHAT_MODEL:-}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8000/health/live')",
+        ]
       interval: 10s
       timeout: 5s
       retries: 3

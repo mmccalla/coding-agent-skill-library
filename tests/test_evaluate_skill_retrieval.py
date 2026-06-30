@@ -72,10 +72,22 @@ class EvaluateSkillRetrievalTests(unittest.TestCase):
         report = evaluate_offline(SMOKE_DATASET, limit=3)
 
         self.assertTrue(report.passed, report.model_dump())
+        self.assertEqual(9, report.cases)
+        self.assertGreaterEqual(report.precision_at_1, 1.0)
         self.assertGreaterEqual(report.recall_at_k, 1.0)
         self.assertGreaterEqual(report.mean_reciprocal_rank, 1.0)
+        self.assertGreaterEqual(report.ndcg_at_k, 1.0)
         self.assertGreaterEqual(report.source_coverage, 1.0)
+        self.assertGreaterEqual(report.citation_coverage, 1.0)
+        self.assertGreaterEqual(report.exclusion_accuracy, 1.0)
         self.assertGreaterEqual(report.uncertainty_accuracy, 1.0)
+        self.assertGreaterEqual(report.selection_trace_coverage, 1.0)
+        self.assertGreaterEqual(report.query_plan_coverage, 1.0)
+        self.assertGreaterEqual(report.graph_lift_recall_at_k, 0.0)
+        self.assertGreaterEqual(report.p95_latency_ms, 0.0)
+        self.assertEqual(9, len(report.case_results))
+        self.assertTrue(all(result.graph_query_plan_present for result in report.case_results))
+        self.assertTrue(all(result.selection_trace_present for result in report.case_results))
 
 
 if __name__ == "__main__":

@@ -74,8 +74,14 @@ def _relative_source_path(path: Path, skills_root: Path) -> str:
 
 
 def _frontmatter_value(text: str, key: str, source_path: str) -> str:
-    value = _frontmatter_values(text, key, source_path)
-    return value[0] if value else ""
+    if not text.startswith("---\n"):
+        raise ValueError(f"{source_path}: missing YAML frontmatter start")
+    frontmatter_end = text.find("\n---\n", 4)
+    if frontmatter_end == -1:
+        raise ValueError(f"{source_path}: missing YAML frontmatter end")
+    frontmatter = text[4:frontmatter_end]
+    match = re.search(rf"^{re.escape(key)}:[ \t]*([^\n]+)$", frontmatter, flags=re.M)
+    return match.group(1).strip() if match else ""
 
 
 def _frontmatter_values(text: str, key: str, source_path: str) -> tuple[str, ...]:
@@ -87,7 +93,8 @@ def _frontmatter_values(text: str, key: str, source_path: str) -> tuple[str, ...
     frontmatter = text[4:frontmatter_end]
     match = re.search(rf"^{re.escape(key)}:[ \t]*([^\n]+)$", frontmatter, flags=re.M)
     if match:
-        return _unique(tuple(item.strip() for item in match.group(1).split(",") if item.strip()))
+        raw_value = match.group(1).strip()
+        return (raw_value,) if raw_value else ()
     block_match = re.search(
         rf"^{re.escape(key)}:\s*$\n((?:  - .+\n?)*)",
         frontmatter,
@@ -232,17 +239,25 @@ def _bridge_record(
     source_path: str,
     source: str,
     confidence: float,
+    rationale: str,
+    source_scope: str,
+    source_ref: str,
 ) -> dict[str, object]:
+    bridge_id = f"{skill_id}:bridge:{kind}:{_slug(value)}"
     return {
-        "id": f"{skill_id}:bridge:{kind}:{_slug(value)}",
+        "id": bridge_id,
         "skill_id": skill_id,
         "name": value,
         "kind": kind,
         "value": value,
-        "source": source,
+        "source": bridge_id,
+        "rule_id": bridge_id,
         "path": source_path,
         "source_path": source_path,
         "confidence": confidence,
+        "rationale": rationale,
+        "source_scope": source_scope,
+        "source_ref": source_ref,
     }
 
 
@@ -256,14 +271,49 @@ def _bridge_records(
     knowledge_domains: Sequence[str],
 ) -> list[dict[str, object]]:
     bridge_specs = (
-        ("task_shape", task_shapes, "name_and_description", 0.8),
-        ("workflow_stage", workflow_stages, "name_and_description", 0.7),
-        ("capability", capabilities, "name_category_description", 0.75),
-        ("control_theme", control_themes, "category", 0.9),
-        ("knowledge_domain", knowledge_domains, "category", 0.9),
+        (
+            "task_shape",
+            task_shapes,
+            "name_and_description",
+            0.8,
+            "Derived from the skill name, aliases and description.",
+            "skill",
+        ),
+        (
+            "workflow_stage",
+            workflow_stages,
+            "name_and_description",
+            0.7,
+            "Derived from workflow-stage keywords in the skill name and description.",
+            "skill",
+        ),
+        (
+            "capability",
+            capabilities,
+            "name_and_description",
+            0.75,
+            "Derived from the skill name, aliases and description.",
+            "skill",
+        ),
+        (
+            "control_theme",
+            control_themes,
+            "category",
+            0.9,
+            "Derived from explicit pack metadata category assignment.",
+            "category",
+        ),
+        (
+            "knowledge_domain",
+            knowledge_domains,
+            "category",
+            0.9,
+            "Derived from explicit pack metadata category assignment.",
+            "category",
+        ),
     )
     records: list[dict[str, object]] = []
-    for kind, values, source, confidence in bridge_specs:
+    for kind, values, source, confidence, rationale, source_scope in bridge_specs:
         for value in values:
             records.append(
                 _bridge_record(
@@ -273,6 +323,9 @@ def _bridge_records(
                     source_path=source_path,
                     source=source,
                     confidence=confidence,
+                    rationale=rationale,
+                    source_scope=source_scope,
+                    source_ref=skill_id.removeprefix("skill:") if source_scope == "skill" else value,
                 )
             )
     return records
@@ -318,8 +371,8 @@ def extract_skills_graph_records(skills_root: Path) -> dict[str, object]:
         task_shapes = _task_shapes(name, description, aliases)
         workflow_stages = _workflow_stages(f"{name} {description}")
         capabilities = _capabilities(name, description, aliases)
-        control_themes: tuple[str, ...] = ()
-        knowledge_domains: tuple[str, ...] = ()
+        control_themes = (category,) if category else ()
+        knowledge_domains = (category,) if category else ()
 
         skills.append(
             {

@@ -35,6 +35,7 @@ Define a compact ontology that distinguishes source structure, semantic meaning,
 - `VerificationCheck`
 - `RelatedSkillAssertion`
 - `OntologyMappingAssertion`
+- `SkillDependencyAssertion`
 
 ### Runtime and answering
 
@@ -42,6 +43,12 @@ Define a compact ontology that distinguishes source structure, semantic meaning,
 - `QueryTemplate`
 - `RetrievalProjection`
 - `Citation`
+- `EvaluationDataset`
+- `EvaluationTask`
+- `ExpectedSkillVersion`
+- `ObservedSelection`
+- `EvaluationRun`
+- `FailureMode`
 
 ## Required semantics
 
@@ -73,6 +80,14 @@ Represents the exact source-grounded span or fragment used to justify a semantic
 
 Represents a discoverable lexical surface. Aliases are first-class retrieval assets, not incidental frontmatter strings.
 
+Governed aliases should distinguish:
+
+- canonical labels
+- controlled alternative labels
+- hidden labels for common abbreviations or typo-tolerant variants
+- deprecated concepts with explicit replacements
+- bounded broader or narrower hierarchy links within the same scheme
+
 ### Capability, TaskIntent, WorkflowStage
 
 Represent curated semantic concepts used for retrieval and reasoning. They must be explicitly defined and governed, not inferred from category names by default.
@@ -80,6 +95,20 @@ Represent curated semantic concepts used for retrieval and reasoning. They must 
 ### Constraint, ProcedureStep, VerificationCheck
 
 Represent the operational content of a skill in normalized, queryable form. These are more retrieval-relevant than raw markdown sections alone.
+
+### SkillDependencyAssertion
+
+Represents a version-aware dependency between skill versions. It must identify source skill version, target skill version, dependency type, provenance and evidence support.
+
+### EvaluationDataset, EvaluationTask, ExpectedSkillVersion, ObservedSelection, EvaluationRun, FailureMode
+
+Represent the benchmark and governance layer needed to prove KRAG quality. The ontology must capture:
+
+- versioned benchmark datasets
+- ground-truth expected skill versions
+- observed selections returned by the runtime
+- governed failure modes
+- reproducible evaluation runs with metrics
 
 ## Required relationship families
 
@@ -99,6 +128,14 @@ Represent the operational content of a skill in normalized, queryable form. Thes
 - `PROJECTED_AS`
 - `USED_IN_QUERY_TEMPLATE`
 - `SUPPORTED_BY_CITATION`
+- `HAS_EVALUATION_TASK`
+- `EVALUATED_DATASET`
+- `EXPECTS_SKILL_VERSION`
+- `EXPECTED_SKILL_VERSION`
+- `OBSERVED_SKILL_VERSION`
+- `EVALUATED_TASK`
+- `RECORDED_SELECTION`
+- `HAS_FAILURE_MODE`
 
 ## Prohibited shortcuts
 
@@ -122,6 +159,18 @@ Every `RetrievalProjection` must include:
 - selected constraints or verification cues
 - linked evidence anchors
 
+Evaluation runs must include, at minimum:
+
+- precision at 1
+- recall at k
+- mean reciprocal rank
+- nDCG at k
+- graph lift over vector-only baseline
+- p95 latency
+- citation coverage
+- exclusion accuracy
+- token cost per selection
+
 ## Validation requirements
 
 The ontology must be backed by machine validation rules that enforce:
@@ -133,6 +182,10 @@ The ontology must be backed by machine validation rules that enforce:
 - version integrity
 - no orphan promoted assertions
 - no retrieval projection without canonical provenance
+- no deprecated governed concept without explicit replacement
+- no cross-scheme broader or narrower hierarchy edge
+- no version-aware dependency without evidence and provenance
+- no evaluation run without benchmark task, observed selection and metric fields
 
 ## Competency questions
 

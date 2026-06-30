@@ -46,6 +46,23 @@ The KRAG refactor is organized under:
 - `EVALUATION_CONTRACT.md` defines the quality gates required before cutover.
 - `PHASED_IMPLEMENTATION_PLAN.md` maps every recommendation from `../ontology_update_recommendations.md` to a specific phase, completion criterion and validation expectation.
 
+## Repo-native cutover command
+
+Use the Phase 7 acceptance harness to prove the minimum viable KRAG slice and release gates:
+
+```bash
+.venv/bin/python scripts/krag_cutover_acceptance.py --dataset tests/fixtures/retrieval_evaluation/smoke_queries.json --limit 3 --token-budget 240
+```
+
+This command validates:
+
+- ontology and SHACL profiles
+- bounded query-family planning and rendered read-only Cypher
+- route-specific graph execution
+- evidence-backed skill selection
+- benchmark retrieval metrics and graph lift
+- measured token-cost reduction versus manual skill loading
+
 ## Non-negotiable design position
 
 The graph is not decorative metadata around markdown files.

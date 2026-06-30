@@ -73,80 +73,140 @@ def connected_fixture() -> dict[str, object]:
                 "skill_id": "skill:apply-laws-of-ai",
                 "kind": "task_shape",
                 "value": "session-start",
-                "source": "fixture",
+                "source": "skill:apply-laws-of-ai:bridge:task_shape:session-start",
+                "rule_id": "skill:apply-laws-of-ai:bridge:task_shape:session-start",
+                "path": "fixture",
+                "source_path": "fixture",
                 "confidence": 1.0,
+                "rationale": "Fixture-derived task shape.",
+                "source_scope": "skill",
+                "source_ref": "apply-laws-of-ai",
             },
             {
                 "id": "skill:apply-laws-of-ai:bridge:workflow_stage:startup",
                 "skill_id": "skill:apply-laws-of-ai",
                 "kind": "workflow_stage",
                 "value": "startup",
-                "source": "fixture",
+                "source": "skill:apply-laws-of-ai:bridge:workflow_stage:startup",
+                "rule_id": "skill:apply-laws-of-ai:bridge:workflow_stage:startup",
+                "path": "fixture",
+                "source_path": "fixture",
                 "confidence": 1.0,
+                "rationale": "Fixture-derived workflow stage.",
+                "source_scope": "skill",
+                "source_ref": "apply-laws-of-ai",
             },
             {
                 "id": "skill:apply-laws-of-ai:bridge:capability:safety-baseline",
                 "skill_id": "skill:apply-laws-of-ai",
                 "kind": "capability",
                 "value": "safety-baseline",
-                "source": "fixture",
+                "source": "skill:apply-laws-of-ai:bridge:capability:safety-baseline",
+                "rule_id": "skill:apply-laws-of-ai:bridge:capability:safety-baseline",
+                "path": "fixture",
+                "source_path": "fixture",
                 "confidence": 1.0,
+                "rationale": "Fixture-derived capability.",
+                "source_scope": "skill",
+                "source_ref": "apply-laws-of-ai",
             },
             {
                 "id": "skill:apply-laws-of-ai:bridge:control_theme:ai-safety",
                 "skill_id": "skill:apply-laws-of-ai",
                 "kind": "control_theme",
                 "value": "ai-safety",
-                "source": "fixture",
+                "source": "skill:apply-laws-of-ai:bridge:control_theme:ai-safety",
+                "rule_id": "skill:apply-laws-of-ai:bridge:control_theme:ai-safety",
+                "path": "fixture",
+                "source_path": "fixture",
                 "confidence": 1.0,
+                "rationale": "Fixture-derived control theme.",
+                "source_scope": "skill",
+                "source_ref": "apply-laws-of-ai",
             },
             {
                 "id": "skill:apply-laws-of-ai:bridge:knowledge_domain:agent-control",
                 "skill_id": "skill:apply-laws-of-ai",
                 "kind": "knowledge_domain",
                 "value": "agent-control",
-                "source": "fixture",
+                "source": "skill:apply-laws-of-ai:bridge:knowledge_domain:agent-control",
+                "rule_id": "skill:apply-laws-of-ai:bridge:knowledge_domain:agent-control",
+                "path": "fixture",
+                "source_path": "fixture",
                 "confidence": 1.0,
+                "rationale": "Fixture-derived knowledge domain.",
+                "source_scope": "skill",
+                "source_ref": "apply-laws-of-ai",
             },
             {
                 "id": "skill:skill-discovery-and-selection:bridge:task_shape:skill-routing",
                 "skill_id": "skill:skill-discovery-and-selection",
                 "kind": "task_shape",
                 "value": "skill-routing",
-                "source": "fixture",
+                "source": "skill:skill-discovery-and-selection:bridge:task_shape:skill-routing",
+                "rule_id": "skill:skill-discovery-and-selection:bridge:task_shape:skill-routing",
+                "path": "fixture",
+                "source_path": "fixture",
                 "confidence": 1.0,
+                "rationale": "Fixture-derived task shape.",
+                "source_scope": "skill",
+                "source_ref": "skill-discovery-and-selection",
             },
             {
                 "id": "skill:skill-discovery-and-selection:bridge:workflow_stage:routing",
                 "skill_id": "skill:skill-discovery-and-selection",
                 "kind": "workflow_stage",
                 "value": "routing",
-                "source": "fixture",
+                "source": "skill:skill-discovery-and-selection:bridge:workflow_stage:routing",
+                "rule_id": "skill:skill-discovery-and-selection:bridge:workflow_stage:routing",
+                "path": "fixture",
+                "source_path": "fixture",
                 "confidence": 1.0,
+                "rationale": "Fixture-derived workflow stage.",
+                "source_scope": "skill",
+                "source_ref": "skill-discovery-and-selection",
             },
             {
                 "id": "skill:skill-discovery-and-selection:bridge:capability:skill-discovery",
                 "skill_id": "skill:skill-discovery-and-selection",
                 "kind": "capability",
                 "value": "skill-discovery",
-                "source": "fixture",
+                "source": "skill:skill-discovery-and-selection:bridge:capability:skill-discovery",
+                "rule_id": "skill:skill-discovery-and-selection:bridge:capability:skill-discovery",
+                "path": "fixture",
+                "source_path": "fixture",
                 "confidence": 1.0,
+                "rationale": "Fixture-derived capability.",
+                "source_scope": "skill",
+                "source_ref": "skill-discovery-and-selection",
             },
             {
                 "id": "skill:skill-discovery-and-selection:bridge:control_theme:context-governance",
                 "skill_id": "skill:skill-discovery-and-selection",
                 "kind": "control_theme",
                 "value": "context-governance",
-                "source": "fixture",
+                "source": "skill:skill-discovery-and-selection:bridge:control_theme:context-governance",
+                "rule_id": "skill:skill-discovery-and-selection:bridge:control_theme:context-governance",
+                "path": "fixture",
+                "source_path": "fixture",
                 "confidence": 1.0,
+                "rationale": "Fixture-derived control theme.",
+                "source_scope": "skill",
+                "source_ref": "skill-discovery-and-selection",
             },
             {
                 "id": "skill:skill-discovery-and-selection:bridge:knowledge_domain:agentic-patterns",
                 "skill_id": "skill:skill-discovery-and-selection",
                 "kind": "knowledge_domain",
                 "value": "agentic-patterns",
-                "source": "fixture",
+                "source": "skill:skill-discovery-and-selection:bridge:knowledge_domain:agentic-patterns",
+                "rule_id": "skill:skill-discovery-and-selection:bridge:knowledge_domain:agentic-patterns",
+                "path": "fixture",
+                "source_path": "fixture",
                 "confidence": 1.0,
+                "rationale": "Fixture-derived knowledge domain.",
+                "source_scope": "skill",
+                "source_ref": "skill-discovery-and-selection",
             },
         ],
     }
@@ -294,21 +354,18 @@ class SkillsGraphConnectivityTests(unittest.TestCase):
         self.assertFalse(result.valid)
         self.assertTrue(any("invalid bridge provenance" in e for e in result.errors))
 
-    def test_missing_curated_relationship_provenance_fails_validation(self) -> None:
-        mapper = load_module(REPO_ROOT / "scripts" / "map_skills_bridges.py", "map_skills_bridges")
+    def test_missing_related_skill_relationship_provenance_fails_validation(self) -> None:
         extractor = load_module(
             REPO_ROOT / "scripts" / "extract_skills_graph.py", "extract_skills_graph"
         )
         module = load_validator_module()
-        records = mapper.apply_semantic_bridge_mappings(
-            extractor.extract_skills_graph_records(REPO_ROOT / "skills")
-        )
+        records = extractor.extract_skills_graph_records(REPO_ROOT / "skills")
         relationship = next(
             relationship
             for relationship in records["relationships"]
-            if relationship["type"] == "GOVERNS"
+            if relationship["type"] == "RELATED_TO"
         )
-        del relationship["mapping_rule_id"]
+        del relationship["source_section_id"]
 
         result = module.validate_graph_records(records)
 

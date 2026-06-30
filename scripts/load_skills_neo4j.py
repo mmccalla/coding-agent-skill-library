@@ -17,7 +17,6 @@ if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.extract_skills_graph import extract_skills_graph_records
-from scripts.map_skills_bridges import apply_semantic_bridge_mappings
 from scripts.skills_config import Neo4jSettings, load_settings
 from scripts.validate_skills_graph import validate_graph_records
 
@@ -663,8 +662,7 @@ def dry_run_report(plan: LoadPlan) -> str:
 
 def build_repository_load_plan(skills_root: Path = Path("skills")) -> LoadPlan:
     records = extract_skills_graph_records(skills_root)
-    mapped_records = apply_semantic_bridge_mappings(records)
-    return build_load_plan(mapped_records)
+    return build_load_plan(records)
 
 
 def main(argv: Sequence[str] | None = None) -> int:  # pragma: no cover
