@@ -136,6 +136,15 @@ class SkillsOntologyTests(unittest.TestCase):
             "headingPath",
             "heading",
             "text",
+            "retrievalText",
+            "retrievalUnitType",
+            "lexicalBoostTerms",
+            "semanticAliases",
+            "priorityWeight",
+            "embeddingModel",
+            "embeddingVersion",
+            "vectorDimension",
+            "retrievalProfile",
             "contentHash",
             "checksum",
             "versionIdentifier",
@@ -233,6 +242,8 @@ class SkillsOntologyTests(unittest.TestCase):
 
         self.assertIn("skills:RetrievalUnitShape a sh:NodeShape", retrieval_text)
         self.assertIn("skills:DirectTaskShapeDerivationShape a sh:NodeShape", retrieval_text)
+        self.assertIn("sh:path skills:retrievalText", retrieval_text)
+        self.assertIn("sh:path skills:priorityWeight", retrieval_text)
         self.assertNotIn("skills:SkillPackShape a sh:NodeShape", retrieval_text)
 
         self.assertIn("skills:SkillSelectionRunShape a sh:NodeShape", runtime_text)
