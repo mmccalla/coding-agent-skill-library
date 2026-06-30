@@ -53,6 +53,7 @@ BRIDGE_KIND_TO_LABEL_AND_REL = {
     "control_theme": ("ControlTheme", "HAS_CONTROL_THEME"),
     "knowledge_domain": ("KnowledgeDomain", "HAS_KNOWLEDGE_DOMAIN"),
 }
+TOKEN_PATTERN = re.compile(r"[a-z0-9]+")
 
 
 class MissingSchemaItemError(RuntimeError):
@@ -369,9 +370,69 @@ def _relationship(
     )
 
 
-def _retrieval_unit_from_section(section: Mapping[str, object], skill_path: str) -> GraphNode:
+def _unique_strings(values: Sequence[str]) -> list[str]:
+    seen: set[str] = set()
+    unique_values: list[str] = []
+    for value in values:
+        cleaned = value.strip()
+        if cleaned and cleaned not in seen:
+            seen.add(cleaned)
+            unique_values.append(cleaned)
+    return unique_values
+
+
+def _token_terms(value: str) -> list[str]:
+    return [token for token in TOKEN_PATTERN.findall(value.lower()) if len(token) > 2]
+
+
+def _priority_weight(section_heading: str) -> float:
+    heading = section_heading.lower()
+    if heading == "when to use":
+        return 1.35
+    if heading in {"objective", "verification"}:
+        return 1.15
+    if heading == "related skills":
+        return 0.7
+    return 1.0
+
+
+def _retrieval_unit_from_section(
+    section: Mapping[str, object],
+    skill: Mapping[str, object],
+) -> GraphNode:
     section_id = _string(section, "id")
     content_hash = _string(section, "contentHash")
+    skill_name = _string(skill, "name")
+    skill_path = _string(skill, "path")
+    aliases = tuple(str(alias).strip() for alias in skill.get("aliases", []) if isinstance(alias, str))
+    task_shapes = tuple(
+        str(task_shape).strip()
+        for task_shape in skill.get("task_shapes", [])
+        if isinstance(task_shape, str)
+    )
+    capabilities = tuple(
+        str(capability).strip()
+        for capability in skill.get("capabilities", [])
+        if isinstance(capability, str)
+    )
+    section_heading = _string(section, "heading")
+    lexical_boost_terms = _unique_strings(
+        [
+            skill_name,
+            *aliases,
+            section_heading,
+            *task_shapes[:4],
+            *capabilities[:4],
+            *_token_terms(section_heading),
+        ]
+    )
+    semantic_aliases = _unique_strings(
+        [
+            *aliases,
+            *task_shapes,
+            *capabilities,
+        ]
+    )
     unit_id = f"retrieval:{_string(section, 'skill_id')}:section:{section.get('order', 0)}:{content_hash[:12]}"
     return _node(
         "RetrievalUnit",
@@ -380,12 +441,21 @@ def _retrieval_unit_from_section(section: Mapping[str, object], skill_path: str)
             "section_id": section_id,
             "skill_id": _string(section, "skill_id"),
             "unit_type": "section",
+            "retrieval_unit_type": "skill-section",
             "title": _string(section, "name"),
             "text": _string(section, "text"),
+            "retrieval_text": _string(section, "text"),
             "content_hash": content_hash,
             "source_path": skill_path,
-            "section_heading": _string(section, "heading"),
+            "section_heading": section_heading,
             "ordinal": section.get("order", 0),
+            "lexical_boost_terms": lexical_boost_terms,
+            "semantic_aliases": semantic_aliases,
+            "priority_weight": _priority_weight(section_heading),
+            "embedding_model": "not-embedded",
+            "embedding_version": "pending",
+            "vector_dimension": 0,
+            "retrieval_profile": "skill-section-v1",
         },
     )
 
@@ -402,7 +472,7 @@ def build_load_plan(records: Mapping[str, object]) -> LoadPlan:
     bridges = _records_list(records, "bridges")
     references = _records_list(records, "references")
     source_relationships = _records_list(records, "relationships")
-    skill_paths = {_string(skill, "id"): _string(skill, "path") for skill in skills}
+    skills_by_id = {_string(skill, "id"): skill for skill in skills}
     nodes: dict[tuple[str, str], GraphNode] = {}
     relationships: dict[tuple[str, str, str, str, str], GraphRelationship] = {}
 
@@ -435,7 +505,7 @@ def build_load_plan(records: Mapping[str, object]) -> LoadPlan:
         add_relationship(
             _relationship("HAS_SECTION", "Skill", skill_id, "SkillSection", section_id)
         )
-        retrieval_unit = _retrieval_unit_from_section(section, skill_paths.get(skill_id, ""))
+        retrieval_unit = _retrieval_unit_from_section(section, skills_by_id.get(skill_id, {}))
         add_node(retrieval_unit)
         add_relationship(
             _relationship(

@@ -196,6 +196,58 @@ skills:text a owl:DatatypeProperty ;
     rdfs:comment "Canonical text content used for evidence or retrieval projection." ;
     rdfs:range xsd:string .
 
+skills:retrievalText a owl:DatatypeProperty ;
+    rdfs:label "retrieval text" ;
+    rdfs:comment "Normalized text used by retrieval, reranking and answer grounding." ;
+    rdfs:domain skills:RetrievalUnit ;
+    rdfs:range xsd:string .
+
+skills:retrievalUnitType a owl:DatatypeProperty ;
+    rdfs:label "retrieval unit type" ;
+    rdfs:domain skills:RetrievalUnit ;
+    rdfs:range xsd:string .
+
+skills:lexicalBoostTerms a owl:DatatypeProperty ;
+    rdfs:label "lexical boost terms" ;
+    rdfs:comment "Explicit lexical terms or phrases used to bias sparse retrieval." ;
+    rdfs:domain skills:RetrievalUnit ;
+    rdfs:range xsd:string .
+
+skills:semanticAliases a owl:DatatypeProperty ;
+    rdfs:label "semantic aliases" ;
+    rdfs:comment "Alternate phrasings or synonyms that support semantic recall." ;
+    rdfs:domain skills:RetrievalUnit ;
+    rdfs:range xsd:string .
+
+skills:priorityWeight a owl:DatatypeProperty ;
+    rdfs:label "priority weight" ;
+    rdfs:comment "Deterministic boost weight used before or during reranking." ;
+    rdfs:domain skills:RetrievalUnit ;
+    rdfs:range xsd:decimal .
+
+skills:embeddingModel a owl:DatatypeProperty ;
+    rdfs:label "embedding model" ;
+    rdfs:comment "Embedding model identifier used for the retrieval projection, or an explicit placeholder when not embedded yet." ;
+    rdfs:domain skills:RetrievalUnit ;
+    rdfs:range xsd:string .
+
+skills:embeddingVersion a owl:DatatypeProperty ;
+    rdfs:label "embedding version" ;
+    rdfs:domain skills:RetrievalUnit ;
+    rdfs:range xsd:string .
+
+skills:vectorDimension a owl:DatatypeProperty ;
+    rdfs:label "vector dimension" ;
+    rdfs:comment "Configured embedding dimension, or zero when vectorization has not yet been applied." ;
+    rdfs:domain skills:RetrievalUnit ;
+    rdfs:range xsd:integer .
+
+skills:retrievalProfile a owl:DatatypeProperty ;
+    rdfs:label "retrieval profile" ;
+    rdfs:comment "Named retrieval projection recipe used to construct the unit." ;
+    rdfs:domain skills:RetrievalUnit ;
+    rdfs:range xsd:string .
+
 skills:contentHash a owl:DatatypeProperty ;
     rdfs:label "content hash" ;
     rdfs:range xsd:string .

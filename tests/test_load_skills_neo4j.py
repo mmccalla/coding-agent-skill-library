@@ -163,15 +163,30 @@ class LoadSkillsNeo4jTests(unittest.TestCase):
             "id",
             "skill_id",
             "unit_type",
+            "retrieval_unit_type",
             "title",
             "text",
+            "retrieval_text",
             "source_path",
             "section_heading",
             "ordinal",
             "content_hash",
             "section_id",
+            "lexical_boost_terms",
+            "semantic_aliases",
+            "priority_weight",
+            "embedding_model",
+            "embedding_version",
+            "vector_dimension",
+            "retrieval_profile",
         ):
             self.assertIn(field, retrieval_unit.properties)
+        self.assertEqual("skill-section", retrieval_unit.properties["retrieval_unit_type"])
+        self.assertEqual("not-embedded", retrieval_unit.properties["embedding_model"])
+        self.assertEqual("pending", retrieval_unit.properties["embedding_version"])
+        self.assertEqual(0, retrieval_unit.properties["vector_dimension"])
+        self.assertIsInstance(retrieval_unit.properties["lexical_boost_terms"], list)
+        self.assertIsInstance(retrieval_unit.properties["semantic_aliases"], list)
 
     def test_fake_graph_load_is_idempotent(self) -> None:
         loader = load_module()
