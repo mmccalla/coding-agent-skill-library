@@ -12,7 +12,7 @@ import sys
 from argparse import ArgumentParser
 from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Any, NamedTuple
+from typing import NamedTuple
 
 from mcp.server.fastmcp import FastMCP
 
@@ -339,56 +339,6 @@ class SkillsMcpServer:
 
         return self._plan
 
-    def handle_json_rpc(self, request: Mapping[str, object]) -> dict[str, object] | None:
-        """Handle the small MCP JSON-RPC surface used by stdio clients."""
-
-        request_id = request.get("id")
-        method = _string(request.get("method"))
-        if request_id is None:
-            return None
-        params = request.get("params")
-        param_map = params if isinstance(params, dict) else {}
-        if method == "initialize":
-            return self._json_rpc_result(
-                request_id,
-                {
-                    "protocolVersion": "2024-11-05",
-                    "serverInfo": {"name": "skills-kg", "version": "0.1.0"},
-                    "capabilities": {"tools": {}, "resources": {}},
-                },
-            )
-        if method == "tools/list":
-            return self._json_rpc_result(request_id, {"tools": self.list_tools()})
-        if method == "resources/list":
-            return self._json_rpc_result(request_id, {"resources": self.list_resources()})
-        if method == "resources/read":
-            uri = _string(param_map.get("uri"))
-            return self._json_rpc_result(request_id, {"contents": self.read_resource(uri)})
-        if method == "tools/call":
-            tool_name = _string(param_map.get("name"))
-            arguments = param_map.get("arguments")
-            argument_map = arguments if isinstance(arguments, dict) else {}
-            structured = self.call_tool(tool_name, argument_map)
-            return self._json_rpc_result(
-                request_id,
-                {
-                    "content": [{"type": "text", "text": json.dumps(structured, sort_keys=True)}],
-                    "structuredContent": structured,
-                },
-            )
-        return {
-            "jsonrpc": "2.0",
-            "id": request_id,
-            "error": {
-                "code": -32601,
-                "message": f"Unsupported read-only Skills MCP method: {method}",
-            },
-        }
-
-    @staticmethod
-    def _json_rpc_result(request_id: object, result: Mapping[str, object]) -> dict[str, object]:
-        return {"jsonrpc": "2.0", "id": request_id, "result": dict(result)}
-
     def _read_resource(self, uri: str) -> tuple[dict[str, object], ...]:
         if uri == "skills://ontology":
             text = "\n".join(
@@ -397,7 +347,7 @@ class SkillsMcpServer:
                     "",
                     "Skills are operational procedures for coding agents.",
                     "Categories group skills by practice area.",
-                    "Sections and retrieval units provide source-backed evidence.",
+                    "Sections and retrieval units provide source-backed evidence with heading paths and line ranges.",
                     "Relationships explain prerequisite, complementary and validating skills.",
                     "Task shapes, workflow stages and capabilities describe when a skill applies.",
                     "Responses should include source paths, section identifiers and rationale.",
@@ -446,6 +396,7 @@ class SkillsMcpServer:
                         "selected route",
                         "resolved skill id when applicable",
                         "source paths",
+                        "heading paths and line ranges",
                         "section ids or evidence paths",
                         "verification checklist for execution_plan",
                     ],
@@ -584,7 +535,10 @@ class SkillsMcpServer:
                     "retrieval_unit_id": unit.id,
                     "text": _string(unit.properties.get("text"))[:240],
                     "source_path": _string(unit.properties.get("source_path")),
+                    "heading_path": _string(unit.properties.get("heading_path")),
                     "section_id": _string(unit.properties.get("section_id")),
+                    "line_start": unit.properties.get("line_start", 0),
+                    "line_end": unit.properties.get("line_end", 0),
                 }
                 for unit in retrieval_units
             ],
@@ -624,6 +578,7 @@ class SkillsMcpServer:
                     "evidence_snippets": item.evidence_snippets,
                     "source_paths": item.source_paths,
                     "section_ids": item.section_ids,
+                    "evidence_anchors": item.evidence_anchors,
                     "evidence_paths": item.evidence_paths,
                 }
                 for item in result.recommendations
@@ -786,7 +741,6 @@ def main(argv: Sequence[str] | None = None) -> int:  # pragma: no cover
     parser = ArgumentParser(description="Inspect read-only Skills MCP capabilities.")
     parser.add_argument("--list-tools", action="store_true")
     parser.add_argument("--list-resources", action="store_true")
-    parser.add_argument("--stdio", action="store_true", help="Run stdio JSON-RPC MCP loop.")
     parser.add_argument(
         "--sdk-stdio", action="store_true", help="Run official MCP SDK stdio server."
     )
@@ -802,34 +756,8 @@ def main(argv: Sequence[str] | None = None) -> int:  # pragma: no cover
     elif args.sdk_stdio:
         build_fastmcp_server(server).run(transport="stdio")
     else:
-        stdio_loop(server)
+        build_fastmcp_server(server).run(transport="stdio")
     return 0
-
-
-def stdio_loop(
-    server: SkillsMcpServer,
-    input_stream: Any = sys.stdin,
-    output_stream: Any = sys.stdout,
-) -> None:
-    """Run a newline-delimited JSON-RPC loop without writing diagnostics to stdout."""
-
-    for line in input_stream:
-        if not isinstance(line, str) or not line.strip():
-            continue
-        try:
-            request = json.loads(line)
-            if not isinstance(request, dict):
-                raise ValueError("request must be a JSON object")
-            response = server.handle_json_rpc(request)
-        except Exception as exc:  # pragma: no cover - defensive stdio boundary
-            response = {
-                "jsonrpc": "2.0",
-                "id": None,
-                "error": {"code": -32700, "message": str(exc)},
-            }
-        if response is not None:
-            output_stream.write(json.dumps(response, sort_keys=True) + "\n")
-            output_stream.flush()
 
 
 if __name__ == "__main__":

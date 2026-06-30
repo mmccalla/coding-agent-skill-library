@@ -109,6 +109,14 @@ export interface GraphQueryResponse {
       rationale: string;
       source_paths: string[];
       evidence_snippets: string[];
+      evidence_anchors?: Array<{
+        retrieval_unit_id: string;
+        source_path: string;
+        heading_path: string;
+        section_id: string;
+        line_start: number;
+        line_end: number;
+      }>;
       evidence_paths?: string[];
     }>;
     skill?: {
@@ -119,7 +127,10 @@ export interface GraphQueryResponse {
         retrieval_unit_id: string;
         text: string;
         source_path: string;
+        heading_path?: string;
         section_id: string;
+        line_start?: number;
+        line_end?: number;
       }>;
     };
     context?: {

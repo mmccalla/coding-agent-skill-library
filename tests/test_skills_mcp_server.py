@@ -7,7 +7,6 @@ import importlib.util
 import json
 import sys
 import unittest
-from io import StringIO
 from pathlib import Path
 from typing import Any
 
@@ -76,6 +75,7 @@ class SkillsMcpServerTests(unittest.TestCase):
         self.assertTrue(first["evidence_snippets"])
         self.assertTrue(first["evidence_paths"])
         self.assertTrue(first["source_paths"])
+        self.assertTrue(first["evidence_anchors"])
         self.assertNotIn("embedding", repr(response))
         self.assertNotIn("MATCH ", repr(response))
 
@@ -90,6 +90,9 @@ class SkillsMcpServerTests(unittest.TestCase):
         self.assertNotIn("chunks", response)
         first = response["retrieval_units"][0]
         self.assertIn("retrieval_unit_id", first)
+        self.assertIn("heading_path", first)
+        self.assertIn("line_start", first)
+        self.assertIn("line_end", first)
         self.assertNotIn("chunk_id", first)
 
     def test_get_skill_context_returns_related_connected_skills(self) -> None:
@@ -212,56 +215,14 @@ class SkillsMcpServerTests(unittest.TestCase):
             self.assertEqual("error", response["status"])
             self.assertIn("Unsupported read-only Skills MCP tool", response["message"])
 
-    def test_json_rpc_mcp_discovery_and_tool_call(self) -> None:
+    def test_resource_contract_is_agent_readable(self) -> None:
         mcp = load_module()
         server = mcp.SkillsMcpServer.for_test_fixture()
 
-        tools_response = server.handle_json_rpc(
-            {"jsonrpc": "2.0", "id": 1, "method": "tools/list", "params": {}}
-        )
-        call_response = server.handle_json_rpc(
-            {
-                "jsonrpc": "2.0",
-                "id": 2,
-                "method": "tools/call",
-                "params": {
-                    "name": "recommend_skills",
-                    "arguments": {"query": "graph rag ontology retrieval", "limit": 1},
-                },
-            }
-        )
+        contract_resource = server.read_resource("skills://contract")
+        ontology_resource = server.read_resource("skills://ontology")
+        contract = json.loads(contract_resource[0]["text"])
 
-        self.assertEqual("2.0", tools_response["jsonrpc"])
-        self.assertIn("tools", tools_response["result"])
-        self.assertEqual("ok", call_response["result"]["structuredContent"]["status"])
-        self.assertEqual(1, len(call_response["result"]["structuredContent"]["recommendations"]))
-
-    def test_json_rpc_resource_read_and_stdio_loop(self) -> None:
-        mcp = load_module()
-        server = mcp.SkillsMcpServer.for_test_fixture()
-
-        resource_response = server.handle_json_rpc(
-            {
-                "jsonrpc": "2.0",
-                "id": 3,
-                "method": "resources/read",
-                "params": {"uri": "skills://contract"},
-            }
-        )
-        input_stream = StringIO(
-            json.dumps({"jsonrpc": "2.0", "id": 4, "method": "initialize", "params": {}}) + "\n"
-        )
-        output_stream = StringIO()
-
-        mcp.stdio_loop(server, input_stream=input_stream, output_stream=output_stream)
-        stdio_response = json.loads(output_stream.getvalue())
-
-        self.assertIn("contents", resource_response["result"])
-        self.assertEqual("skills://contract", resource_response["result"]["contents"][0]["uri"])
-        self.assertEqual("2.0", stdio_response["jsonrpc"])
-        self.assertIn("serverInfo", stdio_response["result"])
-
-        contract = json.loads(resource_response["result"]["contents"][0]["text"])
         self.assertIn("tool_selection", contract)
         self.assertEqual("resolve_skill", contract["tool_selection"]["direct_lookup"]["tool"])
         self.assertEqual(
@@ -269,42 +230,14 @@ class SkillsMcpServerTests(unittest.TestCase):
             contract["tool_selection"]["execution_plan"]["tool"],
         )
         self.assertIn("evidence_requirements", contract)
+        self.assertIn("heading paths and line ranges", contract["evidence_requirements"]["before_acting"])
         self.assertIn("examples", contract)
 
-        ontology_response = server.handle_json_rpc(
-            {
-                "jsonrpc": "2.0",
-                "id": 5,
-                "method": "resources/read",
-                "params": {"uri": "skills://ontology"},
-            }
-        )
-        ontology_text = ontology_response["result"]["contents"][0]["text"]
+        ontology_text = ontology_resource[0]["text"]
         self.assertNotIn("Neo4j", ontology_text)
         self.assertNotIn("embedding", ontology_text.lower())
         self.assertNotIn("contentHash", ontology_text)
         self.assertIn("retrieval units", ontology_text)
-
-    def test_json_rpc_notifications_do_not_emit_responses(self) -> None:
-        mcp = load_module()
-        server = mcp.SkillsMcpServer.for_test_fixture()
-        input_stream = StringIO(
-            json.dumps({"jsonrpc": "2.0", "method": "notifications/initialized"}) + "\n"
-        )
-        output_stream = StringIO()
-
-        mcp.stdio_loop(server, input_stream=input_stream, output_stream=output_stream)
-
-        self.assertEqual("", output_stream.getvalue())
-
-        input_stream = StringIO(
-            json.dumps({"jsonrpc": "2.0", "method": "tools/list", "params": {}}) + "\n"
-        )
-        output_stream = StringIO()
-
-        mcp.stdio_loop(server, input_stream=input_stream, output_stream=output_stream)
-
-        self.assertEqual("", output_stream.getvalue())
 
     def test_official_mcp_client_discovers_and_calls_sdk_stdio_server(self) -> None:
         async def run_client() -> None:

@@ -42,6 +42,11 @@ class SkillSection(NamedTuple):
     order: int
     contentHash: str
     text: str
+    heading_path: str
+    line_start: int
+    line_end: int
+    char_start: int
+    char_end: int
 
 
 def _sha256(text: str) -> str:
@@ -128,21 +133,41 @@ def _title(text: str) -> str:
 def _extract_sections(text: str, skill_id: str) -> tuple[SkillSection, ...]:
     matches = list(re.finditer(r"^(#{2,6})\s+(.+?)\s*$", text, flags=re.M))
     sections: list[SkillSection] = []
+    heading_stack: list[str] = []
     for index, match in enumerate(matches):
         start = match.end()
         end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
         heading = match.group(2).strip()
+        level = len(match.group(1))
         content = text[start:end].strip()
+        stack_index = max(0, level - 2)
+        heading_stack = heading_stack[:stack_index]
+        heading_stack.append(heading)
+        content_start = start
+        while content_start < len(text) and text[content_start] in {"\n", "\r"}:
+            content_start += 1
+        content_end = end
+        while content_end > content_start and text[content_end - 1] in {"\n", "\r"}:
+            content_end -= 1
+        anchor_start = content_start if content else match.start()
+        anchor_end = max(anchor_start, content_end if content else match.end())
+        line_start = text.count("\n", 0, anchor_start) + 1
+        line_end = text.count("\n", 0, max(anchor_start, anchor_end - 1)) + 1
         sections.append(
             SkillSection(
                 id=f"{skill_id}:section:{index}-{_slug(heading)}",
                 skill_id=skill_id,
                 name=heading,
                 heading=heading,
-                level=len(match.group(1)),
+                level=level,
                 order=index,
                 contentHash=_sha256(content),
                 text=content,
+                heading_path=" > ".join(heading_stack),
+                line_start=line_start,
+                line_end=line_end,
+                char_start=anchor_start,
+                char_end=anchor_end,
             )
         )
     return tuple(sections)

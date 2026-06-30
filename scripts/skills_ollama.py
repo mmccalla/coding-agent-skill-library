@@ -268,8 +268,17 @@ def _skill_profile_lines(skill: Mapping[str, object]) -> list[str]:
             continue
         text = _safe_string(unit.get("text"))[:300]
         source_path = _safe_string(unit.get("source_path"))
+        heading_path = _safe_string(unit.get("heading_path"))
         section_id = _safe_string(unit.get("section_id"))
-        lines.append(f"source={source_path}; section={section_id}; text={text}")
+        line_start = unit.get("line_start")
+        line_end = unit.get("line_end")
+        line_range = ""
+        if isinstance(line_start, int) and isinstance(line_end, int) and line_start > 0 and line_end > 0:
+            line_range = f"; lines={line_start}-{line_end}"
+        heading_part = f"; heading={heading_path}" if heading_path else ""
+        lines.append(
+            f"source={source_path}; section={section_id}{heading_part}{line_range}; text={text}"
+        )
     return lines
 
 

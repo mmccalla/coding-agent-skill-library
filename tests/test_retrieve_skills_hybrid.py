@@ -55,6 +55,10 @@ class HybridRetrievalTests(unittest.TestCase):
         self.assertIn(
             "skill:knowledge-graph-rag:section:0-objective", result.recommendations[0].section_ids
         )
+        self.assertTrue(result.recommendations[0].evidence_anchors)
+        self.assertEqual(
+            "Objective", result.recommendations[0].evidence_anchors[0]["heading_path"]
+        )
         self.assertTrue(result.recommendations[0].evidence_paths)
 
     def test_connected_skill_outranks_isolated_vector_match(self) -> None:
@@ -91,8 +95,8 @@ class HybridRetrievalTests(unittest.TestCase):
 
         self.assertEqual("skill:knowledge-graph-rag", result.recommendations[0].skill_id)
         self.assertGreater(
-            result.recommendations[0].graph_score,
-            result.recommendations[1].graph_score,
+            result.recommendations[0].score,
+            result.recommendations[1].score,
         )
 
     def test_low_confidence_query_returns_uncertainty(self) -> None:
@@ -230,22 +234,25 @@ class HybridRetrievalTests(unittest.TestCase):
         plan = retrieval.fixture_load_plan()
         deprecated_skill = retrieval.load_skills_neo4j.GraphNode(
             "Skill",
-            "skill:legacy-graph-rag",
+            "skill:superseded-graph-rag",
             {
-                "id": "skill:legacy-graph-rag",
-                "name": "legacy-graph-rag",
+                "id": "skill:superseded-graph-rag",
+                "name": "superseded-graph-rag",
                 "deprecated": True,
             },
         )
         deprecated_unit = retrieval.load_skills_neo4j.GraphNode(
             "RetrievalUnit",
-            "retrieval:skill:legacy-graph-rag:section:0:legacy",
+            "retrieval:skill:superseded-graph-rag:section:0:superseded",
             {
-                "id": "retrieval:skill:legacy-graph-rag:section:0:legacy",
-                "skill_id": "skill:legacy-graph-rag",
-                "text": "Graph rag legacy guidance for graph-grounded retrieval.",
-                "source_path": "skills/legacy-graph-rag/SKILL.md",
-                "section_id": "skill:legacy-graph-rag:section:0-objective",
+                "id": "retrieval:skill:superseded-graph-rag:section:0:superseded",
+                "skill_id": "skill:superseded-graph-rag",
+                "text": "Deprecated graph rag guidance for graph-grounded retrieval.",
+                "source_path": "skills/superseded-graph-rag/SKILL.md",
+                "heading_path": "Objective",
+                "section_id": "skill:superseded-graph-rag:section:0-objective",
+                "line_start": 12,
+                "line_end": 12,
             },
         )
         plan = retrieval.load_skills_neo4j.LoadPlan(
@@ -261,12 +268,12 @@ class HybridRetrievalTests(unittest.TestCase):
         )
 
         self.assertNotIn(
-            "skill:legacy-graph-rag",
+            "skill:superseded-graph-rag",
             [recommendation.skill_id for recommendation in result.recommendations],
         )
         self.assertTrue(
             any(
-                rejected["skill_id"] == "skill:legacy-graph-rag"
+                rejected["skill_id"] == "skill:superseded-graph-rag"
                 and "Deprecated skill filtered" in rejected["reason"]
                 for rejected in result.selection_trace["rejected"]
             )

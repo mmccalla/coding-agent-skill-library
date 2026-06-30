@@ -48,6 +48,7 @@ class SkillRecommendation(NamedTuple):
     evidence_snippets: tuple[str, ...]
     source_paths: tuple[str, ...]
     section_ids: tuple[str, ...]
+    evidence_anchors: tuple[dict[str, object], ...]
     evidence_paths: tuple[str, ...]
     why: str
 
@@ -284,10 +285,11 @@ def _retrieval_unit_evidence(
     skill_id: str,
     preferred_unit_ids: Sequence[str],
     token_budget: int,
-) -> tuple[tuple[str, ...], tuple[str, ...], tuple[str, ...]]:
+) -> tuple[tuple[str, ...], tuple[str, ...], tuple[str, ...], tuple[dict[str, object], ...]]:
     snippets: list[str] = []
     source_paths: list[str] = []
     section_ids: list[str] = []
+    evidence_anchors: list[dict[str, object]] = []
     remaining = token_budget
     units_by_id = {unit.id: unit for unit in _retrieval_unit_nodes(plan)}
     ordered_units = [
@@ -307,8 +309,23 @@ def _retrieval_unit_evidence(
         snippets.append(snippet)
         source_paths.append(_string(unit.properties, "source_path"))
         section_ids.append(_string(unit.properties, "section_id"))
+        evidence_anchors.append(
+            {
+                "retrieval_unit_id": unit.id,
+                "source_path": _string(unit.properties, "source_path"),
+                "heading_path": _string(unit.properties, "heading_path"),
+                "section_id": _string(unit.properties, "section_id"),
+                "line_start": unit.properties.get("line_start", 0),
+                "line_end": unit.properties.get("line_end", 0),
+            }
+        )
         remaining -= cost
-    return tuple(snippets[:3]), tuple(sorted(set(source_paths))), tuple(sorted(set(section_ids)))
+    return (
+        tuple(snippets[:3]),
+        tuple(sorted(set(source_paths))),
+        tuple(sorted(set(section_ids))),
+        tuple(evidence_anchors[:3]),
+    )
 
 
 def retrieve_hybrid_skills(
@@ -380,7 +397,7 @@ def retrieve_hybrid_skills(
                 }
             )
             continue
-        snippets, source_paths, section_ids = _retrieval_unit_evidence(
+        snippets, source_paths, section_ids, evidence_anchors = _retrieval_unit_evidence(
             plan,
             skill_id,
             preferred_unit_ids,
@@ -408,6 +425,7 @@ def retrieve_hybrid_skills(
                 evidence_snippets=snippets,
                 source_paths=source_paths,
                 section_ids=section_ids,
+                evidence_anchors=evidence_anchors,
                 evidence_paths=tuple(
                     dict.fromkeys(
                         (
@@ -437,6 +455,7 @@ def retrieve_hybrid_skills(
             "selection_reason": selected.why,
             "source_paths": list(selected.source_paths),
             "section_ids": list(selected.section_ids),
+            "evidence_anchors": list(selected.evidence_anchors),
             "evidence_paths": list(selected.evidence_paths),
         }
         for rejected in ranked[1:]:
@@ -454,6 +473,11 @@ def retrieve_hybrid_skills(
         "rejected": tuple(rejected_candidates),
     }
     if not ranked or ranked[0].score < MIN_CONFIDENT_SCORE:
+        selection_trace = {
+            "request": {"query": query_text},
+            "selected": {},
+            "rejected": tuple(rejected_candidates),
+        }
         return HybridRetrievalResult(
             query=query_text,
             uncertain=True,
@@ -675,7 +699,10 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
                 "skill_id": "skill:knowledge-graph-rag",
                 "text": "Use this skill when building graph-grounded retrieval with provenance.",
                 "source_path": "skills/knowledge-graph-rag/SKILL.md",
+                "heading_path": "When to use",
                 "section_id": "skill:knowledge-graph-rag:section:0-when-to-use",
+                "line_start": 8,
+                "line_end": 9,
             },
         ),
         load_skills_neo4j.GraphNode(
@@ -686,7 +713,10 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
                 "skill_id": "skill:knowledge-graph-rag",
                 "text": "Use KG-enabled RAG for graph-grounded retrieval.",
                 "source_path": "skills/knowledge-graph-rag/SKILL.md",
+                "heading_path": "Objective",
                 "section_id": "skill:knowledge-graph-rag:section:0-objective",
+                "line_start": 12,
+                "line_end": 12,
             },
         ),
         load_skills_neo4j.GraphNode(
@@ -697,7 +727,10 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
                 "skill_id": "skill:knowledge-graph-rag",
                 "text": "1. Inspect graph and retrieval code. 2. Add tests. 3. Return evidence.",
                 "source_path": "skills/knowledge-graph-rag/SKILL.md",
+                "heading_path": "Procedure",
                 "section_id": "skill:knowledge-graph-rag:section:0-procedure",
+                "line_start": 16,
+                "line_end": 17,
             },
         ),
         load_skills_neo4j.GraphNode(
@@ -708,7 +741,10 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
                 "skill_id": "skill:knowledge-graph-rag",
                 "text": "Never expose raw Cypher, raw embeddings or answers without evidence.",
                 "source_path": "skills/knowledge-graph-rag/SKILL.md",
+                "heading_path": "Rules",
                 "section_id": "skill:knowledge-graph-rag:section:0-rules",
+                "line_start": 20,
+                "line_end": 20,
             },
         ),
         load_skills_neo4j.GraphNode(
@@ -719,7 +755,10 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
                 "skill_id": "skill:knowledge-graph-rag",
                 "text": "- [ ] Retrieval returns typed evidence.\n- [ ] Answers cite source paths.",
                 "source_path": "skills/knowledge-graph-rag/SKILL.md",
+                "heading_path": "Verification",
                 "section_id": "skill:knowledge-graph-rag:section:0-verification",
+                "line_start": 24,
+                "line_end": 25,
             },
         ),
         load_skills_neo4j.GraphNode(
@@ -730,7 +769,10 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
                 "skill_id": "skill:knowledge-retrieval-rag",
                 "text": "Use retrieval evidence and source-backed context.",
                 "source_path": "skills/knowledge-retrieval-rag/SKILL.md",
+                "heading_path": "Objective",
                 "section_id": "skill:knowledge-retrieval-rag:section:0-objective",
+                "line_start": 12,
+                "line_end": 12,
             },
         ),
         load_skills_neo4j.GraphNode(
@@ -741,7 +783,10 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
                 "skill_id": "skill:generic-documentation",
                 "text": "General documentation guidance.",
                 "source_path": "skills/generic-documentation/SKILL.md",
+                "heading_path": "Objective",
                 "section_id": "skill:generic-documentation:section:0-objective",
+                "line_start": 12,
+                "line_end": 12,
             },
         ),
     )

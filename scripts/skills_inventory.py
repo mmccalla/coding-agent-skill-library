@@ -15,16 +15,15 @@ DEFAULT_PACK_METADATA_PATH = DEFAULT_SKILLS_ROOT / PACK_METADATA_FILENAME
 def iter_skill_files(skills_root: Path = DEFAULT_SKILLS_ROOT) -> tuple[Path, ...]:
     """Return repository skill files in stable order.
 
-    Supports the current flat layout and tolerates nested layouts while legacy
-    fixtures and temporary test directories still use category folders.
+    The library contract is a flat one-level layout: `skills/<skill>/SKILL.md`.
     """
 
     resolved_root = skills_root.resolve()
     return tuple(
         sorted(
             path
-            for path in resolved_root.rglob("SKILL.md")
-            if path.parent != resolved_root and path.is_file()
+            for path in resolved_root.glob("*/SKILL.md")
+            if path.is_file()
         )
     )
 
@@ -79,14 +78,10 @@ def category_for_skill_path(
 ) -> str:
     """Resolve a semantic category for a skill path.
 
-    Nested legacy layouts keep the category in the filesystem path. Flat layouts
-    recover category from explicit pack metadata.
+    Flat layouts recover category from explicit pack metadata.
     """
 
     resolved_root = skills_root.resolve()
-    relative_parts = skill_path.resolve().relative_to(resolved_root).parts
-    if len(relative_parts) >= 3:
-        return relative_parts[-3]
     skill_name = skill_path.parent.name
     category = skill_category_map(resolved_root, metadata_path).get(skill_name, "")
     if category:

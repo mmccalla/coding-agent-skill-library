@@ -78,6 +78,7 @@ def suggest_skills(
 ) -> list[SkillSuggestion]:
     """Rank skills by simple keyword overlap with name, description and body."""
 
+    repo_root = repo_root.resolve()
     query_terms = tokenise(query)
     if not query_terms:
         return []
