@@ -5,8 +5,14 @@ from __future__ import annotations
 
 import argparse
 import re
+import sys
 from pathlib import Path
 from typing import NamedTuple
+
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from scripts import skills_inventory
 
 TOKEN_RE = re.compile(r"[a-z0-9][a-z0-9-]{2,}")
 DEFAULT_ROOT = Path(__file__).resolve().parents[1]
@@ -61,7 +67,7 @@ def read_aliases(text: str) -> tuple[str, ...]:
 def iter_skill_files(repo_root: Path) -> list[Path]:
     """List skill files in a stable order."""
 
-    return sorted((repo_root / "skills").glob("*/*/SKILL.md"))
+    return list(skills_inventory.iter_skill_files(repo_root / "skills"))
 
 
 def suggest_skills(

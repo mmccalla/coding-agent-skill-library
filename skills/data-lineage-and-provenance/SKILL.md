@@ -8,7 +8,7 @@ description: Tracks source-to-target lineage, transformation history, evidence, 
 ## When to use
 Use when data must be trusted, audited, explained, replayed, governed or traced.
 
-For KG-enabled RAG or GraphRAG systems, use this alongside `skills/data-architecture/knowledge-graph-rag/SKILL.md` so graph facts, retrieval evidence and generated answers remain source-traceable.
+For KG-enabled RAG or GraphRAG systems, use this alongside `skills/knowledge-graph-rag/SKILL.md` so graph facts, retrieval evidence and generated answers remain source-traceable.
 
 ## Objective
 Produce a practical, concise, traceable architecture artefact that a coding agent can use to guide implementation or review.
@@ -49,4 +49,3 @@ Do not claim trust without lineage/provenance evidence.
 - [ ] Decisions, assumptions and risks stated explicitly.
 - [ ] Quality checks or validation performed.
 - [ ] Files changed reported with traceability preserved.
-

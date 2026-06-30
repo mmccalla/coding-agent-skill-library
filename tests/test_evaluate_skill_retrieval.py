@@ -15,7 +15,7 @@ SKILLS_ROOT = Path("skills")
 
 def _expected_skill_ids() -> set[str]:
     skill_ids: set[str] = set()
-    for path in sorted(SKILLS_ROOT.glob("*/*/SKILL.md")):
+    for path in sorted(SKILLS_ROOT.glob("*/SKILL.md")):
         text = path.read_text(encoding="utf-8")
         frontmatter_end = text.find("\n---\n", 4)
         frontmatter = parse_frontmatter(text[4:frontmatter_end])

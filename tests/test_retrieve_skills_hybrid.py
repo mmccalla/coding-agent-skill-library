@@ -31,7 +31,7 @@ class HybridRetrievalTests(unittest.TestCase):
                 retrieval.VectorCandidate(
                     retrieval_unit_id="retrieval:skill:knowledge-graph-rag:section:1:kg",
                     score=0.72,
-                    source_path="skills/data-architecture/knowledge-graph-rag/SKILL.md",
+                    source_path="skills/knowledge-graph-rag/SKILL.md",
                     section_id="skill:knowledge-graph-rag:section:0-objective",
                     skill_id="skill:knowledge-graph-rag",
                     text="Use KG-enabled RAG for graph-grounded retrieval.",
@@ -46,7 +46,7 @@ class HybridRetrievalTests(unittest.TestCase):
         self.assertEqual("skill:knowledge-graph-rag", result.recommendations[0].skill_id)
         self.assertIn("graph-grounded retrieval", result.recommendations[0].evidence_snippets[0])
         self.assertIn(
-            "skills/data-architecture/knowledge-graph-rag/SKILL.md",
+            "skills/knowledge-graph-rag/SKILL.md",
             result.recommendations[0].source_paths,
         )
         self.assertIn(
@@ -65,7 +65,7 @@ class HybridRetrievalTests(unittest.TestCase):
                 retrieval.VectorCandidate(
                     retrieval_unit_id="retrieval:skill:generic-documentation:section:0:generic",
                     score=0.95,
-                    source_path="skills/reference/generic-documentation/SKILL.md",
+                    source_path="skills/generic-documentation/SKILL.md",
                     section_id="skill:generic-documentation:section:0-objective",
                     skill_id="skill:generic-documentation",
                     text="General documentation guidance.",
@@ -75,7 +75,7 @@ class HybridRetrievalTests(unittest.TestCase):
                 retrieval.VectorCandidate(
                     retrieval_unit_id="retrieval:skill:knowledge-graph-rag:section:1:kg",
                     score=0.72,
-                    source_path="skills/data-architecture/knowledge-graph-rag/SKILL.md",
+                    source_path="skills/knowledge-graph-rag/SKILL.md",
                     section_id="skill:knowledge-graph-rag:section:0-objective",
                     skill_id="skill:knowledge-graph-rag",
                     text="KG-enabled RAG connects graph retrieval with ontology evidence.",
@@ -178,7 +178,7 @@ class HybridRetrievalTests(unittest.TestCase):
                 "id": "retrieval:skill:knowledge-graph-rag:section:9:irrelevant",
                 "skill_id": "skill:knowledge-graph-rag",
                 "text": "Unrelated release notes.",
-                "source_path": "skills/data-architecture/knowledge-graph-rag/SKILL.md",
+                "source_path": "skills/knowledge-graph-rag/SKILL.md",
                 "section_id": "skill:knowledge-graph-rag:section:9-notes",
             },
         )
@@ -243,7 +243,7 @@ class HybridRetrievalTests(unittest.TestCase):
                         {
                             "retrieval_unit_id": "retrieval:skill:knowledge-graph-rag:section:1:kg",
                             "score": 0.91,
-                            "source_path": "skills/data-architecture/knowledge-graph-rag/SKILL.md",
+                            "source_path": "skills/knowledge-graph-rag/SKILL.md",
                             "section_id": "skill:knowledge-graph-rag:section:0-objective",
                             "skill_id": "skill:knowledge-graph-rag",
                             "text": "Use KG-enabled RAG for graph-grounded retrieval.",
@@ -269,7 +269,7 @@ class HybridRetrievalTests(unittest.TestCase):
                                 "id": "retrieval:skill:knowledge-graph-rag:section:1:kg",
                                 "skill_id": "skill:knowledge-graph-rag",
                                 "text": "Use KG-enabled RAG for graph-grounded retrieval.",
-                                "source_path": "skills/data-architecture/knowledge-graph-rag/SKILL.md",
+                                "source_path": "skills/knowledge-graph-rag/SKILL.md",
                                 "section_id": "skill:knowledge-graph-rag:section:0-objective",
                             },
                         },

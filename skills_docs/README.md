@@ -8,7 +8,7 @@ This directory contains the lightweight documentation layer that helps agents an
 2. `SKILL_AUTHORING_GUIDE.md` when creating or revising skills.
 3. `HOW_TO_FIND_THE_RIGHT_SKILL.md` for routing by task shape (after executing `apply-laws-of-ai`).
 4. `DROP_IN_BOOTSTRAP.md` for the portable installation model.
-5. `../skills/README.md` for the structure of the portable `skills/` subtree.
+5. `../skills/README.md` for the structure of the portable flat `skills/` library.
 6. `../skills/MANIFEST.md` for the full inventory.
 
 ## Document roles

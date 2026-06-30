@@ -2,6 +2,7 @@
 .env
 __pycache__/
 *.pyc
+*.egg-info/
 skills_docs/CHANGELOG.md
 skills_docs/SKILL_LIBRARY_IMPROVEMENT_PLAN.md
 tests/test_suggest_skills.py

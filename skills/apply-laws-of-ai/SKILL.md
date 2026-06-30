@@ -30,7 +30,7 @@ This skill is the **non-negotiable baseline** for all agent reasoning in any rep
 - Do not skip, abbreviate, cache, or substitute this skill with a summary.
 - Re-run this skill when scope, risk, or authority changes materially.
 
-Portable location: `skills/agent-control-patterns/apply-laws-of-ai/SKILL.md`.
+Portable location: `skills/apply-laws-of-ai/SKILL.md`.
 
 ## Purpose
 

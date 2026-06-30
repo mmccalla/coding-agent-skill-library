@@ -8,7 +8,7 @@ Every agent session must follow this order before planning, routing, or edits:
 
 1. Read `AGENTIC_CODING_GLOBAL_SAFETY.md` when present.
 2. Read `SECURE_AGENTIC_DEVELOPMENT.md` when present.
-3. **Execute `skills/agent-control-patterns/apply-laws-of-ai/SKILL.md` in full** — immutable baseline for all reasoning.
+3. **Execute `skills/apply-laws-of-ai/SKILL.md` in full** — immutable baseline for all reasoning.
 4. Read `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` for routing.
 5. Load the smallest relevant `SKILL.md` set for the task.
 
@@ -30,11 +30,11 @@ Steps 1–3 are non-negotiable. No task skill may run before step 3 completes.
 | Related skills | Optional `## Related skills` section before `## Verification`; backtick skill names must match installed skill folder names |
 | Product-specific overlays | Product/project-specific guidance belongs under `skills_docs/overlays/`, with core skills linking to the overlay instead of embedding product sections |
 | Progressive disclosure | Keep `SKILL.md` concise; move deep examples, metadata and implementation details to one-level reference files under the skill folder |
-| Skill folders | One folder per skill under a category directory |
-| Categories | Nine fixed categories under `skills/` |
+| Skill folders | One folder per skill directly under `skills/` |
+| Categories | Nine semantic category groupings recorded in `skills/PACK_METADATA.json`; `skills/MANIFEST.md` remains the human-readable inventory |
 | Entrypoints | `AGENTS.md` (full), `CLAUDE.md` (summary mirror) |
 | Routing | `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` |
-| Inventory | `skills/MANIFEST.md` and category `MANIFEST.md` files |
+| Inventory | `skills/PACK_METADATA.json` for machine-readable ingestion metadata; `skills/MANIFEST.md` for human-readable inventory |
 
 ## Skill count invariant
 
@@ -47,7 +47,7 @@ Agents should discover skills from frontmatter before reading the body. Discover
 1. `name`
 2. `aliases`
 3. `description`
-4. category and manifest context
+4. explicit pack metadata and manifest context
 
 Folder structure helps humans navigate the library, but frontmatter is the authoritative discovery surface for agent selection.
 
@@ -69,9 +69,9 @@ Folder structure helps humans navigate the library, but frontmatter is the autho
 
 ## Folder structure guidance
 
-- Top-level categories exist for human scanning and coarse routing.
-- Agent discoverability should be solved first with frontmatter, not folder nesting alone.
-- Reorganizing folders is optional; changing metadata is the lower-blast-radius lever and should usually happen first.
+- The filesystem is flat for maximum cross-agent compatibility.
+- Category remains important as metadata and manifest inventory context.
+- Agent discoverability should be solved first with frontmatter and explicit pack metadata, not folder nesting.
 
 ## Validation
 
@@ -95,9 +95,9 @@ For authoring standards, examples and progressive-disclosure guidance, see `skil
 
 If a target repository installed an earlier drop-in without `apply-laws-of-ai`:
 
-1. Copy `skills/agent-control-patterns/apply-laws-of-ai/` from this library.
+1. Copy `skills/apply-laws-of-ai/` from this library.
 2. Replace `AGENTS.md`, `CLAUDE.md`, and `skills_docs/` with the current versions (or merge the **Mandatory startup order** section).
-3. Update `skills/MANIFEST.md` and `skills/agent-control-patterns/MANIFEST.md` skill counts to **91** where the full nine-category library is installed.
+3. Update `skills/MANIFEST.md` skill counts to **91** where the full nine-category library is installed.
 4. Run `python3 scripts/validate_skills.py` and confirm PASS.
 
 Do not skip step 1 — agents must execute the baseline skill before any other reasoning.

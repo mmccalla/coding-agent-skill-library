@@ -37,7 +37,7 @@ class SkillsOllamaTests(unittest.TestCase):
                 {
                     "skill_name": "knowledge-graph-rag",
                     "rationale": "Relevant to graph retrieval.",
-                    "source_paths": ["skills/data-architecture/knowledge-graph-rag/SKILL.md"],
+                    "source_paths": ["skills/knowledge-graph-rag/SKILL.md"],
                     "evidence_snippets": ["Use graph-grounded retrieval with provenance."],
                 }
             ],
@@ -60,7 +60,7 @@ class SkillsOllamaTests(unittest.TestCase):
                     {
                         "retrieval_unit_id": "retrieval:skill:knowledge-graph-rag:section:0:objective",
                         "text": "Use KG-enabled RAG for graph-grounded retrieval.",
-                        "source_path": "skills/data-architecture/knowledge-graph-rag/SKILL.md",
+                        "source_path": "skills/knowledge-graph-rag/SKILL.md",
                         "section_id": "skill:knowledge-graph-rag:section:0-objective",
                     }
                 ],
@@ -182,7 +182,7 @@ def _recommendations_fixture() -> dict[str, object]:
             {
                 "skill_name": "sre-practice",
                 "rationale": "Relevant to production reliability.",
-                "source_paths": ["skills/reliability-and-delivery/sre-practice/SKILL.md"],
+                "source_paths": ["skills/sre-practice/SKILL.md"],
                 "evidence_snippets": ["Connect user impact to service objectives."],
             }
         ],

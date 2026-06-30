@@ -1,157 +1,467 @@
-@prefix skills: <https://example.org/coding-agent-skills#> .
+@prefix skills: <urn:coding-agent-skill-library:ontology:skills#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 skills:Ontology a owl:Ontology ;
     rdfs:label "Coding Agent Skills Ontology" ;
-    rdfs:comment "Semantic contract for a connected knowledge graph of coding-agent skills." .
+    dcterms:description "Canonical semantic contract for a versioned, evidence-backed skills knowledge graph supporting KRAG." ;
+    owl:imports <http://www.w3.org/2004/02/skos/core> ,
+        <http://www.w3.org/ns/prov-o> .
+
+skills:SkillPack a owl:Class ;
+    rdfs:label "Skill pack" ;
+    rdfs:comment "A governed pack boundary containing one or more canonical skills." .
 
 skills:Skill a owl:Class ;
     rdfs:label "Skill" ;
-    rdfs:comment "An operational coding-agent skill defined by a SKILL.md file." .
+    rdfs:comment "A stable canonical skill identity across versions." .
 
-skills:SkillCategory a owl:Class ;
-    rdfs:label "Skill category" .
+skills:SkillVersion a owl:Class ;
+    rdfs:label "Skill version" ;
+    rdfs:comment "An immutable versioned snapshot of a skill's source-backed content." ;
+    rdfs:subClassOf prov:Entity .
 
-skills:SkillSection a owl:Class ;
-    rdfs:label "Skill section" .
+skills:IngestionRun a owl:Class ;
+    rdfs:label "Ingestion run" ;
+    rdfs:comment "A provenance activity that parses source resources and promotes semantic assertions." ;
+    rdfs:subClassOf prov:Activity .
 
-skills:RetrievalUnit a owl:Class ;
-    rdfs:label "Retrieval unit" .
+skills:SourceResource a owl:Class ;
+    rdfs:label "Source resource" ;
+    rdfs:comment "A versioned source file or other ingested resource." ;
+    rdfs:subClassOf prov:Entity .
 
 skills:ReferenceDocument a owl:Class ;
-    rdfs:label "Reference document" .
+    rdfs:label "Reference document" ;
+    rdfs:subClassOf skills:SourceResource ;
+    rdfs:comment "A local source resource used as supporting reference material." .
+
+skills:StructuralElement a owl:Class ;
+    rdfs:label "Structural element" ;
+    rdfs:comment "A typed structural fragment parsed from a source resource." ;
+    rdfs:subClassOf prov:Entity .
+
+skills:SkillSection a owl:Class ;
+    rdfs:label "Skill section" ;
+    rdfs:subClassOf skills:StructuralElement ;
+    rdfs:comment "A markdown section within a versioned SKILL.md source." .
+
+skills:EvidenceAnchor a owl:Class ;
+    rdfs:label "Evidence anchor" ;
+    rdfs:comment "The smallest stable evidence-bearing fragment promoted for retrieval or citation." ;
+    rdfs:subClassOf prov:Entity .
+
+skills:RetrievalUnit a owl:Class ;
+    rdfs:label "Retrieval unit" ;
+    rdfs:comment "A derived retrieval projection built from one or more evidence anchors." ;
+    rdfs:subClassOf prov:Entity .
+
+skills:Citation a owl:Class ;
+    rdfs:label "Citation" ;
+    rdfs:comment "An answer-time citation pointing to one or more evidence anchors." ;
+    rdfs:subClassOf prov:Entity .
+
+skills:SkillSelectionRun a owl:Class ;
+    rdfs:label "Skill selection run" ;
+    rdfs:comment "One invocation of the skill selector." ;
+    rdfs:subClassOf prov:Activity .
+
+skills:SkillSelectionRequest a owl:Class ;
+    rdfs:label "Skill selection request" ;
+    rdfs:comment "A normalized representation of the incoming task for one selection run." ;
+    rdfs:subClassOf prov:Entity .
+
+skills:SelectionCandidate a owl:Class ;
+    rdfs:label "Selection candidate" ;
+    rdfs:comment "A skill version considered during retrieval or reranking." ;
+    rdfs:subClassOf prov:Entity .
+
+skills:SkillSelectionDecision a owl:Class ;
+    rdfs:label "Skill selection decision" ;
+    rdfs:comment "A final selected or rejected skill decision." ;
+    rdfs:subClassOf prov:Entity .
 
 skills:ValidationRule a owl:Class ;
-    rdfs:label "Validation rule" .
+    rdfs:label "Validation rule" ;
+    rdfs:comment "A structural, semantic or governance constraint." .
 
-skills:Source a owl:Class ;
-    rdfs:label "Source" .
+skills:MappingRule a owl:Class ;
+    rdfs:label "Mapping rule" ;
+    rdfs:comment "A governed rule used to promote semantic assertions from source evidence." .
+
+skills:BridgeConcept a owl:Class ;
+    rdfs:label "Bridge concept" ;
+    rdfs:comment "A governed concept used in routing, retrieval and KRAG explanation." ;
+    rdfs:subClassOf skos:Concept .
+
+skills:SkillCategory a owl:Class ;
+    rdfs:label "Skill category" ;
+    rdfs:subClassOf skills:BridgeConcept .
 
 skills:TaskShape a owl:Class ;
-    rdfs:label "Task shape" .
+    rdfs:label "Task shape" ;
+    rdfs:subClassOf skills:BridgeConcept .
 
 skills:WorkflowStage a owl:Class ;
-    rdfs:label "Workflow stage" .
+    rdfs:label "Workflow stage" ;
+    rdfs:subClassOf skills:BridgeConcept .
 
 skills:Capability a owl:Class ;
-    rdfs:label "Capability" .
+    rdfs:label "Capability" ;
+    rdfs:subClassOf skills:BridgeConcept .
 
 skills:ControlTheme a owl:Class ;
-    rdfs:label "Control theme" .
+    rdfs:label "Control theme" ;
+    rdfs:subClassOf skills:BridgeConcept .
 
 skills:KnowledgeDomain a owl:Class ;
-    rdfs:label "Knowledge domain" .
+    rdfs:label "Knowledge domain" ;
+    rdfs:subClassOf skills:BridgeConcept .
+
+skills:InvocationCondition a owl:Class ;
+    rdfs:label "Invocation condition" ;
+    rdfs:comment "A condition that narrows or excludes skill applicability." ;
+    rdfs:subClassOf skos:Concept .
+
+skills:Tool a owl:Class ;
+    rdfs:label "Tool" ;
+    rdfs:comment "A governed tool or execution dependency required by a skill." ;
+    rdfs:subClassOf skos:Concept .
+
+skills:AgentRuntime a owl:Class ;
+    rdfs:label "Agent runtime" ;
+    rdfs:comment "A governed agent runtime or host profile." ;
+    rdfs:subClassOf skos:Concept .
+
+skills:SemanticAssertion a owl:Class ;
+    rdfs:label "Semantic assertion" ;
+    rdfs:comment "A provenance-bearing promoted semantic statement." ;
+    rdfs:subClassOf prov:Entity .
 
 skills:BridgeAssertion a owl:Class ;
     rdfs:label "Bridge assertion" ;
-    rdfs:comment "A provenance-bearing assertion that a skill supports a bridge concept." .
+    rdfs:comment "A qualified assertion linking a skill version to a governed bridge concept." ;
+    rdfs:subClassOf skills:SemanticAssertion .
+
+skills:SkillCategoryScheme a skos:ConceptScheme ;
+    skos:prefLabel "Skill category scheme" .
+
+skills:TaskShapeScheme a skos:ConceptScheme ;
+    skos:prefLabel "Task shape scheme" .
+
+skills:WorkflowStageScheme a skos:ConceptScheme ;
+    skos:prefLabel "Workflow stage scheme" .
+
+skills:CapabilityScheme a skos:ConceptScheme ;
+    skos:prefLabel "Capability scheme" .
+
+skills:ControlThemeScheme a skos:ConceptScheme ;
+    skos:prefLabel "Control theme scheme" .
+
+skills:KnowledgeDomainScheme a skos:ConceptScheme ;
+    skos:prefLabel "Knowledge domain scheme" .
+
+skills:InvocationConditionScheme a skos:ConceptScheme ;
+    skos:prefLabel "Invocation condition scheme" .
+
+skills:ToolScheme a skos:ConceptScheme ;
+    skos:prefLabel "Tool scheme" .
+
+skills:AgentRuntimeScheme a skos:ConceptScheme ;
+    skos:prefLabel "Agent runtime scheme" .
 
 skills:name a owl:DatatypeProperty ;
-    rdfs:domain skills:Skill ;
-    rdfs:range xsd:string .
-
-skills:title a owl:DatatypeProperty ;
-    rdfs:domain skills:Skill ;
+    rdfs:label "name" ;
+    rdfs:comment "A stable local identifier or short canonical name." ;
     rdfs:range xsd:string .
 
 skills:path a owl:DatatypeProperty ;
+    rdfs:label "path" ;
+    rdfs:comment "A repository-relative or governed canonical path." ;
     rdfs:range xsd:string .
 
-skills:description a owl:DatatypeProperty ;
-    rdfs:domain skills:Skill ;
+skills:heading a owl:DatatypeProperty ;
+    rdfs:label "heading" ;
+    rdfs:comment "A source heading or section label." ;
+    rdfs:domain skills:StructuralElement ;
+    rdfs:range xsd:string .
+
+skills:text a owl:DatatypeProperty ;
+    rdfs:label "text" ;
+    rdfs:comment "Canonical text content used for evidence or retrieval projection." ;
     rdfs:range xsd:string .
 
 skills:contentHash a owl:DatatypeProperty ;
+    rdfs:label "content hash" ;
+    rdfs:range xsd:string .
+
+skills:checksum a owl:DatatypeProperty ;
+    rdfs:label "checksum" ;
+    rdfs:range xsd:string .
+
+skills:versionIdentifier a owl:DatatypeProperty ;
+    rdfs:label "version identifier" ;
+    rdfs:range xsd:string .
+
+skills:sourcePath a owl:DatatypeProperty ;
+    rdfs:label "source path" ;
+    rdfs:domain skills:EvidenceAnchor ;
+    rdfs:range xsd:string .
+
+skills:headingPath a owl:DatatypeProperty ;
+    rdfs:label "heading path" ;
+    rdfs:domain skills:EvidenceAnchor ;
+    rdfs:range xsd:string .
+
+skills:ordinal a owl:DatatypeProperty ;
+    rdfs:label "ordinal" ;
+    rdfs:range xsd:integer .
+
+skills:lineStart a owl:DatatypeProperty ;
+    rdfs:label "line start" ;
+    rdfs:domain skills:EvidenceAnchor ;
+    rdfs:range xsd:integer .
+
+skills:lineEnd a owl:DatatypeProperty ;
+    rdfs:label "line end" ;
+    rdfs:domain skills:EvidenceAnchor ;
+    rdfs:range xsd:integer .
+
+skills:charStart a owl:DatatypeProperty ;
+    rdfs:label "char start" ;
+    rdfs:domain skills:EvidenceAnchor ;
+    rdfs:range xsd:integer .
+
+skills:charEnd a owl:DatatypeProperty ;
+    rdfs:label "char end" ;
+    rdfs:domain skills:EvidenceAnchor ;
+    rdfs:range xsd:integer .
+
+skills:anchorRole a owl:DatatypeProperty ;
+    rdfs:label "anchor role" ;
+    rdfs:comment "The operational role of an evidence anchor, for example trigger, constraint, procedure, exclusion, example or reference." ;
+    rdfs:domain skills:EvidenceAnchor ;
     rdfs:range xsd:string .
 
 skills:wordCount a owl:DatatypeProperty ;
-    rdfs:domain skills:Skill ;
+    rdfs:label "word count" ;
     rdfs:range xsd:integer .
 
 skills:lineCount a owl:DatatypeProperty ;
-    rdfs:domain skills:Skill ;
+    rdfs:label "line count" ;
     rdfs:range xsd:integer .
 
 skills:isBaselineSkill a owl:DatatypeProperty ;
+    rdfs:label "is baseline skill" ;
     rdfs:domain skills:Skill ;
     rdfs:range xsd:boolean .
 
 skills:confidence a owl:DatatypeProperty ;
-    rdfs:domain skills:BridgeAssertion ;
+    rdfs:label "confidence" ;
+    rdfs:domain skills:SemanticAssertion ;
     rdfs:range xsd:decimal .
 
+skills:selectionScore a owl:DatatypeProperty ;
+    rdfs:label "selection score" ;
+    rdfs:comment "A numeric score used during candidate ranking or final decision recording." ;
+    rdfs:range xsd:decimal .
+
+skills:selectionReason a owl:DatatypeProperty ;
+    rdfs:label "selection reason" ;
+    rdfs:domain skills:SkillSelectionDecision ;
+    rdfs:range xsd:string .
+
+skills:rejectionReason a owl:DatatypeProperty ;
+    rdfs:label "rejection reason" ;
+    rdfs:domain skills:SkillSelectionDecision ;
+    rdfs:range xsd:string .
+
+skills:requiresHumanApproval a owl:DatatypeProperty ;
+    rdfs:label "requires human approval" ;
+    rdfs:domain skills:SkillVersion ;
+    rdfs:range xsd:boolean .
+
+skills:rationale a owl:DatatypeProperty ;
+    rdfs:label "rationale" ;
+    rdfs:comment "Human-readable justification for a promoted semantic assertion." ;
+    rdfs:domain skills:SemanticAssertion ;
+    rdfs:range xsd:string .
+
 skills:source a owl:DatatypeProperty ;
-    rdfs:domain skills:BridgeAssertion ;
+    rdfs:label "legacy source note" ;
+    rdfs:comment "Legacy projection-only source note. Canonical provenance should use prov:wasDerivedFrom." ;
+    owl:deprecated "true"^^xsd:boolean ;
     rdfs:range xsd:string .
 
 skills:rule_id a owl:DatatypeProperty ;
-    rdfs:domain skills:BridgeAssertion ;
+    rdfs:label "legacy rule id" ;
+    rdfs:comment "Legacy projection-only rule identifier. Canonical rule linkage should use usesMappingRule." ;
+    owl:deprecated "true"^^xsd:boolean ;
     rdfs:range xsd:string .
 
 skills:source_scope a owl:DatatypeProperty ;
-    rdfs:domain skills:BridgeAssertion ;
+    rdfs:label "legacy source scope" ;
+    rdfs:comment "Legacy projection-only source scope." ;
+    owl:deprecated "true"^^xsd:boolean ;
     rdfs:range xsd:string .
 
 skills:source_ref a owl:DatatypeProperty ;
-    rdfs:domain skills:BridgeAssertion ;
+    rdfs:label "legacy source ref" ;
+    rdfs:comment "Legacy projection-only source reference." ;
+    owl:deprecated "true"^^xsd:boolean ;
     rdfs:range xsd:string .
 
-skills:rationale a owl:DatatypeProperty ;
-    rdfs:domain skills:BridgeAssertion ;
-    rdfs:range xsd:string .
+skills:containsSkill a owl:ObjectProperty ;
+    rdfs:domain skills:SkillPack ;
+    rdfs:range skills:Skill .
+
+skills:hasVersion a owl:ObjectProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:SkillVersion ;
+    owl:inverseOf skills:versionOf .
+
+skills:currentVersion a owl:ObjectProperty ;
+    a owl:FunctionalProperty ;
+    rdfs:domain skills:Skill ;
+    rdfs:range skills:SkillVersion .
+
+skills:versionOf a owl:ObjectProperty ;
+    rdfs:domain skills:SkillVersion ;
+    rdfs:range skills:Skill .
 
 skills:belongsToCategory a owl:ObjectProperty ;
+    a owl:FunctionalProperty ;
     rdfs:domain skills:Skill ;
     rdfs:range skills:SkillCategory .
 
+skills:hasSourceResource a owl:ObjectProperty ;
+    rdfs:domain skills:SkillVersion ;
+    rdfs:range skills:SourceResource .
+
 skills:hasSection a owl:ObjectProperty ;
-    rdfs:domain skills:Skill ;
+    rdfs:domain skills:SkillVersion ;
     rdfs:range skills:SkillSection .
 
-skills:hasRetrievalUnit a owl:ObjectProperty ;
-    rdfs:domain skills:SkillSection ;
-    rdfs:range skills:RetrievalUnit .
+skills:hasStructuralElement a owl:ObjectProperty ;
+    rdfs:domain skills:SkillVersion ;
+    rdfs:range skills:StructuralElement .
 
-skills:hasReference a owl:ObjectProperty ;
-    rdfs:domain skills:Skill ;
-    rdfs:range skills:ReferenceDocument .
+skills:hasEvidenceAnchor a owl:ObjectProperty ;
+    rdfs:domain skills:StructuralElement ;
+    rdfs:range skills:EvidenceAnchor .
+
+skills:derivedFromElement a owl:ObjectProperty ;
+    rdfs:domain skills:EvidenceAnchor ;
+    rdfs:range skills:StructuralElement .
+
+skills:projectsFrom a owl:ObjectProperty ;
+    rdfs:domain skills:RetrievalUnit ;
+    rdfs:range skills:EvidenceAnchor .
+
+skills:citesEvidence a owl:ObjectProperty ;
+    rdfs:domain skills:Citation ;
+    rdfs:range skills:EvidenceAnchor .
+
+skills:hasSelectionRequest a owl:ObjectProperty ;
+    rdfs:domain skills:SkillSelectionRun ;
+    rdfs:range skills:SkillSelectionRequest .
+
+skills:hasSelectionCandidate a owl:ObjectProperty ;
+    rdfs:domain skills:SkillSelectionRun ;
+    rdfs:range skills:SelectionCandidate .
+
+skills:hasSelectionDecision a owl:ObjectProperty ;
+    rdfs:domain skills:SkillSelectionRun ;
+    rdfs:range skills:SkillSelectionDecision .
+
+skills:candidateSkillVersion a owl:ObjectProperty ;
+    rdfs:domain skills:SelectionCandidate ;
+    rdfs:range skills:SkillVersion .
+
+skills:selectedSkillVersion a owl:ObjectProperty ;
+    rdfs:domain skills:SkillSelectionDecision ;
+    rdfs:range skills:SkillVersion .
+
+skills:rejectedSkillVersion a owl:ObjectProperty ;
+    rdfs:domain skills:SkillSelectionDecision ;
+    rdfs:range skills:SkillVersion .
+
+skills:selectionSupportedBy a owl:ObjectProperty ;
+    rdfs:comment "Evidence anchors supporting a candidate ranking or final decision." ;
+    rdfs:range skills:EvidenceAnchor .
 
 skills:validatedBy a owl:ObjectProperty ;
     rdfs:range skills:ValidationRule .
 
-skills:citesSource a owl:ObjectProperty ;
-    rdfs:range skills:Source .
+skills:assertionFor a owl:ObjectProperty ;
+    a owl:FunctionalProperty ;
+    rdfs:domain skills:SemanticAssertion ;
+    rdfs:range skills:SkillVersion .
+
+skills:bridgeTarget a owl:ObjectProperty ;
+    rdfs:domain skills:BridgeAssertion ;
+    rdfs:range skills:BridgeConcept .
+
+skills:supportedBy a owl:ObjectProperty ;
+    rdfs:domain skills:SemanticAssertion ;
+    rdfs:range skills:EvidenceAnchor .
+
+skills:usesMappingRule a owl:ObjectProperty ;
+    rdfs:domain skills:SemanticAssertion ;
+    rdfs:range skills:MappingRule .
 
 skills:supportsTaskShape a owl:ObjectProperty ;
-    rdfs:domain skills:Skill ;
+    rdfs:domain skills:SkillVersion ;
     rdfs:range skills:TaskShape .
 
 skills:operatesInStage a owl:ObjectProperty ;
-    rdfs:domain skills:Skill ;
+    rdfs:domain skills:SkillVersion ;
     rdfs:range skills:WorkflowStage .
 
 skills:enablesCapability a owl:ObjectProperty ;
-    rdfs:domain skills:Skill ;
+    rdfs:domain skills:SkillVersion ;
     rdfs:range skills:Capability .
 
 skills:governedBy a owl:ObjectProperty ;
-    rdfs:domain skills:Skill ;
+    rdfs:domain skills:SkillVersion ;
     rdfs:range skills:ControlTheme .
 
 skills:partOfDomain a owl:ObjectProperty ;
-    rdfs:domain skills:Skill ;
+    rdfs:domain skills:SkillVersion ;
     rdfs:range skills:KnowledgeDomain .
 
-skills:assertsBridge a owl:ObjectProperty ;
-    rdfs:domain skills:Skill ;
-    rdfs:range skills:BridgeAssertion .
+skills:notForTaskShape a owl:ObjectProperty ;
+    rdfs:domain skills:SkillVersion ;
+    rdfs:range skills:TaskShape .
 
-skills:derivedFrom a owl:ObjectProperty ;
-    rdfs:domain skills:RetrievalUnit ;
-    rdfs:range skills:SkillSection .
+skills:excludedWhen a owl:ObjectProperty ;
+    rdfs:domain skills:SkillVersion ;
+    rdfs:range skills:InvocationCondition .
+
+skills:requiresTool a owl:ObjectProperty ;
+    rdfs:domain skills:SkillVersion ;
+    rdfs:range skills:Tool .
+
+skills:incompatibleWithTool a owl:ObjectProperty ;
+    rdfs:domain skills:SkillVersion ;
+    rdfs:range skills:Tool .
+
+skills:compatibleWithRuntime a owl:ObjectProperty ;
+    rdfs:domain skills:SkillVersion ;
+    rdfs:range skills:AgentRuntime .
+
+skills:incompatibleWithRuntime a owl:ObjectProperty ;
+    rdfs:domain skills:SkillVersion ;
+    rdfs:range skills:AgentRuntime .
+
+skills:supersededBy a owl:ObjectProperty ;
+    rdfs:domain skills:SkillVersion ;
+    rdfs:range skills:SkillVersion .
 
 skills:precedes a owl:ObjectProperty ;
     rdfs:domain skills:Skill ;
