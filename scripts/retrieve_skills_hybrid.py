@@ -172,6 +172,32 @@ def _vector_retrieval_unit_ids(
     return {skill_id: tuple(values) for skill_id, values in unit_ids.items()}
 
 
+def _metadata_scores(
+    plan: load_skills_neo4j.LoadPlan,
+    query_text: str,
+) -> dict[str, float]:
+    query_tokens = _tokens(query_text)
+    if not query_tokens:
+        return {}
+    normalised_query = " ".join(sorted(query_tokens))
+    scores: dict[str, float] = {}
+    for skill_id, skill in _skill_nodes(plan).items():
+        name = _string(skill.properties, "name")
+        aliases = _string_list(skill.properties, "aliases")
+        description = _string(skill.properties, "description")
+        metadata_tokens = _tokens(" ".join((name, *aliases, description)))
+        if not metadata_tokens:
+            continue
+        overlap_score = len(query_tokens & metadata_tokens) / len(query_tokens)
+        exact_candidates = {
+            " ".join(sorted(_tokens(name))),
+            *(" ".join(sorted(_tokens(alias))) for alias in aliases),
+        }
+        exact_bonus = 0.35 if normalised_query in exact_candidates else 0.0
+        scores[skill_id] = min(1.0, overlap_score + exact_bonus)
+    return scores
+
+
 def _graph_evidence(
     plan: load_skills_neo4j.LoadPlan,
     start_skill_ids: set[str],
@@ -301,12 +327,15 @@ def retrieve_hybrid_skills(
     query_tokens = _tokens(query_text)
     skills = _skill_nodes(plan)
     text_scores, text_unit_ids = _text_scores(plan, query_text)
+    metadata_scores = _metadata_scores(plan, query_text)
     vector_scores = _vector_scores(vector_candidates, settings.min_vector_candidate_score)
     vector_unit_ids = _vector_retrieval_unit_ids(
         vector_candidates, settings.min_vector_candidate_score
     )
     bridge_scores, bridge_evidence_paths = _bridge_scores(plan, query_text)
-    candidate_skill_ids = set(text_scores) | set(vector_scores) | set(bridge_scores)
+    candidate_skill_ids = set(text_scores) | set(metadata_scores) | set(vector_scores) | set(
+        bridge_scores
+    )
     graph_scores, evidence_paths = _graph_evidence(plan, candidate_skill_ids, max_depth)
     recommendation_inputs: list[tuple[str, float, float, float, float, tuple[str, ...]]] = []
 
@@ -315,13 +344,15 @@ def retrieve_hybrid_skills(
         if skill is None:
             continue
         full_text_score = text_scores.get(skill_id, 0.0)
+        metadata_score = metadata_scores.get(skill_id, 0.0)
         vector_score = max(0.0, vector_scores.get(skill_id, 0.0))
         graph_score = max(graph_scores.get(skill_id, 0.0), bridge_scores.get(skill_id, 0.0))
         score = (
             (0.45 * full_text_score)
+            + (0.40 * metadata_score)
             + (0.10 * vector_score)
             + (0.15 * graph_scores.get(skill_id, 0.0))
-            + (0.80 * bridge_scores.get(skill_id, 0.0))
+            + (0.60 * bridge_scores.get(skill_id, 0.0))
         )
         preferred_unit_ids = tuple(
             dict.fromkeys((*text_unit_ids.get(skill_id, ()), *vector_unit_ids.get(skill_id, ())))
@@ -386,8 +417,9 @@ def retrieve_hybrid_skills(
                     )
                 ),
                 why=(
-                    "Selected from explicit bridge rules, full-text, vector and graph evidence; "
-                    "curated bridge evidence outranks isolated vector or graph matches."
+                    "Selected from explicit bridge assertions, skill metadata, full-text, "
+                    "vector and graph evidence; repository-native evidence outranks isolated "
+                    "vector or graph matches."
                 ),
             )
         )

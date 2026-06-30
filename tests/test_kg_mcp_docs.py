@@ -22,7 +22,6 @@ class SkillsKgMcpDocsTests(unittest.TestCase):
 
         for marker in (
             "python3 scripts/extract_skills_graph.py",
-            "python3 scripts/map_skills_bridges.py",
             "neo4j/skills_schema.cypher",
             "python3 scripts/load_skills_neo4j.py",
             "python3 scripts/embed_skill_chunks.py",
@@ -50,7 +49,7 @@ class SkillsKgMcpDocsTests(unittest.TestCase):
             "FastAPI",
             "retrieval evaluation gate",
             "connectedness failure",
-            "mapping_rule_id",
+            "source_section_id",
             "RetrievalUnit",
             "read-only",
         ):
@@ -61,7 +60,7 @@ class SkillsKgMcpDocsTests(unittest.TestCase):
 
         self.assertIn("python3 scripts/skills_mcp_server.py --list-tools", text)
         self.assertIn("python3 scripts/embed_skill_chunks.py --query", text)
-        self.assertIn("python3 scripts/evaluate_skill_retrieval.py --limit 3", text)
+        self.assertIn("python3 scripts/evaluate_skill_retrieval.py", text)
         self.assertNotIn("--apply", text)
 
 

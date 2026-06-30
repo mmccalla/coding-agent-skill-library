@@ -63,10 +63,17 @@ class SkillsOntologyTests(unittest.TestCase):
             "Citation",
             "BridgeConcept",
             "BridgeAssertion",
+            "SkillDependencyAssertion",
             "SemanticAssertion",
             "InvocationCondition",
             "Tool",
             "AgentRuntime",
+            "EvaluationDataset",
+            "EvaluationTask",
+            "ExpectedSkillVersion",
+            "ObservedSelection",
+            "EvaluationRun",
+            "FailureMode",
         ):
             self.assertIn(f"`{concept}`", text)
 
@@ -91,10 +98,17 @@ class SkillsOntologyTests(unittest.TestCase):
             "Citation",
             "BridgeConcept",
             "BridgeAssertion",
+            "SkillDependencyAssertion",
             "SemanticAssertion",
             "InvocationCondition",
             "Tool",
             "AgentRuntime",
+            "EvaluationDataset",
+            "EvaluationTask",
+            "ExpectedSkillVersion",
+            "ObservedSelection",
+            "EvaluationRun",
+            "FailureMode",
         ):
             self.assertIn(f"skills:{class_name} a owl:Class", text)
 
@@ -119,6 +133,8 @@ class SkillsOntologyTests(unittest.TestCase):
             "selectedSkillVersion",
             "rejectedSkillVersion",
             "selectionSupportedBy",
+            "dependencySourceVersion",
+            "dependencyTargetVersion",
             "notForTaskShape",
             "excludedWhen",
             "requiresTool",
@@ -126,6 +142,14 @@ class SkillsOntologyTests(unittest.TestCase):
             "compatibleWithRuntime",
             "incompatibleWithRuntime",
             "supersededBy",
+            "hasEvaluationTask",
+            "evaluatedDataset",
+            "expectsSkillVersion",
+            "expectedSkillVersion",
+            "observedSkillVersion",
+            "evaluatedTask",
+            "recordedSelection",
+            "hasFailureMode",
         ):
             self.assertIn(f"skills:{predicate} a owl:ObjectProperty", text)
 
@@ -160,6 +184,16 @@ class SkillsOntologyTests(unittest.TestCase):
             "rejectionReason",
             "requiresHumanApproval",
             "rationale",
+            "dependencyType",
+            "precisionAt1",
+            "recallAtK",
+            "meanReciprocalRank",
+            "ndcgAtK",
+            "graphLiftRecallAtK",
+            "p95LatencyMs",
+            "citationCoverage",
+            "exclusionAccuracy",
+            "tokenCostPerSelection",
         ):
             self.assertIn(f"skills:{datatype_property} a owl:DatatypeProperty", text)
 
@@ -176,6 +210,8 @@ class SkillsOntologyTests(unittest.TestCase):
             "EvidenceAnchorShape",
             "RetrievalUnitShape",
             "BridgeConceptShape",
+            "BridgeConceptLifecycleShape",
+            "BridgeConceptHierarchyShape",
             "SkillCategorySchemeShape",
             "TaskShapeSchemeShape",
             "WorkflowStageSchemeShape",
@@ -183,6 +219,7 @@ class SkillsOntologyTests(unittest.TestCase):
             "ControlThemeSchemeShape",
             "KnowledgeDomainSchemeShape",
             "BridgeAssertionShape",
+            "SkillDependencyAssertionShape",
             "DirectTaskShapeDerivationShape",
             "DirectCapabilityDerivationShape",
             "DirectWorkflowStageDerivationShape",
@@ -193,6 +230,12 @@ class SkillsOntologyTests(unittest.TestCase):
             "SelectionCandidateShape",
             "SkillSelectionDecisionShape",
             "CitationShape",
+            "EvaluationDatasetShape",
+            "EvaluationTaskShape",
+            "ExpectedSkillVersionShape",
+            "ObservedSelectionShape",
+            "EvaluationRunShape",
+            "FailureModeShape",
         ):
             self.assertIn(f"skills:{shape} a sh:NodeShape", text)
 
@@ -218,6 +261,9 @@ class SkillsOntologyTests(unittest.TestCase):
             "skills:assertionFor",
             "skills:bridgeTarget",
             "skills:supportedBy",
+            "skills:dependencySourceVersion",
+            "skills:dependencyTargetVersion",
+            "skills:dependencyType",
             "skills:hasSelectionRequest",
             "skills:hasSelectionDecision",
             "skills:candidateSkillVersion",
@@ -228,6 +274,24 @@ class SkillsOntologyTests(unittest.TestCase):
             "skills:selectionReason",
             "skills:rejectionReason",
             "skills:citesEvidence",
+            "dcterms:isReplacedBy",
+            "skills:hasEvaluationTask",
+            "skills:evaluatedDataset",
+            "skills:expectsSkillVersion",
+            "skills:expectedSkillVersion",
+            "skills:observedSkillVersion",
+            "skills:evaluatedTask",
+            "skills:recordedSelection",
+            "skills:hasFailureMode",
+            "skills:precisionAt1",
+            "skills:recallAtK",
+            "skills:meanReciprocalRank",
+            "skills:ndcgAtK",
+            "skills:graphLiftRecallAtK",
+            "skills:p95LatencyMs",
+            "skills:citationCoverage",
+            "skills:exclusionAccuracy",
+            "skills:tokenCostPerSelection",
         ):
             self.assertIn(f"sh:path {required_path}", text)
 
@@ -238,6 +302,8 @@ class SkillsOntologyTests(unittest.TestCase):
 
         self.assertIn("skills:SkillPackShape a sh:NodeShape", canonical_text)
         self.assertIn("skills:BridgeAssertionShape a sh:NodeShape", canonical_text)
+        self.assertIn("skills:SkillDependencyAssertionShape a sh:NodeShape", canonical_text)
+        self.assertIn("skills:BridgeConceptLifecycleShape a sh:NodeShape", canonical_text)
         self.assertNotIn("skills:SkillSelectionRunShape a sh:NodeShape", canonical_text)
 
         self.assertIn("skills:RetrievalUnitShape a sh:NodeShape", retrieval_text)
@@ -248,6 +314,8 @@ class SkillsOntologyTests(unittest.TestCase):
 
         self.assertIn("skills:SkillSelectionRunShape a sh:NodeShape", runtime_text)
         self.assertIn("skills:CitationShape a sh:NodeShape", runtime_text)
+        self.assertIn("skills:EvaluationRunShape a sh:NodeShape", runtime_text)
+        self.assertIn("skills:FailureModeShape a sh:NodeShape", runtime_text)
         self.assertNotIn("skills:RetrievalUnitShape a sh:NodeShape", runtime_text)
 
     def test_repo_native_ontology_validator_passes(self) -> None:

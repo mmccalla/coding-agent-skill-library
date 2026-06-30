@@ -1,4 +1,5 @@
 @prefix skills: <urn:coding-agent-skill-library:ontology:skills#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
@@ -104,4 +105,179 @@ skills:CitationShape a sh:NodeShape ;
         sh:path skills:citesEvidence ;
         sh:class skills:EvidenceAnchor ;
         sh:minCount 1 ;
+    ] .
+
+skills:EvaluationDatasetShape a sh:NodeShape ;
+    sh:targetClass skills:EvaluationDataset ;
+    sh:property [
+        sh:path skills:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:versionIdentifier ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:hasEvaluationTask ;
+        sh:class skills:EvaluationTask ;
+        sh:minCount 1 ;
+    ] .
+
+skills:EvaluationTaskShape a sh:NodeShape ;
+    sh:targetClass skills:EvaluationTask ;
+    sh:property [
+        sh:path skills:text ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:expectsSkillVersion ;
+        sh:class skills:ExpectedSkillVersion ;
+        sh:minCount 1 ;
+    ] .
+
+skills:ExpectedSkillVersionShape a sh:NodeShape ;
+    sh:targetClass skills:ExpectedSkillVersion ;
+    sh:property [
+        sh:path skills:expectedSkillVersion ;
+        sh:class skills:SkillVersion ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+skills:ObservedSelectionShape a sh:NodeShape ;
+    sh:targetClass skills:ObservedSelection ;
+    sh:property [
+        sh:path skills:observedSkillVersion ;
+        sh:class skills:SkillVersion ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:selectionScore ;
+        sh:datatype xsd:decimal ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:selectionSupportedBy ;
+        sh:class skills:EvidenceAnchor ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:hasFailureMode ;
+        sh:class skills:FailureMode ;
+        sh:maxCount 1 ;
+    ] .
+
+skills:EvaluationRunShape a sh:NodeShape ;
+    sh:targetClass skills:EvaluationRun ;
+    sh:property [
+        sh:path skills:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:evaluatedDataset ;
+        sh:class skills:EvaluationDataset ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:evaluatedTask ;
+        sh:class skills:EvaluationTask ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:recordedSelection ;
+        sh:class skills:ObservedSelection ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:precisionAt1 ;
+        sh:datatype xsd:decimal ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 0.0 ;
+        sh:maxInclusive 1.0 ;
+    ] ;
+    sh:property [
+        sh:path skills:recallAtK ;
+        sh:datatype xsd:decimal ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 0.0 ;
+        sh:maxInclusive 1.0 ;
+    ] ;
+    sh:property [
+        sh:path skills:meanReciprocalRank ;
+        sh:datatype xsd:decimal ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 0.0 ;
+        sh:maxInclusive 1.0 ;
+    ] ;
+    sh:property [
+        sh:path skills:ndcgAtK ;
+        sh:datatype xsd:decimal ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 0.0 ;
+        sh:maxInclusive 1.0 ;
+    ] ;
+    sh:property [
+        sh:path skills:graphLiftRecallAtK ;
+        sh:datatype xsd:decimal ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:p95LatencyMs ;
+        sh:datatype xsd:decimal ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 0.0 ;
+    ] ;
+    sh:property [
+        sh:path skills:citationCoverage ;
+        sh:datatype xsd:decimal ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 0.0 ;
+        sh:maxInclusive 1.0 ;
+    ] ;
+    sh:property [
+        sh:path skills:exclusionAccuracy ;
+        sh:datatype xsd:decimal ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 0.0 ;
+        sh:maxInclusive 1.0 ;
+    ] ;
+    sh:property [
+        sh:path skills:tokenCostPerSelection ;
+        sh:datatype xsd:decimal ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 0.0 ;
+    ] .
+
+skills:FailureModeShape a sh:NodeShape ;
+    sh:targetClass skills:FailureMode ;
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skos:inScheme ;
+        sh:hasValue skills:FailureModeScheme ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
     ] .

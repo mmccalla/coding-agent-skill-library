@@ -29,10 +29,10 @@ Implemented now in the ontology baseline
   * `anchorRole`
 * Issue 3 is implemented at the SHACL level:
   * direct routing edges must be backed by matching `BridgeAssertion` provenance
-* Issue 4 is partially implemented:
+* Issue 4 is implemented:
   * subtype-specific concept-scheme shapes are present
   * unique `skos:prefLabel` within scheme is enforced
-  * `skos:altLabel`, `skos:hiddenLabel`, deprecation, replacement, and controlled hierarchy policy remain planned
+  * `skos:altLabel`, `skos:hiddenLabel`, deprecation, replacement, and controlled hierarchy policy are modelled and validated
 * Issue 5 is implemented at the ontology level:
   * `notForTaskShape`
   * `excludedWhen`
@@ -43,12 +43,12 @@ Implemented now in the ontology baseline
   * `requiresHumanApproval`
   * `supersededBy`
 
-Not yet implemented
+Not yet fully cut over operationally
 
-* Issue 6 retrieval ranking metadata
-* Issue 7 version-aware dependency assertions
-* Issue 8 split SHACL profiles
-* Issue 9 evaluation artefacts and metric model
+* Issue 6 retrieval ranking metadata is implemented in ontology and retrieval validation, but still depends on runtime usage quality
+* Issue 7 version-aware dependency assertions are implemented in ontology and SHACL
+* Issue 8 split SHACL profiles are implemented
+* Issue 9 evaluation artefacts and metric model are implemented in ontology, SHACL and evaluation code
 
 Authoritative implementation sequencing now lives in:
 

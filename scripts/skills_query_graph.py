@@ -118,6 +118,51 @@ QUERY_TEMPLATES = {
     },
 }
 
+QUERY_FAMILY_RENDERED_CYPHER = {
+    QUERY_FAMILY_EXACT_SKILL_LOOKUP: (
+        "MATCH (s:Skill {id: $skill_id})-[:HAS_SECTION]->(section:SkillSection)"
+        "-[:HAS_RETRIEVAL_UNIT]->(unit:RetrievalUnit) "
+        "RETURN s.id AS skill_id, s.name AS skill_name, section.id AS section_id, "
+        "unit.id AS retrieval_unit_id, unit.source_path AS source_path "
+        "LIMIT $limit"
+    ),
+    QUERY_FAMILY_RELATED_SKILL_TRAVERSAL: (
+        "MATCH (s:Skill {id: $skill_id})-[r:RELATED_TO|PRECEDES|REQUIRES|COMPLEMENTS|REFINES|GOVERNS|VALIDATES]"
+        "-(related:Skill) "
+        "RETURN s.id AS skill_id, type(r) AS relationship_type, related.id AS related_skill_id "
+        "LIMIT $limit"
+    ),
+    QUERY_FAMILY_CAPABILITY_TASK_LOOKUP: (
+        "MATCH (s:Skill)-[r:HAS_CAPABILITY|HAS_TASK_SHAPE]->(concept) "
+        "WHERE any(token IN $query_tokens WHERE toLower(coalesce(concept.id, '')) CONTAINS token) "
+        "RETURN s.id AS skill_id, s.name AS skill_name, type(r) AS relationship_type, "
+        "concept.id AS concept_id "
+        "LIMIT $limit"
+    ),
+    QUERY_FAMILY_CONSTRAINT_VERIFICATION_RETRIEVAL: (
+        "MATCH (s:Skill {id: $skill_id})-[:HAS_SECTION]->(section:SkillSection)"
+        "-[:HAS_RETRIEVAL_UNIT]->(unit:RetrievalUnit) "
+        "WHERE toLower(unit.section_id) CONTAINS 'verification' "
+        "   OR toLower(unit.section_id) CONTAINS 'rules' "
+        "   OR toLower(unit.section_id) CONTAINS 'guardrails' "
+        "   OR toLower(unit.section_id) CONTAINS 'constraint' "
+        "RETURN unit.id AS retrieval_unit_id, unit.source_path AS source_path, unit.section_id AS section_id "
+        "LIMIT $limit"
+    ),
+    QUERY_FAMILY_PACK_SKILL_MEMBERSHIP_LOOKUP: (
+        "MATCH (pack:SkillPack)-[:CONTAINS_SKILL]->(skill:Skill) "
+        "WHERE any(token IN $query_tokens WHERE toLower(pack.id) CONTAINS token OR toLower(pack.name) CONTAINS token) "
+        "RETURN pack.id AS skill_pack_id, skill.id AS skill_id, skill.name AS skill_name "
+        "LIMIT $limit"
+    ),
+    QUERY_FAMILY_EVIDENCE_FRAGMENT_RETRIEVAL: (
+        "MATCH (s:Skill {id: $skill_id})-[:HAS_SECTION]->(section:SkillSection)"
+        "-[:HAS_RETRIEVAL_UNIT]->(unit:RetrievalUnit) "
+        "RETURN unit.id AS retrieval_unit_id, unit.source_path AS source_path, unit.section_id AS section_id "
+        "LIMIT $limit"
+    ),
+}
+
 
 class GraphQueryPlan(NamedTuple):
     intent: str
@@ -127,6 +172,7 @@ class GraphQueryPlan(NamedTuple):
     parameters: Mapping[str, object]
     result_bounds: Mapping[str, int]
     cypher_template_id: str
+    generated_cypher: str
 
 
 def _tokens(text: str) -> set[str]:
@@ -184,6 +230,9 @@ def plan_graph_query(
             cypher_template_id=QUERY_TEMPLATES[QUERY_FAMILY_EVIDENCE_FRAGMENT_RETRIEVAL][
                 "cypher_template_id"
             ],
+            generated_cypher=_render_bounded_cypher(
+                QUERY_FAMILY_EVIDENCE_FRAGMENT_RETRIEVAL,
+            ),
         )
     elif skill_id and (route == "context" or query_tokens & RELATIONSHIP_TERMS):
         plan_result = GraphQueryPlan(
@@ -196,6 +245,7 @@ def plan_graph_query(
             cypher_template_id=QUERY_TEMPLATES[QUERY_FAMILY_RELATED_SKILL_TRAVERSAL][
                 "cypher_template_id"
             ],
+            generated_cypher=_render_bounded_cypher(QUERY_FAMILY_RELATED_SKILL_TRAVERSAL),
         )
     elif skill_id and (route == "execution_plan" or query_tokens & CONSTRAINT_TERMS):
         plan_result = GraphQueryPlan(
@@ -208,6 +258,9 @@ def plan_graph_query(
             cypher_template_id=QUERY_TEMPLATES[QUERY_FAMILY_CONSTRAINT_VERIFICATION_RETRIEVAL][
                 "cypher_template_id"
             ],
+            generated_cypher=_render_bounded_cypher(
+                QUERY_FAMILY_CONSTRAINT_VERIFICATION_RETRIEVAL,
+            ),
         )
     elif skill_id:
         plan_result = GraphQueryPlan(
@@ -220,6 +273,7 @@ def plan_graph_query(
             cypher_template_id=QUERY_TEMPLATES[QUERY_FAMILY_EXACT_SKILL_LOOKUP][
                 "cypher_template_id"
             ],
+            generated_cypher=_render_bounded_cypher(QUERY_FAMILY_EXACT_SKILL_LOOKUP),
         )
     elif query_tokens & PACK_TERMS:
         plan_result = GraphQueryPlan(
@@ -232,6 +286,7 @@ def plan_graph_query(
             cypher_template_id=QUERY_TEMPLATES[QUERY_FAMILY_PACK_SKILL_MEMBERSHIP_LOOKUP][
                 "cypher_template_id"
             ],
+            generated_cypher=_render_bounded_cypher(QUERY_FAMILY_PACK_SKILL_MEMBERSHIP_LOOKUP),
         )
     elif route == "recommendation" or query_tokens:
         plan_result = GraphQueryPlan(
@@ -244,6 +299,7 @@ def plan_graph_query(
             cypher_template_id=QUERY_TEMPLATES[QUERY_FAMILY_CAPABILITY_TASK_LOOKUP][
                 "cypher_template_id"
             ],
+            generated_cypher=_render_bounded_cypher(QUERY_FAMILY_CAPABILITY_TASK_LOOKUP),
         )
     else:
         return {
@@ -260,12 +316,17 @@ def plan_graph_query(
         "parameters": dict(plan_result.parameters),
         "result_bounds": dict(plan_result.result_bounds),
         "rationale": plan_result.rationale,
+        "generated_cypher": plan_result.generated_cypher,
         "read_only": True,
         "allowed_labels": list(QUERY_TEMPLATES[plan_result.query_family]["labels"]),
         "allowed_relationship_types": list(
             QUERY_TEMPLATES[plan_result.query_family]["relationship_types"]
         ),
     }
+
+
+def _render_bounded_cypher(query_family: str) -> str:
+    return QUERY_FAMILY_RENDERED_CYPHER[query_family]
 
 
 def execute_planned_query(
@@ -461,4 +522,3 @@ def _citations_for_units(
             }
         )
     return citations
-

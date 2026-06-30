@@ -30,6 +30,9 @@ python3 scripts/skills_mcp_server.py --list-tools >/dev/null
 echo "==> retrieval evaluation"
 python3 scripts/evaluate_skill_retrieval.py --dataset tests/fixtures/retrieval_evaluation/smoke_queries.json --limit 3 >/dev/null
 
+echo "==> KRAG cutover acceptance"
+python3 scripts/krag_cutover_acceptance.py --dataset tests/fixtures/retrieval_evaluation/smoke_queries.json --limit 3 --token-budget 240 >/dev/null
+
 echo "==> skills-ui checks"
 npm --prefix skills-ui ci
 npm --prefix skills-ui test

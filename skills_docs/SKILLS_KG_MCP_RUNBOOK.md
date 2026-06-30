@@ -9,7 +9,6 @@ Install the project and run the deterministic offline gate first:
 ```bash
 python3 -m pip install -e ".[dev]"
 python3 scripts/extract_skills_graph.py > /tmp/skills-graph.json
-python3 scripts/map_skills_bridges.py > /tmp/skills-graph-mapped.json
 python3 scripts/validate_skills_graph.py
 python3 scripts/load_skills_neo4j.py
 python3 scripts/embed_skill_chunks.py --query "approval before destructive command" --limit 3
@@ -88,7 +87,7 @@ The server denies unsupported write or arbitrary Cypher tools. Agent-facing reso
 - use `get_skill_context` for related, prerequisite, complementary or neighbouring skills;
 - use `get_skill_execution_guide` before acting from a skill so the agent has when-to-use, objective, procedure, rules, verification checklist and related-skill evidence.
 
-Before acting, agents must return or retain the selected route, resolved skill id where applicable, source paths, section ids or evidence paths, and the verification checklist for execution-plan routes. The contract examples cover direct lookup, recommendation, context expansion and execution-plan requests.
+Before acting, agents must return or retain the selected route, resolved skill id where applicable, source paths, `source_section_id` or other evidence paths, and the verification checklist for execution-plan routes. The contract examples cover direct lookup, recommendation, context expansion and execution-plan requests.
 
 ## FastAPI Usage
 
@@ -204,15 +203,15 @@ The report must pass these metrics:
 If `python3 scripts/validate_skills_graph.py` reports a connectedness failure:
 
 1. Read the failing skill name and message, for example `missing bridge provenance`, `missing semantic bridge` or `unreachable from root`.
-2. Inspect `skills_docs/ontology/bridge_mapping_rules.json` for a missing or incorrect `mapping_rule_id`.
-3. Check the owning `SKILL.md` for source evidence, related skills and bridge values.
-4. Add or correct the smallest mapping rule that explains the relationship.
+2. Check the owning `SKILL.md` for missing frontmatter, missing `Related skills` evidence or weak/ambiguous skill descriptions.
+3. Check `skills/PACK_METADATA.json` if the failure concerns missing category metadata.
+4. Add or correct the smallest source-backed skill metadata or related-skill reference that explains the relationship.
 5. Re-run:
 
 ```bash
-python3 scripts/map_skills_bridges.py > /tmp/skills-graph-mapped.json
+python3 scripts/extract_skills_graph.py > /tmp/skills-graph.json
 python3 scripts/validate_skills_graph.py
 ./scripts/ci_local.sh
 ```
 
-Do not add universal bridge values to hide outliers. Every connective bridge must have source evidence and provenance.
+Do not add generic connective terms to hide outliers. Every bridge assertion must be derivable from source-backed skill metadata or explicit related-skill evidence.

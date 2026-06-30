@@ -148,6 +148,41 @@ skills:BridgeAssertion a owl:Class ;
     rdfs:comment "A qualified assertion linking a skill version to a governed bridge concept." ;
     rdfs:subClassOf skills:SemanticAssertion .
 
+skills:SkillDependencyAssertion a owl:Class ;
+    rdfs:label "Skill dependency assertion" ;
+    rdfs:comment "An evidence-backed assertion describing a version-aware dependency between skill versions." ;
+    rdfs:subClassOf skills:SemanticAssertion .
+
+skills:EvaluationDataset a owl:Class ;
+    rdfs:label "Evaluation dataset" ;
+    rdfs:comment "A versioned benchmark task set used to evaluate KRAG retrieval and selection quality." ;
+    rdfs:subClassOf prov:Entity .
+
+skills:EvaluationTask a owl:Class ;
+    rdfs:label "Evaluation task" ;
+    rdfs:comment "A representative benchmark task used to measure retrieval or selection quality." ;
+    rdfs:subClassOf prov:Entity .
+
+skills:ExpectedSkillVersion a owl:Class ;
+    rdfs:label "Expected skill version" ;
+    rdfs:comment "A ground-truth expected skill version attached to an evaluation task." ;
+    rdfs:subClassOf prov:Entity .
+
+skills:ObservedSelection a owl:Class ;
+    rdfs:label "Observed selection" ;
+    rdfs:comment "The skill version actually returned by the selector during an evaluation run." ;
+    rdfs:subClassOf prov:Entity .
+
+skills:EvaluationRun a owl:Class ;
+    rdfs:label "Evaluation run" ;
+    rdfs:comment "A reproducible execution of an evaluation task or dataset with metrics and outcomes." ;
+    rdfs:subClassOf prov:Activity .
+
+skills:FailureMode a owl:Class ;
+    rdfs:label "Failure mode" ;
+    rdfs:comment "A governed failure mode such as missed skill, wrong skill, stale skill, or over-selection." ;
+    rdfs:subClassOf skos:Concept .
+
 skills:SkillCategoryScheme a skos:ConceptScheme ;
     skos:prefLabel "Skill category scheme" .
 
@@ -174,6 +209,9 @@ skills:ToolScheme a skos:ConceptScheme ;
 
 skills:AgentRuntimeScheme a skos:ConceptScheme ;
     skos:prefLabel "Agent runtime scheme" .
+
+skills:FailureModeScheme a skos:ConceptScheme ;
+    skos:prefLabel "Failure mode scheme" .
 
 skills:name a owl:DatatypeProperty ;
     rdfs:label "name" ;
@@ -344,6 +382,57 @@ skills:rationale a owl:DatatypeProperty ;
     rdfs:domain skills:SemanticAssertion ;
     rdfs:range xsd:string .
 
+skills:dependencyType a owl:DatatypeProperty ;
+    rdfs:label "dependency type" ;
+    rdfs:comment "The operational dependency type between two skill versions." ;
+    rdfs:domain skills:SkillDependencyAssertion ;
+    rdfs:range xsd:string .
+
+skills:precisionAt1 a owl:DatatypeProperty ;
+    rdfs:label "precision at 1" ;
+    rdfs:domain skills:EvaluationRun ;
+    rdfs:range xsd:decimal .
+
+skills:recallAtK a owl:DatatypeProperty ;
+    rdfs:label "recall at k" ;
+    rdfs:domain skills:EvaluationRun ;
+    rdfs:range xsd:decimal .
+
+skills:meanReciprocalRank a owl:DatatypeProperty ;
+    rdfs:label "mean reciprocal rank" ;
+    rdfs:domain skills:EvaluationRun ;
+    rdfs:range xsd:decimal .
+
+skills:ndcgAtK a owl:DatatypeProperty ;
+    rdfs:label "normalized discounted cumulative gain at k" ;
+    rdfs:domain skills:EvaluationRun ;
+    rdfs:range xsd:decimal .
+
+skills:graphLiftRecallAtK a owl:DatatypeProperty ;
+    rdfs:label "graph lift recall at k" ;
+    rdfs:domain skills:EvaluationRun ;
+    rdfs:range xsd:decimal .
+
+skills:p95LatencyMs a owl:DatatypeProperty ;
+    rdfs:label "p95 latency milliseconds" ;
+    rdfs:domain skills:EvaluationRun ;
+    rdfs:range xsd:decimal .
+
+skills:citationCoverage a owl:DatatypeProperty ;
+    rdfs:label "citation coverage" ;
+    rdfs:domain skills:EvaluationRun ;
+    rdfs:range xsd:decimal .
+
+skills:exclusionAccuracy a owl:DatatypeProperty ;
+    rdfs:label "exclusion accuracy" ;
+    rdfs:domain skills:EvaluationRun ;
+    rdfs:range xsd:decimal .
+
+skills:tokenCostPerSelection a owl:DatatypeProperty ;
+    rdfs:label "token cost per selection" ;
+    rdfs:domain skills:EvaluationRun ;
+    rdfs:range xsd:decimal .
+
 skills:source a owl:DatatypeProperty ;
     rdfs:label "legacy source note" ;
     rdfs:comment "Legacy projection-only source note. Canonical provenance should use prov:wasDerivedFrom." ;
@@ -431,6 +520,38 @@ skills:hasSelectionDecision a owl:ObjectProperty ;
     rdfs:domain skills:SkillSelectionRun ;
     rdfs:range skills:SkillSelectionDecision .
 
+skills:hasEvaluationTask a owl:ObjectProperty ;
+    rdfs:domain skills:EvaluationDataset ;
+    rdfs:range skills:EvaluationTask .
+
+skills:evaluatedDataset a owl:ObjectProperty ;
+    rdfs:domain skills:EvaluationRun ;
+    rdfs:range skills:EvaluationDataset .
+
+skills:expectsSkillVersion a owl:ObjectProperty ;
+    rdfs:domain skills:EvaluationTask ;
+    rdfs:range skills:ExpectedSkillVersion .
+
+skills:expectedSkillVersion a owl:ObjectProperty ;
+    rdfs:domain skills:ExpectedSkillVersion ;
+    rdfs:range skills:SkillVersion .
+
+skills:observedSkillVersion a owl:ObjectProperty ;
+    rdfs:domain skills:ObservedSelection ;
+    rdfs:range skills:SkillVersion .
+
+skills:evaluatedTask a owl:ObjectProperty ;
+    rdfs:domain skills:EvaluationRun ;
+    rdfs:range skills:EvaluationTask .
+
+skills:recordedSelection a owl:ObjectProperty ;
+    rdfs:domain skills:EvaluationRun ;
+    rdfs:range skills:ObservedSelection .
+
+skills:hasFailureMode a owl:ObjectProperty ;
+    rdfs:domain skills:ObservedSelection ;
+    rdfs:range skills:FailureMode .
+
 skills:candidateSkillVersion a owl:ObjectProperty ;
     rdfs:domain skills:SelectionCandidate ;
     rdfs:range skills:SkillVersion .
@@ -466,6 +587,14 @@ skills:supportedBy a owl:ObjectProperty ;
 skills:usesMappingRule a owl:ObjectProperty ;
     rdfs:domain skills:SemanticAssertion ;
     rdfs:range skills:MappingRule .
+
+skills:dependencySourceVersion a owl:ObjectProperty ;
+    rdfs:domain skills:SkillDependencyAssertion ;
+    rdfs:range skills:SkillVersion .
+
+skills:dependencyTargetVersion a owl:ObjectProperty ;
+    rdfs:domain skills:SkillDependencyAssertion ;
+    rdfs:range skills:SkillVersion .
 
 skills:supportsTaskShape a owl:ObjectProperty ;
     rdfs:domain skills:SkillVersion ;

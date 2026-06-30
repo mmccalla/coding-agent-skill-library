@@ -11,7 +11,8 @@ It separates:
 3. semantic assertions over controlled vocabularies;
 4. retrieval projections used by downstream search systems;
 5. runtime skill-selection decisions;
-6. answer-time citations.
+6. answer-time citations;
+7. evaluation-time benchmark, regression and governance records.
 
 The ontology is implementation-aware but not runtime-specific. Neo4j labels, indexes, vector settings and MCP tool contracts are downstream projections, not the canonical semantic model.
 
@@ -31,6 +32,7 @@ The ontology is implementation-aware but not runtime-specific. Neo4j labels, ind
 - Which section, checklist item, alias or reference document supports a retrieved recommendation?
 - Which capability, workflow stage, control theme or knowledge domain is evidenced by the current skill version?
 - Which citations support an answer returned from the graph?
+- Which benchmark task, observed selection and failure mode explain a retrieval regression?
 - Which validation rules apply to canonical graph data and which apply only to derived retrieval projections?
 
 ## Canonical Layers
@@ -74,6 +76,7 @@ Every `EvidenceAnchor` must carry precise source co-ordinates sufficient for dev
 - `KnowledgeDomain`: a governed subject-matter concept.
 - `SemanticAssertion`: a provenance-bearing promoted semantic statement.
 - `BridgeAssertion`: a qualified semantic assertion linking a skill version to a bridge concept with evidence and confidence.
+- `SkillDependencyAssertion`: a qualified semantic assertion linking one skill version to another with evidence and dependency type.
 - `InvocationCondition`: a governed exclusion or applicability condition used to improve selection precision.
 - `Tool`: a governed tool or execution dependency required for a skill to be used safely.
 - `AgentRuntime`: a governed runtime profile such as Codex, Claude Code, Cursor, Gemini or MCP-hosted execution.
@@ -93,13 +96,25 @@ Every `EvidenceAnchor` must carry precise source co-ordinates sufficient for dev
 
 This runtime layer is operational rather than canonical source truth, but it is required for auditable autonomous selection.
 
+### 6. Evaluation and governance layer
+
+- `EvaluationDataset`: a versioned benchmark task set.
+- `EvaluationTask`: a representative benchmark task.
+- `ExpectedSkillVersion`: a ground-truth expected skill version for a benchmark task.
+- `ObservedSelection`: the skill version actually returned by the selector.
+- `EvaluationRun`: a reproducible execution of a benchmark task or dataset.
+- `FailureMode`: a governed failure category such as missed skill, wrong skill, stale skill or over-selection.
+
+This layer links ontology quality, retrieval quality and release governance to explicit benchmark evidence rather than anecdotal examples.
+
 ## Controlled Vocabulary Pattern
 
-`SkillCategory`, `TaskShape`, `WorkflowStage`, `Capability`, `ControlTheme` and `KnowledgeDomain` are not free-text tags. Their instances are governed concepts and should be managed as `skos:Concept` members of explicit concept schemes.
+`SkillCategory`, `TaskShape`, `WorkflowStage`, `Capability`, `ControlTheme`, `KnowledgeDomain` and `FailureMode` are not free-text tags. Their instances are governed concepts and should be managed as `skos:Concept` members of explicit concept schemes.
 
 This supports:
 
 - canonical labels and aliases;
+- controlled hidden labels for common abbreviations or typo-tolerant variants where justified;
 - narrower or broader relationships where justified;
 - mapping and deprecation governance;
 - cleaner retrieval and explainable routing.
@@ -112,6 +127,7 @@ Each governed concept subtype must validate against its correct concept scheme:
 - `Capability` -> `CapabilityScheme`
 - `ControlTheme` -> `ControlThemeScheme`
 - `KnowledgeDomain` -> `KnowledgeDomainScheme`
+- `FailureMode` -> `FailureModeScheme`
 
 ## Core Relationships
 
@@ -140,6 +156,8 @@ Each governed concept subtype must validate against its correct concept scheme:
 - `bridgeTarget`: connects a bridge assertion to the governed bridge concept it asserts.
 - `supportedBy`: connects a semantic assertion to one or more evidence anchors.
 - `usesMappingRule`: connects a semantic assertion to the mapping rule that promoted it when applicable.
+- `dependencySourceVersion`: connects a version-aware dependency assertion to the source skill version.
+- `dependencyTargetVersion`: connects a version-aware dependency assertion to the target skill version.
 
 ### Convenience semantic predicates
 
@@ -179,11 +197,24 @@ Use explicit predicates such as:
 
 Avoid vague predicates such as `relatedTo`, `has`, `linksTo` or `associatedWith`.
 
+### Evaluation and governance semantics
+
+- `hasEvaluationTask`: connects an evaluation dataset to its benchmark tasks.
+- `evaluatedDataset`: connects an evaluation run to the dataset it executed.
+- `expectsSkillVersion`: connects an evaluation task to a ground-truth expectation record.
+- `expectedSkillVersion`: connects an expectation record to the expected skill version.
+- `observedSkillVersion`: connects an observed selection record to the retrieved skill version.
+- `evaluatedTask`: connects an evaluation run to the evaluated task.
+- `recordedSelection`: connects an evaluation run to its observed selection record.
+- `hasFailureMode`: connects an observed selection to an optional governed failure mode.
+
 ## Canonical Property Policy
 
 - Use stable IRIs and identifiers.
 - Use explicit version identifiers for skill packs and skill versions.
-- Use `skos:prefLabel` and `skos:altLabel` for governed concept labels and aliases.
+- Use `skos:prefLabel`, `skos:altLabel` and selectively `skos:hiddenLabel` for governed concept labels and aliases.
+- Use `owl:deprecated` together with `dcterms:isReplacedBy` when evolving governed concepts.
+- Use `skos:broader` and `skos:narrower` only where same-scheme expansion is intentional and bounded.
 - Use `prov:wasDerivedFrom`, `prov:wasGeneratedBy`, `prov:startedAtTime`, `prov:endedAtTime` and version identifiers for provenance instead of relying on string-only source notes.
 - Use typed properties for structural and evidence identities rather than overloading one generic property across unrelated classes.
 - Keep runtime selection traces separate from canonical source semantics, but link them back to `SkillVersion` and `EvidenceAnchor`.
@@ -207,6 +238,11 @@ Legacy string fields such as `source`, `rule_id`, `source_scope` and `source_ref
 | `SkillSelectionRequest` | `SkillSelectionRequest` | selection-run id plus request hash |
 | `SelectionCandidate` | `SelectionCandidate` | selection-run id plus skill-version id |
 | `SkillSelectionDecision` | `SkillSelectionDecision` | selection-run id plus ordinal |
+| `EvaluationDataset` | `EvaluationDataset` | benchmark dataset id plus version |
+| `EvaluationTask` | `EvaluationTask` | dataset id plus task ordinal or stable task id |
+| `ExpectedSkillVersion` | `ExpectedSkillVersion` | task id plus expected skill-version id |
+| `ObservedSelection` | `ObservedSelection` | evaluation-run id plus ordinal |
+| `EvaluationRun` | `EvaluationRun` | stable evaluation run id |
 | `Citation` | `Citation` | answer id plus ordinal |
 | `MappingRule` | `MappingRule` | stable rule id |
 | `ValidationRule` | `ValidationRule` | stable rule id |
@@ -216,7 +252,9 @@ Legacy string fields such as `source`, `rule_id`, `source_scope` and `source_ref
 | `Capability` | `Capability` | governed concept slug |
 | `ControlTheme` | `ControlTheme` | governed concept slug |
 | `KnowledgeDomain` | `KnowledgeDomain` | governed concept slug |
+| `FailureMode` | `FailureMode` | governed concept slug |
 | `BridgeAssertion` | `BridgeAssertion` | skill-version id plus target concept plus evidence hash |
+| `SkillDependencyAssertion` | `SkillDependencyAssertion` | source skill-version id plus target skill-version id plus dependency type |
 
 ## KRAG-Specific Rules
 
@@ -226,6 +264,7 @@ Legacy string fields such as `source`, `rule_id`, `source_scope` and `source_ref
 - A graph answer without evidence anchors is incomplete.
 - Pack versioning and skill versioning must be first-class so ingestion, rollback and evaluation remain auditable.
 - Selection traces must record the chosen skill version, rejected near-matches, ranking score, rationale and supporting evidence.
+- Evaluation runs must record the benchmark task, expected skill version, observed selection, failure mode where applicable, and measured quality metrics.
 
 ## Open Decisions
 

@@ -150,8 +150,8 @@ class SkillsGraphExtractorTests(unittest.TestCase):
             self.assertNotIn("skill-operation", skill["task_shapes"])
             self.assertNotIn("skill-use", skill["workflow_stages"])
             self.assertNotIn("skill-governance", skill["control_themes"])
-            self.assertEqual([], skill["control_themes"])
-            self.assertEqual([], skill["knowledge_domains"])
+            self.assertEqual(skill["control_themes"], skill["knowledge_domains"])
+            self.assertTrue(skill["control_themes"])
 
         for field in ("task_shapes", "workflow_stages", "control_themes"):
             counts = Counter(value for skill in records["skills"] for value in skill[field])

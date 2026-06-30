@@ -48,7 +48,35 @@ Implemented now in the ontology baseline:
   - `Capability`
   - `ControlTheme`
   - `KnowledgeDomain`
+- vocabulary lifecycle governance for governed concepts:
+  - `skos:altLabel`
+  - `skos:hiddenLabel`
+  - `owl:deprecated`
+  - `dcterms:isReplacedBy`
+  - bounded `skos:broader` and `skos:narrower`
 - unique `skos:prefLabel` within scheme
+- version-aware dependency semantics:
+  - `SkillDependencyAssertion`
+  - `dependencySourceVersion`
+  - `dependencyTargetVersion`
+  - `dependencyType`
+- evaluation ontology artefacts:
+  - `EvaluationDataset`
+  - `EvaluationTask`
+  - `ExpectedSkillVersion`
+  - `ObservedSelection`
+  - `EvaluationRun`
+  - `FailureMode`
+- evaluation metric properties:
+  - `precisionAt1`
+  - `recallAtK`
+  - `meanReciprocalRank`
+  - `ndcgAtK`
+  - `graphLiftRecallAtK`
+  - `p95LatencyMs`
+  - `citationCoverage`
+  - `exclusionAccuracy`
+  - `tokenCostPerSelection`
 
 Implemented now does not mean runtime-complete. It means the ontology contract now includes those semantics and validates them structurally.
 
@@ -56,17 +84,17 @@ Implemented now does not mean runtime-complete. It means the ontology contract n
 
 | Recommendation | Status | Target phase | Completion criterion |
 | --- | --- | --- | --- |
-| Issue 1: explicit selection-decision model | Partially implemented | Phase 4 | Runtime produces persisted or inspectable selection runs, candidates, decisions, scores, rationales and supporting evidence. |
+| Issue 1: explicit selection-decision model | Implemented in ontology and runtime | Phase 4 complete | Runtime produces inspectable selection runs, candidates, decisions, scores, rationales and supporting evidence. |
 | Issue 2: precise EvidenceAnchor source locations | Implemented in ontology | Phase 2 completion gate | Ingestion emits anchors with path, heading path and line range for all retrieval-relevant fragments. |
-| Issue 3: direct semantic routing edges must be provably derived | Implemented in SHACL | Phase 3 completion gate | Retrieval projections or loaded graph data pass derivation-backed SHACL validation. |
-| Issue 4: stricter scheme validation | Partially implemented | Phase 1 | Add governed `skos:altLabel`, `skos:hiddenLabel`, deprecation or replacement policy, and controlled broader or narrower usage. |
-| Issue 5: negative selection semantics | Implemented in ontology | Phase 4 | Runtime filters actively use exclusion, compatibility, approval, deprecation and supersession semantics. |
-| Issue 6: RetrievalUnit ranking metadata | Not implemented | Phase 3 | Retrieval projection model includes ranking metadata and reranking inputs. |
-| Issue 7: version-aware dependencies | Not implemented | Phase 1 | Add evidence-backed version-aware dependency assertions, supporting evidence links, and dependency validation rules. |
-| Issue 8: split SHACL profiles | Not implemented | Phase 2 | Canonical-core, retrieval-projection and runtime-selection SHACL profiles exist and are runnable separately. |
-| Issue 9: evaluation artefacts | Not implemented | Phase 6 | Evaluation ontology slice, benchmark artefacts and metrics tracking are present and exercised. |
-| Minimal target architecture | Planned | Phase 7 | End-to-end slice exists from skill-pack ingestion through evidence-backed selection and evaluation logging. |
-| Acceptance criteria set | Planned | Phase 7 | All acceptance criteria are measured explicitly and reported at cutover. |
+| Issue 3: direct semantic routing edges must be provably derived | Implemented in SHACL and split profiles | Phase 3 complete | Retrieval projections or loaded graph data pass derivation-backed SHACL validation. |
+| Issue 4: stricter scheme validation | Implemented in ontology and SHACL | Closed before Phase 7 | Governed concepts support `skos:altLabel`, `skos:hiddenLabel`, deprecation or replacement policy, and controlled broader or narrower usage. |
+| Issue 5: negative selection semantics | Implemented in ontology and runtime filters | Phase 4 complete | Runtime filters actively use exclusion, compatibility, approval, deprecation and supersession semantics. |
+| Issue 6: RetrievalUnit ranking metadata | Implemented in ontology and retrieval-profile SHACL | Phase 3 complete | Retrieval projection model includes ranking metadata and reranking inputs. |
+| Issue 7: version-aware dependencies | Implemented in ontology and SHACL | Closed before Phase 7 | Evidence-backed version-aware dependency assertions, supporting evidence links, and dependency validation rules are present. |
+| Issue 8: split SHACL profiles | Implemented | Phase 2 complete | Canonical-core, retrieval-projection and runtime-selection SHACL profiles exist and are runnable separately. |
+| Issue 9: evaluation artefacts | Implemented in ontology, SHACL and evaluation runtime | Phase 6 complete | Evaluation ontology slice, benchmark artefacts and metrics tracking are present and exercised. |
+| Minimal target architecture | Implemented and acceptance-tested | Phase 7 complete | End-to-end slice exists from skill-pack ingestion through evidence-backed selection and evaluation logging. |
+| Acceptance criteria set | Implemented and acceptance-tested | Phase 7 complete | All acceptance criteria are measured explicitly and reported at cutover. |
 
 ## Phase plan
 
@@ -256,6 +284,11 @@ Required acceptance evidence:
 - token cost versus manual loading is measured
 - citation coverage is measured on the benchmark suite
 - exclusion accuracy is measured on the benchmark suite
+
+Validation:
+
+- `.venv/bin/python scripts/krag_cutover_acceptance.py --dataset tests/fixtures/retrieval_evaluation/smoke_queries.json --limit 3 --token-budget 240`
+- targeted cutover acceptance tests
 
 ## Validation policy
 

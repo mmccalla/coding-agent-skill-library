@@ -15,7 +15,6 @@ if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.extract_skills_graph import extract_skills_graph_records
-from scripts.map_skills_bridges import apply_semantic_bridge_mappings
 
 BRIDGE_FIELDS = (
     "task_shapes",
@@ -143,8 +142,7 @@ def _slug(value: str) -> str:
 
 def build_records_from_skills(skills_root: Path) -> dict[str, object]:
     """Build deterministic graph records from repository-local skill files."""
-    records = extract_skills_graph_records(skills_root)
-    return apply_semantic_bridge_mappings(records)
+    return extract_skills_graph_records(skills_root)
 
 
 def validate_graph_records(records: Mapping[str, object]) -> GraphValidationResult:
