@@ -32,6 +32,7 @@ if __package__ in {None, ""}:
 from scripts import (
     check_neo4j_readiness,
     load_skills_neo4j,
+    skills_query_graph,
     skills_config,
     skills_contracts,
     skills_ollama,
@@ -421,6 +422,14 @@ def _query_evidence_for_route(
     routing = skills_server.call_tool("route_skill_query", {"query": request.query})
     route = routing.get("route")
     skill_id = routing.get("resolved_skill_id")
+    graph_query_plan = skills_query_graph.plan_graph_query(
+        skills_server.plan,
+        request.query,
+        route=_safe_log_value(route),
+        resolved_skill_id=_safe_log_value(skill_id),
+        limit=request.limit,
+    )
+    graph_query_result = skills_query_graph.execute_planned_query(skills_server.plan, graph_query_plan)
     if route == "direct_lookup" and isinstance(skill_id, str):
         skill = skills_server.call_tool(
             "get_skill",
@@ -436,6 +445,8 @@ def _query_evidence_for_route(
             "routing": routing,
             "skill": skill,
             "context": context,
+            "graph_query_plan": graph_query_plan,
+            "graph_query_result": graph_query_result,
         }
         _record_route_decision(request_id, evidence)
         return evidence
@@ -449,6 +460,8 @@ def _query_evidence_for_route(
             "route": "context",
             "routing": routing,
             "context": context,
+            "graph_query_plan": graph_query_plan,
+            "graph_query_result": graph_query_result,
         }
         _record_route_decision(request_id, evidence)
         return evidence
@@ -462,6 +475,8 @@ def _query_evidence_for_route(
             "route": "execution_plan",
             "routing": routing,
             "execution_guide": guide,
+            "graph_query_plan": graph_query_plan,
+            "graph_query_result": graph_query_result,
         }
         _record_route_decision(request_id, evidence)
         return evidence
@@ -479,6 +494,8 @@ def _query_evidence_for_route(
         "status": "ok",
         "route": "recommendation",
         "routing": routing,
+        "graph_query_plan": graph_query_plan,
+        "graph_query_result": graph_query_result,
     }
     for key, value in recommendations.items():
         recommendation_evidence[key] = value

@@ -132,13 +132,52 @@ def _evidence_from_payload(payload: Mapping[str, object]) -> str:
     """Format bounded graph evidence by route before sending it to Ollama."""
 
     route = _safe_string(payload.get("route")) or "recommendation"
+    graph_query_result = _mapping(payload.get("graph_query_result"))
+    graph_query_plan = _mapping(payload.get("graph_query_plan"))
     if route == "direct_lookup":
-        return _evidence_from_direct_lookup(payload)
+        return _merge_graph_query_evidence(
+            _evidence_from_direct_lookup(payload), graph_query_plan, graph_query_result
+        )
     if route == "context":
-        return _evidence_from_context(payload)
+        return _merge_graph_query_evidence(
+            _evidence_from_context(payload), graph_query_plan, graph_query_result
+        )
     if route == "execution_plan":
-        return _evidence_from_execution_guide(payload)
-    return _evidence_from_recommendations(payload)
+        return _merge_graph_query_evidence(
+            _evidence_from_execution_guide(payload), graph_query_plan, graph_query_result
+        )
+    return _merge_graph_query_evidence(
+        _evidence_from_recommendations(payload), graph_query_plan, graph_query_result
+    )
+
+
+def _merge_graph_query_evidence(
+    route_evidence: str,
+    graph_query_plan: Mapping[str, object],
+    graph_query_result: Mapping[str, object],
+) -> str:
+    lines = [route_evidence]
+    if graph_query_plan:
+        lines.append(
+            "Graph query plan: "
+            f"intent={_safe_string(graph_query_plan.get('intent'))}; "
+            f"strategy={_safe_string(graph_query_plan.get('strategy'))}; "
+            f"family={_safe_string(graph_query_plan.get('query_family'))}; "
+            f"template={_safe_string(graph_query_plan.get('cypher_template_id'))}"
+        )
+    if graph_query_result.get("status") == "ok":
+        records = graph_query_result.get("records")
+        if isinstance(records, list) and records:
+            lines.append(f"Graph query records={records[:5]}")
+        citations = graph_query_result.get("citations")
+        if isinstance(citations, list) and citations:
+            lines.append(f"Graph query citations={citations[:5]}")
+        path_summaries = graph_query_result.get("path_summaries")
+        if isinstance(path_summaries, list) and path_summaries:
+            lines.append(f"Graph query paths={path_summaries[:5]}")
+    elif graph_query_result.get("status") == "abstain":
+        lines.append(f"Graph query abstained: {_safe_string(graph_query_result.get('reason'))}")
+    return "\n".join(line for line in lines if line)
 
 
 def _evidence_from_recommendations(payload: Mapping[str, object]) -> str:

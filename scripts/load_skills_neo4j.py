@@ -472,6 +472,9 @@ def build_load_plan(records: Mapping[str, object]) -> LoadPlan:
     bridges = _records_list(records, "bridges")
     references = _records_list(records, "references")
     source_relationships = _records_list(records, "relationships")
+    skill_pack = (
+        records.get("skill_pack") if isinstance(records.get("skill_pack"), dict) else None
+    )
     skills_by_id = {_string(skill, "id"): skill for skill in skills}
     nodes: dict[tuple[str, str], GraphNode] = {}
     relationships: dict[tuple[str, str, str, str, str], GraphRelationship] = {}
@@ -497,6 +500,25 @@ def build_load_plan(records: Mapping[str, object]) -> LoadPlan:
         add_relationship(
             _relationship("BELONGS_TO_CATEGORY", "Skill", skill_id, "SkillCategory", category)
         )
+
+    if isinstance(skill_pack, Mapping):
+        skill_pack_id = _string(skill_pack, "id")
+        if skill_pack_id:
+            add_node(
+                _node(
+                    "SkillPack",
+                    skill_pack_id,
+                    {
+                        **dict(skill_pack),
+                        "versionIdentifier": _string(skill_pack, "version"),
+                    },
+                )
+            )
+            for skill in skills:
+                if _string(skill, "skill_pack_id") == skill_pack_id:
+                    add_relationship(
+                        _relationship("CONTAINS_SKILL", "SkillPack", skill_pack_id, "Skill", _string(skill, "id"))
+                    )
 
     for section in sections:
         section_id = _string(section, "id")

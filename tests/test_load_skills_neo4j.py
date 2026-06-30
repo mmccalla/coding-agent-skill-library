@@ -22,6 +22,16 @@ def load_module() -> object:
 def fixture_records() -> dict[str, object]:
     records: dict[str, object] = {
         "root_skill": "apply-laws-of-ai",
+        "skill_pack": {
+            "id": "coding-agent-skill-library",
+            "name": "Coding Agent Skill Library",
+            "version": "2026-06-29",
+            "owner": "tests",
+            "source_root": "skills",
+            "contentHash": "pack-hash",
+            "categories": ["agent-control-patterns", "engineering-practices"],
+            "skillCount": 2,
+        },
         "skills": [
             {
                 "id": "skill:apply-laws-of-ai",
@@ -36,6 +46,8 @@ def fixture_records() -> dict[str, object]:
                 "control_themes": ["safety"],
                 "knowledge_domains": ["agent-control"],
                 "related_skill_ids": ["skill:tdd-practice"],
+                "skill_pack_id": "coding-agent-skill-library",
+                "skill_pack_version": "2026-06-29",
                 "contentHash": "abc",
                 "wordCount": 10,
                 "lineCount": 4,
@@ -54,6 +66,8 @@ def fixture_records() -> dict[str, object]:
                 "control_themes": ["quality"],
                 "knowledge_domains": ["engineering-practices"],
                 "related_skill_ids": ["skill:apply-laws-of-ai"],
+                "skill_pack_id": "coding-agent-skill-library",
+                "skill_pack_version": "2026-06-29",
                 "contentHash": "def",
                 "wordCount": 12,
                 "lineCount": 5,
@@ -149,6 +163,7 @@ class LoadSkillsNeo4jTests(unittest.TestCase):
         self.assertIn("RetrievalUnit", labels)
         self.assertNotIn("SkillChunk", labels)
         self.assertIn("BridgeAssertion", labels)
+        self.assertIn("SkillPack", labels)
         self.assertIn("SkillCategory", labels)
         self.assertIn("TaskShape", labels)
         self.assertIn("ReferenceDocument", labels)
@@ -156,6 +171,7 @@ class LoadSkillsNeo4jTests(unittest.TestCase):
         self.assertIn("HAS_RETRIEVAL_UNIT", relationship_types)
         self.assertNotIn("HAS_CHUNK", relationship_types)
         self.assertIn("ASSERTS_BRIDGE", relationship_types)
+        self.assertIn("CONTAINS_SKILL", relationship_types)
         self.assertIn("RELATED_TO", relationship_types)
         retrieval_unit = next(node for node in plan.nodes if node.label == "RetrievalUnit")
         self.assertTrue(retrieval_unit.id.startswith("retrieval:skill:apply-laws-of-ai:section:0:"))

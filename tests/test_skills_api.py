@@ -187,6 +187,8 @@ Use when validating uploads.
         self.assertEqual("test-model", payload["model"])
         self.assertIn("knowledge-graph-rag", response.text)
         self.assertNotIn("secret", response.text.lower())
+        self.assertIn("graph_query_plan", payload["evidence"])
+        self.assertIn("graph_query_result", payload["evidence"])
 
     def test_query_endpoint_passes_user_selected_model_to_provider(self) -> None:
         async def fake_query_provider(
@@ -250,6 +252,8 @@ Use when validating uploads.
         self.assertIn("retrieval_units", evidence["skill"])
         self.assertNotIn("chunks", evidence["skill"])
         self.assertNotIn("recommendations", evidence)
+        self.assertEqual("exact_skill_lookup", evidence["graph_query_plan"]["query_family"])
+        self.assertEqual("ok", evidence["graph_query_result"]["status"])
 
     def test_route_resolve_and_execution_guide_endpoints_are_agent_readable(self) -> None:
         client = TestClient(create_app(SkillsMcpServer.for_test_fixture()))

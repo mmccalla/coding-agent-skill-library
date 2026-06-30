@@ -24,6 +24,7 @@ from scripts import (
     load_skills_neo4j,
     retrieve_skills_hybrid,
     skills_config,
+    skills_query_graph,
     skills_router,
 )
 
@@ -331,6 +332,12 @@ class SkillsMcpServer:
                 "GET /mcp/technical-info",
             ],
         }
+
+    @property
+    def plan(self) -> load_skills_neo4j.LoadPlan:
+        """Expose the bounded in-memory graph snapshot for internal API planning."""
+
+        return self._plan
 
     def handle_json_rpc(self, request: Mapping[str, object]) -> dict[str, object] | None:
         """Handle the small MCP JSON-RPC surface used by stdio clients."""
