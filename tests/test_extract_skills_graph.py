@@ -81,6 +81,9 @@ class SkillsGraphExtractorTests(unittest.TestCase):
         self.assertIn("Verification", headings)
         self.assertTrue(all(section["contentHash"] for section in sections))
         self.assertTrue(all(section["name"] for section in sections))
+        self.assertTrue(all(section["heading_path"] for section in sections))
+        self.assertTrue(all(section["line_start"] >= 1 for section in sections))
+        self.assertTrue(all(section["line_end"] >= section["line_start"] for section in sections))
         self.assertTrue(
             all(section["id"].startswith("skill:apply-laws-of-ai:section:") for section in sections)
         )
@@ -115,8 +118,27 @@ class SkillsGraphExtractorTests(unittest.TestCase):
     def test_section_ids_include_order_to_avoid_duplicate_heading_collisions(self) -> None:
         module = load_extractor_module()
         with tempfile.TemporaryDirectory() as tmp:
-            skill_path = Path(tmp) / "skills" / "agentic-patterns" / "duplicate-headings"
+            skill_path = Path(tmp) / "skills" / "duplicate-headings"
             skill_path.mkdir(parents=True)
+            (Path(tmp) / "skills" / "PACK_METADATA.json").write_text(
+                "{\n"
+                '  "schema_version": "skill-pack-metadata/v1",\n'
+                '  "skill_pack_id": "test-pack",\n'
+                '  "display_name": "Test Pack",\n'
+                '  "version": "1.0.0",\n'
+                '  "owner": "test",\n'
+                '  "source_root": "skills",\n'
+                '  "categories": [\n'
+                "    {\n"
+                '      "id": "agentic-patterns",\n'
+                '      "title": "Agentic Patterns",\n'
+                '      "description": "Test category.",\n'
+                '      "skills": ["duplicate-headings"]\n'
+                "    }\n"
+                "  ]\n"
+                "}\n",
+                encoding="utf-8",
+            )
             (skill_path / "SKILL.md").write_text(
                 "\n".join(
                     (

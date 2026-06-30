@@ -457,7 +457,7 @@ class ValidateSkillsTests(unittest.TestCase):
                 "- [ ] Report gates.\n" + ("baselineword " * 210),
                 encoding="utf-8",
             )
-            skill_dir = Path(tmp) / "skills" / "agentic-patterns" / "test-skill"
+            skill_dir = Path(tmp) / "skills" / "test-skill"
             skill_dir.mkdir(parents=True)
             (skill_dir / "SKILL.md").write_text(
                 "---\n"
@@ -572,7 +572,7 @@ class ValidateSkillsTests(unittest.TestCase):
                 encoding="utf-8",
             )
 
-            thin_dir = Path(tmp) / "skills" / "agentic-patterns" / "thin-example"
+            thin_dir = Path(tmp) / "skills" / "thin-example"
             thin_dir.mkdir(parents=True)
             (thin_dir / "SKILL.md").write_text(
                 "---\n"

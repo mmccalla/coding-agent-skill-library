@@ -77,7 +77,7 @@ Do not cut over to KRAG v2 unless all are true:
 - every material answer claim is citation-backed
 - forbidden Cypher patterns are rejected
 - ingestion remains idempotent across reloads
-- near-neighbour disambiguation improves materially over the legacy path
+- near-neighbour disambiguation improves materially over the pre-cutover baseline
 - no category-derived synthetic bridge is required for core retrieval success
 
 ## Required observability per query

@@ -61,7 +61,10 @@ class SkillsOllamaTests(unittest.TestCase):
                         "retrieval_unit_id": "retrieval:skill:knowledge-graph-rag:section:0:objective",
                         "text": "Use KG-enabled RAG for graph-grounded retrieval.",
                         "source_path": "skills/knowledge-graph-rag/SKILL.md",
+                        "heading_path": "Objective",
                         "section_id": "skill:knowledge-graph-rag:section:0-objective",
+                        "line_start": 12,
+                        "line_end": 12,
                     }
                 ],
             },

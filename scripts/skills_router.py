@@ -278,6 +278,9 @@ def _section_evidence(
                     "retrieval_unit_id": unit.id,
                     "section_id": section_id,
                     "source_path": _string(unit.properties.get("source_path")),
+                    "heading_path": _string(unit.properties.get("heading_path")),
+                    "line_start": unit.properties.get("line_start", 0),
+                    "line_end": unit.properties.get("line_end", 0),
                 }
             )
     return tuple(evidence)

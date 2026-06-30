@@ -57,12 +57,6 @@ The MCP server exposes only read-only capabilities:
 - `get_skill_context`
 - `get_skill_execution_guide`
 
-The legacy JSON-RPC stdio compatibility mode remains the default:
-
-```bash
-python3 scripts/skills_mcp_server.py
-```
-
 Use the official MCP SDK stdio server for protocol-compatible clients:
 
 ```bash
@@ -87,7 +81,7 @@ The server denies unsupported write or arbitrary Cypher tools. Agent-facing reso
 - use `get_skill_context` for related, prerequisite, complementary or neighbouring skills;
 - use `get_skill_execution_guide` before acting from a skill so the agent has when-to-use, objective, procedure, rules, verification checklist and related-skill evidence.
 
-Before acting, agents must return or retain the selected route, resolved skill id where applicable, source paths, `source_section_id` or other evidence paths, and the verification checklist for execution-plan routes. The contract examples cover direct lookup, recommendation, context expansion and execution-plan requests.
+Before acting, agents must return or retain the selected route, resolved skill id where applicable, source paths, heading paths, line ranges, `source_section_id` or other evidence paths, and the verification checklist for execution-plan routes. The contract examples cover direct lookup, recommendation, context expansion and execution-plan requests.
 
 ## FastAPI Usage
 

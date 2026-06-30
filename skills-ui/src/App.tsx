@@ -725,6 +725,16 @@ function buildEvidenceEntries(evidence: GraphQueryResponse["evidence"]): Evidenc
       body: compactLines([
         recommendation.rationale,
         ...recommendation.source_paths.slice(0, 2).map((path) => `Source: ${path}`),
+        ...(recommendation.evidence_anchors ?? [])
+          .slice(0, 1)
+          .flatMap((anchor) =>
+            compactLines([
+              anchor.heading_path ? `Heading path: ${anchor.heading_path}` : "",
+              anchor.line_start && anchor.line_end
+                ? `Lines: ${anchor.line_start}-${anchor.line_end}`
+                : "",
+            ]),
+          ),
         ...recommendation.evidence_snippets.slice(0, 1).map((snippet) => `Snippet: ${snippet}`),
         ...(recommendation.evidence_paths ?? [])
           .slice(0, 1)
@@ -744,6 +754,8 @@ function buildEvidenceEntries(evidence: GraphQueryResponse["evidence"]): Evidenc
             compactLines([
               unit.section_id ? `Section: ${unit.section_id}` : "",
               unit.source_path ? `Source: ${unit.source_path}` : "",
+              unit.heading_path ? `Heading path: ${unit.heading_path}` : "",
+              unit.line_start && unit.line_end ? `Lines: ${unit.line_start}-${unit.line_end}` : "",
               unit.text ? `Snippet: ${unit.text}` : "",
             ]),
           ),
