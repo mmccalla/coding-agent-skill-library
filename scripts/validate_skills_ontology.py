@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import os
 import sys
+from argparse import ArgumentParser
 from pathlib import Path
 from typing import NamedTuple
 
@@ -12,8 +13,14 @@ from rdflib import Graph
 from rdflib.util import guess_format
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+ONTOLOGY_DIR = REPO_ROOT / "skills_docs" / "ontology"
 DEFAULT_DATA_GRAPH = REPO_ROOT / "skills_docs" / "ontology" / "skills.ttl"
-DEFAULT_SHAPES_GRAPH = REPO_ROOT / "skills_docs" / "ontology" / "skills.shacl.ttl"
+DEFAULT_SHAPES_GRAPH = ONTOLOGY_DIR / "skills.shacl.ttl"
+PROFILE_SHAPES_GRAPHS = {
+    "canonical-core": ONTOLOGY_DIR / "canonical-core.shacl.ttl",
+    "retrieval-projection": ONTOLOGY_DIR / "retrieval-projection.shacl.ttl",
+    "runtime-selection": ONTOLOGY_DIR / "runtime-selection.shacl.ttl",
+}
 
 
 class ValidationResult(NamedTuple):
@@ -51,12 +58,10 @@ def _pyshacl_validate():
     return validate_fn
 
 
-def validate_skills_ontology(
-    data_graph_path: Path = DEFAULT_DATA_GRAPH,
-    shapes_graph_path: Path = DEFAULT_SHAPES_GRAPH,
+def _validate_graphs(
+    data_graph_path: Path,
+    shapes_graph_path: Path,
 ) -> ValidationResult:
-    """Validate ontology data and shapes graph conformance with pySHACL."""
-
     data_graph = _load_graph(data_graph_path)
     shapes_graph = _load_graph(shapes_graph_path)
     validate_fn = _pyshacl_validate()
@@ -93,16 +98,85 @@ def validate_skills_ontology(
     return ValidationResult(False, report)
 
 
+def validate_ontology_profile(
+    profile: str,
+    data_graph_path: Path = DEFAULT_DATA_GRAPH,
+) -> ValidationResult:
+    """Validate one named SHACL profile against the ontology data graph."""
+
+    if profile == "combined":
+        return _validate_graphs(data_graph_path, DEFAULT_SHAPES_GRAPH)
+    try:
+        shapes_graph_path = PROFILE_SHAPES_GRAPHS[profile]
+    except KeyError as exc:
+        raise ValueError(
+            f"Unknown ontology validation profile '{profile}'. "
+            f"Expected one of: combined, {', '.join(sorted(PROFILE_SHAPES_GRAPHS))}, all"
+        ) from exc
+    return _validate_graphs(data_graph_path, shapes_graph_path)
+
+
+def validate_skills_ontology(
+    data_graph_path: Path = DEFAULT_DATA_GRAPH,
+    shapes_graph_path: Path = DEFAULT_SHAPES_GRAPH,
+    *,
+    profile: str | None = None,
+) -> ValidationResult:
+    """Validate ontology data and shapes graph conformance with pySHACL."""
+
+    selected_profile = profile or "combined"
+    if shapes_graph_path != DEFAULT_SHAPES_GRAPH and profile is None:
+        return _validate_graphs(data_graph_path, shapes_graph_path)
+    if selected_profile == "all":
+        results: list[str] = []
+        all_valid = True
+        for profile_name in ("combined", *PROFILE_SHAPES_GRAPHS):
+            profile_result = validate_ontology_profile(profile_name, data_graph_path)
+            all_valid = all_valid and profile_result.valid
+            results.append(f"[profile: {profile_name}]\n{profile_result.report}")
+        return ValidationResult(all_valid, "\n\n".join(results))
+    return validate_ontology_profile(selected_profile, data_graph_path)
+
+
+def _build_argument_parser() -> ArgumentParser:
+    parser = ArgumentParser(
+        description="Validate the repository ontology and SHACL profiles with pySHACL."
+    )
+    parser.add_argument("data_graph", nargs="?", default=str(DEFAULT_DATA_GRAPH))
+    parser.add_argument("shapes_graph", nargs="?")
+    parser.add_argument(
+        "--profile",
+        choices=("combined", "canonical-core", "retrieval-projection", "runtime-selection", "all"),
+        help="Run the combined shapes graph, one split profile, or all available profiles.",
+    )
+    return parser
+
+
 def main(argv: list[str] | None = None) -> int:
-    args = list(sys.argv[1:] if argv is None else argv)
-    if len(args) > 2:
-        print("Usage: validate_skills_ontology.py [skills.ttl] [skills.shacl.ttl]")
-        return 2
+    parser = _build_argument_parser()
+    args = parser.parse_args(sys.argv[1:] if argv is None else argv)
 
-    data_graph_path = Path(args[0]) if args else DEFAULT_DATA_GRAPH
-    shapes_graph_path = Path(args[1]) if len(args) == 2 else DEFAULT_SHAPES_GRAPH
+    data_graph_path = Path(args.data_graph)
+    shapes_graph_path = Path(args.shapes_graph) if args.shapes_graph else DEFAULT_SHAPES_GRAPH
 
-    missing = [str(path) for path in (data_graph_path, shapes_graph_path) if not path.is_file()]
+    missing = [str(path) for path in (data_graph_path,) if not path.is_file()]
+    if args.shapes_graph:
+        if not shapes_graph_path.is_file():
+            missing.append(str(shapes_graph_path))
+    elif args.profile == "all":
+        missing.extend(
+            str(path)
+            for path in (DEFAULT_SHAPES_GRAPH, *PROFILE_SHAPES_GRAPHS.values())
+            if not path.is_file()
+        )
+    elif args.profile and args.profile != "combined":
+        profile_path = PROFILE_SHAPES_GRAPHS[args.profile]
+        if not profile_path.is_file():
+            missing.append(str(profile_path))
+    elif not DEFAULT_SHAPES_GRAPH.is_file():
+        missing.append(str(DEFAULT_SHAPES_GRAPH))
+
+    missing = sorted(dict.fromkeys(missing))
     if missing:
         print("FAIL")
         for path in missing:
@@ -110,7 +184,11 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     try:
-        result = validate_skills_ontology(data_graph_path, shapes_graph_path)
+        result = validate_skills_ontology(
+            data_graph_path,
+            shapes_graph_path,
+            profile=args.profile,
+        )
     except Exception as exc:  # pragma: no cover - defensive CLI path
         print("FAIL")
         print(f"- ontology validation error: {exc}")

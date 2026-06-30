@@ -12,6 +12,9 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 ONTOLOGY_DIR = REPO_ROOT / "skills_docs" / "ontology"
 ONTOLOGY_VALIDATOR = REPO_ROOT / "scripts" / "validate_skills_ontology.py"
+CANONICAL_CORE_SHAPES = ONTOLOGY_DIR / "canonical-core.shacl.ttl"
+RETRIEVAL_PROJECTION_SHAPES = ONTOLOGY_DIR / "retrieval-projection.shacl.ttl"
+RUNTIME_SELECTION_SHAPES = ONTOLOGY_DIR / "runtime-selection.shacl.ttl"
 
 
 def read(path: Path) -> str:
@@ -219,6 +222,23 @@ class SkillsOntologyTests(unittest.TestCase):
         ):
             self.assertIn(f"sh:path {required_path}", text)
 
+    def test_split_shacl_profiles_exist_with_expected_focus(self) -> None:
+        canonical_text = read(CANONICAL_CORE_SHAPES)
+        retrieval_text = read(RETRIEVAL_PROJECTION_SHAPES)
+        runtime_text = read(RUNTIME_SELECTION_SHAPES)
+
+        self.assertIn("skills:SkillPackShape a sh:NodeShape", canonical_text)
+        self.assertIn("skills:BridgeAssertionShape a sh:NodeShape", canonical_text)
+        self.assertNotIn("skills:SkillSelectionRunShape a sh:NodeShape", canonical_text)
+
+        self.assertIn("skills:RetrievalUnitShape a sh:NodeShape", retrieval_text)
+        self.assertIn("skills:DirectTaskShapeDerivationShape a sh:NodeShape", retrieval_text)
+        self.assertNotIn("skills:SkillPackShape a sh:NodeShape", retrieval_text)
+
+        self.assertIn("skills:SkillSelectionRunShape a sh:NodeShape", runtime_text)
+        self.assertIn("skills:CitationShape a sh:NodeShape", runtime_text)
+        self.assertNotIn("skills:RetrievalUnitShape a sh:NodeShape", runtime_text)
+
     def test_repo_native_ontology_validator_passes(self) -> None:
         result = subprocess.run(
             [sys.executable, str(ONTOLOGY_VALIDATOR)],
@@ -228,6 +248,36 @@ class SkillsOntologyTests(unittest.TestCase):
             check=False,
         )
         self.assertEqual(result.returncode, 0, msg=result.stdout + result.stderr)
+        self.assertIn("SHACL PASS", result.stdout)
+
+    def test_repo_native_ontology_validator_supports_named_profile(self) -> None:
+        result = subprocess.run(
+            [sys.executable, str(ONTOLOGY_VALIDATOR), "--profile", "canonical-core"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, msg=result.stdout + result.stderr)
+        self.assertIn("canonical-core.shacl.ttl", result.stdout)
+        self.assertIn("SHACL PASS", result.stdout)
+
+    def test_repo_native_ontology_validator_supports_all_profiles(self) -> None:
+        result = subprocess.run(
+            [sys.executable, str(ONTOLOGY_VALIDATOR), "--profile", "all"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, msg=result.stdout + result.stderr)
+        for profile in (
+            "combined",
+            "canonical-core",
+            "retrieval-projection",
+            "runtime-selection",
+        ):
+            self.assertIn(f"[profile: {profile}]", result.stdout)
         self.assertIn("SHACL PASS", result.stdout)
 
     def test_repo_native_ontology_validator_reports_missing_file(self) -> None:

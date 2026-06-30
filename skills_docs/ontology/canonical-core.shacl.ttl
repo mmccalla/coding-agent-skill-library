@@ -1,0 +1,398 @@
+@prefix skills: <urn:coding-agent-skill-library:ontology:skills#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+skills:SkillPackShape a sh:NodeShape ;
+    sh:targetClass skills:SkillPack ;
+    sh:property [
+        sh:path skills:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:versionIdentifier ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:containsSkill ;
+        sh:class skills:Skill ;
+        sh:minCount 1 ;
+    ] .
+
+skills:SkillShape a sh:NodeShape ;
+    sh:targetClass skills:Skill ;
+    sh:property [
+        sh:path skills:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path dcterms:description ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:isBaselineSkill ;
+        sh:datatype xsd:boolean ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:belongsToCategory ;
+        sh:class skills:SkillCategory ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:hasVersion ;
+        sh:class skills:SkillVersion ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:currentVersion ;
+        sh:class skills:SkillVersion ;
+        sh:maxCount 1 ;
+    ] .
+
+skills:SkillVersionShape a sh:NodeShape ;
+    sh:targetClass skills:SkillVersion ;
+    sh:property [
+        sh:path skills:versionIdentifier ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:path ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:contentHash ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path prov:wasGeneratedBy ;
+        sh:class skills:IngestionRun ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:versionOf ;
+        sh:class skills:Skill ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:hasSourceResource ;
+        sh:class skills:SourceResource ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:hasSection ;
+        sh:class skills:SkillSection ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:supportsTaskShape ;
+        sh:class skills:TaskShape ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:enablesCapability ;
+        sh:class skills:Capability ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:operatesInStage ;
+        sh:class skills:WorkflowStage ;
+        sh:minCount 1 ;
+    ] .
+
+skills:SourceResourceShape a sh:NodeShape ;
+    sh:targetClass skills:SourceResource ;
+    sh:property [
+        sh:path skills:path ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:checksum ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+skills:IngestionRunShape a sh:NodeShape ;
+    sh:targetClass skills:IngestionRun ;
+    sh:property [
+        sh:path skills:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:versionIdentifier ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path prov:startedAtTime ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path prov:endedAtTime ;
+        sh:datatype xsd:dateTime ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+skills:SkillSectionShape a sh:NodeShape ;
+    sh:targetClass skills:SkillSection ;
+    sh:property [
+        sh:path skills:heading ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:ordinal ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:contentHash ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path prov:wasDerivedFrom ;
+        sh:class skills:SourceResource ;
+        sh:minCount 1 ;
+    ] .
+
+skills:EvidenceAnchorShape a sh:NodeShape ;
+    sh:targetClass skills:EvidenceAnchor ;
+    sh:property [
+        sh:path skills:sourcePath ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:headingPath ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:lineStart ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:lineEnd ;
+        sh:datatype xsd:integer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:anchorRole ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ("trigger" "constraint" "procedure" "exclusion" "example" "reference") ;
+    ] ;
+    sh:property [
+        sh:path skills:text ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:contentHash ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path prov:wasGeneratedBy ;
+        sh:class skills:IngestionRun ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:derivedFromElement ;
+        sh:class skills:StructuralElement ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path prov:wasDerivedFrom ;
+        sh:class skills:SourceResource ;
+        sh:minCount 1 ;
+    ] ;
+    sh:sparql [
+        sh:message "EvidenceAnchor lineEnd must be greater than or equal to lineStart." ;
+        sh:select """
+            PREFIX skills: <urn:coding-agent-skill-library:ontology:skills#>
+            SELECT $this
+            WHERE {
+              $this skills:lineStart ?lineStart ;
+                    skills:lineEnd ?lineEnd .
+              FILTER (?lineEnd < ?lineStart)
+            }
+        """ ;
+    ] .
+
+skills:BridgeConceptShape a sh:NodeShape ;
+    sh:targetClass skills:SkillCategory, skills:TaskShape, skills:WorkflowStage, skills:Capability, skills:ControlTheme, skills:KnowledgeDomain ;
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skos:inScheme ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:sparql [
+        sh:message "Bridge concepts must have a unique skos:prefLabel within their concept scheme." ;
+        sh:select """
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this
+            WHERE {
+              $this skos:prefLabel ?label ;
+                    skos:inScheme ?scheme .
+              ?other skos:prefLabel ?label ;
+                     skos:inScheme ?scheme .
+              FILTER (?other != $this)
+            }
+        """ ;
+    ] .
+
+skills:SkillCategorySchemeShape a sh:NodeShape ;
+    sh:targetClass skills:SkillCategory ;
+    sh:property [
+        sh:path skos:inScheme ;
+        sh:hasValue skills:SkillCategoryScheme ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+skills:TaskShapeSchemeShape a sh:NodeShape ;
+    sh:targetClass skills:TaskShape ;
+    sh:property [
+        sh:path skos:inScheme ;
+        sh:hasValue skills:TaskShapeScheme ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+skills:WorkflowStageSchemeShape a sh:NodeShape ;
+    sh:targetClass skills:WorkflowStage ;
+    sh:property [
+        sh:path skos:inScheme ;
+        sh:hasValue skills:WorkflowStageScheme ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+skills:CapabilitySchemeShape a sh:NodeShape ;
+    sh:targetClass skills:Capability ;
+    sh:property [
+        sh:path skos:inScheme ;
+        sh:hasValue skills:CapabilityScheme ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+skills:ControlThemeSchemeShape a sh:NodeShape ;
+    sh:targetClass skills:ControlTheme ;
+    sh:property [
+        sh:path skos:inScheme ;
+        sh:hasValue skills:ControlThemeScheme ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+skills:KnowledgeDomainSchemeShape a sh:NodeShape ;
+    sh:targetClass skills:KnowledgeDomain ;
+    sh:property [
+        sh:path skos:inScheme ;
+        sh:hasValue skills:KnowledgeDomainScheme ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+skills:BridgeAssertionShape a sh:NodeShape ;
+    sh:targetClass skills:BridgeAssertion ;
+    sh:property [
+        sh:path skills:assertionFor ;
+        sh:class skills:SkillVersion ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:bridgeTarget ;
+        sh:class skills:BridgeConcept ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:supportedBy ;
+        sh:class skills:EvidenceAnchor ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:confidence ;
+        sh:datatype xsd:decimal ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:minInclusive 0.0 ;
+        sh:maxInclusive 1.0 ;
+    ] ;
+    sh:property [
+        sh:path prov:wasGeneratedBy ;
+        sh:class skills:IngestionRun ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path prov:wasDerivedFrom ;
+        sh:class skills:SourceResource ;
+        sh:minCount 1 ;
+    ] ;
+    sh:or (
+        [
+            sh:property [
+                sh:path skills:usesMappingRule ;
+                sh:class skills:MappingRule ;
+                sh:minCount 1 ;
+            ]
+        ]
+        [
+            sh:property [
+                sh:path skills:rationale ;
+                sh:datatype xsd:string ;
+                sh:minCount 1 ;
+            ]
+        ]
+    ) .
