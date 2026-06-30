@@ -1,0 +1,107 @@
+@prefix skills: <urn:coding-agent-skill-library:ontology:skills#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+skills:SkillSelectionRunShape a sh:NodeShape ;
+    sh:targetClass skills:SkillSelectionRun ;
+    sh:property [
+        sh:path skills:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:hasSelectionRequest ;
+        sh:class skills:SkillSelectionRequest ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:hasSelectionDecision ;
+        sh:class skills:SkillSelectionDecision ;
+        sh:minCount 1 ;
+    ] .
+
+skills:SkillSelectionRequestShape a sh:NodeShape ;
+    sh:targetClass skills:SkillSelectionRequest ;
+    sh:property [
+        sh:path skills:text ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:contentHash ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+skills:SelectionCandidateShape a sh:NodeShape ;
+    sh:targetClass skills:SelectionCandidate ;
+    sh:property [
+        sh:path skills:candidateSkillVersion ;
+        sh:class skills:SkillVersion ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:selectionScore ;
+        sh:datatype xsd:decimal ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:selectionSupportedBy ;
+        sh:class skills:EvidenceAnchor ;
+        sh:minCount 1 ;
+    ] .
+
+skills:SkillSelectionDecisionShape a sh:NodeShape ;
+    sh:targetClass skills:SkillSelectionDecision ;
+    sh:property [
+        sh:path skills:selectionScore ;
+        sh:datatype xsd:decimal ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:selectionSupportedBy ;
+        sh:class skills:EvidenceAnchor ;
+        sh:minCount 1 ;
+    ] ;
+    sh:or (
+        [
+            sh:property [
+                sh:path skills:selectedSkillVersion ;
+                sh:class skills:SkillVersion ;
+                sh:minCount 1 ;
+                sh:maxCount 1 ;
+            ] ;
+            sh:property [
+                sh:path skills:selectionReason ;
+                sh:datatype xsd:string ;
+                sh:minCount 1 ;
+            ]
+        ]
+        [
+            sh:property [
+                sh:path skills:rejectedSkillVersion ;
+                sh:class skills:SkillVersion ;
+                sh:minCount 1 ;
+                sh:maxCount 1 ;
+            ] ;
+            sh:property [
+                sh:path skills:rejectionReason ;
+                sh:datatype xsd:string ;
+                sh:minCount 1 ;
+            ]
+        ]
+    ) .
+
+skills:CitationShape a sh:NodeShape ;
+    sh:targetClass skills:Citation ;
+    sh:property [
+        sh:path skills:citesEvidence ;
+        sh:class skills:EvidenceAnchor ;
+        sh:minCount 1 ;
+    ] .

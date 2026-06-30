@@ -1,0 +1,149 @@
+@prefix skills: <urn:coding-agent-skill-library:ontology:skills#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+skills:RetrievalUnitShape a sh:NodeShape ;
+    sh:targetClass skills:RetrievalUnit ;
+    sh:property [
+        sh:path skills:path ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:text ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:contentHash ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path prov:wasGeneratedBy ;
+        sh:class skills:IngestionRun ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path skills:projectsFrom ;
+        sh:class skills:EvidenceAnchor ;
+        sh:minCount 1 ;
+    ] .
+
+skills:DirectTaskShapeDerivationShape a sh:NodeShape ;
+    sh:targetClass skills:SkillVersion ;
+    sh:sparql [
+        sh:message "Direct supportsTaskShape edges must be backed by a matching BridgeAssertion." ;
+        sh:select """
+            PREFIX skills: <urn:coding-agent-skill-library:ontology:skills#>
+            PREFIX prov: <http://www.w3.org/ns/prov#>
+            SELECT $this
+            WHERE {
+              $this skills:supportsTaskShape ?target .
+              FILTER NOT EXISTS {
+                ?assertion a skills:BridgeAssertion ;
+                  skills:assertionFor $this ;
+                  skills:bridgeTarget ?target ;
+                  skills:supportedBy ?anchor ;
+                  skills:confidence ?confidence ;
+                  prov:wasDerivedFrom ?source ;
+                  prov:wasGeneratedBy ?run .
+              }
+            }
+        """ ;
+    ] .
+
+skills:DirectCapabilityDerivationShape a sh:NodeShape ;
+    sh:targetClass skills:SkillVersion ;
+    sh:sparql [
+        sh:message "Direct enablesCapability edges must be backed by a matching BridgeAssertion." ;
+        sh:select """
+            PREFIX skills: <urn:coding-agent-skill-library:ontology:skills#>
+            PREFIX prov: <http://www.w3.org/ns/prov#>
+            SELECT $this
+            WHERE {
+              $this skills:enablesCapability ?target .
+              FILTER NOT EXISTS {
+                ?assertion a skills:BridgeAssertion ;
+                  skills:assertionFor $this ;
+                  skills:bridgeTarget ?target ;
+                  skills:supportedBy ?anchor ;
+                  skills:confidence ?confidence ;
+                  prov:wasDerivedFrom ?source ;
+                  prov:wasGeneratedBy ?run .
+              }
+            }
+        """ ;
+    ] .
+
+skills:DirectWorkflowStageDerivationShape a sh:NodeShape ;
+    sh:targetClass skills:SkillVersion ;
+    sh:sparql [
+        sh:message "Direct operatesInStage edges must be backed by a matching BridgeAssertion." ;
+        sh:select """
+            PREFIX skills: <urn:coding-agent-skill-library:ontology:skills#>
+            PREFIX prov: <http://www.w3.org/ns/prov#>
+            SELECT $this
+            WHERE {
+              $this skills:operatesInStage ?target .
+              FILTER NOT EXISTS {
+                ?assertion a skills:BridgeAssertion ;
+                  skills:assertionFor $this ;
+                  skills:bridgeTarget ?target ;
+                  skills:supportedBy ?anchor ;
+                  skills:confidence ?confidence ;
+                  prov:wasDerivedFrom ?source ;
+                  prov:wasGeneratedBy ?run .
+              }
+            }
+        """ ;
+    ] .
+
+skills:DirectControlThemeDerivationShape a sh:NodeShape ;
+    sh:targetClass skills:SkillVersion ;
+    sh:sparql [
+        sh:message "Direct governedBy edges must be backed by a matching BridgeAssertion." ;
+        sh:select """
+            PREFIX skills: <urn:coding-agent-skill-library:ontology:skills#>
+            PREFIX prov: <http://www.w3.org/ns/prov#>
+            SELECT $this
+            WHERE {
+              $this skills:governedBy ?target .
+              FILTER NOT EXISTS {
+                ?assertion a skills:BridgeAssertion ;
+                  skills:assertionFor $this ;
+                  skills:bridgeTarget ?target ;
+                  skills:supportedBy ?anchor ;
+                  skills:confidence ?confidence ;
+                  prov:wasDerivedFrom ?source ;
+                  prov:wasGeneratedBy ?run .
+              }
+            }
+        """ ;
+    ] .
+
+skills:DirectKnowledgeDomainDerivationShape a sh:NodeShape ;
+    sh:targetClass skills:SkillVersion ;
+    sh:sparql [
+        sh:message "Direct partOfDomain edges must be backed by a matching BridgeAssertion." ;
+        sh:select """
+            PREFIX skills: <urn:coding-agent-skill-library:ontology:skills#>
+            PREFIX prov: <http://www.w3.org/ns/prov#>
+            SELECT $this
+            WHERE {
+              $this skills:partOfDomain ?target .
+              FILTER NOT EXISTS {
+                ?assertion a skills:BridgeAssertion ;
+                  skills:assertionFor $this ;
+                  skills:bridgeTarget ?target ;
+                  skills:supportedBy ?anchor ;
+                  skills:confidence ?confidence ;
+                  prov:wasDerivedFrom ?source ;
+                  prov:wasGeneratedBy ?run .
+              }
+            }
+        """ ;
+    ] .
