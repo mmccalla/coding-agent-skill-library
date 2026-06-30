@@ -5,7 +5,12 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-from scripts.evaluate_skill_retrieval import evaluate_offline, load_cases
+from scripts.evaluate_skill_retrieval import (
+    _is_alias_lookup_case,
+    EvaluationCase,
+    evaluate_offline,
+    load_cases,
+)
 from scripts.validate_skills import parse_frontmatter
 
 DATASET = Path("tests/fixtures/retrieval_evaluation/golden_queries.json")
@@ -67,6 +72,21 @@ class EvaluateSkillRetrievalTests(unittest.TestCase):
         self.assertEqual("event_streaming_iceberg_pipeline", cases[7].id)
         self.assertIn("skill:event-streaming-platform-design", cases[7].required_skill_ids)
         self.assertIn("skill:accessibility-wcag", cases[7].excluded_skill_ids)
+
+    def test_alias_lookup_case_detects_embedded_alias_phrases(self) -> None:
+        case = EvaluationCase(
+            id="alias_embedded_phrase",
+            query="when should I use ai-safety-laws",
+            expected_skill_ids=("skill:apply-laws-of-ai",),
+        )
+        alias_map = {
+            "skill:apply-laws-of-ai": (
+                "ai-safety-laws",
+                "asimov-inspired-ai-laws",
+            )
+        }
+
+        self.assertTrue(_is_alias_lookup_case(case, alias_map))
 
     def test_offline_evaluation_meets_quality_gate(self) -> None:
         report = evaluate_offline(SMOKE_DATASET, limit=3)
