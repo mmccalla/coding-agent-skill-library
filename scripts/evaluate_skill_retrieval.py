@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import math
+import re
 import sys
 import time
 from argparse import ArgumentParser
@@ -122,8 +123,13 @@ def _ndcg_at_k(ranked_ids: Sequence[str], expected_ids: Sequence[str], k: int) -
     return _dcg_at_k(ranked_ids, expected_ids, k) / ideal
 
 
-def _normalise(text: str) -> str:
-    return "".join(character if character.isalnum() else " " for character in text.lower()).split()
+def _normalise_phrase(text: str) -> str:
+    return re.sub(r"[^a-z0-9:]+", "-", text.lower()).strip("-")
+
+
+def _contains_alias_phrase(normalised_text: str, alias: str) -> bool:
+    pattern = rf"(?:^|[-:]){re.escape(alias)}(?:$|[-:])"
+    return bool(re.search(pattern, normalised_text))
 
 
 def _precision_at_1(ranked_ids: Sequence[str], expected_ids: Sequence[str]) -> float:
@@ -185,9 +191,14 @@ def _is_exact_lookup_case(case: EvaluationCase) -> bool:
 
 
 def _is_alias_lookup_case(case: EvaluationCase, alias_map: Mapping[str, Sequence[str]]) -> bool:
-    query_terms = case.query.strip().lower()
+    query_terms = _normalise_phrase(case.query.strip())
     for expected in case.expected_skill_ids:
-        if query_terms in {alias.lower() for alias in alias_map.get(expected, ())}:
+        aliases = {
+            _normalise_phrase(alias)
+            for alias in alias_map.get(expected, ())
+            if isinstance(alias, str) and alias.strip()
+        }
+        if any(alias and _contains_alias_phrase(query_terms, alias) for alias in aliases):
             return True
     return False
 
