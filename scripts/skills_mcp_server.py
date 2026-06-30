@@ -607,6 +607,7 @@ class SkillsMcpServer:
             "status": "ok",
             "uncertain": result.uncertain,
             "message": result.message,
+            "selection_trace": result.selection_trace,
             "recommendations": [
                 {
                     "skill_id": item.skill_id,

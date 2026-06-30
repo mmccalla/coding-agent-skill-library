@@ -45,6 +45,9 @@ class HybridRetrievalTests(unittest.TestCase):
         self.assertFalse(result.uncertain)
         self.assertEqual("skill:knowledge-graph-rag", result.recommendations[0].skill_id)
         self.assertIn("graph-grounded retrieval", result.recommendations[0].evidence_snippets[0])
+        self.assertEqual(
+            "skill:knowledge-graph-rag", result.selection_trace["selected"]["skill_id"]
+        )
         self.assertIn(
             "skills/knowledge-graph-rag/SKILL.md",
             result.recommendations[0].source_paths,
@@ -106,6 +109,7 @@ class HybridRetrievalTests(unittest.TestCase):
         self.assertTrue(result.uncertain)
         self.assertIn("narrower task description", result.message)
         self.assertEqual((), result.recommendations)
+        self.assertEqual({}, result.selection_trace["selected"])
 
     def test_results_do_not_expose_raw_vectors_or_cypher(self) -> None:
         retrieval = load_module()
@@ -220,6 +224,53 @@ class HybridRetrievalTests(unittest.TestCase):
 
         self.assertIn("accessibility-wcag", top_skill_names)
         self.assertIn("ux-design-principles", top_skill_names)
+
+    def test_deprecated_skill_is_filtered_from_automatic_selection(self) -> None:
+        retrieval = load_module()
+        plan = retrieval.fixture_load_plan()
+        deprecated_skill = retrieval.load_skills_neo4j.GraphNode(
+            "Skill",
+            "skill:legacy-graph-rag",
+            {
+                "id": "skill:legacy-graph-rag",
+                "name": "legacy-graph-rag",
+                "deprecated": True,
+            },
+        )
+        deprecated_unit = retrieval.load_skills_neo4j.GraphNode(
+            "RetrievalUnit",
+            "retrieval:skill:legacy-graph-rag:section:0:legacy",
+            {
+                "id": "retrieval:skill:legacy-graph-rag:section:0:legacy",
+                "skill_id": "skill:legacy-graph-rag",
+                "text": "Graph rag legacy guidance for graph-grounded retrieval.",
+                "source_path": "skills/legacy-graph-rag/SKILL.md",
+                "section_id": "skill:legacy-graph-rag:section:0-objective",
+            },
+        )
+        plan = retrieval.load_skills_neo4j.LoadPlan(
+            nodes=(deprecated_skill, deprecated_unit, *plan.nodes),
+            relationships=plan.relationships,
+        )
+
+        result = retrieval.retrieve_hybrid_skills(
+            plan,
+            query_text="graph rag ontology retrieval",
+            vector_candidates=(),
+            limit=3,
+        )
+
+        self.assertNotIn(
+            "skill:legacy-graph-rag",
+            [recommendation.skill_id for recommendation in result.recommendations],
+        )
+        self.assertTrue(
+            any(
+                rejected["skill_id"] == "skill:legacy-graph-rag"
+                and "Deprecated skill filtered" in rejected["reason"]
+                for rejected in result.selection_trace["rejected"]
+            )
+        )
 
     def test_neo4j_hybrid_adapter_uses_fulltext_vector_and_fetches_plan(self) -> None:
         retrieval = load_module()

@@ -59,6 +59,7 @@ class HybridRetrievalResult(NamedTuple):
     uncertain: bool
     message: str
     recommendations: tuple[SkillRecommendation, ...]
+    selection_trace: Mapping[str, object]
 
 
 def _tokens(text: str) -> set[str]:
@@ -72,6 +73,18 @@ def _tokens(text: str) -> set[str]:
 def _string(properties: Mapping[str, object], key: str) -> str:
     value = properties.get(key)
     return value if isinstance(value, str) else ""
+
+
+def _bool(properties: Mapping[str, object], key: str) -> bool:
+    value = properties.get(key)
+    return isinstance(value, bool) and value
+
+
+def _string_list(properties: Mapping[str, object], key: str) -> tuple[str, ...]:
+    value = properties.get(key)
+    if not isinstance(value, list):
+        return ()
+    return tuple(item for item in value if isinstance(item, str) and item.strip())
 
 
 def _skill_nodes(plan: load_skills_neo4j.LoadPlan) -> dict[str, load_skills_neo4j.GraphNode]:
@@ -88,6 +101,32 @@ def _bridge_assertion_nodes(
     plan: load_skills_neo4j.LoadPlan,
 ) -> tuple[load_skills_neo4j.GraphNode, ...]:
     return tuple(node for node in plan.nodes if node.label == "BridgeAssertion")
+
+
+def _policy_exclusion_reason(
+    skill: load_skills_neo4j.GraphNode,
+    query_tokens: set[str],
+) -> str:
+    if _bool(skill.properties, "deprecated"):
+        return "Deprecated skill filtered from automatic selection."
+    superseded_by = _string(skill.properties, "superseded_by")
+    if superseded_by:
+        return f"Superseded skill filtered in favour of '{superseded_by}'."
+    excluded_terms = {
+        token
+        for value in _string_list(skill.properties, "excluded_when")
+        for token in _tokens(value)
+    }
+    if excluded_terms and query_tokens & excluded_terms:
+        return "Excluded by skill runtime conditions matching the current query."
+    forbidden_task_terms = {
+        token
+        for value in _string_list(skill.properties, "not_for_task_shapes")
+        for token in _tokens(value)
+    }
+    if forbidden_task_terms and query_tokens & forbidden_task_terms:
+        return "Rejected because the query matches a forbidden task shape for this skill."
+    return ""
 
 
 def _text_scores(
@@ -259,6 +298,7 @@ def retrieve_hybrid_skills(
     settings = skills_config.load_settings().retrieval
     limit = max(1, min(limit, settings.max_limit))
     max_depth = max(0, min(max_depth, settings.max_depth))
+    query_tokens = _tokens(query_text)
     skills = _skill_nodes(plan)
     text_scores, text_unit_ids = _text_scores(plan, query_text)
     vector_scores = _vector_scores(vector_candidates, settings.min_vector_candidate_score)
@@ -291,12 +331,24 @@ def retrieve_hybrid_skills(
         )
 
     recommendations: list[SkillRecommendation] = []
+    rejected_candidates: list[dict[str, object]] = []
     remaining_budget = token_budget
     for skill_id, score, graph_score, vector_score, full_text_score, preferred_unit_ids in sorted(
         recommendation_inputs,
         key=lambda item: (-item[1], _string(skills[item[0]].properties, "name")),
     ):
         skill = skills[skill_id]
+        exclusion_reason = _policy_exclusion_reason(skill, query_tokens)
+        if exclusion_reason:
+            rejected_candidates.append(
+                {
+                    "skill_id": skill_id,
+                    "skill_name": _string(skill.properties, "name"),
+                    "score": round(score, 6),
+                    "reason": exclusion_reason,
+                }
+            )
+            continue
         snippets, source_paths, section_ids = _retrieval_unit_evidence(
             plan,
             skill_id,
@@ -304,6 +356,14 @@ def retrieve_hybrid_skills(
             remaining_budget,
         )
         if not snippets:
+            rejected_candidates.append(
+                {
+                    "skill_id": skill_id,
+                    "skill_name": _string(skill.properties, "name"),
+                    "score": round(score, 6),
+                    "reason": "No bounded evidence snippets were available for this candidate.",
+                }
+            )
             continue
         remaining_budget -= sum(len(snippet.split()) for snippet in snippets)
         recommendations.append(
@@ -335,18 +395,46 @@ def retrieve_hybrid_skills(
             break
 
     ranked = tuple(sorted(recommendations, key=lambda item: (-item.score, item.skill_name))[:limit])
+    selected_trace: dict[str, object] = {}
+    if ranked:
+        selected = ranked[0]
+        selected_trace = {
+            "skill_id": selected.skill_id,
+            "skill_name": selected.skill_name,
+            "score": selected.score,
+            "selection_reason": selected.why,
+            "source_paths": list(selected.source_paths),
+            "section_ids": list(selected.section_ids),
+            "evidence_paths": list(selected.evidence_paths),
+        }
+        for rejected in ranked[1:]:
+            rejected_candidates.append(
+                {
+                    "skill_id": rejected.skill_id,
+                    "skill_name": rejected.skill_name,
+                    "score": rejected.score,
+                    "reason": "Lower-ranked than the selected skill after hybrid scoring.",
+                }
+            )
+    selection_trace = {
+        "request": {"query": query_text},
+        "selected": selected_trace,
+        "rejected": tuple(rejected_candidates),
+    }
     if not ranked or ranked[0].score < MIN_CONFIDENT_SCORE:
         return HybridRetrievalResult(
             query=query_text,
             uncertain=True,
             message="No confident skill match found; provide a narrower task description.",
             recommendations=(),
+            selection_trace=selection_trace,
         )
     return HybridRetrievalResult(
         query=query_text,
         uncertain=False,
         message="Hybrid retrieval returned connected, source-backed skill evidence.",
         recommendations=ranked,
+        selection_trace=selection_trace,
     )
 
 
