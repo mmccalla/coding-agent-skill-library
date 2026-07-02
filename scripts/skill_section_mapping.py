@@ -64,6 +64,11 @@ DEPENDENCY_TYPE_RULES: tuple[tuple[tuple[str, ...], str], ...] = (
     (("safety gates",), "complements"),
 )
 
+RELATED_SKILL_TABLE_ROW_PATTERN = re.compile(
+    r"^\|\s*`([-a-z0-9]+)`\s*\|\s*(complements|precedes|validates)\s*\|\s*(.+?)\s*\|\s*$",
+    flags=re.MULTILINE | re.IGNORECASE,
+)
+
 
 class EvidenceCoordinates(NamedTuple):
     """Source-grounded line coordinates for a mapped fragment."""
@@ -246,13 +251,14 @@ def map_related_skill_dependencies(
     *,
     known_skill_ids: set[str] | None = None,
 ) -> tuple[SkillDependencyMapping, ...]:
-    """Parse `## Related skills` bullets into typed dependency assertions."""
+    """Parse `## Related skills` bullets and table rows into typed dependency assertions."""
 
     section = extract_section(markdown, "Related skills")
     if not section or not section.text:
         return ()
 
     dependencies: list[SkillDependencyMapping] = []
+    seen_targets: set[str] = set()
     for match in re.finditer(
         r"^-\s+`([-a-z0-9]+)`\s+[—-]\s+(.+?)\s*$",
         section.text,
@@ -281,6 +287,34 @@ def map_related_skill_dependencies(
                 section_heading=section.heading,
             )
         )
+        seen_targets.add(target_skill_id)
+
+    for match in RELATED_SKILL_TABLE_ROW_PATTERN.finditer(section.text):
+        target_skill_id = match.group(1)
+        if target_skill_id in seen_targets:
+            continue
+        if known_skill_ids is not None and target_skill_id not in known_skill_ids:
+            continue
+
+        dependency_type = match.group(2).lower()
+        if dependency_type not in ALLOWED_DEPENDENCY_TYPES:
+            dependency_type = "complements"
+        rationale = match.group(3).strip()
+        absolute_start = section.line_start + section.text[: match.start()].count("\n")
+        absolute_end = section.line_start + section.text[: match.end()].count("\n")
+        dependencies.append(
+            SkillDependencyMapping(
+                target_skill_id=target_skill_id,
+                dependency_type=dependency_type,
+                rationale=rationale,
+                evidence=EvidenceCoordinates(
+                    line_start=absolute_start,
+                    line_end=absolute_end,
+                ),
+                section_heading=section.heading,
+            )
+        )
+        seen_targets.add(target_skill_id)
 
     return tuple(dependencies)
 
