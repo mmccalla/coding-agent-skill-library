@@ -23,7 +23,7 @@ from scripts import (
     validate_skills_ontology,
 )
 
-DEFAULT_DATASET = Path("tests") / "fixtures" / "retrieval_evaluation" / "smoke_queries.json"
+DEFAULT_DATASET = Path("tests") / "fixtures" / "retrieval_evaluation" / "smoke_queries_promoted.json"
 
 
 class RuntimeScenario(BaseModel):
@@ -82,38 +82,38 @@ class CutoverAcceptanceReport(BaseModel):
 RUNTIME_SCENARIOS = (
     RuntimeScenario(
         id="direct_lookup",
-        query="Tell me about knowledge-graph-rag",
+        query="Tell me about tdd-practice",
         expected_route="direct_lookup",
         expected_query_family="exact_skill_lookup",
-        expected_selected_skill_id="skill:knowledge-graph-rag",
+        expected_selected_skill_id="skill:tdd-practice",
     ),
     RuntimeScenario(
         id="recommendation",
-        query="Which skill should I use for neo4j-native kg-backed retrieval with text-to-cypher and provenance?",
+        query="Which skill should I use when fixing a defect with a failing test first?",
         expected_route="recommendation",
         expected_query_family="capability_task_lookup",
-        expected_selected_skill_id="skill:knowledge-graph-rag",
+        expected_selected_skill_id="skill:tdd-practice",
     ),
     RuntimeScenario(
         id="context",
-        query="What skills are related to knowledge-graph-rag?",
+        query="What skills are related to tdd-practice?",
         expected_route="context",
         expected_query_family="related_skill_traversal",
-        expected_selected_skill_id="skill:knowledge-graph-rag",
+        expected_selected_skill_id="skill:tdd-practice",
     ),
     RuntimeScenario(
         id="execution_plan",
-        query="Show me the verification checklist for knowledge-graph-rag",
+        query="Show me the verification checklist for tdd-practice",
         expected_route="execution_plan",
         expected_query_family="constraint_verification_retrieval",
-        expected_selected_skill_id="skill:knowledge-graph-rag",
+        expected_selected_skill_id="skill:tdd-practice",
     ),
     RuntimeScenario(
         id="evidence_lookup",
-        query="Show me the evidence for knowledge-graph-rag",
+        query="Show me the evidence for tdd-practice",
         expected_route="direct_lookup",
         expected_query_family="evidence_fragment_retrieval",
-        expected_selected_skill_id="skill:knowledge-graph-rag",
+        expected_selected_skill_id="skill:tdd-practice",
     ),
     RuntimeScenario(
         id="abstention",
@@ -401,7 +401,8 @@ def run_cutover_acceptance(
         and all(check.passed for check in acceptance_checks)
         and all(scenario.passed for scenario in runtime_scenarios)
         and skill_count > 0
-        and retrieval_unit_count >= skill_count
+        and retrieval_unit_count > 0
+        and retrieval_unit_count <= skill_count
     )
 
     return CutoverAcceptanceReport(

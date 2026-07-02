@@ -204,7 +204,7 @@ class HybridRetrievalTests(unittest.TestCase):
 
         self.assertIn("graph-grounded retrieval", result.recommendations[0].evidence_snippets[0])
 
-    def test_user_facing_web_application_query_lifts_ux_and_accessibility_skills(self) -> None:
+    def test_user_facing_web_application_query_lifts_promoted_engineering_skills(self) -> None:
         retrieval = load_module()
         plan = retrieval.embed_skill_chunks.build_embedded_repository_load_plan(
             REPO_ROOT / "skills"
@@ -226,8 +226,10 @@ class HybridRetrievalTests(unittest.TestCase):
 
         top_skill_names = [recommendation.skill_name for recommendation in result.recommendations]
 
-        self.assertIn("accessibility-wcag", top_skill_names)
-        self.assertIn("ux-design-principles", top_skill_names)
+        self.assertIn("tdd-practice", top_skill_names)
+        self.assertIn("spec-driven-development", top_skill_names)
+        self.assertNotIn("accessibility-wcag", top_skill_names)
+        self.assertNotIn("ux-design-principles", top_skill_names)
 
     def test_deprecated_skill_is_filtered_from_automatic_selection(self) -> None:
         retrieval = load_module()
@@ -239,6 +241,7 @@ class HybridRetrievalTests(unittest.TestCase):
                 "id": "skill:superseded-graph-rag",
                 "name": "superseded-graph-rag",
                 "deprecated": True,
+                "promotion_status": "promoted",
             },
         )
         deprecated_unit = retrieval.load_skills_neo4j.GraphNode(
@@ -316,6 +319,7 @@ class HybridRetrievalTests(unittest.TestCase):
                             "properties": {
                                 "id": "skill:knowledge-graph-rag",
                                 "name": "knowledge-graph-rag",
+                                "promotion_status": "promoted",
                             },
                         },
                     )

@@ -22,7 +22,6 @@ MIN_CONFIDENT_SCORE = DEFAULT_RETRIEVAL_SETTINGS.min_confident_score
 DEFAULT_TOKEN_BUDGET = DEFAULT_RETRIEVAL_SETTINGS.default_token_budget
 CONNECTED_RELATIONSHIP_TYPES = frozenset(
     {
-        "RELATED_TO",
         "PRECEDES",
         "REQUIRES",
         "COMPLEMENTS",
@@ -108,6 +107,13 @@ def _policy_exclusion_reason(
     skill: load_skills_neo4j.GraphNode,
     query_tokens: set[str],
 ) -> str:
+    promotion_status = _string(skill.properties, "promotion_status")
+    if promotion_status != "promoted":
+        status_label = promotion_status or "missing"
+        return (
+            "Non-promoted skill filtered from retrieval "
+            f"(promotion_status={status_label})."
+        )
     if _bool(skill.properties, "deprecated"):
         return "Deprecated skill filtered from automatic selection."
     superseded_by = _string(skill.properties, "superseded_by")
@@ -675,6 +681,7 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
                 "id": "skill:knowledge-graph-rag",
                 "name": "knowledge-graph-rag",
                 "aliases": ["kg-enabled-rag", "graph-rag"],
+                "promotion_status": "promoted",
             },
         ),
         load_skills_neo4j.GraphNode(
@@ -684,12 +691,17 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
                 "id": "skill:knowledge-retrieval-rag",
                 "name": "knowledge-retrieval-rag",
                 "aliases": ["rag", "retrieval-augmented-generation"],
+                "promotion_status": "promoted",
             },
         ),
         load_skills_neo4j.GraphNode(
             "Skill",
             "skill:generic-documentation",
-            {"id": "skill:generic-documentation", "name": "generic-documentation"},
+            {
+                "id": "skill:generic-documentation",
+                "name": "generic-documentation",
+                "promotion_status": "promoted",
+            },
         ),
         load_skills_neo4j.GraphNode(
             "RetrievalUnit",
