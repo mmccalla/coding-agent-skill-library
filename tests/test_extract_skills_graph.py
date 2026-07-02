@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 import tempfile
 import unittest
 from collections import Counter
@@ -10,7 +11,36 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXTRACTOR = REPO_ROOT / "scripts" / "extract_skills_graph.py"
+MAPPING_FIXTURES = REPO_ROOT / "tests" / "fixtures" / "skill_mapping"
+MALICIOUS_FIXTURE = (
+    REPO_ROOT / "tests" / "fixtures" / "skill_trust" / "malicious" / "instruction-override.md"
+)
+SECURITY_ALLOWLIST = REPO_ROOT / "tests" / "fixtures" / "skill_security_allowlist.json"
 EXPECTED_SKILL_COUNT = len(tuple((REPO_ROOT / "skills").glob("*/SKILL.md")))
+
+
+def write_minimal_pack_metadata(skills_root: Path, skill_names: tuple[str, ...]) -> None:
+    categories = [
+        {
+            "id": "agentic-patterns",
+            "title": "Agentic Patterns",
+            "description": "Test category.",
+            "skills": list(skill_names),
+        }
+    ]
+    payload = {
+        "schema_version": "skill-pack-metadata/v1",
+        "skill_pack_id": "test-pack",
+        "display_name": "Test Pack",
+        "version": "1.0.0",
+        "owner": "test",
+        "source_root": "skills",
+        "categories": categories,
+    }
+    (skills_root / "PACK_METADATA.json").write_text(
+        json.dumps(payload, indent=2) + "\n",
+        encoding="utf-8",
+    )
 
 
 def load_extractor_module():
@@ -197,11 +227,18 @@ class SkillsGraphExtractorTests(unittest.TestCase):
             "skill:knowledge-retrieval-rag",
         ):
             relationship = relationships[("skill:mcp-server-design", target)]
-            self.assertEqual(relationship["type"], "RELATED_TO")
+            self.assertIn(
+                relationship["type"],
+                {"RELATED_TO", "PRECEDES", "VALIDATES", "COMPLEMENTS"},
+            )
             self.assertEqual(
                 relationship["source_path"], "skills/mcp-server-design/SKILL.md"
             )
-            self.assertTrue(relationship["source_section_id"].endswith("related-skills"))
+            if relationship["type"] == "RELATED_TO":
+                self.assertTrue(relationship["source_section_id"].endswith("related-skills"))
+            else:
+                self.assertTrue(relationship["mapping_rule_id"])
+                self.assertGreaterEqual(relationship["confidence"], 0.0)
 
     def test_extraction_is_repeatable_without_file_changes(self) -> None:
         module = load_extractor_module()
@@ -220,6 +257,87 @@ class SkillsGraphExtractorTests(unittest.TestCase):
 
         self.assertIn("kg-enabled-rag", skill["aliases"])
         self.assertIn("graph-rag", skill["aliases"])
+
+    def test_skill_record_includes_promotion_status(self) -> None:
+        module = load_extractor_module()
+        records = module.extract_skills_graph_records(REPO_ROOT / "skills")
+
+        for skill in records["skills"]:
+            self.assertIn(
+                skill["promotion_status"],
+                {"promoted", "quarantined", "rejected"},
+            )
+
+    def test_rejected_skills_when_trust_fails(self) -> None:
+        module = load_extractor_module()
+        malicious_text = MALICIOUS_FIXTURE.read_text(encoding="utf-8")
+        with tempfile.TemporaryDirectory() as tmp:
+            skills_root = Path(tmp) / "skills"
+            skill_dir = skills_root / "malicious-instruction-override"
+            skill_dir.mkdir(parents=True)
+            write_minimal_pack_metadata(skills_root, ("malicious-instruction-override",))
+            (skill_dir / "SKILL.md").write_text(malicious_text, encoding="utf-8")
+
+            records = module.extract_skills_graph_records(
+                skills_root,
+                trust_gate=True,
+                grandfather_practice_waiver=False,
+                allowlist_path=SECURITY_ALLOWLIST,
+            )
+
+        skill = records["skills"][0]
+        self.assertEqual(skill["id"], "skill:malicious-instruction-override")
+        self.assertEqual(skill["promotion_status"], "rejected")
+
+    def test_mapping_derived_task_intents_attached_when_sections_present(self) -> None:
+        module = load_extractor_module()
+        excerpt = (MAPPING_FIXTURES / "tdd-practice-excerpt.md").read_text(encoding="utf-8")
+        with tempfile.TemporaryDirectory() as tmp:
+            skills_root = Path(tmp) / "skills"
+            skill_dir = skills_root / "tdd-mapping-fixture"
+            skill_dir.mkdir(parents=True)
+            write_minimal_pack_metadata(skills_root, ("tdd-mapping-fixture",))
+            (skill_dir / "SKILL.md").write_text(
+                "\n".join(
+                    (
+                        "---",
+                        "name: tdd-mapping-fixture",
+                        "description: Use when adding behaviour, fixing a defect, or refactoring with tests.",
+                        "---",
+                        excerpt,
+                        "",
+                        "## Procedure",
+                        "1. Write a failing test.",
+                        "",
+                        "## Verification",
+                        "- [ ] Targeted tests pass.",
+                    )
+                ),
+                encoding="utf-8",
+            )
+
+            records = module.extract_skills_graph_records(
+                skills_root,
+                trust_gate=True,
+                grandfather_practice_waiver=False,
+                allowlist_path=SECURITY_ALLOWLIST,
+            )
+
+        skill = records["skills"][0]
+        self.assertEqual(skill["promotion_status"], "promoted")
+        supported = {item["task_intent_id"] for item in skill["supported_task_intents"]}
+        self.assertIn("defect-fix-with-tests", supported)
+        self.assertIn("refactor-with-tests", supported)
+        self.assertIn("feature-implementation", supported)
+
+        mapping_bridges = [
+            bridge
+            for bridge in records["bridges"]
+            if bridge["skill_id"] == skill["id"] and bridge.get("mapping_source") == "when_to_use"
+        ]
+        bridge_values = {bridge["value"] for bridge in mapping_bridges}
+        self.assertIn("defect-fix-with-tests", bridge_values)
+        self.assertTrue(all(bridge["kind"] == "task_shape" for bridge in mapping_bridges))
 
 
 if __name__ == "__main__":
