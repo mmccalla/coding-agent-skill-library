@@ -1,0 +1,23 @@
+{
+  "schema_version": "skill-security-allowlist/v1",
+  "entries": [
+    {
+      "id": "guardrails-teaching",
+      "skill_names": ["guardrails-teaching"],
+      "path_suffixes": ["guardrails-teaching.md"],
+      "categories": [
+        "instruction_override",
+        "privilege_escalation",
+        "destructive_commands"
+      ],
+      "reason": "Teaching fixture quotes blocked patterns as negative examples."
+    },
+    {
+      "id": "guardrails-safety-patterns",
+      "skill_names": ["guardrails-safety-patterns"],
+      "path_suffixes": ["guardrails-safety-patterns/SKILL.md"],
+      "categories": ["privilege_escalation", "destructive_commands"],
+      "reason": "Canonical guardrails skill teaches never-disable and approval-gated destructive guidance."
+    }
+  ]
+}
