@@ -22,6 +22,7 @@ from scripts.skill_section_mapping import (
     TaskIntentMapping,
     extract_section,
     map_skill_sections,
+    promotion_ready_task_intents,
 )
 from scripts.validate_skill_security import DEFAULT_ALLOWLIST
 from scripts.validate_skill_trust import TrustReport, validate_skill_trust_file
@@ -323,13 +324,14 @@ def _mapping_task_intent_bridge(
         value=mapping.task_intent_id,
         source_path=source_path,
         source=f"{skill_id}:mapping:task_intent:{mapping.task_intent_id}",
-        confidence=0.95,
+        confidence=mapping.confidence,
         rationale=(
-            f"Mapped from '{mapping.section_heading}' via phrase '{mapping.matched_phrase}'."
+            f"Mapped from '{mapping.section_heading}' via phrase '{mapping.matched_phrase}' "
+            f"(source={mapping.mapping_source})."
         ),
-        source_scope="section",
+        source_scope="section" if mapping.section_heading != "skill_registry" else "skill",
         source_ref=mapping.section_heading,
-        mapping_source="when_to_use",
+        mapping_source=mapping.mapping_source,
         evidence_line_start=mapping.evidence.line_start,
         evidence_line_end=mapping.evidence.line_end,
     )
@@ -368,6 +370,8 @@ def _task_intent_records(
             "section_heading": mapping.section_heading,
             "evidence_line_start": mapping.evidence.line_start,
             "evidence_line_end": mapping.evidence.line_end,
+            "mapping_source": mapping.mapping_source,
+            "confidence": mapping.confidence,
         }
         for mapping in mappings
     ]
@@ -396,7 +400,7 @@ def _resolve_promotion_status(
     grandfather_practice_waiver: bool,
 ) -> str:
     if not trust_gate:
-        if section_mapping.task_intents:
+        if promotion_ready_task_intents(section_mapping.task_intents):
             return "promoted"
         return "quarantined"
 
@@ -407,7 +411,7 @@ def _resolve_promotion_status(
         if grandfather_practice_waiver:
             return "quarantined"
         return "rejected"
-    if not section_mapping.task_intents:
+    if not promotion_ready_task_intents(section_mapping.task_intents):
         return "quarantined"
     return "promoted"
 
@@ -610,7 +614,7 @@ def extract_skills_graph_records(
         content_hash = _sha256(text)
         lines = text.splitlines()
         skill_sections = _extract_sections(text, skill_id)
-        section_mapping = map_skill_sections(text, known_skill_ids=known_skill_names)
+        section_mapping = map_skill_sections(text, skill_name=name, known_skill_ids=known_skill_names)
         mapped_dependencies = section_mapping.dependencies
         mapped_dependency_targets = {
             f"skill:{dependency.target_skill_id}" for dependency in mapped_dependencies

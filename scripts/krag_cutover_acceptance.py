@@ -394,6 +394,12 @@ def run_cutover_acceptance(
         ),
     )
 
+    promoted_skill_count = sum(
+        1
+        for node in plan.nodes
+        if node.label == "Skill"
+        and str(node.properties.get("promotion_status", "")) == "promoted"
+    )
     passed = (
         ontology_validation.valid
         and evaluation.passed
@@ -402,7 +408,8 @@ def run_cutover_acceptance(
         and all(scenario.passed for scenario in runtime_scenarios)
         and skill_count > 0
         and retrieval_unit_count > 0
-        and retrieval_unit_count <= skill_count
+        and promoted_skill_count > 0
+        and retrieval_unit_count >= promoted_skill_count
     )
 
     return CutoverAcceptanceReport(
