@@ -212,10 +212,14 @@ class SkillsGraphExtractorTests(unittest.TestCase):
                 f"{field} contains a bridge shared by every skill",
             )
 
-    def test_extracts_related_skill_relationships_with_source_evidence(self) -> None:
+    def test_extracts_typed_related_skill_relationships_with_provenance(self) -> None:
         module = load_extractor_module()
 
         records = module.extract_skills_graph_records(REPO_ROOT / "skills")
+        relationship_types = {relationship["type"] for relationship in records["relationships"]}
+
+        self.assertNotIn("RELATED_TO", relationship_types)
+
         relationships = {
             (relationship["source"], relationship["target"]): relationship
             for relationship in records["relationships"]
@@ -229,16 +233,85 @@ class SkillsGraphExtractorTests(unittest.TestCase):
             relationship = relationships[("skill:mcp-server-design", target)]
             self.assertIn(
                 relationship["type"],
-                {"RELATED_TO", "PRECEDES", "VALIDATES", "COMPLEMENTS"},
+                {"PRECEDES", "VALIDATES", "COMPLEMENTS"},
             )
             self.assertEqual(
                 relationship["source_path"], "skills/mcp-server-design/SKILL.md"
             )
-            if relationship["type"] == "RELATED_TO":
-                self.assertTrue(relationship["source_section_id"].endswith("related-skills"))
-            else:
-                self.assertTrue(relationship["mapping_rule_id"])
-                self.assertGreaterEqual(relationship["confidence"], 0.0)
+            self.assertTrue(relationship["mapping_rule_id"])
+            self.assertGreaterEqual(relationship["confidence"], 0.0)
+            self.assertTrue(relationship["rationale"])
+            self.assertEqual(relationship["source_scope"], "section")
+            self.assertEqual(relationship["source_ref"], "Related skills")
+            self.assertGreaterEqual(relationship["evidence_line_start"], 1)
+            self.assertGreaterEqual(
+                relationship["evidence_line_end"],
+                relationship["evidence_line_start"],
+            )
+
+    def test_unmapped_related_skills_emit_complements_with_provenance(self) -> None:
+        module = load_extractor_module()
+        with tempfile.TemporaryDirectory() as tmp:
+            skills_root = Path(tmp) / "skills"
+            primary_dir = skills_root / "primary-skill"
+            related_dir = skills_root / "related-skill"
+            primary_dir.mkdir(parents=True)
+            related_dir.mkdir(parents=True)
+            write_minimal_pack_metadata(
+                skills_root,
+                ("primary-skill", "related-skill"),
+            )
+            (related_dir / "SKILL.md").write_text(
+                "\n".join(
+                    (
+                        "---",
+                        "name: related-skill",
+                        "description: Related fixture skill.",
+                        "---",
+                        "# Related Skill",
+                        "## Objective",
+                        "Support typed dependency tests.",
+                    )
+                ),
+                encoding="utf-8",
+            )
+            (primary_dir / "SKILL.md").write_text(
+                "\n".join(
+                    (
+                        "---",
+                        "name: primary-skill",
+                        "description: Primary fixture skill.",
+                        "---",
+                        "# Primary Skill",
+                        "## Related skills",
+                        "",
+                        "See also `related-skill` in this section.",
+                        "",
+                        "## Objective",
+                        "Exercise fallback dependency mapping.",
+                    )
+                ),
+                encoding="utf-8",
+            )
+
+            records = module.extract_skills_graph_records(
+                skills_root,
+                trust_gate=False,
+            )
+
+        relationship = next(
+            relationship
+            for relationship in records["relationships"]
+            if relationship["source"] == "skill:primary-skill"
+            and relationship["target"] == "skill:related-skill"
+        )
+        self.assertEqual(relationship["type"], "COMPLEMENTS")
+        self.assertTrue(relationship["mapping_rule_id"].endswith(":related-skill"))
+        self.assertGreaterEqual(relationship["confidence"], 0.0)
+        self.assertTrue(relationship["rationale"])
+        self.assertEqual(relationship["source_scope"], "section")
+        self.assertEqual(relationship["source_ref"], "Related skills")
+        self.assertEqual(relationship["evidence_line_start"], 8)
 
     def test_extraction_is_repeatable_without_file_changes(self) -> None:
         module = load_extractor_module()

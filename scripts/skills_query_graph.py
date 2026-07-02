@@ -38,7 +38,6 @@ APPROVED_QUERY_FAMILIES = frozenset(
 )
 ALLOWED_RELATIONSHIP_TYPES = frozenset(
     {
-        "RELATED_TO",
         "PRECEDES",
         "REQUIRES",
         "COMPLEMENTS",
@@ -78,7 +77,6 @@ QUERY_TEMPLATES = {
         "read_only": True,
         "labels": ("Skill",),
         "relationship_types": (
-            "RELATED_TO",
             "PRECEDES",
             "REQUIRES",
             "COMPLEMENTS",
@@ -127,7 +125,7 @@ QUERY_FAMILY_RENDERED_CYPHER = {
         "LIMIT $limit"
     ),
     QUERY_FAMILY_RELATED_SKILL_TRAVERSAL: (
-        "MATCH (s:Skill {id: $skill_id})-[r:RELATED_TO|PRECEDES|REQUIRES|COMPLEMENTS|REFINES|GOVERNS|VALIDATES]"
+        "MATCH (s:Skill {id: $skill_id})-[r:PRECEDES|REQUIRES|COMPLEMENTS|REFINES|GOVERNS|VALIDATES]"
         "-(related:Skill) "
         "RETURN s.id AS skill_id, type(r) AS relationship_type, related.id AS related_skill_id "
         "LIMIT $limit"

@@ -178,6 +178,67 @@ class SkillSectionMappingTests(unittest.TestCase):
         self.assertEqual(len(dependencies), 1)
         self.assertEqual(dependencies[0].target_skill_id, "code-review-and-quality")
 
+    def test_related_skills_parse_table_rows_with_optional_header(self) -> None:
+        markdown = (
+            "# Sample\n\n"
+            "## Related skills\n\n"
+            "| Skill | Type | Rationale |\n"
+            "| --- | --- | --- |\n"
+            "| `incremental-implementation` | precedes | implement spec in verifiable slices |\n"
+            "| `bdd-practice` | complements | acceptance scenarios for external behaviour |\n"
+        )
+        dependencies = self.module.map_related_skill_dependencies(
+            markdown,
+            known_skill_ids={"incremental-implementation", "bdd-practice"},
+        )
+
+        by_target = {dependency.target_skill_id: dependency for dependency in dependencies}
+        self.assertEqual(
+            set(by_target),
+            {"incremental-implementation", "bdd-practice"},
+        )
+        self.assertEqual(by_target["incremental-implementation"].dependency_type, "precedes")
+        self.assertEqual(by_target["bdd-practice"].dependency_type, "complements")
+        self.assertEqual(
+            by_target["incremental-implementation"].rationale,
+            "implement spec in verifiable slices",
+        )
+        self.assertEqual(by_target["incremental-implementation"].evidence.line_start, 7)
+        self.assertEqual(by_target["bdd-practice"].evidence.line_start, 8)
+
+    def test_related_skills_parse_table_rows_without_header(self) -> None:
+        markdown = (
+            "# Sample\n\n"
+            "## Related skills\n\n"
+            "| `code-review-and-quality` | validates | review after tests pass |\n"
+        )
+        dependencies = self.module.map_related_skill_dependencies(
+            markdown,
+            known_skill_ids={"code-review-and-quality"},
+        )
+
+        self.assertEqual(len(dependencies), 1)
+        dependency = dependencies[0]
+        self.assertEqual(dependency.target_skill_id, "code-review-and-quality")
+        self.assertEqual(dependency.dependency_type, "validates")
+        self.assertEqual(dependency.rationale, "review after tests pass")
+        self.assertEqual(dependency.evidence.line_start, 5)
+
+    def test_related_skills_bullets_take_precedence_over_table_rows(self) -> None:
+        markdown = (
+            "# Sample\n\n"
+            "## Related skills\n\n"
+            "- `code-review-and-quality` — review after tests pass\n"
+            "| `code-review-and-quality` | precedes | conflicting table row |\n"
+        )
+        dependencies = self.module.map_related_skill_dependencies(
+            markdown,
+            known_skill_ids={"code-review-and-quality"},
+        )
+
+        self.assertEqual(len(dependencies), 1)
+        self.assertEqual(dependencies[0].dependency_type, "validates")
+
     def test_map_skill_sections_composes_all_section_mappers(self) -> None:
         markdown = read_fixture("tdd-practice-excerpt.md")
         result = self.module.map_skill_sections(

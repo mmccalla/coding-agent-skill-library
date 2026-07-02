@@ -52,6 +52,7 @@ def fixture_records() -> dict[str, object]:
                 "wordCount": 10,
                 "lineCount": 4,
                 "isBaselineSkill": True,
+                "promotion_status": "promoted",
             },
             {
                 "id": "skill:tdd-practice",
@@ -72,6 +73,7 @@ def fixture_records() -> dict[str, object]:
                 "wordCount": 12,
                 "lineCount": 5,
                 "isBaselineSkill": False,
+                "promotion_status": "promoted",
             },
         ],
         "sections": [
@@ -95,10 +97,18 @@ def fixture_records() -> dict[str, object]:
         "relationships": [
             {
                 "source": "skill:apply-laws-of-ai",
-                "type": "RELATED_TO",
+                "type": "COMPLEMENTS",
                 "target": "skill:tdd-practice",
                 "source_path": "skills/apply-laws-of-ai/SKILL.md",
-                "source_section_id": "skill:apply-laws-of-ai:section:0-objective",
+                "mapping_rule_id": (
+                    "skill:apply-laws-of-ai:mapping:dependency:complements:tdd-practice"
+                ),
+                "confidence": 0.7,
+                "rationale": "Related skill referenced in Related skills section.",
+                "source_scope": "section",
+                "source_ref": "Related skills",
+                "evidence_line_start": 10,
+                "evidence_line_end": 10,
             }
         ],
         "references": [
@@ -177,7 +187,7 @@ class LoadSkillsNeo4jTests(unittest.TestCase):
         self.assertNotIn("HAS_CHUNK", relationship_types)
         self.assertIn("ASSERTS_BRIDGE", relationship_types)
         self.assertIn("CONTAINS_SKILL", relationship_types)
-        self.assertIn("RELATED_TO", relationship_types)
+        self.assertIn("COMPLEMENTS", relationship_types)
         retrieval_unit = next(node for node in plan.nodes if node.label == "RetrievalUnit")
         self.assertTrue(retrieval_unit.id.startswith("retrieval:skill:apply-laws-of-ai:section:0:"))
         for field in (
@@ -268,7 +278,7 @@ class LoadSkillsNeo4jTests(unittest.TestCase):
         loader.load_plan(graph, first_plan, batch_size=100)
         loader.load_plan(graph, second_plan, batch_size=100)
 
-        self.assertEqual(1, graph.relationship_counts()["RELATED_TO"])
+        self.assertEqual(1, graph.relationship_counts()["COMPLEMENTS"])
 
     def test_dry_run_report_does_not_include_connection_details(self) -> None:
         loader = load_module()
@@ -296,7 +306,7 @@ class LoadSkillsNeo4jTests(unittest.TestCase):
 
         self.assertEqual("Skill", plan.nodes[0].label)
         self.assertEqual("skill:example", plan.nodes[0].id)
-        self.assertEqual("RELATED_TO", plan.relationships[0].type)
+        self.assertEqual("COMPLEMENTS", plan.relationships[0].type)
         self.assertEqual(["skills"], driver.databases)
 
 
@@ -342,7 +352,7 @@ class SnapshotSession:
             ]
         return [
             {
-                "type": "RELATED_TO",
+                "type": "COMPLEMENTS",
                 "source_labels": ["Skill"],
                 "source_id": "skill:example",
                 "target_labels": ["Skill"],

@@ -20,6 +20,7 @@ from scripts.skill_section_mapping import (
     SkillDependencyMapping,
     SkillSectionMapping,
     TaskIntentMapping,
+    extract_section,
     map_skill_sections,
 )
 from scripts.validate_skill_security import DEFAULT_ALLOWLIST
@@ -251,12 +252,6 @@ def _capabilities(
     )
 
 
-def _section_id_for_heading(sections: Sequence[SkillSection], heading: str) -> str:
-    for section in sections:
-        if section.heading == heading:
-            return section.id
-    return ""
-
 
 def _reference_records(
     text: str,
@@ -463,6 +458,47 @@ def _mapping_relationship_records(
     return relationships
 
 
+def _unmapped_dependency_relationship(
+    skill_id: str,
+    related_name: str,
+    source_path: str,
+    markdown: str,
+) -> dict[str, object]:
+    section = extract_section(markdown, "Related skills")
+    line_start = section.line_start if section else 1
+    line_end = line_start
+    rationale = f"Related skill `{related_name}` referenced in Related skills."
+    if section and section.text:
+        match = re.search(rf"`{re.escape(related_name)}`", section.text)
+        if match:
+            line_start = section.line_start + section.text[: match.start()].count("\n")
+            line_end = section.line_start + section.text[: match.end()].count("\n")
+            for line in section.text.splitlines():
+                if f"`{related_name}`" in line:
+                    cleaned = line.strip()
+                    if cleaned.startswith("|"):
+                        cleaned = cleaned.strip("|").strip()
+                    elif cleaned.startswith("-"):
+                        cleaned = cleaned.lstrip("-").strip()
+                    if cleaned:
+                        rationale = cleaned
+                    break
+
+    return {
+        "source": skill_id,
+        "type": "COMPLEMENTS",
+        "target": f"skill:{related_name}",
+        "source_path": source_path,
+        "mapping_rule_id": f"{skill_id}:mapping:dependency:complements:{related_name}",
+        "confidence": 0.7,
+        "rationale": rationale,
+        "source_scope": "section",
+        "source_ref": "Related skills",
+        "evidence_line_start": line_start,
+        "evidence_line_end": line_end,
+    }
+
+
 def _bridge_records(
     skill_id: str,
     source_path: str,
@@ -580,7 +616,6 @@ def extract_skills_graph_records(
             f"skill:{dependency.target_skill_id}" for dependency in mapped_dependencies
         }
         related_names = _related_skill_names(text, known_skill_names)
-        related_section_id = _section_id_for_heading(skill_sections, "Related skills")
         mapped_task_intent_ids = tuple(
             mapping.task_intent_id for mapping in section_mapping.task_intents
         )
@@ -657,13 +692,12 @@ def extract_skills_graph_records(
             if related_target in mapped_dependency_targets:
                 continue
             relationships.append(
-                {
-                    "source": skill_id,
-                    "type": "RELATED_TO",
-                    "target": related_target,
-                    "source_path": source_path,
-                    "source_section_id": related_section_id,
-                }
+                _unmapped_dependency_relationship(
+                    skill_id,
+                    related_name,
+                    source_path,
+                    text,
+                )
             )
 
     skill_pack: dict[str, object] | None = None
