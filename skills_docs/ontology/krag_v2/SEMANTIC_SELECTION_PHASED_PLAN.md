@@ -693,7 +693,14 @@ main
 
 **Deliverables:** Three-arm eval; golden tags; cutover report; **`scripts/report_skill_usage.py`** (ops snapshot from metrics or trace log); eval-vs-usage divergence section in acceptance report
 
-**Exit:** Graph lift proven; usage report runs in cutover acceptance; parent → `main` PR ready (pending Phase 9 CI).
+**Implemented (Phase 8 scaffolding):**
+
+- `evaluate_offline(..., case_filter="promoted_eligible")` — release-arm eval on promoted-eligible golden cases
+- `EvaluationCase.promotion_tier` optional tag (`release` | `diagnostic`)
+- `scripts/report_skill_usage.py` — zero-hit promoted skill snapshot
+- `tests/test_evaluate_promoted_release_gate.py` — ≥150 promoted-eligible cases; graph lift non-negative
+
+**Exit:** Graph lift proven on release arm; usage report runs; full 614-case corpus remains diagnostic until promotion backlog clears (Phase 9).
 
 ---
 
