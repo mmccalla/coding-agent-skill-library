@@ -1,0 +1,38 @@
+@prefix skills: <urn:coding-agent-skill-library:ontology:skills#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+skills:workflow-stage-discover a skills:WorkflowStage ;
+    skos:prefLabel "Discover" ;
+    skos:definition "Elicit intent, constraints and success criteria before specification." ;
+    skos:inScheme skills:WorkflowStageScheme .
+
+skills:workflow-stage-specify a skills:WorkflowStage ;
+    skos:prefLabel "Specify" ;
+    skos:definition "Produce a decision-complete specification and acceptance criteria." ;
+    skos:inScheme skills:WorkflowStageScheme .
+
+skills:workflow-stage-design a skills:WorkflowStage ;
+    skos:prefLabel "Design" ;
+    skos:definition "Architecture, modelling and design decisions before implementation." ;
+    skos:inScheme skills:WorkflowStageScheme .
+
+skills:workflow-stage-build a skills:WorkflowStage ;
+    skos:prefLabel "Build" ;
+    skos:definition "Implementation, coding and incremental delivery under test." ;
+    skos:inScheme skills:WorkflowStageScheme .
+
+skills:workflow-stage-verify a skills:WorkflowStage ;
+    skos:prefLabel "Verify" ;
+    skos:definition "Review, test, audit and quality gates before release." ;
+    skos:inScheme skills:WorkflowStageScheme .
+
+skills:workflow-stage-release a skills:WorkflowStage ;
+    skos:prefLabel "Release" ;
+    skos:definition "Shipping, progressive delivery and launch readiness." ;
+    skos:inScheme skills:WorkflowStageScheme .
+
+skills:workflow-stage-operate a skills:WorkflowStage ;
+    skos:prefLabel "Operate" ;
+    skos:definition "Production operations, observability, incidents and SLO management." ;
+    skos:inScheme skills:WorkflowStageScheme .
