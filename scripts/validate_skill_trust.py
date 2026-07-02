@@ -12,6 +12,7 @@ from pathlib import Path
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from scripts.validate_skill_mapping import validate_skill_mapping_file
 from scripts.validate_skill_practice import PracticeValidationResult, validate_skill_practice
 from scripts.validate_skill_security import (
     DEFAULT_ALLOWLIST,
@@ -62,15 +63,14 @@ def _layer_from_practice(result: PracticeValidationResult) -> LayerResult:
     )
 
 
-def _layer_mapping_stub(skill_path: str) -> LayerResult:
+def _layer_from_mapping(skill_path: str) -> LayerResult:
+    result = validate_skill_mapping_file(skill_path)
+    status = "pass" if result.passed else "warn"
     return LayerResult(
         layer="L4_mapping",
-        status="skipped",
+        status=status,
         passed=True,
-        details={
-            "skill_path": skill_path,
-            "message": "L4 semantic mapping validation not implemented in Phase 3.",
-        },
+        details=result.to_dict(),
     )
 
 
@@ -87,7 +87,7 @@ def validate_skill_trust_file(
         "L3_practice": _layer_from_practice(practice),
     }
     if include_mapping:
-        layers["L4_mapping"] = _layer_mapping_stub(skill_path)
+        layers["L4_mapping"] = _layer_from_mapping(skill_path)
 
     blocking_layers = ("L2_security", "L3_practice")
     passed = all(layers[layer].passed for layer in blocking_layers)

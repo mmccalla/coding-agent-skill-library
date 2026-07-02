@@ -8,18 +8,79 @@ from typing import NamedTuple
 
 GOVERNED_TASK_INTENT_IDS: frozenset[str] = frozenset(
     {
+        "accessibility-audit",
         "behaviour-change",
+        "ci-pipeline-change",
+        "code-review",
         "debug-with-verification",
         "defect-fix-with-tests",
         "feature-implementation",
+        "git-workflow",
+        "krag-architecture",
         "library-function-creation",
+        "mcp-server-design",
         "plan-before-build",
         "post-artefact-review",
         "refactor-with-tests",
+        "security-hardening",
+        "session-baseline",
         "spec-before-build",
         "test-harness-bootstrap",
     }
 )
+
+PROMOTION_READY_SOURCES: frozenset[str] = frozenset(
+    {"when_to_use", "description", "skill_registry"}
+)
+
+# Curated primary intents for high-traffic eval and agent skills (Phase 2b registry).
+SKILL_PRIMARY_INTENTS: dict[str, str] = {
+    "apply-laws-of-ai": "session-baseline",
+    "knowledge-graph-rag": "krag-architecture",
+    "krag-system-design": "krag-architecture",
+    "krag-ingestion-graph-construction": "krag-architecture",
+    "krag-retrieval-answering": "krag-architecture",
+    "krag-evaluation-governance": "post-artefact-review",
+    "knowledge-retrieval-rag": "krag-architecture",
+    "human-in-the-loop": "security-hardening",
+    "accessibility-wcag": "accessibility-audit",
+    "guardrails-safety-patterns": "security-hardening",
+    "evaluation-and-monitoring": "post-artefact-review",
+    "exception-handling-and-recovery": "debug-with-verification",
+    "goal-setting-and-monitoring": "plan-before-build",
+    "inter-agent-communication-a2a": "feature-implementation",
+    "mcp-server-design": "mcp-server-design",
+    "prioritization": "plan-before-build",
+    "reasoning-techniques": "debug-with-verification",
+    "resource-aware-optimization": "feature-implementation",
+    "context-engineering": "feature-implementation",
+    "idea-refinement": "spec-before-build",
+    "incremental-implementation": "feature-implementation",
+    "learning-and-adaptation": "feature-implementation",
+    "memory-management": "feature-implementation",
+    "multi-agent-collaboration": "feature-implementation",
+    "prompt-chaining": "feature-implementation",
+    "requirements-elicitation": "spec-before-build",
+    "routing": "feature-implementation",
+    "skill-discovery-and-selection": "plan-before-build",
+    "source-driven-development": "spec-before-build",
+    "tool-use-and-function-calling": "feature-implementation",
+    "uncertainty-driven-development": "plan-before-build",
+    "lakehouse-and-medallion-architecture": "feature-implementation",
+    "event-streaming-platform-design": "feature-implementation",
+    "stream-processing-patterns": "feature-implementation",
+    "streaming-operations-and-slos": "feature-implementation",
+    "event-driven-architecture": "feature-implementation",
+    "ci-cd-and-automation": "ci-pipeline-change",
+    "code-review-and-quality": "code-review",
+    "browser-testing-with-devtools": "debug-with-verification",
+    "business-capability-modeling": "plan-before-build",
+    "business-information-concept-modeling": "plan-before-build",
+    "capability-maturity-assessment": "post-artefact-review",
+    "operating-model-design": "plan-before-build",
+    "organization-and-role-design": "plan-before-build",
+    "process-modeling": "plan-before-build",
+}
 
 GOVERNED_CONSTRAINT_IDS: frozenset[str] = frozenset(
     {
@@ -46,6 +107,31 @@ TASK_INTENT_PHRASE_RULES: tuple[tuple[str, str], ...] = (
     ("plan-before-build", "planning"),
     ("debug-with-verification", "debugging"),
     ("test-harness-bootstrap", "executable tests"),
+    ("krag-architecture", "krag or graphrag"),
+    ("krag-architecture", "graph-augmented retrieval"),
+    ("krag-architecture", "designing the end-to-end architecture"),
+    ("krag-architecture", "knowledge graph-augmented retrieval"),
+    ("session-baseline", "every session start"),
+    ("session-baseline", "session start"),
+    ("accessibility-audit", "wcag"),
+    ("accessibility-audit", "accessible ui"),
+    ("accessibility-audit", "keyboard"),
+    ("mcp-server-design", "model context protocol"),
+    ("ci-pipeline-change", "ci/cd"),
+    ("ci-pipeline-change", "continuous integration"),
+    ("security-hardening", "approval"),
+    ("security-hardening", "guardrails"),
+    ("security-hardening", "high-impact"),
+    ("code-review", "code review"),
+    ("plan-before-build", "decomposing work"),
+    ("plan-before-build", "multi-step implementation"),
+    ("post-artefact-review", "evaluation"),
+    ("post-artefact-review", "monitoring"),
+    ("debug-with-verification", "debugging"),
+    ("debug-with-verification", "recovery"),
+    ("feature-implementation", "streaming"),
+    ("feature-implementation", "event-driven"),
+    ("feature-implementation", "lakehouse"),
 )
 
 CONSTRAINT_PHRASE_RULES: tuple[tuple[str, str], ...] = (
@@ -87,12 +173,14 @@ class SectionExcerpt(NamedTuple):
 
 
 class TaskIntentMapping(NamedTuple):
-    """A governed task intent promoted from `## When to use`."""
+    """A governed task intent promoted from SKILL.md metadata or sections."""
 
     task_intent_id: str
     matched_phrase: str
     evidence: EvidenceCoordinates
     section_heading: str
+    mapping_source: str = "when_to_use"
+    confidence: float = 0.95
 
 
 class ConstraintMapping(NamedTuple):
@@ -190,6 +278,43 @@ def _map_phrase_rules(
     return tuple(mappings)
 
 
+def _frontmatter_description(markdown: str) -> str:
+    if not markdown.startswith("---\n"):
+        return ""
+    end = markdown.find("\n---\n", 4)
+    if end == -1:
+        return ""
+    frontmatter = markdown[4:end]
+    match = re.search(r"^description:[ \t]*(.+)$", frontmatter, flags=re.MULTILINE)
+    return match.group(1).strip() if match else ""
+
+
+def _merge_task_intent_mappings(
+    *groups: Sequence[TaskIntentMapping],
+) -> tuple[TaskIntentMapping, ...]:
+    merged: list[TaskIntentMapping] = []
+    seen: set[str] = set()
+    for group in groups:
+        for mapping in group:
+            if mapping.task_intent_id in seen:
+                continue
+            merged.append(mapping)
+            seen.add(mapping.task_intent_id)
+    return tuple(merged)
+
+
+def promotion_ready_task_intents(
+    mappings: Sequence[TaskIntentMapping],
+) -> tuple[TaskIntentMapping, ...]:
+    """Return task intents that satisfy Phase 2b promotion-ready sources."""
+
+    return tuple(
+        mapping
+        for mapping in mappings
+        if mapping.mapping_source in PROMOTION_READY_SOURCES
+    )
+
+
 def map_when_to_use_task_intents(markdown: str) -> tuple[TaskIntentMapping, ...]:
     """Map `## When to use` prose to governed task intent ids."""
 
@@ -209,8 +334,65 @@ def map_when_to_use_task_intents(markdown: str) -> tuple[TaskIntentMapping, ...]
             matched_phrase=matched_phrase,
             evidence=evidence,
             section_heading=section_heading,
+            mapping_source="when_to_use",
+            confidence=0.95,
         )
         for task_intent_id, matched_phrase, evidence, section_heading in raw_mappings
+    )
+
+
+def map_description_task_intents(markdown: str) -> tuple[TaskIntentMapping, ...]:
+    """Map YAML description and section prose to governed task intents."""
+
+    description = _frontmatter_description(markdown)
+    when_section = extract_section(markdown, "When to use")
+    combined_parts = [description]
+    if when_section and when_section.text:
+        combined_parts.append(when_section.text)
+    combined = "\n".join(part for part in combined_parts if part).strip()
+    if not combined:
+        return ()
+
+    pseudo_section = SectionExcerpt(
+        heading="description",
+        text=combined,
+        line_start=1,
+        line_end=max(1, combined.count("\n") + 1),
+    )
+    raw_mappings = _map_phrase_rules(
+        pseudo_section,
+        TASK_INTENT_PHRASE_RULES,
+        governed_ids=GOVERNED_TASK_INTENT_IDS,
+        section_heading="description",
+    )
+    return tuple(
+        TaskIntentMapping(
+            task_intent_id=task_intent_id,
+            matched_phrase=matched_phrase,
+            evidence=evidence,
+            section_heading=section_heading,
+            mapping_source="description",
+            confidence=0.85,
+        )
+        for task_intent_id, matched_phrase, evidence, section_heading in raw_mappings
+    )
+
+
+def map_registry_task_intents(skill_name: str) -> tuple[TaskIntentMapping, ...]:
+    """Map curated registry entries for high-traffic skills."""
+
+    task_intent_id = SKILL_PRIMARY_INTENTS.get(skill_name)
+    if not task_intent_id or task_intent_id not in GOVERNED_TASK_INTENT_IDS:
+        return ()
+    return (
+        TaskIntentMapping(
+            task_intent_id=task_intent_id,
+            matched_phrase=f"skill_registry:{skill_name}",
+            evidence=EvidenceCoordinates(line_start=1, line_end=1),
+            section_heading="skill_registry",
+            mapping_source="skill_registry",
+            confidence=0.80,
+        ),
     )
 
 
@@ -322,12 +504,18 @@ def map_related_skill_dependencies(
 def map_skill_sections(
     markdown: str,
     *,
+    skill_name: str = "",
     known_skill_ids: set[str] | None = None,
 ) -> SkillSectionMapping:
     """Map supported SKILL.md sections to governed semantic assertions."""
 
+    task_intents = _merge_task_intent_mappings(
+        map_when_to_use_task_intents(markdown),
+        map_description_task_intents(markdown),
+        map_registry_task_intents(skill_name),
+    )
     return SkillSectionMapping(
-        task_intents=map_when_to_use_task_intents(markdown),
+        task_intents=task_intents,
         constraints=map_when_not_to_use_constraints(markdown),
         dependencies=map_related_skill_dependencies(markdown, known_skill_ids=known_skill_ids),
     )

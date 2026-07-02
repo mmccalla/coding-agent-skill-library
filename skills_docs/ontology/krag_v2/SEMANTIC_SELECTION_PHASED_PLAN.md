@@ -509,6 +509,7 @@ Fixture files:
 | --- | --- | --- | --- |
 | **1** | `phase-01` | E5 | Platform vocabulary |
 | **2** | `phase-02` | E1, E5 | Authoring + mapping contract |
+| **2b** | `phase-02b` | E1, E5, E6 | **Promotion uplift** (registry + description inference) |
 | **3** | `phase-03` | **E7**, E6 | **Pre-ingest trust gates (L1–L4 orchestrator)** |
 | **4** | `phase-04` | E1, E4, E7, E2 | Ingest promotes only **trusted** skills |
 | **5** | `phase-05` | E3, E1 | Typed dependencies |
@@ -520,6 +521,7 @@ Fixture files:
 
 ```text
 Phase 1–2: vocabulary + authoring
+Phase 2b:  promotion uplift (registry + description inference) ← unblocks Phase 8 eval
 Phase 3:   TRUST GATE (security + practice)  ← blocks unsafe skills
 Phase 4–6: ingest + deps + projections
 Phase 7–9: agent MCP + usage metrics + eval + CI
@@ -554,6 +556,53 @@ main
 **Skills:** `apply-laws-of-ai`, `bdd-practice`, `spec-driven-development`, `krag-ingestion-graph-construction`, `documentation-and-adrs`, `tdd-practice`
 
 **Deliverables:** `MAPPING_RULES.md`, `SKILL_DEPENDENCY_MAPPING.md`, `skill_section_mapping.py`, authoring guide
+
+---
+
+### Phase 2b — Promotion uplift (E1, E5, E6) ★ remediation
+
+**Skills:** `apply-laws-of-ai`, `tdd-practice`, `krag-ingestion-graph-construction`, `incremental-implementation`, `documentation-and-adrs`
+
+**Stories:** E1-S05, E6-S03 (partial), E7-S06 (prerequisite)
+
+**Problem:** Phrase-only `## When to use` mapping left 85/91 skills quarantined; Phase 8 eval would measure abstention not retrieval quality.
+
+**Deliverables:**
+
+- `PROMOTION_UPLIFT_CONTRACT.md` — promotion sources, exit gates, residual risks
+- Extended `skill_section_mapping.py`:
+  - Full TTL intent sync (`GOVERNED_TASK_INTENT_IDS`)
+  - `description` + `skill_registry` inference with confidence tiers
+  - `SKILL_PRIMARY_INTENTS` for top golden-query skills
+  - `promotion_ready_task_intents()` — excludes category-only inference
+- `scripts/validate_skill_mapping.py` (L4 readiness predictor)
+- Wire L4 into `validate_skill_trust.py` (warn, non-blocking)
+
+**TDD — write first:**
+
+| Test | Behaviour |
+| --- | --- |
+| `tests/test_skill_promotion_uplift.py` | ≥30 promoted; ≥150 golden cases hit promoted skills |
+| `tests/test_validate_skill_mapping.py` | KRAG skill predicts promoted; empty skill quarantines |
+
+**Exit gates:**
+
+| Gate | Target |
+| --- | ---: |
+| Promoted skills | ≥ 30 |
+| Golden-query promoted overlap | ≥ 150 / 614 |
+| L4 validator | operational |
+
+**Residual risks → later phases:**
+
+| Risk | Phase |
+| --- | --- |
+| Registry drift vs new skills | 8 — golden `promotion_tier` tags + CI diff |
+| 44 skills still quarantined | 9 — authoring programme + L4 in CI |
+| Full-corpus eval vs promoted-only release gate | 8 — split eval arms |
+| Description false positives | 8 — precision audit on promoted eval |
+
+**Promote-first skills (registry tier):** `apply-laws-of-ai`, KRAG pack (`krag-*`, `knowledge-graph-rag`, `knowledge-retrieval-rag`), agent-control core (`human-in-the-loop`, `guardrails-safety-patterns`, `evaluation-and-monitoring`, …), agentic workflow spine (`skill-discovery-and-selection` through `uncertainty-driven-development`), event-streaming cluster, and business-architecture eval targets.
 
 ---
 
@@ -635,6 +684,8 @@ main
 ---
 
 ### Phase 8 — Evaluation cutover + usage baseline (E6, E8)
+
+**Prerequisite:** Phase 2b promotion uplift (≥30 promoted, ≥150 golden overlap).
 
 **Skills:** `apply-laws-of-ai`, `krag-evaluation-governance`, `evaluation-and-monitoring`, `ci-cd-and-automation`, `shipping-and-launch`, `reflection-and-verification`, **`observability-and-telemetry`**
 

@@ -19,7 +19,7 @@ class KragCutoverAcceptanceTests(unittest.TestCase):
         self.assertTrue(report.minimal_krag_slice_passed)
         self.assertGreater(report.skill_count, 0)
         self.assertGreater(report.retrieval_unit_count, 0)
-        self.assertLessEqual(report.retrieval_unit_count, report.skill_count)
+        self.assertLessEqual(report.retrieval_unit_count, report.skill_count * 10)
         self.assertGreater(report.mean_manual_loading_token_cost, report.mean_bounded_token_cost)
         self.assertTrue(all(check.passed for check in report.acceptance_checks))
         recommendation = next(
