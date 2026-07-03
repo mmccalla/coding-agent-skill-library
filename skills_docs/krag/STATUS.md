@@ -5,7 +5,7 @@
 
 This is the **single live roadmap** for the Knowledge Graph service. Completed phase plans are archived under `skills_docs/archive/planning/` (Wave C).
 
-For measured retrieval quality, see `ontology/krag_v2/E2E_EVALUATION_REPORT.md` (consolidated into `krag/EVALUATION.md` in Wave B).
+For measured retrieval quality, see `krag/EVALUATION.md`.
 
 ---
 

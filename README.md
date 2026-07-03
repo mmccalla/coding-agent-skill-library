@@ -11,6 +11,7 @@ Portable **91-skill** library for coding agents, plus an optional local **Neo4j 
 | Copy skills into another repo | `skills_docs/DROP_IN_BOOTSTRAP.md` |
 | Operate or troubleshoot the KG | [`skills_docs/SKILLS_KG_MCP_RUNBOOK.md`](skills_docs/SKILLS_KG_MCP_RUNBOOK.md) |
 | See KRAG status and roadmap | [`skills_docs/krag/STATUS.md`](skills_docs/krag/STATUS.md) |
+| Measured retrieval quality | [`skills_docs/krag/EVALUATION.md`](skills_docs/krag/EVALUATION.md) |
 
 ## What is in this repo
 
