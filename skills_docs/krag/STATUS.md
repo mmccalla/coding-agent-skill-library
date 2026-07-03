@@ -47,11 +47,11 @@ All rows below are tracked in [`CLOSEOUT_PLAN.md`](CLOSEOUT_PLAN.md). Target: **
 | Wave | Scope | Closes |
 | --- | --- | --- |
 | 0 | Plan, STATUS hygiene, `rdflib` dep, corpus contract | Stale STATUS rows; CI import reliability |
-| 1 | `query_catalog.json`, `abstention_probes.json`, `validate_eval_corpus.py` | Corpus contract |
-| 2 | Tiered generator; shrink 1,194 → ~365 cases; new gates | Abstention corpus; blended pass-rate gap |
+| 1 | `query_catalog.json`, `abstention_probes.json`, `confuser_pairs.json`, `validate_eval_corpus.py`, coverage matrix | Corpus contract; blind-spot structure |
+| 2 | Tiered generator; shrink 1,194 → ~365 cases; delta eval; shadow baseline | Abstention corpus; blind-spot on skill diffs |
 | 3 | Skills UI admin ingest | Phase 10 UI; preview-only gap |
 | 4 | JRN-08 … JRN-11; confuser catalogue | Journey + exclusion gaps |
-| 5 | `ci_local.sh` green (mypy); nightly coverage; STATUS final | CI typing debt |
+| 5 | `ci_local.sh` green (mypy); nightly coverage + shadow arm | CI typing debt; ongoing blind-spot monitoring |
 
 ---
 
@@ -70,7 +70,8 @@ All rows below are tracked in [`CLOSEOUT_PLAN.md`](CLOSEOUT_PLAN.md). Target: **
 
 | Gap | Impact | Programme wave |
 | --- | --- | --- |
-| Template-heavy golden corpus (1,194 cases) | Misleading blended pass **84.6%** | 2 |
+| Template-heavy golden corpus (1,194 cases) | Misleading blended pass **84.6%** | 2 (+ shadow arm) |
+| Regression blind spot after shrink | Per-skill/category/confuser gaps | 1–2 (matrix, delta eval, nightly) |
 | Abstention on 182 nonce negatives | Dominated by synthetic probes | 2 |
 | 2 exclusion failures in full golden set | Co-rank at 2–3 | 4 |
 | Upload preview without UI persist path | Operators use API for ingest | 3 |

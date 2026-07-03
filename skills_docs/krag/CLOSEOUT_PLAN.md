@@ -81,6 +81,8 @@ Abstention probes (release)     ~15 cases     varied OOD, not per-skill nonces
 **Nightly:** coverage tier (~250).  
 **Reduction:** ~70% fewer cases than today; **>90%** of release-gated queries are curated/journey-sourced.
 
+Shrink risk is explicit: fewer cases can miss category gaps, alias-only lookups, new skills, and graph-adjacent confusers. See **[Blind-spot mitigation programme](#blind-spot-mitigation-programme)** below — mandatory alongside the tier model, not optional hardening.
+
 ### Corpus files
 
 | File | Role | Replaces |
@@ -139,6 +141,124 @@ Abstention probes (release)     ~15 cases     varied OOD, not per-skill nonces
 - 11 templates × every skill
 - 2 nonce negatives × every skill
 - `test_load_cases_requires_large_golden_query_contract` minimum of 500 cases
+
+---
+
+## Blind-spot mitigation programme
+
+Shrinking the corpus trades redundant template signal for speed and realism. The programme **must not** trade away detectability of per-skill, per-category, or per-confuser regressions. Mitigations are **release-blocking** unless marked advisory.
+
+### 1. Structural coverage matrix (hard gate)
+
+`validate_eval_corpus.py` emits and checks `coverage_matrix.json`:
+
+| Dimension | Rule | Tier enforced |
+| --- | --- | --- |
+| **Promoted skill** | Every promoted skill appears in **≥2** coverage cases with **different** `query_archetype` | Coverage (nightly) |
+| **Semantic category** | Each of the **9** pack categories has **≥5** realistic-tier cases | Realistic |
+| **Alias** | Skills with frontmatter `aliases` have **≥1** `alias_query` in coverage | Coverage |
+| **Multi-skill** | **≥10** catalogue cases with `len(expected_skill_ids) > 1` | Realistic |
+| **Confuser pairs** | Every pair in `confuser_pairs.json` (see §3) has **≥1** realistic case | Realistic |
+| **Workflow stage** | Each governed workflow stage in ontology instances appears in **≥3** cases | Coverage (advisory wave 2; hard wave 4) |
+
+Merge is blocked if a promoted skill is added/changed in `skills/` but the coverage matrix row is missing after regeneration.
+
+### 2. Change-scoped eval (CI on every skill diff)
+
+Extend `ci_ingest_gate.py` with **delta eval**:
+
+```text
+git diff --name-only origin/main -- 'skills/*/SKILL.md'
+  → for each touched skill_id:
+       run evaluate_offline on coverage + realistic cases tagged with that skill
+       fail if any case for that skill regresses precision@1 or required_skill_ids
+```
+
+This restores the old “every skill always exercised on every PR” property **for changed skills only**, without running 1,194 cases.
+
+### 3. Confuser pair registry (graph-backed)
+
+Add `tests/fixtures/retrieval_evaluation/confuser_pairs.json` — canonical near-neighbour pairs derived from:
+
+- Existing realistic failures (KRAG vs graph-RAG, guardrails vs HITL, etc.)
+- `COMPLEMENTS` / `REFINES` edges where skills share task intents but differ in capability
+- Manual additions during catalogue review
+
+`validate_eval_corpus.py` asserts each pair has a catalogue case with correct `expected_skill_ids` and `excluded_skill_ids`. New high-traffic complements from graph extract trigger a **validator warning** when unpaired.
+
+### 4. Shadow comparison arm (shrink safety net)
+
+Before Wave 2 merges, run once and archive in `skills_docs/archive/planning/CORPUS_SHRINK_BASELINE.json`:
+
+| Arm | Cases | Purpose |
+| --- | --- | --- |
+| Legacy template sample | 100 stratified random from old `golden_queries.json` | Detect ranking regressions on formerly gated queries |
+| New tier union | smoke + realistic + coverage + abstention | New programme baseline |
+
+**Release rule for Wave 2:** precision@1 on legacy sample must not drop more than **0.02** absolute vs pre-shrink baseline. After Wave 2 ships, re-run monthly (nightly job) as advisory.
+
+### 5. Skill and pack drift detectors
+
+| Detector | When | Action |
+| --- | --- | --- |
+| `validate_eval_corpus.py --check-skill-sync` | CI | Fail if `skills/PACK_METADATA.json` lists a skill with no coverage row |
+| `generate_golden_queries.py --emit-stubs` | On new skill | Emit **TODO** stub cases into `query_catalog.json` for human review |
+| `test_skill_promotion_uplift.py` | CI | Keep promoted-skills gate on smoke + coverage subsets |
+| `rollup_skill_usage.py` (advisory) | Weekly | Zero-hit promoted skills → candidate catalogue additions |
+
+### 6. Archetype diversity per skill (not just count)
+
+Coverage tier enforces **distinct archetypes**, not duplicate phrasing:
+
+- `task_query` — paraphrase from description **without** embedding skill id string
+- `alias_query` — use alias only when present; else skip archetype
+- `confuser_query` — only when skill appears in `confuser_pairs.json`
+
+`validate_eval_corpus.py` rejects two coverage cases for the same skill if `query` normalised text similarity > 0.85 (simple token Jaccard).
+
+### 7. Tiered CI schedule (nothing important only nightly)
+
+| When | Tiers run | Blocks merge? |
+| --- | --- | --- |
+| Every PR | smoke + delta eval + corpus validator | **Yes** |
+| Every PR | realistic (100) + abstention (15) | **Yes** (after Wave 2) |
+| Nightly | full coverage (~250) + shadow legacy sample | **No** — alerts + issue |
+| Weekly | usage zero-hit report → catalogue backlog | Advisory |
+
+Nightly coverage failure pages the programme owner; two consecutive failures block the next release tag until triaged.
+
+### 8. Catalogue growth triggers (living corpus)
+
+Add cases when any of:
+
+- New promoted skill (auto-stub + human review before merge)
+- Realistic tier precision@1 failure on a confuser pair
+- Zero-hit skill for 30 days (usage rollup)
+- New `COMPLEMENTS` edge between promoted skills (validator warning until cased)
+- Post-incident MCP journey gap (new JRN fixture)
+
+Document triggers in `EVALUATION_CORPUS_CONTRACT.md` § Living corpus.
+
+### 9. Implementation waves (mitigation mapping)
+
+| Mitigation | Wave |
+| --- | --- |
+| `validate_eval_corpus.py` + coverage matrix | 1 |
+| `confuser_pairs.json` + matrix checks | 1 |
+| Delta eval in `ci_ingest_gate.py` | 2 |
+| Shadow baseline + Wave 2 release rule | 2 |
+| Nightly coverage workflow | 5 |
+| Usage harvest backlog | 5 (advisory) |
+
+### 10. Acceptance criteria (blind-spot specific)
+
+Programme is **not** complete unless:
+
+1. Coverage matrix passes for all **91** promoted skills (≥2 archetypes each).
+2. All **confuser_pairs.json** entries have realistic cases.
+3. Delta eval runs on every `SKILL.md` change in CI.
+4. Shadow arm documented; Wave 2 shrink shows ≤ 0.02 precision@1 drop on legacy sample.
+5. `EVALUATION.md` reports metrics by **category** and **archetype**, not only global precision.
 
 ---
 
@@ -207,21 +327,25 @@ All work lands via stacked commits/PRs from `plan/golden-corpus-status-closeout`
 
 - [ ] Add `query_catalog.json` (~40 cases: seeds + realistic + journey harvest)
 - [ ] Add `abstention_probes.json` (~15 cases)
-- [ ] Add `validate_eval_corpus.py` + tests
+- [ ] Add `confuser_pairs.json` (initial ~15 pairs from known failures + graph)
+- [ ] Add `validate_eval_corpus.py` + tests (schema, matrix, pair coverage, similarity guard)
+- [ ] Emit `coverage_matrix.json` from validator
 - [ ] Update `EVALUATION.md` tier model (no gate changes yet)
 
-**Exit:** Catalogue reviewable; validator passes.
+**Exit:** Catalogue reviewable; validator passes; matrix and confuser registry in place.
 
 ### Wave 2 — Generator rewrite and corpus shrink
 
 - [ ] Refactor `generate_golden_queries.py` (tiers, no 11-template loop)
-- [ ] Emit `coverage_queries.json` (~250 cases)
-- [ ] Expand `realistic_queries.json` from catalogue (~100)
+- [ ] Emit `coverage_queries.json` (~250 cases; ≥2 archetypes per skill)
+- [ ] Expand `realistic_queries.json` from catalogue (~100; category-stratified)
 - [ ] Expand `smoke_queries_promoted.json` (~30)
+- [ ] Archive `CORPUS_SHRINK_BASELINE.json`; run shadow comparison
+- [ ] Add delta eval to `ci_ingest_gate.py` for touched `SKILL.md` paths
 - [ ] Deprecate or slim `golden_queries.json`
 - [ ] Update `test_evaluate_skill_retrieval.py`, `test_e2e_realistic_retrieval.py`
 
-**Exit:** Release gates use new tiers; CI eval < 30s; abstention gated on probes.
+**Exit:** Release gates use new tiers; CI eval < 30s; abstention gated on probes; shadow arm ≤ 0.02 regression; delta eval green.
 
 **Closes:** synthetic negative abstention tuning (corpus); known gap “abstention blended pass rate”.
 
@@ -250,11 +374,12 @@ All work lands via stacked commits/PRs from `plan/golden-corpus-status-closeout`
 ### Wave 5 — CI green and STATUS final
 
 - [ ] Fix or stage mypy errors until `ci_local.sh` passes
-- [ ] Nightly workflow for coverage tier (optional GitHub Actions job)
+- [ ] Nightly workflow: full coverage tier + shadow legacy sample + matrix upload artefact
+- [ ] Weekly usage zero-hit advisory job (optional)
 - [ ] Final `STATUS.md` — empty In progress / To do / Known gaps
 - [ ] `CHANGELOG.md` entry
 
-**Exit:** `./scripts/ci_local.sh` passes; STATUS.md closeout complete.
+**Exit:** `./scripts/ci_local.sh` passes; STATUS.md closeout complete; nightly blind-spot monitoring live.
 
 ---
 
@@ -268,6 +393,7 @@ All work lands via stacked commits/PRs from `plan/golden-corpus-status-closeout`
 6. JRN-01 … JRN-11 pass in `test_agent_journeys.py`.
 7. `rdflib` declared; `ci_ingest_gate.py` runs in clean `pip install -e ".[dev]"` env.
 8. `ci_local.sh` exits 0 (including mypy).
+9. **Blind-spot:** coverage matrix passes; confuser pairs cased; delta eval on skill diffs; shadow regression ≤ 0.02.
 
 ---
 
@@ -287,11 +413,15 @@ All work lands via stacked commits/PRs from `plan/golden-corpus-status-closeout`
 
 | Risk | Mitigation |
 | --- | --- |
-| Coverage blind spot after shrink | Coverage tier + per-skill assertion in `validate_eval_corpus.py` |
+| **Coverage blind spot after shrink** | [Blind-spot mitigation programme](#blind-spot-mitigation-programme): coverage matrix (≥2 archetypes/skill), category-stratified realistic tier, delta eval on `SKILL.md` diffs, confuser pair registry, nightly full coverage + shadow legacy arm |
+| **New skill merges without eval cases** | `--emit-stubs` on generate; validator `--check-skill-sync`; CI blocks until matrix row exists |
+| **Alias-only lookups untested** | Mandatory `alias_query` archetype when aliases exist |
+| **Confuser regression undetected** | `confuser_pairs.json` hard gate on realistic tier; precision@1 = 1.0 |
+| **Template removal hides ranking drift** | Shadow comparison vs pre-shrink baseline (≤ 0.02 drop); monthly advisory |
 | UI admin key exposure | Key in local settings only; never commit; document env var |
 | Confuser gate too strict | Soft exclusion gate; hard precision@1 only |
 | mypy scope creep | Wave 5 time-boxed; fix modules touched in waves 1–4 first |
-| Catalogue staleness | Quarterly review checklist in `EVALUATION_CORPUS_CONTRACT.md` |
+| Catalogue staleness | Growth triggers (§8); quarterly review; usage zero-hit harvest |
 
 ---
 
@@ -299,8 +429,10 @@ All work lands via stacked commits/PRs from `plan/golden-corpus-status-closeout`
 
 ```bash
 git checkout plan/golden-corpus-status-closeout
-python3 scripts/validate_eval_corpus.py          # after wave 1
+python3 scripts/validate_eval_corpus.py --check-skill-sync   # after wave 1
+python3 scripts/validate_eval_corpus.py --emit-matrix      # coverage_matrix.json
 python3 scripts/generate_golden_queries.py --tier all
+python3 scripts/generate_golden_queries.py --emit-stubs     # new skills only
 python3 -m pytest tests/test_e2e_realistic_retrieval.py tests/test_agent_journeys.py -q
 npm --prefix skills-ui test
 ./scripts/ci_local.sh

@@ -46,9 +46,29 @@ Optional fields:
 1. **No** per-skill nonce negative probes (`zzqp qxjv…`).
 2. **Max 3** positive cases per skill in coverage tier.
 3. **≥90%** of smoke + realistic queries must be `curated` or `journey` sourced.
-4. Every **promoted** skill must appear in **≥1** coverage-tier case.
+4. Every **promoted** skill must appear in **≥2** coverage-tier cases with **different** `query_archetype` values.
 5. Confuser cases must name `excluded_skill_ids` for known near-neighbours.
-6. Regenerate with `python3 scripts/generate_golden_queries.py --tier <name>`.
+6. Every entry in `confuser_pairs.json` must have **≥1** realistic-tier case.
+7. Regenerate with `python3 scripts/generate_golden_queries.py --tier <name>`.
+
+---
+
+## Blind-spot controls
+
+Structural guarantees so corpus shrink does not hide regressions:
+
+| Control | Enforcement |
+| --- | --- |
+| Coverage matrix | `coverage_matrix.json` — skill × archetype; validator hard gate |
+| Category balance | ≥5 realistic cases per pack category (9 categories) |
+| Alias coverage | `alias_query` required when skill has frontmatter aliases |
+| Confuser registry | `confuser_pairs.json` synced with realistic catalogue |
+| Delta eval | `ci_ingest_gate.py` runs cases for each changed `skills/*/SKILL.md` |
+| Query diversity | Reject duplicate coverage queries (token Jaccard > 0.85) |
+| Shadow arm | Legacy template sample; ≤ 0.02 precision@1 drop vs baseline |
+| New skill stubs | `--emit-stubs` adds TODO catalogue rows before merge |
+
+See [`CLOSEOUT_PLAN.md`](CLOSEOUT_PLAN.md) § Blind-spot mitigation programme for full detail.
 
 ---
 
@@ -70,8 +90,25 @@ Optional fields:
 
 - JSON schema and unique ids
 - Tier size bounds
-- Promoted skill coverage map
+- Promoted skill coverage matrix (≥2 archetypes per skill)
+- Category and confuser-pair coverage
 - Template explosion guard (no `_generated_08` style ids in release tiers)
+- Query similarity guard within skill coverage rows
+- `--check-skill-sync` against `PACK_METADATA.json`
+
+---
+
+## Living corpus
+
+Add or update cases when:
+
+1. A new promoted skill is added (`--emit-stubs` + human review).
+2. A realistic-tier confuser case fails precision@1.
+3. Usage rollup reports zero hits for 30 days (advisory).
+4. Graph extract adds a new `COMPLEMENTS` edge between promoted skills (validator warning until cased).
+5. A new agent journey fixture is added (harvest query into catalogue).
+
+Quarterly human review of `query_catalog.json` and `confuser_pairs.json`.
 
 ---
 
