@@ -727,6 +727,8 @@ skills/** PR workflow:
 
 **Exit:** Engineer merges skill → trust + ingest → agent safe; usage visible in Grafana; **JRN-07** + **JRN-09** + **JRN-10** in CI.
 
+**Status (implemented):** `scripts/ci_ingest_gate.py` wired into `scripts/ci_local.sh`; combined API + usage + trust metrics on `GET /metrics`; MCP `--metrics` parity; `configs/grafana/dashboards/skills-kg-usage.json`; `scripts/rollup_skill_usage.py` weekly rollup; `validate_skill_trust.py --ci-gate` (L2-only block).
+
 ---
 
 ### Phase 10 — Admin UI skill upload (E9, E7, E1)

@@ -113,4 +113,4 @@ Skill changes pass the ingest gate (`scripts/ci_ingest_gate.py`) inside `ci_loca
 | `ontology/skills.ttl` | Canonical ontology source |
 | `SKILLS_KG_MCP_RUNBOOK.md` | Rebuild, load, troubleshoot |
 
-Historical phase plans live under `archive/planning/` after documentation consolidation (Wave C).
+Historical phase plans live under `skills_docs/archive/planning/`.
