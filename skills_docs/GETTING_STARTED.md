@@ -1,0 +1,113 @@
+# Getting Started
+
+Choose the path that matches your goal. You do not need to read KRAG design docs to use this repository.
+
+## Use skills in an agent
+
+1. Read `AGENTS.md` (or `CLAUDE.md` for the short mirror).
+2. Read `AGENTIC_CODING_GLOBAL_SAFETY.md` and `SECURE_AGENTIC_DEVELOPMENT.md`.
+3. Execute `skills/apply-laws-of-ai/SKILL.md` in full.
+4. Route with `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`.
+5. Load the smallest matching `skills/<name>/SKILL.md`.
+
+To copy only the portable library into another repository, see `DROP_IN_BOOTSTRAP.md`.
+
+## Run the Skills KG service locally
+
+### Quick start (Docker)
+
+```bash
+cp .env.example .env   # set local passwords — do not commit .env
+docker compose up --build -d
+```
+
+Service URLs:
+
+| Service | URL |
+| --- | --- |
+| UI | http://localhost:5173 |
+| API + OpenAPI | http://localhost:8000/docs |
+| Neo4j Browser | http://localhost:7474 |
+| Grafana | http://localhost:3000 |
+
+Health checks:
+
+```bash
+curl -fsS http://localhost:8000/health/ready
+curl -fsS http://localhost:8000/metrics
+```
+
+See `SECURITY_HARDENING.md` for Docker credential and network guidance.
+
+### Connect Cursor (MCP)
+
+Read-only stdio server:
+
+```bash
+uv run --no-project \
+  --directory /path/to/coding-agent-skill-library \
+  --with-editable /path/to/coding-agent-skill-library \
+  python scripts/skills_mcp_server.py --sdk-stdio
+```
+
+List tools:
+
+```bash
+python3 scripts/skills_mcp_server.py --list-tools
+```
+
+Cursor `mcpServers` entry (replace paths):
+
+```json
+{
+  "mcpServers": {
+    "skills-kg": {
+      "command": "/path/to/uv",
+      "args": [
+        "run", "--no-project",
+        "--directory", "/path/to/coding-agent-skill-library",
+        "--with-editable", "/path/to/coding-agent-skill-library",
+        "python", "scripts/skills_mcp_server.py", "--sdk-stdio"
+      ]
+    }
+  }
+}
+```
+
+MCP exposes **read-only** skill tools. Agents cannot ingest or write skills through MCP.
+
+### Validate your setup
+
+```bash
+python3 -m pip install -e ".[dev]"
+./scripts/ci_local.sh
+```
+
+Targeted smoke:
+
+```bash
+python3 scripts/skills_mcp_server.py --list-tools
+python3 scripts/evaluate_skill_retrieval.py --limit 3
+```
+
+Full operator workflow: `SKILLS_KG_MCP_RUNBOOK.md`.
+
+## Write or change a skill
+
+1. Read `SKILL_AUTHORING_GUIDE.md` and `LIBRARY_CONTRACT.md`.
+2. Edit `skills/<skill-name>/SKILL.md`.
+3. Run `python3 scripts/validate_skills.py`.
+4. For material changes, run `./scripts/ci_local.sh`.
+
+Skill changes pass the ingest gate (`scripts/ci_ingest_gate.py`) inside `ci_local.sh`: L2 security, graph connectivity, SHACL, promoted smoke retrieval and dry-run Neo4j load.
+
+## Maintain KRAG (ontology, eval, roadmap)
+
+| Document | Purpose |
+| --- | --- |
+| `krag/STATUS.md` | Done, in progress, and to-do (single roadmap) |
+| `krag/README.md` | Short KRAG overview (after Wave B) |
+| `ontology/skills.ttl` | Canonical ontology source |
+| `SKILLS_KG_MCP_RUNBOOK.md` | Rebuild, load, troubleshoot |
+
+Historical phase plans live under `archive/planning/` after documentation consolidation (Wave C).
