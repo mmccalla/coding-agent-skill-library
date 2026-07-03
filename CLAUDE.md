@@ -113,7 +113,7 @@ Use the smallest relevant set of skills:
 - `observability-and-telemetry` for metrics, logs, traces, dashboards and alerts.
 - `toil-reduction-and-automation` for safe operational automation.
 - `release-engineering-and-progressive-delivery` for safe deployment, canaries, rollback and feature flags.
-- `dora-four-keys` for DevOps Research and Assessment delivery metrics.
+- `dora-four-keys` for DevOps Research and Assessment delivery metrics (classic Four Keys plus rework rate).
 
 Before changing reliability-sensitive code, identify user impact, service objective, telemetry evidence, rollback path, tests, operational owner and residual risk.
 

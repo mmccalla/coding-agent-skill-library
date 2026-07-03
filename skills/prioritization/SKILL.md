@@ -25,15 +25,6 @@ Rank candidate actions consistently using explicit criteria, dependencies, safet
 5. Select the next best action or ordered sequence.
 6. Re-prioritise when new evidence arrives.
 
-## Core pattern
-
-1. List candidate tasks or actions.
-2. Define prioritization criteria before scoring.
-3. Score each candidate consistently.
-4. Account for dependencies and blockers.
-5. Select the next best action or ordered sequence.
-6. Re-prioritise when new evidence arrives.
-
 ## Criteria
 
 Use a simple weighted model unless the context demands more sophistication:

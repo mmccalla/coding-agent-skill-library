@@ -52,6 +52,8 @@ slo:
 error_budget:
   allowed_failure_rate: "1.0%"
 burn_rate_alerts:
+  # Prefer multi-window, multi-burn-rate alerts (long AND short windows).
+  # Simplified budget-spend examples below; implement with burn-rate thresholds.
   fast_burn: "2% budget consumed in 1 hour"
   slow_burn: "10% budget consumed in 3 days"
 policy:
@@ -59,6 +61,20 @@ policy:
   if_budget_at_risk: "increase review and testing"
   if_budget_exhausted: "freeze risky releases except reliability fixes"
 ```
+
+## Multi-window burn-rate alerting
+
+Prefer **multi-window, multi-burn-rate** alerts from the Google SRE Workbook: fire only when both a long window and a short window exceed the burn-rate threshold (AND logic). This reduces false pages from brief spikes while still catching sustained budget burn.
+
+Example pattern for a 30-day SLO window:
+
+| Severity | Long window | Short window | Typical burn-rate threshold |
+|---|---|---|---|
+| Page (fast burn) | 1 hour | 5 minutes | high (e.g. 14.4×) |
+| Page / ticket (medium) | 6 hours | 30 minutes | medium (e.g. 6×) |
+| Ticket (slow burn) | 3 days | 6 hours | near 1× |
+
+Use the simplified budget-spend examples only as illustrations; implement alerts on burn rate relative to the error budget, not raw error rate alone.
 
 ## Rules
 
@@ -72,6 +88,11 @@ policy:
 ## Optional overlay
 
 For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
+
+## References
+
+- Google SRE Workbook — Alerting on SLOs (multi-window, multi-burn-rate): https://sre.google/workbook/alerting-on-slos/
+- Google SRE Book — Service Level Objectives: https://sre.google/sre-book/service-level-objectives/
 
 ## Verification
 

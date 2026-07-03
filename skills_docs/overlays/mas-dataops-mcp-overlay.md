@@ -49,9 +49,9 @@ For source-to-refined workflows, reliability must cover source connection availa
 
 Recommended SLO candidates include `source_onboarding_success_rate`, `schema_discovery_success_rate`, `validation_run_success_rate`, `quarantine_write_success_rate`, `refined_write_success_rate`, `evidence_bundle_completion_rate`, `workflow_completion_latency` and `policy_decision_latency`.
 
-## DORA Four Keys
+## DORA Delivery Metrics
 
-Use DORA metrics for API/service deployments, validation-rule release process, source adapter changes, workflow engine changes, MCP tool changes, UI/dashboard releases and infrastructure changes.
+Use DORA metrics (throughput: deployment frequency, lead time, failed deployment recovery time; instability: change failure rate, deployment rework rate) for API/service deployments, validation-rule release process, source adapter changes, workflow engine changes, MCP tool changes, UI/dashboard releases and infrastructure changes.
 
 For data-quality rules, define related metrics:
 

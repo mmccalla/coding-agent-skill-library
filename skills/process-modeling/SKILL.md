@@ -33,7 +33,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Automation candidates
 
 ## Best-practice alignment
-Keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
+Align with **BIZBOK** business architecture practice: keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution. Use **BPMN** (or an equivalent notation) for operational process diagrams when swimlanes, gateways and exceptions matter.
 
 ## Quality checks
 - Exceptions are shown.
@@ -46,6 +46,11 @@ Do not use process modelling when capability modelling is needed.
 ## Mini example
 
 For invoice exception handling, map the start event, supplier operations swimlane, finance approval decision, system checks, exception paths and control evidence. Mark automation candidates only where rules are explicit, such as duplicate invoice detection. Keep human judgement steps visible when fraud risk or policy interpretation is involved.
+
+## References
+
+- Business Architecture Guild BIZBOK: https://www.businessarchitectureguild.org/
+- OMG BPMN 2.0: https://www.omg.org/spec/BPMN/
 
 ## Verification
 

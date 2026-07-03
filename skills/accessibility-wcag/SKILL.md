@@ -40,9 +40,17 @@ For WCAG 2.2 AA alignment, explicitly check the newer AA success criteria as wel
 - `2.5.8 Target Size (Minimum)`: pointer targets must meet the minimum target-size expectation or a documented exception.
 - `3.3.8 Accessible Authentication (Minimum)`: authentication should not require a cognitive-function test unless an accessible alternative or assistance mechanism exists.
 
-Also check `3.3.7 Redundant Entry` because it is Level A and reduces repeated data entry burden in forms and approval workflows.
+Also check Level A criteria that commonly affect agent and approval UIs:
+
+- `3.2.6 Consistent Help`: help mechanisms (contact, chat, self-help, human contact) appear in the same relative order across pages when present.
+- `3.3.7 Redundant Entry`: do not require users to re-enter information already provided in the same process unless essential or security-related.
 
 Source: [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/).
+
+## References
+
+- W3C WCAG 2.2 Recommendation: https://www.w3.org/TR/WCAG22/
+- What's new in WCAG 2.2: https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/
 
 ## Rules
 

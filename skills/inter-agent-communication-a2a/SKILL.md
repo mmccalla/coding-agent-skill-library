@@ -25,15 +25,6 @@ Define safe, interoperable contracts for agent identity, delegation, task exchan
 5. Return artefacts as structured outputs, files or streamed parts.
 6. Preserve context using a context identifier where multi-step collaboration is required.
 
-## Core pattern
-
-1. Define each agent as an opaque service with a clear public contract.
-2. Publish an agent card describing identity, endpoint, version, capabilities, skills, input/output modes and authentication.
-3. Represent work as tasks with unique identifiers and explicit states.
-4. Exchange messages containing metadata and content parts.
-5. Return artefacts as structured outputs, files or streamed parts.
-6. Preserve context using a context identifier where multi-step collaboration is required.
-
 ## Task lifecycle
 
 Use a minimal lifecycle unless the domain needs more detail:
@@ -74,6 +65,11 @@ Use `skills_docs/security/OWASP_ASI_CROSSWALK.md` for the shared risk map.
 | ASI07 Insecure Inter-Agent Communication | Authenticate peers, version message schemas and treat peer output as untrusted. |
 | ASI08 Cascading Failures | Use fan-out limits, cancellation, bounded retries and explicit failure states. |
 | ASI10 Rogue Agents | Add containment, revocation and audit trails for agents that deviate from declared scope. |
+
+## References
+
+- Agent2Agent (A2A) Protocol: https://a2a-protocol.org/v1.0.0/
+- A2A project repository: https://github.com/a2aproject/A2A
 
 ## Verification
 

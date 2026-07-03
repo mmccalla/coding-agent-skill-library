@@ -29,7 +29,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Transition roadmap
 
 ## Best-practice alignment
-Keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
+Align with **BIZBOK** business architecture practice: keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
 
 ## Quality checks
 - Decisions have accountable owners.
@@ -42,6 +42,11 @@ Do not produce only an organisation chart.
 ## Mini example
 
 For a data-product operating model, define who owns product outcomes, who approves data contracts, how incidents move between domain and platform teams, and how funding supports lifecycle work. Link the model to capabilities, value streams, governance cadence, platform services, data ownership and transition milestones so it is more than an organisation chart.
+
+## References
+
+- Business Architecture Guild BIZBOK (capabilities, value streams, organisation, information): https://www.businessarchitectureguild.org/
+- The Open Group TOGAF Standard (business architecture domain): https://www.opengroup.org/togaf
 
 ## Verification
 

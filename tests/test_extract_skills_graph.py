@@ -82,6 +82,7 @@ class SkillsGraphExtractorTests(unittest.TestCase):
             "wordCount",
             "lineCount",
             "isBaselineSkill",
+            "standardsReferences",
         ):
             self.assertIn(key, skill)
         self.assertEqual(skill["path"], "skills/apply-laws-of-ai/SKILL.md")
@@ -94,7 +95,21 @@ class SkillsGraphExtractorTests(unittest.TestCase):
         self.assertNotIn("source_hash", skill)
         self.assertIn("aliases", skill)
         self.assertIsInstance(skill["aliases"], list)
+        self.assertIsInstance(skill["standardsReferences"], list)
         self.assertEqual(records["skill_pack"]["id"], "coding-agent-skill-library")
+
+    def test_extracts_standards_references_for_grounded_skills(self) -> None:
+        module = load_extractor_module()
+        records = module.extract_skills_graph_records(REPO_ROOT / "skills")
+        dora = next(skill for skill in records["skills"] if skill["id"] == "skill:dora-four-keys")
+        self.assertTrue(
+            any("dora.dev" in url for url in dora["standardsReferences"]),
+            msg=dora["standardsReferences"],
+        )
+        references = [
+            ref for ref in records["references"] if ref["skill_id"] == "skill:dora-four-keys"
+        ]
+        self.assertTrue(references, msg="expected bare URL references for dora-four-keys")
 
     def test_extracts_canonical_sections_with_stable_hashes(self) -> None:
         module = load_extractor_module()

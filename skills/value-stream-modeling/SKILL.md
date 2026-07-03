@@ -33,7 +33,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Pain points and metrics
 
 ## Best-practice alignment
-Keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
+Align with **BIZBOK** business architecture practice: keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
 
 ## Quality checks
 - Value recipient is explicit.
@@ -46,6 +46,11 @@ Do not turn value streams into detailed process maps.
 ## Mini example
 
 For loan approval, start with the trigger `customer submits application` and outcome `funds accepted or declined with reason`. Map stages such as apply, verify, decide and fulfil, then attach capabilities, information concepts, events and flow metrics. Do not expand each stage into task-level process detail unless a bottleneck needs separate process modelling.
+
+## References
+
+- Business Architecture Guild BIZBOK (capabilities, value streams, organisation, information): https://www.businessarchitectureguild.org/
+- The Open Group TOGAF Standard (business architecture domain): https://www.opengroup.org/togaf
 
 ## Verification
 
