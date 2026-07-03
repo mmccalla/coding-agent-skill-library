@@ -47,13 +47,13 @@ Use these skills when the task shape matches:
 - `skill-discovery-and-selection`, `requirements-elicitation`, `idea-refinement`, `spec-driven-development`, `incremental-implementation`, `context-engineering`, `source-driven-development` and `uncertainty-driven-development` for the workflow spine from session start through spec and implementation.
 - **`apply-laws-of-ai` first at every session** — mandatory immutable baseline before any other skill.
 - Agentic workflow and control skills when building or modifying agents, tools, MCP servers, A2A integrations, RAG systems, guardrails, memory, evaluation, recovery or monitoring.
-- Architecture skills when working on capabilities, value streams, processes, operating models, data models, data products, data contracts, metadata, governance, quality, lineage, event-driven architecture, CDC, streams or real-time data.
+- Architecture skills when working on capabilities, value streams, processes, operating models, data models, data products, data contracts, metadata, governance, quality, lineage, event-driven architecture, CDC, streams, real-time data or message-based enterprise integration (EIP).
 - `krag-system-design`, `krag-ingestion-graph-construction`, `krag-retrieval-answering` and `krag-evaluation-governance` for end-to-end KRAG system development and delivery.
 - `browser-testing-with-devtools`, `code-review-and-quality`, `git-workflow-and-versioning`, `ci-cd-and-automation`, `documentation-and-adrs`, `deprecation-and-migration` and `shipping-and-launch` for browser evidence, review, delivery automation, durable documentation and release readiness.
 
 ## Business, data and event-driven architecture guidance
 
-When a task involves business architecture, data architecture, event-driven architecture or real-time data, load the smallest relevant skill from the flat `skills/` directory using the semantic groupings in `skills/PACK_METADATA.json` and `skills/MANIFEST.md`.
+When a task involves business architecture, data architecture, event-driven architecture, real-time data or message-based enterprise integration, load the smallest relevant skill from the flat `skills/` directory using the semantic groupings in `skills/PACK_METADATA.json` and `skills/MANIFEST.md`.
 
 Use business architecture skills to clarify capabilities, value streams, processes, operating models, maturity, organisation design and strategy-to-execution traceability.
 
@@ -62,6 +62,8 @@ Use data architecture skills to define conceptual/logical models, data products,
 For data architecture, apply DAMA-DMBOK2-style discipline across governance, architecture, modelling, security, integration/interoperability, master/reference data, metadata and quality. For cloud or shared data, apply CDMC-style expectations: ownership, classification, entitlement/access evidence, lineage/provenance, lifecycle/retention, quality controls and auditable evidence.
 
 Use event-driven and real-time data skills to define business events, event schemas, streaming platforms, CDC, stream processing, event governance, lineage and real-time operability.
+
+Use enterprise-integration-patterns skills for message-based integration style, channels, message construction, routing, transformation, endpoints, messaging operations and EIP validation.
 
 When the task is specifically about building, delivering or governing a KRAG system, also load the smallest relevant KRAG skill from the flat `skills/` directory using the KRAG grouping in `skills/PACK_METADATA.json` and `skills/MANIFEST.md`.
 

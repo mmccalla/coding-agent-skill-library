@@ -114,6 +114,21 @@
       ]
     },
     {
+      "id": "enterprise-integration-patterns",
+      "title": "Enterprise Integration Patterns",
+      "description": "Message-based enterprise integration design, channels, construction, routing, transformation, endpoints, management and validation skills.",
+      "skills": [
+        "message-based-integration-design",
+        "message-channel-design",
+        "integration-message-construction",
+        "message-routing-design",
+        "message-transformation-design",
+        "message-endpoint-design",
+        "messaging-system-management",
+        "eip-integration-validation"
+      ]
+    },
+    {
       "id": "business-architecture",
       "title": "Business Architecture",
       "description": "Capability, process, value-stream and operating-model architecture skills.",

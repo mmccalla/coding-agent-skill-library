@@ -129,9 +129,24 @@ class SkillsMcpServer:
 
     @classmethod
     def for_test_fixture(cls) -> SkillsMcpServer:
-        return cls(
-            retrieve_skills_hybrid.fixture_load_plan(), skills_config.load_settings(environ={})
+        # Small fixture graphs score lower than the full library; keep open abstention
+        # so journey fixtures remain valid under production retrieval defaults.
+        base = skills_config.load_settings(environ={})
+        fixture_settings = skills_config.SkillsKgSettings(
+            neo4j=base.neo4j,
+            retrieval=skills_config.RetrievalSettings(
+                min_confident_score=0.1,
+                min_top1_margin=0.0,
+                min_vector_candidate_score=base.retrieval.min_vector_candidate_score,
+                default_token_budget=base.retrieval.default_token_budget,
+                default_limit=base.retrieval.default_limit,
+                max_limit=base.retrieval.max_limit,
+                max_depth=base.retrieval.max_depth,
+            ),
+            mcp=base.mcp,
+            api=base.api,
         )
+        return cls(retrieve_skills_hybrid.fixture_load_plan(), fixture_settings)
 
     @classmethod
     def from_repository(cls, skills_root: Path = Path("skills")) -> SkillsMcpServer:
@@ -618,6 +633,7 @@ class SkillsMcpServer:
             limit=limit,
             max_depth=max_depth,
             token_budget=token_budget,
+            retrieval_settings=self._settings.retrieval,
         )
         selection_trace = _enrich_recommendation_selection_trace(query, result)
         recommendations: list[dict[str, object]] = [

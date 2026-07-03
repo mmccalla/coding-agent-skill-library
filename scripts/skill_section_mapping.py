@@ -109,6 +109,14 @@ SKILL_PRIMARY_INTENTS: dict[str, str] = {
     "strategy-to-execution-traceability": "plan-before-build",
     "toil-reduction-and-automation": "ci-pipeline-change",
     "value-stream-modeling": "plan-before-build",
+    "message-based-integration-design": "feature-implementation",
+    "message-channel-design": "feature-implementation",
+    "integration-message-construction": "spec-before-build",
+    "message-routing-design": "feature-implementation",
+    "message-transformation-design": "feature-implementation",
+    "message-endpoint-design": "feature-implementation",
+    "messaging-system-management": "post-artefact-review",
+    "eip-integration-validation": "post-artefact-review",
 }
 
 GOVERNED_CONSTRAINT_IDS: frozenset[str] = frozenset(
