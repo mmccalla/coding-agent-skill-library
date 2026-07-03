@@ -5,6 +5,9 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
+# PR CI always uses deterministic embeddings; production uses BGE-M3 via Ollama.
+export SKILLS_EMBEDDING_PROVIDER="${SKILLS_EMBEDDING_PROVIDER:-deterministic}"
+
 PYTEST_QUALITY_MARKER='not live_neo4j and not slow and not eval_pr'
 
 run_quality() {

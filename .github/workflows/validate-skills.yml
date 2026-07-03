@@ -12,6 +12,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  # Production uses BGE-M3; PR CI stays deterministic and offline.
+  SKILLS_EMBEDDING_PROVIDER: deterministic
+
 jobs:
   validators:
     name: Validators

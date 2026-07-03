@@ -18,7 +18,6 @@ from scripts import embed_skill_chunks, load_skills_neo4j, skills_config
 from scripts.embed_skill_chunks import VectorCandidate
 
 DEFAULT_RETRIEVAL_SETTINGS = skills_config.load_settings().retrieval
-MIN_CONFIDENT_SCORE = DEFAULT_RETRIEVAL_SETTINGS.min_confident_score
 DEFAULT_TOKEN_BUDGET = DEFAULT_RETRIEVAL_SETTINGS.default_token_budget
 CONNECTED_RELATIONSHIP_TYPES = frozenset(
     {
@@ -395,10 +394,11 @@ def retrieve_hybrid_skills(
     limit: int = 5,
     max_depth: int = 2,
     token_budget: int = DEFAULT_TOKEN_BUDGET,
+    retrieval_settings: skills_config.RetrievalSettings | None = None,
 ) -> HybridRetrievalResult:
     """Rank skills using text, vector and graph evidence."""
 
-    settings = skills_config.load_settings().retrieval
+    settings = retrieval_settings or skills_config.load_settings().retrieval
     limit = max(1, min(limit, settings.max_limit))
     max_depth = max(0, min(max_depth, settings.max_depth))
     query_tokens = _tokens(query_text)
@@ -533,7 +533,9 @@ def retrieve_hybrid_skills(
         "selected": selected_trace,
         "rejected": tuple(rejected_candidates),
     }
-    if not ranked or ranked[0].score < MIN_CONFIDENT_SCORE:
+    min_confident_score = settings.min_confident_score
+    min_top1_margin = settings.min_top1_margin
+    if not ranked or ranked[0].score < min_confident_score:
         selection_trace = {
             "request": {"query": query_text},
             "selected": {},
@@ -543,6 +545,35 @@ def retrieve_hybrid_skills(
             query=query_text,
             uncertain=True,
             message="No confident skill match found; provide a narrower task description.",
+            recommendations=(),
+            selection_trace=selection_trace,
+        )
+    if (
+        len(ranked) >= 2
+        and min_top1_margin > 0.0
+        and (ranked[0].score - ranked[1].score) < min_top1_margin
+    ):
+        selection_trace = {
+            "request": {"query": query_text},
+            "selected": {},
+            "rejected": tuple(
+                [
+                    *rejected_candidates,
+                    {
+                        "skill_id": ranked[0].skill_id,
+                        "skill_name": ranked[0].skill_name,
+                        "score": ranked[0].score,
+                        "reason": (
+                            f"Top hybrid candidates are too close (margin < {min_top1_margin:.3f})."
+                        ),
+                    },
+                ]
+            ),
+        }
+        return HybridRetrievalResult(
+            query=query_text,
+            uncertain=True,
+            message="Ambiguous skill match; provide a narrower task description.",
             recommendations=(),
             selection_trace=selection_trace,
         )
@@ -736,9 +767,7 @@ def retrieve_hybrid_skills_from_neo4j(
     """Run production retrieval from live Neo4j full-text, vector and graph evidence."""
 
     bounded_limit = max(1, min(limit, settings.retrieval.max_limit))
-    runtime_embedder = embedder or embed_skill_chunks.DeterministicEmbeddingProvider(
-        dimension=settings.neo4j.embedding_dimensions
-    )
+    runtime_embedder = embedder or embed_skill_chunks.resolve_embedding_provider(settings)
     graph = Neo4jHybridRetrievalGraph(driver, settings)
     vector_candidates = graph.vector_candidates(query_text, runtime_embedder, bounded_limit)
     candidate_skill_ids = tuple(
@@ -1045,9 +1074,10 @@ def main(argv: Sequence[str] | None = None) -> int:  # pragma: no cover
     args = parser.parse_args(list(sys.argv[1:] if argv is None else argv))
 
     settings = skills_config.load_settings()
-    plan = embed_skill_chunks.build_embedded_repository_load_plan(Path("skills"))
-    embedder = embed_skill_chunks.DeterministicEmbeddingProvider(
-        dimension=settings.neo4j.embedding_dimensions
+    embedder = embed_skill_chunks.resolve_embedding_provider(settings)
+    plan = embed_skill_chunks.build_embedded_repository_load_plan(
+        Path("skills"),
+        embedder=embedder,
     )
     vector_candidates = embed_skill_chunks.query_vector_candidates(
         plan, args.query, embedder, args.limit

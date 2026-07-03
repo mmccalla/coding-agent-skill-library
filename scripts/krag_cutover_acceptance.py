@@ -161,7 +161,7 @@ def _is_read_only_cypher(cypher: str) -> bool:
 
 def _run_runtime_scenario(
     plan: load_skills_neo4j.LoadPlan,
-    embedder: embed_skill_chunks.DeterministicEmbeddingProvider,
+    embedder: embed_skill_chunks.EmbeddingProvider,
     scenario: RuntimeScenario,
     limit: int,
     token_budget: int,
@@ -285,12 +285,8 @@ def run_cutover_acceptance(
     token_budget: int = 240,
 ) -> CutoverAcceptanceReport:
     ontology_validation = validate_skills_ontology.validate_skills_ontology(profile="all")
-    plan = embed_skill_chunks.build_embedded_repository_load_plan()
-    embedder = embed_skill_chunks.DeterministicEmbeddingProvider(
-        dimension=embed_skill_chunks._embedding_dimension_from_config(
-            embed_skill_chunks.DEFAULT_CONFIG_PATH
-        )
-    )
+    embedder = embed_skill_chunks.resolve_embedding_provider(force_deterministic=True)
+    plan = embed_skill_chunks.build_embedded_repository_load_plan(embedder=embedder)
     runtime_scenarios = tuple(
         _run_runtime_scenario(plan, embedder, scenario, limit, token_budget)
         for scenario in RUNTIME_SCENARIOS

@@ -31,6 +31,122 @@ class EmbedSkillChunksTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual("deterministic-test-embedding", embedder.provider_name)
 
+    def test_resolve_embedding_provider_defaults_to_production_bge(self) -> None:
+        from scripts.skills_config import SkillsKgSettings
+
+        embeddings = load_module()
+        settings = SkillsKgSettings()
+
+        provider = embeddings.resolve_embedding_provider(settings, environ={})
+
+        self.assertEqual("ollama:bge-m3:567m", provider.provider_name)
+        self.assertEqual(1024, provider.dimension)
+
+    def test_resolve_embedding_provider_forces_deterministic_for_ci(self) -> None:
+        from scripts.skills_config import SkillsKgSettings
+
+        embeddings = load_module()
+        settings = SkillsKgSettings()
+
+        provider = embeddings.resolve_embedding_provider(
+            settings,
+            environ={"SKILLS_EMBEDDING_PROVIDER": "deterministic"},
+        )
+        forced = embeddings.resolve_embedding_provider(settings, force_deterministic=True)
+
+        self.assertEqual("deterministic-test-embedding", provider.provider_name)
+        self.assertEqual("deterministic-test-embedding", forced.provider_name)
+
+    def test_bge_m3_ollama_provider_posts_to_local_embedding_endpoint(self) -> None:
+        embeddings = load_module()
+
+        class FakeResponse:
+            def raise_for_status(self) -> None:
+                return None
+
+            def json(self) -> dict[str, list[float]]:
+                return {"embedding": [3.0, 4.0]}
+
+        class FakeClient:
+            def __init__(self) -> None:
+                self.url = ""
+                self.payload: dict[str, object] = {}
+                self.timeout = 0.0
+
+            def post(
+                self,
+                url: str,
+                *,
+                json: dict[str, object],
+                timeout: float,
+            ) -> FakeResponse:
+                self.url = url
+                self.payload = json
+                self.timeout = timeout
+                return FakeResponse()
+
+        client = FakeClient()
+        provider = embeddings.BgeM3OllamaEmbeddingProvider(
+            model="bge-m3:567m",
+            base_url="http://ollama.local/",
+            dimension=2,
+            timeout_seconds=12.5,
+            http_client=client,
+        )
+
+        vector = provider.embed("semantic retrieval query")
+
+        self.assertEqual("http://ollama.local/api/embeddings", client.url)
+        self.assertEqual(
+            {"model": "bge-m3:567m", "prompt": "semantic retrieval query"}, client.payload
+        )
+        self.assertEqual(12.5, client.timeout)
+        self.assertEqual("ollama:bge-m3:567m", provider.provider_name)
+        self.assertAlmostEqual(0.6, vector[0])
+        self.assertAlmostEqual(0.8, vector[1])
+
+    def test_bge_m3_ollama_provider_returns_zero_vector_for_blank_text(self) -> None:
+        embeddings = load_module()
+
+        class FakeClient:
+            def post(
+                self,
+                _url: str,
+                *,
+                json: dict[str, object],
+                timeout: float,
+            ) -> object:
+                raise AssertionError("blank text must not call Ollama")
+
+        provider = embeddings.BgeM3OllamaEmbeddingProvider(dimension=3, http_client=FakeClient())
+
+        self.assertEqual((0.0, 0.0, 0.0), provider.embed("   "))
+
+    def test_bge_m3_ollama_provider_rejects_dimension_mismatch(self) -> None:
+        embeddings = load_module()
+
+        class FakeResponse:
+            def raise_for_status(self) -> None:
+                return None
+
+            def json(self) -> dict[str, list[float]]:
+                return {"embedding": [1.0]}
+
+        class FakeClient:
+            def post(
+                self,
+                _url: str,
+                *,
+                json: dict[str, object],
+                timeout: float,
+            ) -> FakeResponse:
+                return FakeResponse()
+
+        provider = embeddings.BgeM3OllamaEmbeddingProvider(dimension=2, http_client=FakeClient())
+
+        with self.assertRaisesRegex(ValueError, "dimension mismatch"):
+            provider.embed("semantic retrieval query")
+
     def test_enriched_retrieval_unit_nodes_include_embeddings_and_provider_metadata(self) -> None:
         embeddings = load_module()
         plan = embeddings.load_skills_neo4j.LoadPlan(

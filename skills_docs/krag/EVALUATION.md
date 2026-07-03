@@ -18,12 +18,14 @@ This report separates **ranking quality**, **exclusion behaviour**, **abstention
 | `realistic_queries.json` | **31** | PR / release (`test_e2e_realistic_retrieval.py`) | Curated confusers + journey harvest |
 | `abstention_probes.json` | **10** | PR / release | Low-confidence / gibberish abstention |
 | `coverage_queries.json` | **195** | Nightly (`.github/workflows/nightly-eval-coverage.yml`) | ≤3 archetypes per promoted skill |
+| `semantic_challenge_queries.json` | **13** | Experiment branch / manual | Natural-language, low-overlap, cross-domain and OOD probes |
 | `query_catalog.json` | **26** | Source of truth (human review) | Curated catalogue for generator |
 | `confuser_pairs.json` | **15** | Validator | Near-neighbour pair registry |
 | `golden_queries.json` | **247** | Legacy union re-export | Back-compat; not the CI gate |
 
 **Active PR eval:** smoke (11) + realistic (31) + abstention (10) ≈ **52 cases** (~30 s offline).  
 **Nightly:** coverage (195) + matrix artefact.
+**Experimental:** semantic challenge (13) for deterministic vs BGE-M3/Ollama embedding comparison.
 
 Regenerate tiers:
 
@@ -84,6 +86,62 @@ Probes use **low-confidence gibberish** queries that the hybrid retriever correc
 | **citation_coverage** | **1.000** | ≥ 0.95 |
 
 Every promoted skill has ≥2 distinct `query_archetype` rows in `coverage_matrix.json` (validator enforced).
+
+### Semantic embedding A/B (`bge-m3:567m` vs deterministic)
+
+Measured 2026-07-03 on branch `experiment/bge-m3-semantic-retrieval` (`limit=3`).
+
+**Calibrated abstention policy** (on `abstention_probes` + semantic-challenge OOD, with smoke/realistic hybrid recall ≥ 0.9):
+
+| Setting | Value |
+| --- | ---: |
+| `retrieval.min_confident_score` | **0.35** |
+| `retrieval.min_top1_margin` | **0.02** |
+
+#### After calibration
+
+| Dataset | n | Metric | Deterministic | `bge-m3:567m` | Delta |
+| --- | ---: | --- | ---: | ---: | ---: |
+| **smoke** | 11 | vector_recall@k | 0.000 | **1.000** | **+1.000** |
+| | | hybrid_recall@k | 1.000 | 1.000 | 0.000 |
+| | | hybrid_precision@1 | 1.000 | 1.000 | 0.000 |
+| | | uncertainty_accuracy | 1.000 | 1.000 | 0.000 |
+| **realistic** | 31 | vector_recall@k | 0.032 | **0.903** | **+0.871** |
+| | | hybrid_recall@k | **1.000** | 0.968 | **-0.032** |
+| | | hybrid_precision@1 | **0.968** | 0.903 | **-0.065** |
+| **abstention** | 10 | uncertainty_accuracy | 1.000 | 1.000 | 0.000 |
+| **semantic_challenge** | 13 | vector_recall@k | 0.111 | **0.444** | **+0.333** |
+| | | hybrid_recall@k | 0.444 | **0.556** | **+0.111** |
+| | | hybrid_precision@1 | 0.333 | **0.444** | **+0.111** |
+| | | uncertainty_accuracy | 0.750 | **1.000** | **+0.250** |
+| **coverage** | 195 | vector_recall@k | 0.021 | **0.744** | **+0.723** |
+| | | hybrid_recall@k | 0.923 | **0.949** | **+0.026** |
+| | | hybrid_precision@1 | 0.887 | **0.897** | **+0.010** |
+
+#### BGE only: before vs after calibration
+
+| Dataset | Metric | Before (0.20 / 0.00) | After (0.35 / 0.02) | Delta |
+| --- | --- | ---: | ---: | ---: |
+| abstention | uncertainty_accuracy | 0.900 | **1.000** | **+0.100** |
+| semantic_challenge | uncertainty_accuracy | 0.000 | **1.000** | **+1.000** |
+| semantic_challenge | hybrid_recall@k | **0.667** | 0.556 | **-0.111** |
+| realistic | hybrid_recall@k | **1.000** | 0.968 | **-0.032** |
+| coverage | hybrid_recall@k | **0.985** | 0.949 | **-0.036** |
+
+**Read-out:** Margin + min-score abstention fixes natural-language OOD and restores gibberish abstention under BGE. Cost is a small hybrid-recall drop on realistic/coverage and harder semantic positives. BGE is the better vector arm.
+
+### Production vs PR CI embedding policy
+
+| Environment | Provider | Dimensions | How selected |
+| --- | --- | ---: | --- |
+| **Production ingest/query** | `ollama-bge-m3` (`bge-m3:567m`) | **1024** | `configs/skills_kg.yaml` default |
+| **PR CI / pytest / offline eval** | `deterministic-test-embedding` | **1024** | `SKILLS_EMBEDDING_PROVIDER=deterministic` (workflow, `ci_local.sh`, `tests/conftest.py`) and `force_deterministic=True` in eval/cutover gates |
+
+Production reload (idempotent upsert, not wipe-and-replace):
+
+```bash
+python3 scripts/embed_skill_chunks.py --provider ollama-bge-m3 --apply
+```
 
 ### Runtime and operational gates
 
@@ -171,6 +229,15 @@ python3 scripts/run_e2e_retrieval_eval.py --json
 
 # KRAG cutover smoke
 python3 scripts/krag_cutover_acceptance.py --limit 3
+
+# Semantic embedding experiment (deterministic baseline)
+python3 scripts/experiment_semantic_retrieval.py --provider deterministic
+
+# Semantic embedding experiment (requires local Ollama with bge-m3:567m)
+python3 scripts/experiment_semantic_retrieval.py \
+  --provider ollama-bge-m3 \
+  --embedding-dimensions 1024 \
+  --ollama-model bge-m3:567m
 ```
 
 ---
@@ -184,6 +251,7 @@ python3 scripts/krag_cutover_acceptance.py --limit 3
 | `tests/fixtures/retrieval_evaluation/realistic_queries.json` | Release confuser tier |
 | `tests/fixtures/retrieval_evaluation/coverage_queries.json` | Nightly per-skill coverage |
 | `tests/fixtures/retrieval_evaluation/abstention_probes.json` | Abstention tier |
+| `tests/fixtures/retrieval_evaluation/semantic_challenge_queries.json` | Semantic embedding experiment tier |
 | `tests/fixtures/retrieval_evaluation/confuser_pairs.json` | Confuser pair registry |
 | `tests/fixtures/retrieval_evaluation/coverage_matrix.json` | Emitted skill×archetype map |
 | `tests/fixtures/retrieval_evaluation/golden_queries.json` | Legacy union re-export |
@@ -191,6 +259,7 @@ python3 scripts/krag_cutover_acceptance.py --limit 3
 | `scripts/generate_golden_queries.py` | Tiered corpus generator |
 | `scripts/ci_ingest_gate.py` | Pre-merge ingest + delta eval gate |
 | `scripts/run_e2e_retrieval_eval.py` | Multi-arm audit runner |
+| `scripts/experiment_semantic_retrieval.py` | Deterministic vs BGE-M3 semantic retrieval experiment |
 | `tests/test_e2e_realistic_retrieval.py` | Honest tier thresholds |
 | `tests/fixtures/agent_journeys.json` | 11 MCP journey fixtures |
 

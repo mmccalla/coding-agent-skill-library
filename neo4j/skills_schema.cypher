@@ -1,7 +1,7 @@
 // Skills KG Neo4j schema.
 // Run before loading data. Defaults mirror configs/skills_kg.yaml.
 
-:param embedding_dimensions => 1536;
+:param embedding_dimensions => 1024;
 
 CREATE CONSTRAINT skill_id_unique IF NOT EXISTS
 FOR (n:Skill) REQUIRE n.id IS UNIQUE;
