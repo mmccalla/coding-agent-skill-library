@@ -10,12 +10,14 @@ Release-level changes to the portable skills library and Skills KG service.
 - Golden evaluation corpus regenerated: **1,194** cases with `promotion_tier=release`.
 - CI ingest gate (`ci_ingest_gate.py`) wired into `ci_local.sh`.
 - Usage and trust metrics on `GET /metrics`; Grafana `Skills KG Usage` dashboard.
-- E2E evaluation report with objective metrics (`ontology/krag_v2/E2E_EVALUATION_REPORT.md`).
+- E2E evaluation report consolidated to `krag/EVALUATION.md`.
 - Docker loader fix: nested Neo4j property sanitisation.
 
 ### Documentation
 
 - Documentation consolidation started: `GETTING_STARTED.md`, `krag/STATUS.md`, updated doc hubs (Waves A–D).
+- Waves A–D: consolidated `krag/` docs, archived planning/backlog, added `validate_docs.py` CI gate.
+- Phase 10 admin ingest: `POST /skills/admin/ingest`, pack-metadata registration, MCP reload, abstention tuning for synthetic negative probes.
 
 ## Earlier
 

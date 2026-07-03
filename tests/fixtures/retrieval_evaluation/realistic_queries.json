@@ -1,0 +1,72 @@
+[
+  {
+    "id": "realistic_krag_system_design",
+    "query": "KRAG architecture summary graph schema outline retrieval strategy implementation backlog thin vertical slices",
+    "expected_skill_ids": ["skill:krag-system-design"],
+    "required_skill_ids": ["skill:krag-system-design"],
+    "excluded_skill_ids": ["skill:knowledge-graph-rag", "skill:ontology-and-knowledge-graph-modeling"],
+    "expect_uncertain": false,
+    "promotion_tier": "release"
+  },
+  {
+    "id": "realistic_human_approval",
+    "query": "approval before destructive command human review",
+    "expected_skill_ids": ["skill:human-in-the-loop"],
+    "required_skill_ids": ["skill:human-in-the-loop"],
+    "expect_uncertain": false,
+    "promotion_tier": "release"
+  },
+  {
+    "id": "realistic_guardrails_vs_hitl",
+    "query": "policy enforcement tool restrictions before destructive actions",
+    "expected_skill_ids": ["skill:guardrails-safety-patterns"],
+    "required_skill_ids": ["skill:guardrails-safety-patterns"],
+    "expect_uncertain": false,
+    "promotion_tier": "release"
+  },
+  {
+    "id": "realistic_tdd_vs_reflection",
+    "query": "fixing a defect with a failing test first and executable expectations",
+    "expected_skill_ids": ["skill:tdd-practice"],
+    "required_skill_ids": ["skill:tdd-practice"],
+    "expect_uncertain": false,
+    "promotion_tier": "release"
+  },
+  {
+    "id": "realistic_kg_rag_vs_generic_rag",
+    "query": "neo4j-native kg-backed retrieval with text-to-cypher and provenance",
+    "expected_skill_ids": ["skill:knowledge-graph-rag"],
+    "required_skill_ids": ["skill:knowledge-graph-rag"],
+    "expect_uncertain": false,
+    "promotion_tier": "release"
+  },
+  {
+    "id": "realistic_event_streaming_pipeline",
+    "query": "build an event driven real time streaming pipeline with apache pulsar apache flink stream processing and iceberg tables",
+    "expected_skill_ids": [
+      "skill:event-streaming-platform-design",
+      "skill:stream-processing-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:event-streaming-platform-design",
+      "skill:stream-processing-patterns"
+    ],
+    "expect_uncertain": false,
+    "promotion_tier": "release"
+  },
+  {
+    "id": "realistic_session_baseline",
+    "query": "execute apply laws of ai mandatory immutable baseline at every session start",
+    "expected_skill_ids": ["skill:apply-laws-of-ai"],
+    "required_skill_ids": ["skill:apply-laws-of-ai"],
+    "expect_uncertain": false,
+    "promotion_tier": "release"
+  },
+  {
+    "id": "realistic_abstention",
+    "query": "zzzz qqqq nonsense",
+    "expected_skill_ids": [],
+    "expect_uncertain": true,
+    "promotion_tier": "release"
+  }
+]

@@ -441,11 +441,20 @@ def _execute_capability_task_lookup(
         skill_names[skill.id] = _string(skill.properties.get("name"))
     for skill_id, score in sorted(scores.items(), key=lambda item: (-item[1], item[0]))[:limit]:
         matches.append(
-            {"skill_id": skill_id, "skill_name": skill_names.get(skill_id, skill_id), "score": score}
+            {
+                "skill_id": skill_id,
+                "skill_name": skill_names.get(skill_id, skill_id),
+                "score": score,
+            }
         )
     if not matches:
         return {"status": "abstain", "reason": "No capability or task-shape matches were found."}
-    return {"status": "ok", "records": matches, "citations": [], "path_summaries": evidence_paths[:limit]}
+    return {
+        "status": "ok",
+        "records": matches,
+        "citations": [],
+        "path_summaries": evidence_paths[:limit],
+    }
 
 
 def _execute_constraint_verification_retrieval(
@@ -465,7 +474,12 @@ def _execute_constraint_verification_retrieval(
             "status": "abstain",
             "reason": "No verification or constraint evidence was available for this skill.",
         }
-    return {"status": "ok", "records": [], "citations": _citations_for_units(matched_units), "path_summaries": []}
+    return {
+        "status": "ok",
+        "records": [],
+        "citations": _citations_for_units(matched_units),
+        "path_summaries": [],
+    }
 
 
 def _execute_pack_membership_lookup(
@@ -502,8 +516,16 @@ def _execute_evidence_fragment_retrieval(
     skill_id = _string(parameters.get("skill_id"))
     units = _retrieval_units_for_skill(plan, skill_id)[:limit]
     if not units:
-        return {"status": "abstain", "reason": "No evidence fragments were available for this skill."}
-    return {"status": "ok", "records": [], "citations": _citations_for_units(units), "path_summaries": []}
+        return {
+            "status": "abstain",
+            "reason": "No evidence fragments were available for this skill.",
+        }
+    return {
+        "status": "ok",
+        "records": [],
+        "citations": _citations_for_units(units),
+        "path_summaries": [],
+    }
 
 
 def _citations_for_units(

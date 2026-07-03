@@ -16,6 +16,16 @@ Use this skill for non-trivial coding and analysis tasks where a direct answer i
 
 Select a reasoning approach that matches task complexity and produces externally verifiable engineering evidence.
 
+## Procedure
+
+1. Restate the objective and constraints.
+2. Identify unknowns and gather evidence.
+3. Select a reasoning strategy appropriate to risk and complexity.
+4. Execute small verifiable steps.
+5. Use tool observations to revise the plan.
+6. Validate the result with deterministic checks.
+7. Present concise rationale, not hidden internal reasoning.
+
 ## Technique selection
 
 - Use decomposition for most engineering tasks: break the problem into inspect, plan, edit, test and summarise.

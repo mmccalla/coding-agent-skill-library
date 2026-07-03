@@ -106,8 +106,11 @@ Skill changes pass the ingest gate (`scripts/ci_ingest_gate.py`) inside `ci_loca
 | Document | Purpose |
 | --- | --- |
 | `krag/STATUS.md` | Done, in progress, and to-do (single roadmap) |
-| `krag/README.md` | Short KRAG overview (after Wave B) |
+| `krag/README.md` | Short KRAG overview |
+| `krag/CONTRACTS.md` | Ingest, runtime, trust, eval gates |
+| `krag/ONTOLOGY.md` | Semantic model narrative |
+| `krag/EVALUATION.md` | Measured retrieval quality |
 | `ontology/skills.ttl` | Canonical ontology source |
 | `SKILLS_KG_MCP_RUNBOOK.md` | Rebuild, load, troubleshoot |
 
-Historical phase plans live under `archive/planning/` after documentation consolidation (Wave C).
+Historical phase plans live under `skills_docs/archive/planning/`.

@@ -11,7 +11,7 @@ Documentation for agents and humans. Pick one path — you do not need every fil
 | **Run MCP / Docker / Neo4j locally** | `GETTING_STARTED.md` → `SKILLS_KG_MCP_RUNBOOK.md` |
 | **Write or change skills** | `SKILL_AUTHORING_GUIDE.md` |
 | **KRAG roadmap and status** | `krag/STATUS.md` |
-| **Measured retrieval quality** | `ontology/krag_v2/E2E_EVALUATION_REPORT.md` (→ `krag/EVALUATION.md` after Wave B) |
+| **Measured retrieval quality** | `krag/EVALUATION.md` |
 
 ## Portable library (always relevant)
 
@@ -24,16 +24,21 @@ Documentation for agents and humans. Pick one path — you do not need every fil
 
 ## KRAG service
 
-- `krag/STATUS.md` — done, in progress, to-do (single roadmap)
-- `ontology/krag_v2/` — contracts and design package (consolidating to `krag/` in Wave B)
-- `ontology/*.ttl` — schema source for validators and ingest
+- `krag/README.md` — short KRAG overview
+- `krag/STATUS.md` — done, in progress, to-do
+- `krag/CONTRACTS.md` — ingest, runtime, trust, eval gates
+- `krag/ONTOLOGY.md` — semantic model narrative
+- `krag/EVALUATION.md` — measured retrieval quality
+- `ontology/` — TTL and SHACL source (`ontology/README.md`)
+- `ontology/README.md` — TTL and SHACL layout
+- `archive/planning/` — historical phase plans (read-only)
 - `SKILLS_KG_MCP_RUNBOOK.md` — operator runbook
 
 ## Other
 
 - `templates/` — optional epic and story templates
 - `overlays/` — product-specific guidance overlays
-- `security/OWASP_ASI_CROSSWALK.md` — agentic security control map
+- `security/OWASP_ASI_CROSSWALK.md` — agentic security control map (see also root `SECURE_AGENTIC_DEVELOPMENT.md`, `SECURITY_HARDENING.md` for Docker)
 
 ## Principle
 

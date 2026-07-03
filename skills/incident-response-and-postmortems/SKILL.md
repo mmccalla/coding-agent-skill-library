@@ -12,6 +12,16 @@ Use this skill for incidents, outages, degraded service, failed deployments, fai
 
 Restore service safely, preserve evidence, communicate clearly, learn from failure and implement corrective actions that reduce recurrence or impact.
 
+## Procedure
+
+1. Confirm the incident and user impact.
+2. Assign incident roles where appropriate and establish severity.
+3. Stabilise the system and preserve evidence (logs, metrics, traces, deployment changes).
+4. Communicate status and next update time.
+5. Mitigate or rollback using the safest available path.
+6. Validate recovery from user-visible signals.
+7. Record timeline, actions, postmortem, and corrective actions.
+
 ## Incident response procedure
 
 1. Confirm the incident and user impact.

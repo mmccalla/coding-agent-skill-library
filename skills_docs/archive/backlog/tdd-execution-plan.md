@@ -30,7 +30,7 @@ Use deterministic fake services for tests unless the slice explicitly requires N
 | --- | --- | --- | --- | --- |
 | 1 | `STORY-001` | Ontology contract, competency questions, Turtle and SHACL shape files | Tests parse ontology artefacts and verify required classes/properties/shapes exist | None |
 | 2 | `STORY-002` | Connectivity contract and no-fragment validation rules over exported records | Tests fail on isolated skill fixtures and pass on one connected fixture | Slice 1 |
-| 3 | `STORY-003` | Deterministic skill extractor for `SKILL.md` files, sections, references and related skills | Tests prove stable IDs, 87 skill records and repeatable hashes | Slice 1 |
+| 3 | `STORY-003` | Deterministic skill extractor for `SKILL.md` files, sections, references and related skills | Tests prove stable IDs, 91 skill records and repeatable hashes | Slice 1 |
 | 4 | `STORY-004` | Semantic bridge mapper for task shapes, workflow stages, capabilities, control themes and domains | Tests prove every fixture skill gets bridge coverage with mapping provenance | Slices 2, 3 |
 | 5 | `STORY-005` | Neo4j schema script with uniqueness constraints, lookup indexes, full-text indexes and vector index definitions | Tests inspect generated Cypher for required constraints and indexes | Slice 1 |
 | 6 | `STORY-006` | Idempotent Neo4j loader and schema preflight checks | Tests prove duplicate loads preserve logical counts using a fake repository or test Neo4j | Slices 3, 4, 5 |

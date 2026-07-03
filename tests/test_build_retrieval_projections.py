@@ -302,9 +302,7 @@ class BuildRetrievalProjectionsTests(unittest.TestCase):
         plan = loader.build_load_plan(records)
         skill_ids = {node.id for node in plan.nodes if node.label == "Skill"}
         retrieval_skill_ids = {
-            node.properties["skill_id"]
-            for node in plan.nodes
-            if node.label == "RetrievalUnit"
+            node.properties["skill_id"] for node in plan.nodes if node.label == "RetrievalUnit"
         }
 
         self.assertIn("skill:quarantined-skill", skill_ids)

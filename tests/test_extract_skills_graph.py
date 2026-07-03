@@ -235,9 +235,7 @@ class SkillsGraphExtractorTests(unittest.TestCase):
                 relationship["type"],
                 {"PRECEDES", "VALIDATES", "COMPLEMENTS"},
             )
-            self.assertEqual(
-                relationship["source_path"], "skills/mcp-server-design/SKILL.md"
-            )
+            self.assertEqual(relationship["source_path"], "skills/mcp-server-design/SKILL.md")
             self.assertTrue(relationship["mapping_rule_id"])
             self.assertGreaterEqual(relationship["confidence"], 0.0)
             self.assertTrue(relationship["rationale"])

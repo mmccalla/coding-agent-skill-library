@@ -11,6 +11,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 ONTOLOGY_DIR = REPO_ROOT / "skills_docs" / "ontology"
+ONTOLOGY_NARRATIVE = REPO_ROOT / "skills_docs" / "krag" / "ONTOLOGY.md"
 ONTOLOGY_VALIDATOR = REPO_ROOT / "scripts" / "validate_skills_ontology.py"
 CANONICAL_CORE_SHAPES = ONTOLOGY_DIR / "canonical-core.shacl.ttl"
 RETRIEVAL_PROJECTION_SHAPES = ONTOLOGY_DIR / "retrieval-projection.shacl.ttl"
@@ -31,7 +32,7 @@ def load_validator_module():
 
 class SkillsOntologyTests(unittest.TestCase):
     def test_ontology_contract_documents_current_krag_model(self) -> None:
-        text = read(ONTOLOGY_DIR / "SKILLS_ONTOLOGY.md")
+        text = read(ONTOLOGY_NARRATIVE)
 
         for heading in (
             "## Purpose",

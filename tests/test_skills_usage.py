@@ -24,9 +24,7 @@ def load_mcp_module() -> Any:
 
 
 def metric_value(metrics_text: str, metric_name: str, **labels: str) -> float:
-    label_fragment = ",".join(
-        f'{key}="{labels[key]}"' for key in sorted(labels)
-    )
+    label_fragment = ",".join(f'{key}="{labels[key]}"' for key in sorted(labels))
     line_prefix = f"{metric_name}{{{label_fragment}}}"
     for line in metrics_text.splitlines():
         if line.startswith(f"{line_prefix} "):

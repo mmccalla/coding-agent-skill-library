@@ -6,8 +6,8 @@ import unittest
 from pathlib import Path
 
 from scripts.evaluate_skill_retrieval import (
-    _is_alias_lookup_case,
     EvaluationCase,
+    _is_alias_lookup_case,
     evaluate_offline,
     load_cases,
 )
@@ -45,7 +45,7 @@ class EvaluateSkillRetrievalTests(unittest.TestCase):
         negatives = [case for case in cases if case.expect_uncertain]
         self.assertGreaterEqual(len(positives), 500)
         self.assertGreaterEqual(len(negatives), 50)
-        self.assertTrue(any(case.id == "library_negative_01" for case in negatives))
+        self.assertTrue(any(case.id.endswith("_negative_01") for case in negatives))
 
         covered_skill_ids = {
             skill_id for case in positives for skill_id in case.expected_skill_ids if skill_id

@@ -46,13 +46,9 @@ class ValidateSkillsTests(unittest.TestCase):
 
         self.assertEqual("skill-pack-metadata/v1", metadata["schema_version"])
         listed_skills = {
-            skill_name
-            for category in metadata["categories"]
-            for skill_name in category["skills"]
+            skill_name for category in metadata["categories"] for skill_name in category["skills"]
         }
-        repository_skills = {
-            path.parent.name for path in (REPO_ROOT / "skills").glob("*/SKILL.md")
-        }
+        repository_skills = {path.parent.name for path in (REPO_ROOT / "skills").glob("*/SKILL.md")}
         self.assertEqual(repository_skills, listed_skills)
 
     def test_missing_baseline_fails(self) -> None:
@@ -77,9 +73,7 @@ class ValidateSkillsTests(unittest.TestCase):
             original_baseline = module.BASELINE_SKILL
             try:
                 module.ROOT = "skills"
-                module.BASELINE_SKILL = os.path.join(
-                    "skills", "apply-laws-of-ai", "SKILL.md"
-                )
+                module.BASELINE_SKILL = os.path.join("skills", "apply-laws-of-ai", "SKILL.md")
                 os.chdir(tmp)
                 rc = module.main()
             finally:
@@ -118,9 +112,7 @@ class ValidateSkillsTests(unittest.TestCase):
             original_baseline = module.BASELINE_SKILL
             try:
                 module.ROOT = "skills"
-                module.BASELINE_SKILL = os.path.join(
-                    "skills", "apply-laws-of-ai", "SKILL.md"
-                )
+                module.BASELINE_SKILL = os.path.join("skills", "apply-laws-of-ai", "SKILL.md")
                 os.chdir(tmp)
                 rc = module.main()
             finally:
@@ -150,9 +142,7 @@ class ValidateSkillsTests(unittest.TestCase):
             original_baseline = module.BASELINE_SKILL
             try:
                 module.ROOT = "skills"
-                module.BASELINE_SKILL = os.path.join(
-                    "skills", "apply-laws-of-ai", "SKILL.md"
-                )
+                module.BASELINE_SKILL = os.path.join("skills", "apply-laws-of-ai", "SKILL.md")
                 os.chdir(tmp)
                 rc = module.main()
             finally:
@@ -195,9 +185,7 @@ class ValidateSkillsTests(unittest.TestCase):
             original_baseline = module.BASELINE_SKILL
             try:
                 module.ROOT = "skills"
-                module.BASELINE_SKILL = os.path.join(
-                    "skills", "apply-laws-of-ai", "SKILL.md"
-                )
+                module.BASELINE_SKILL = os.path.join("skills", "apply-laws-of-ai", "SKILL.md")
                 os.chdir(tmp)
                 rc = module.main()
             finally:
@@ -226,9 +214,7 @@ class ValidateSkillsTests(unittest.TestCase):
             original_baseline = module.BASELINE_SKILL
             try:
                 module.ROOT = "skills"
-                module.BASELINE_SKILL = os.path.join(
-                    "skills", "apply-laws-of-ai", "SKILL.md"
-                )
+                module.BASELINE_SKILL = os.path.join("skills", "apply-laws-of-ai", "SKILL.md")
                 os.chdir(tmp)
                 rc = module.main()
             finally:
@@ -257,9 +243,7 @@ class ValidateSkillsTests(unittest.TestCase):
             original_baseline = module.BASELINE_SKILL
             try:
                 module.ROOT = "skills"
-                module.BASELINE_SKILL = os.path.join(
-                    "skills", "apply-laws-of-ai", "SKILL.md"
-                )
+                module.BASELINE_SKILL = os.path.join("skills", "apply-laws-of-ai", "SKILL.md")
                 os.chdir(tmp)
                 rc = module.main()
             finally:
@@ -292,9 +276,7 @@ class ValidateSkillsTests(unittest.TestCase):
             original_baseline = module.BASELINE_SKILL
             try:
                 module.ROOT = "skills"
-                module.BASELINE_SKILL = os.path.join(
-                    "skills", "apply-laws-of-ai", "SKILL.md"
-                )
+                module.BASELINE_SKILL = os.path.join("skills", "apply-laws-of-ai", "SKILL.md")
                 os.chdir(tmp)
                 rc = module.main()
             finally:
@@ -331,9 +313,7 @@ class ValidateSkillsTests(unittest.TestCase):
             original_baseline = module.BASELINE_SKILL
             try:
                 module.ROOT = "skills"
-                module.BASELINE_SKILL = os.path.join(
-                    "skills", "apply-laws-of-ai", "SKILL.md"
-                )
+                module.BASELINE_SKILL = os.path.join("skills", "apply-laws-of-ai", "SKILL.md")
                 os.chdir(tmp)
                 rc = module.main()
             finally:
@@ -367,9 +347,7 @@ class ValidateSkillsTests(unittest.TestCase):
             original_baseline = module.BASELINE_SKILL
             try:
                 module.ROOT = "skills"
-                module.BASELINE_SKILL = os.path.join(
-                    "skills", "apply-laws-of-ai", "SKILL.md"
-                )
+                module.BASELINE_SKILL = os.path.join("skills", "apply-laws-of-ai", "SKILL.md")
                 os.chdir(tmp)
                 rc = module.main()
             finally:
@@ -426,9 +404,7 @@ class ValidateSkillsTests(unittest.TestCase):
             original_baseline = module.BASELINE_SKILL
             try:
                 module.ROOT = "skills"
-                module.BASELINE_SKILL = os.path.join(
-                    "skills", "apply-laws-of-ai", "SKILL.md"
-                )
+                module.BASELINE_SKILL = os.path.join("skills", "apply-laws-of-ai", "SKILL.md")
                 os.chdir(tmp)
                 rc = module.main()
             finally:
@@ -481,9 +457,7 @@ class ValidateSkillsTests(unittest.TestCase):
             original_baseline = module.BASELINE_SKILL
             try:
                 module.ROOT = "skills"
-                module.BASELINE_SKILL = os.path.join(
-                    "skills", "apply-laws-of-ai", "SKILL.md"
-                )
+                module.BASELINE_SKILL = os.path.join("skills", "apply-laws-of-ai", "SKILL.md")
                 os.chdir(tmp)
                 rc = module.main()
             finally:
@@ -517,9 +491,7 @@ class ValidateSkillsTests(unittest.TestCase):
             original_baseline = module.BASELINE_SKILL
             try:
                 module.ROOT = "skills"
-                module.BASELINE_SKILL = os.path.join(
-                    "skills", "apply-laws-of-ai", "SKILL.md"
-                )
+                module.BASELINE_SKILL = os.path.join("skills", "apply-laws-of-ai", "SKILL.md")
                 os.chdir(tmp)
                 rc = module.main()
             finally:
@@ -597,9 +569,7 @@ class ValidateSkillsTests(unittest.TestCase):
             original_baseline = module.BASELINE_SKILL
             try:
                 module.ROOT = "skills"
-                module.BASELINE_SKILL = os.path.join(
-                    "skills", "apply-laws-of-ai", "SKILL.md"
-                )
+                module.BASELINE_SKILL = os.path.join("skills", "apply-laws-of-ai", "SKILL.md")
                 os.chdir(tmp)
                 rc = module.main()
             finally:
@@ -656,9 +626,7 @@ class ValidateSkillsTests(unittest.TestCase):
             original_baseline = module.BASELINE_SKILL
             try:
                 module.ROOT = "skills"
-                module.BASELINE_SKILL = os.path.join(
-                    "skills", "apply-laws-of-ai", "SKILL.md"
-                )
+                module.BASELINE_SKILL = os.path.join("skills", "apply-laws-of-ai", "SKILL.md")
                 os.chdir(tmp)
                 rc = module.main()
             finally:

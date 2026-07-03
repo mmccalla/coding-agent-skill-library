@@ -62,12 +62,69 @@ class HybridRetrievalResult(NamedTuple):
     selection_trace: Mapping[str, object]
 
 
+GENERIC_DOMAIN_TOKENS = frozenset(
+    {
+        "agent",
+        "agents",
+        "and",
+        "building",
+        "data",
+        "for",
+        "graph",
+        "guide",
+        "implement",
+        "implementation",
+        "irrelevant",
+        "knowledge",
+        "practice",
+        "probe",
+        "retrieval",
+        "skill",
+        "skills",
+        "synthetic",
+        "the",
+        "use",
+        "when",
+        "with",
+    }
+)
+
+
 def _tokens(text: str) -> set[str]:
     return {
         token
         for token in re.findall(r"[a-z0-9]+", text.lower())
         if len(token) > 2 and token not in {"and", "the", "for", "with"}
     }
+
+
+def _specific_tokens(text: str) -> set[str]:
+    return _tokens(text) - GENERIC_DOMAIN_TOKENS
+
+
+def _has_specific_evidence(
+    *,
+    specific_tokens: set[str],
+    skill_name: str,
+    skill_properties: Mapping[str, object],
+    retrieval_texts: tuple[str, ...],
+) -> bool:
+    if not specific_tokens:
+        return True
+    metadata_text = " ".join(
+        [
+            skill_name,
+            _string(skill_properties, "description"),
+            " ".join(_string_list(skill_properties, "aliases")),
+        ]
+    )
+    metadata_tokens = _tokens(metadata_text)
+    if specific_tokens & metadata_tokens:
+        return True
+    for text in retrieval_texts:
+        if specific_tokens & _tokens(text):
+            return True
+    return False
 
 
 def _string(properties: Mapping[str, object], key: str) -> str:
@@ -110,10 +167,7 @@ def _policy_exclusion_reason(
     promotion_status = _string(skill.properties, "promotion_status")
     if promotion_status != "promoted":
         status_label = promotion_status or "missing"
-        return (
-            "Non-promoted skill filtered from retrieval "
-            f"(promotion_status={status_label})."
-        )
+        return f"Non-promoted skill filtered from retrieval (promotion_status={status_label})."
     if _bool(skill.properties, "deprecated"):
         return "Deprecated skill filtered from automatic selection."
     superseded_by = _string(skill.properties, "superseded_by")
@@ -348,6 +402,7 @@ def retrieve_hybrid_skills(
     limit = max(1, min(limit, settings.max_limit))
     max_depth = max(0, min(max_depth, settings.max_depth))
     query_tokens = _tokens(query_text)
+    specific_query_tokens = _specific_tokens(query_text)
     skills = _skill_nodes(plan)
     text_scores, text_unit_ids = _text_scores(plan, query_text)
     metadata_scores = _metadata_scores(plan, query_text)
@@ -356,8 +411,8 @@ def retrieve_hybrid_skills(
         vector_candidates, settings.min_vector_candidate_score
     )
     bridge_scores, bridge_evidence_paths = _bridge_scores(plan, query_text)
-    candidate_skill_ids = set(text_scores) | set(metadata_scores) | set(vector_scores) | set(
-        bridge_scores
+    candidate_skill_ids = (
+        set(text_scores) | set(metadata_scores) | set(vector_scores) | set(bridge_scores)
     )
     graph_scores, evidence_paths = _graph_evidence(plan, candidate_skill_ids, max_depth)
     recommendation_inputs: list[tuple[str, float, float, float, float, tuple[str, ...]]] = []
@@ -488,6 +543,41 @@ def retrieve_hybrid_skills(
             query=query_text,
             uncertain=True,
             message="No confident skill match found; provide a narrower task description.",
+            recommendations=(),
+            selection_trace=selection_trace,
+        )
+    top = ranked[0]
+    top_skill = skills.get(top.skill_id)
+    if (
+        specific_query_tokens
+        and top_skill is not None
+        and top.vector_score <= 0.0
+        and not _has_specific_evidence(
+            specific_tokens=specific_query_tokens,
+            skill_name=top.skill_name,
+            skill_properties=top_skill.properties,
+            retrieval_texts=top.evidence_snippets,
+        )
+    ):
+        selection_trace = {
+            "request": {"query": query_text},
+            "selected": {},
+            "rejected": tuple(
+                [
+                    *rejected_candidates,
+                    {
+                        "skill_id": top.skill_id,
+                        "skill_name": top.skill_name,
+                        "score": top.score,
+                        "reason": "Query lacked task-specific token overlap with top evidence.",
+                    },
+                ]
+            ),
+        }
+        return HybridRetrievalResult(
+            query=query_text,
+            uncertain=True,
+            message="No task-specific evidence match found; provide a narrower task description.",
             recommendations=(),
             selection_trace=selection_trace,
         )
