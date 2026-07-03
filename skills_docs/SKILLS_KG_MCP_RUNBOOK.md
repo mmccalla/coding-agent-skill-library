@@ -190,8 +190,43 @@ Prometheus scrapes `GET /metrics` and includes:
 - `skills_api_graph_nodes` and `skills_api_graph_relationships` for loaded graph shape after reloads;
 - `skills_api_retrieval_requests_total`, `skills_api_retrieval_recommendation_count` and `skills_api_retrieval_top_score` for retrieval outcome tracking;
 - `skills_api_ollama_failures_total` for model discovery and query failures.
+- `skills_usage_hits_total`, `skills_usage_abstention_total`, `skills_usage_execution_guide_total` and `skills_usage_recommend_rank_total` for MCP/API skill selection usage;
+- `skills_trust_rejected_total`, `skills_quarantined_total` and `skills_admin_ingest_total` for pre-ingest trust, promotion gates and admin writes.
 
-Grafana's `Skills KG API Observability` dashboard shows API request rate, 5xx ratio, p95 latency, Ollama failures, Neo4j readiness, graph node counts and retrieval requests by route.
+Grafana's `Skills KG API Observability` dashboard shows API request rate, 5xx ratio, p95 latency, Ollama failures, Neo4j readiness, graph node counts and retrieval requests by route. The `Skills KG Usage` dashboard (`configs/grafana/dashboards/skills-kg-usage.json`) shows top skills, hits by tool, abstention rate, execution-guide conversion and zero-hit snapshots.
+
+MCP stdio parity: `python3 scripts/skills_mcp_server.py --metrics` prints the same combined usage and trust counters for operator scraping when HTTP is unavailable.
+
+## Admin skill ingest
+
+Trusted skill uploads use admin auth and the same L1–L4 trust gates as CI preview:
+
+```bash
+export SKILLS_ADMIN_API_KEY='replace-me'
+export SKILLS_ADMIN_WRITE_MODE=direct   # or staging
+curl -sS -X POST http://127.0.0.1:8000/skills/admin/ingest \
+  -H "X-Skills-Admin-Key: $SKILLS_ADMIN_API_KEY" \
+  -F "file=@skills/tdd-practice/SKILL.md;type=text/markdown"
+```
+
+`GET /skills/admin/ingests` returns the in-memory audit trail. Successful ingest registers the skill in `PACK_METADATA.json`, re-extracts the graph, and reloads the MCP server plan in-process.
+
+## CI Ingest Gate
+
+Skill changes run the Phase 9 ingest gate from `./scripts/ci_local.sh`:
+
+```bash
+python3 scripts/ci_ingest_gate.py
+```
+
+The gate runs, in order: L2 trust validation (`validate_skill_trust.py --ci-gate` semantics), graph connectivity, SHACL with governed instances, promoted-release retrieval smoke (`tests/fixtures/retrieval_evaluation/smoke_queries_promoted.json`) and a Neo4j dry-run load plan. Merge is blocked on L2 security failure or promoted retrieval regression.
+
+Weekly zero-hit promoted skills rollup:
+
+```bash
+python3 scripts/rollup_skill_usage.py --period-days 7
+python3 scripts/report_skill_usage.py --json
+```
 
 ## Integration Tests
 

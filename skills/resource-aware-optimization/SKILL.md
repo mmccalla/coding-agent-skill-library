@@ -16,6 +16,15 @@ Use this skill when a coding agent must operate within budgets: time, tokens, me
 
 Balance quality, cost, latency, model choice, context budget, and fallback paths without compromising correctness.
 
+## Procedure
+
+1. Identify resource constraints and service limits.
+2. Estimate task complexity before execution.
+3. Select the cheapest reliable strategy that satisfies the success criteria.
+4. Escalate to more capable models, deeper reasoning or broader search only when justified.
+5. Monitor actual consumption during execution.
+6. Fall back or degrade gracefully when limits are reached.
+
 ## Core pattern
 
 1. Identify resource constraints and service limits.

@@ -31,7 +31,9 @@ class SkillPromotionUpliftTests(unittest.TestCase):
         cls.extractor = load_module(EXTRACTOR, "extract_skills_graph")
 
     def test_krag_system_design_maps_via_description_or_registry(self) -> None:
-        text = (REPO_ROOT / "skills" / "krag-system-design" / "SKILL.md").read_text(encoding="utf-8")
+        text = (REPO_ROOT / "skills" / "krag-system-design" / "SKILL.md").read_text(
+            encoding="utf-8"
+        )
         mapping = self.mapper.map_skill_sections(text, skill_name="krag-system-design")
         ready = self.mapper.promotion_ready_task_intents(mapping.task_intents)
         intent_ids = {intent.task_intent_id for intent in ready}
@@ -51,9 +53,7 @@ class SkillPromotionUpliftTests(unittest.TestCase):
     def test_golden_queries_hit_promoted_skills_gate(self) -> None:
         records = self.extractor.extract_skills_graph_records(REPO_ROOT / "skills")
         promoted_ids = {
-            skill["id"]
-            for skill in records["skills"]
-            if skill["promotion_status"] == "promoted"
+            skill["id"] for skill in records["skills"] if skill["promotion_status"] == "promoted"
         }
         cases = json.loads(GOLDEN.read_text(encoding="utf-8"))
         hits = 0

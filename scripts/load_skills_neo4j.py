@@ -229,7 +229,7 @@ class Neo4jMergeGraph:
             tx.run(
                 f"MERGE (n:{label} {{id: $id}}) SET n += $properties",
                 id=node.id,
-                properties=dict(node.properties),
+                properties=_sanitize_neo4j_properties(node.properties),
             )
 
     @classmethod
@@ -251,7 +251,7 @@ class Neo4jMergeGraph:
                 ),
                 source_id=relationship.source_id,
                 target_id=relationship.target_id,
-                properties=dict(relationship.properties),
+                properties=_sanitize_neo4j_properties(relationship.properties),
             )
 
 
@@ -348,8 +348,36 @@ def _string(record: Mapping[str, object], key: str) -> str:
     return value if isinstance(value, str) else ""
 
 
+def _is_neo4j_primitive(value: object) -> bool:
+    return value is None or isinstance(value, (bool, int, float, str))
+
+
+def _sanitize_neo4j_property(value: object) -> object:
+    """Coerce export records into Neo4j-safe property values."""
+
+    if _is_neo4j_primitive(value):
+        return value
+    if isinstance(value, list):
+        if not value:
+            return value
+        if all(_is_neo4j_primitive(item) for item in value):
+            return value
+        return json.dumps(value, sort_keys=True)
+    if isinstance(value, dict):
+        return json.dumps(value, sort_keys=True)
+    return str(value)
+
+
+def _sanitize_neo4j_properties(properties: Mapping[str, object]) -> dict[str, object]:
+    return {key: _sanitize_neo4j_property(value) for key, value in properties.items()}
+
+
 def _node(label: str, node_id: str, properties: Mapping[str, object]) -> GraphNode:
-    return GraphNode(label=label, id=node_id, properties={"id": node_id, **dict(properties)})
+    return GraphNode(
+        label=label,
+        id=node_id,
+        properties=_sanitize_neo4j_properties({"id": node_id, **dict(properties)}),
+    )
 
 
 def _relationship(
@@ -404,7 +432,9 @@ def _retrieval_unit_from_section(
     content_hash = _string(section, "contentHash")
     skill_name = _string(skill, "name")
     skill_path = _string(skill, "path")
-    aliases = tuple(str(alias).strip() for alias in skill.get("aliases", []) if isinstance(alias, str))
+    aliases = tuple(
+        str(alias).strip() for alias in skill.get("aliases", []) if isinstance(alias, str)
+    )
     task_shapes = tuple(
         str(task_shape).strip()
         for task_shape in skill.get("task_shapes", [])
@@ -477,9 +507,7 @@ def build_load_plan(records: Mapping[str, object]) -> LoadPlan:
     bridges = _records_list(records, "bridges")
     references = _records_list(records, "references")
     source_relationships = _records_list(records, "relationships")
-    skill_pack = (
-        records.get("skill_pack") if isinstance(records.get("skill_pack"), dict) else None
-    )
+    skill_pack = records.get("skill_pack") if isinstance(records.get("skill_pack"), dict) else None
     nodes: dict[tuple[str, str], GraphNode] = {}
     relationships: dict[tuple[str, str, str, str, str], GraphRelationship] = {}
 
@@ -521,7 +549,13 @@ def build_load_plan(records: Mapping[str, object]) -> LoadPlan:
             for skill in skills:
                 if _string(skill, "skill_pack_id") == skill_pack_id:
                     add_relationship(
-                        _relationship("CONTAINS_SKILL", "SkillPack", skill_pack_id, "Skill", _string(skill, "id"))
+                        _relationship(
+                            "CONTAINS_SKILL",
+                            "SkillPack",
+                            skill_pack_id,
+                            "Skill",
+                            _string(skill, "id"),
+                        )
                     )
 
     for section in sections:

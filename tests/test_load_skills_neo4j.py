@@ -280,6 +280,36 @@ class LoadSkillsNeo4jTests(unittest.TestCase):
 
         self.assertEqual(1, graph.relationship_counts()["COMPLEMENTS"])
 
+    def test_skill_node_properties_are_neo4j_primitive_safe(self) -> None:
+        loader = load_module()
+        extract = importlib.util.spec_from_file_location(
+            "extract_skills_graph",
+            REPO_ROOT / "scripts" / "extract_skills_graph.py",
+        )
+        assert extract is not None and extract.loader is not None
+        extract_module = importlib.util.module_from_spec(extract)
+        extract.loader.exec_module(extract_module)
+        records = extract_module.extract_skills_graph_records(REPO_ROOT / "skills")
+        plan = loader.build_load_plan(records)
+
+        for node in plan.nodes:
+            for key, value in node.properties.items():
+                self.assertFalse(
+                    isinstance(value, dict),
+                    f"{node.label}:{node.id}.{key} must not be a nested map",
+                )
+                if isinstance(value, list):
+                    for item in value:
+                        self.assertFalse(
+                            isinstance(item, dict),
+                            f"{node.label}:{node.id}.{key} must not contain nested maps",
+                        )
+
+        skill = next(node for node in plan.nodes if node.id == "skill:human-in-the-loop")
+        supported = skill.properties.get("supported_task_intents")
+        self.assertIsInstance(supported, str)
+        self.assertIn("security-hardening", supported)
+
     def test_dry_run_report_does_not_include_connection_details(self) -> None:
         loader = load_module()
         report = loader.dry_run_report(loader.build_load_plan(fixture_records()))

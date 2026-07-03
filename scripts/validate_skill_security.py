@@ -217,9 +217,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--json", action="store_true", help="Emit machine-readable JSON report")
     args = parser.parse_args(argv)
 
-    reports = [
-        validate_skill_security(path, allowlist_path=args.allowlist) for path in args.paths
-    ]
+    reports = [validate_skill_security(path, allowlist_path=args.allowlist) for path in args.paths]
     passed = all(report.passed for report in reports)
 
     if args.json:

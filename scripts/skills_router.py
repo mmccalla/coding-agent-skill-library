@@ -354,7 +354,9 @@ def _route_selection_trace(
     if resolved_skill_id:
         skill = _skill_by_id(plan, resolved_skill_id)
         if skill is not None:
-            evidence_anchors = _section_evidence(_retrieval_units_for_skill(plan, resolved_skill_id))
+            evidence_anchors = _section_evidence(
+                _retrieval_units_for_skill(plan, resolved_skill_id)
+            )
             trace["evidence"] = {
                 "skill_id": resolved_skill_id,
                 "skill_name": _skill_name(skill),

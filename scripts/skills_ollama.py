@@ -273,7 +273,12 @@ def _skill_profile_lines(skill: Mapping[str, object]) -> list[str]:
         line_start = unit.get("line_start")
         line_end = unit.get("line_end")
         line_range = ""
-        if isinstance(line_start, int) and isinstance(line_end, int) and line_start > 0 and line_end > 0:
+        if (
+            isinstance(line_start, int)
+            and isinstance(line_end, int)
+            and line_start > 0
+            and line_end > 0
+        ):
             line_range = f"; lines={line_start}-{line_end}"
         heading_part = f"; heading={heading_path}" if heading_path else ""
         lines.append(

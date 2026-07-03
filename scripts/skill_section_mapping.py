@@ -80,6 +80,35 @@ SKILL_PRIMARY_INTENTS: dict[str, str] = {
     "operating-model-design": "plan-before-build",
     "organization-and-role-design": "plan-before-build",
     "process-modeling": "plan-before-build",
+    "bdd-practice": "spec-before-build",
+    "conceptual-data-modeling": "plan-before-build",
+    "data-contract-design": "spec-before-build",
+    "data-integration-and-interoperability": "feature-implementation",
+    "data-lifecycle-and-retention-management": "plan-before-build",
+    "data-lineage-and-provenance": "post-artefact-review",
+    "data-product-dashboard-design": "feature-implementation",
+    "data-product-design": "plan-before-build",
+    "data-security-and-privacy-architecture": "security-hardening",
+    "ddd-practice": "feature-implementation",
+    "deprecation-and-migration": "plan-before-build",
+    "design-system-practice": "feature-implementation",
+    "documentation-and-adrs": "post-artefact-review",
+    "dry-principle": "refactor-with-tests",
+    "event-governance-and-lineage": "post-artefact-review",
+    "event-modeling": "spec-before-build",
+    "incident-response-and-postmortems": "debug-with-verification",
+    "kiss-principle": "refactor-with-tests",
+    "logical-data-modeling": "plan-before-build",
+    "master-and-reference-data-management": "plan-before-build",
+    "metadata-management": "plan-before-build",
+    "release-engineering-and-progressive-delivery": "ci-pipeline-change",
+    "schema-registry-and-contracts": "spec-before-build",
+    "slo-error-budget-management": "post-artefact-review",
+    "solid-principles": "refactor-with-tests",
+    "sre-practice": "debug-with-verification",
+    "strategy-to-execution-traceability": "plan-before-build",
+    "toil-reduction-and-automation": "ci-pipeline-change",
+    "value-stream-modeling": "plan-before-build",
 }
 
 GOVERNED_CONSTRAINT_IDS: frozenset[str] = frozenset(
@@ -122,6 +151,9 @@ TASK_INTENT_PHRASE_RULES: tuple[tuple[str, str], ...] = (
     ("security-hardening", "approval"),
     ("security-hardening", "guardrails"),
     ("security-hardening", "high-impact"),
+    ("security-hardening", "human judgement"),
+    ("security-hardening", "human review"),
+    ("security-hardening", "destructive command"),
     ("code-review", "code review"),
     ("plan-before-build", "decomposing work"),
     ("plan-before-build", "multi-step implementation"),
@@ -309,9 +341,7 @@ def promotion_ready_task_intents(
     """Return task intents that satisfy Phase 2b promotion-ready sources."""
 
     return tuple(
-        mapping
-        for mapping in mappings
-        if mapping.mapping_source in PROMOTION_READY_SOURCES
+        mapping for mapping in mappings if mapping.mapping_source in PROMOTION_READY_SOURCES
     )
 
 

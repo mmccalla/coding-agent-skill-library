@@ -50,6 +50,9 @@ class SkillsApiTests(unittest.TestCase):
         self.assertIn('label="RetrievalUnit"', metrics_response.text)
         self.assertIn("skills_api_graph_relationships", metrics_response.text)
         self.assertIn('type="COMPLEMENTS"', metrics_response.text)
+        self.assertIn("skills_usage_hits_total", metrics_response.text)
+        self.assertIn("skills_trust_rejected_total", metrics_response.text)
+        self.assertIn("skills_quarantined_total", metrics_response.text)
 
     def test_recommend_endpoint_returns_bounded_grounded_result(self) -> None:
         client = TestClient(create_app(SkillsMcpServer.for_test_fixture()))

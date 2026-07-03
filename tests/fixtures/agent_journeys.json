@@ -182,5 +182,60 @@
         }
       }
     ]
+  },
+  {
+    "id": "JRN-06-human-approval-embedded",
+    "description": "Embedded repository recommends human-in-the-loop for destructive approval.",
+    "server": "embedded",
+    "tags": ["recommendation", "embedded", "security"],
+    "steps": [
+      {
+        "tool": "recommend_skills",
+        "arguments": {
+          "query": "approval before destructive command human review",
+          "limit": 3,
+          "token_budget": 120
+        },
+        "expect": {
+          "status": "ok",
+          "uncertain": false,
+          "top_skill_id": "skill:human-in-the-loop"
+        },
+        "expect_selection_trace": {
+          "tool": "recommend_skills",
+          "query_intent": "recommendation",
+          "requires_usage_event_id": true,
+          "requires_rank": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "JRN-07-krag-system-design-embedded",
+    "description": "Embedded repository disambiguates KRAG system design from generic graph RAG.",
+    "server": "embedded",
+    "tags": ["recommendation", "embedded", "krag", "confuser"],
+    "steps": [
+      {
+        "tool": "recommend_skills",
+        "arguments": {
+          "query": "KRAG architecture summary graph schema outline retrieval strategy implementation backlog thin vertical slices",
+          "limit": 3,
+          "token_budget": 160
+        },
+        "expect": {
+          "status": "ok",
+          "uncertain": false,
+          "top_skill_id": "skill:krag-system-design",
+          "excludes_skill_ids": ["skill:knowledge-graph-rag"]
+        },
+        "expect_selection_trace": {
+          "tool": "recommend_skills",
+          "query_intent": "recommendation",
+          "requires_usage_event_id": true,
+          "requires_selected_evidence": true
+        }
+      }
+    ]
   }
 ]

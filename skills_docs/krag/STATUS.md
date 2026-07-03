@@ -41,7 +41,8 @@ Phases 1–9: vocabulary, authoring, trust, ingest, projections, MCP usage, eval
 | Item | Surface | Notes |
 | --- | --- | --- |
 | Documentation consolidation | `skills_docs/` | Waves A–D; simpler paths for repo users |
-| Phase 10 — admin skill ingest | `skills_api.py`, `skills-ui` Upload tab | Preview exists; persist + graph reload not shipped |
+| Phase 10 — admin skill ingest | `admin_skill_ingest.py`, `skills_api.py` | `POST /skills/admin/ingest`, pack-metadata registration, MCP reload |
+| Synthetic negative abstention tuning | `retrieve_skills_hybrid.py` | Token-overlap gate without vector signal; golden generator nonce probes |
 
 ---
 
@@ -49,10 +50,8 @@ Phases 1–9: vocabulary, authoring, trust, ingest, projections, MCP usage, eval
 
 | Item | Priority | Acceptance |
 | --- | --- | --- |
-| `POST /skills/admin/ingest` with admin auth | P1 | Trusted upload → extract → load → agent `resolve_skill` |
 | Skills UI **Ingest** button after trust report | P1 | Same gate as CI; confirmation modal |
-| Agent journeys **JRN-08 … JRN-11** | P1 | Out-of-domain, malicious block, usage trace, admin upload |
-| Synthetic negative **abstention** improvement | P2 | `uncertainty_accuracy` on 183 negative probes (currently **0.5%**) |
+| Agent journeys **JRN-08 … JRN-11** | P2 | Out-of-domain, malicious block, usage trace, admin upload |
 | Exclusion at ranks 2–3 (near-neighbours) | P2 | KRAG vs graph-RAG confuser cases |
 
 ---
@@ -63,7 +62,7 @@ Phases 1–9: vocabulary, authoring, trust, ingest, projections, MCP usage, eval
 | --- | --- | --- |
 | Abstention on nonsense queries | Overall golden pass **84.6%** (1,010/1,194) | No |
 | 2 exclusion failures in full golden set | Related skills co-rank at 2–3 | Partial (realistic set) |
-| `POST /skills/upload/preview` only | No admin persist path | N/A |
+| `POST /skills/upload/preview` only | Preview path remains non-persisting; use admin ingest for writes | N/A |
 
 ---
 

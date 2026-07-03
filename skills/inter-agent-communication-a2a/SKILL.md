@@ -16,6 +16,15 @@ Use this skill when multiple agents must collaborate across process, service, fr
 
 Define safe, interoperable contracts for agent identity, delegation, task exchange, and result hand-off.
 
+## Procedure
+
+1. Define each agent as an opaque service with a clear public contract.
+2. Publish an agent card describing identity, endpoint, version, capabilities, skills, input/output modes and authentication.
+3. Represent work as tasks with unique identifiers and explicit states.
+4. Exchange messages containing metadata and content parts.
+5. Return artefacts as structured outputs, files or streamed parts.
+6. Preserve context using a context identifier where multi-step collaboration is required.
+
 ## Core pattern
 
 1. Define each agent as an opaque service with a clear public contract.

@@ -260,7 +260,9 @@ class SkillsMcpServerTests(unittest.TestCase):
             contract["tool_selection"]["execution_plan"]["tool"],
         )
         self.assertIn("evidence_requirements", contract)
-        self.assertIn("heading paths and line ranges", contract["evidence_requirements"]["before_acting"])
+        self.assertIn(
+            "heading paths and line ranges", contract["evidence_requirements"]["before_acting"]
+        )
         self.assertIn("examples", contract)
 
         ontology_text = ontology_resource[0]["text"]

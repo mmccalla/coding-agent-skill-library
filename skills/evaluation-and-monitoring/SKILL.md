@@ -13,6 +13,16 @@ Use this skill when an agent or generated system must be measured objectively be
 
 Measure agent or system quality with explicit metrics, representative scenarios, and actionable monitoring evidence.
 
+## Procedure
+
+1. Define measurable objectives and indicators.
+2. Select quantitative and qualitative metrics.
+3. Build an evaluation dataset or scenario set.
+4. Run baseline evaluation before changes.
+5. Evaluate after each material change.
+6. Monitor production behaviour continuously.
+7. Feed results into prioritization, rollback, tuning or human review.
+
 ## Core pattern
 
 1. Define measurable objectives and indicators.

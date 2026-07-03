@@ -253,7 +253,6 @@ def _capabilities(
     )
 
 
-
 def _reference_records(
     text: str,
     skill_id: str,
@@ -567,7 +566,9 @@ def _bridge_records(
                     confidence=confidence,
                     rationale=rationale,
                     source_scope=source_scope,
-                    source_ref=skill_id.removeprefix("skill:") if source_scope == "skill" else value,
+                    source_ref=skill_id.removeprefix("skill:")
+                    if source_scope == "skill"
+                    else value,
                 )
             )
     return records
@@ -614,7 +615,9 @@ def extract_skills_graph_records(
         content_hash = _sha256(text)
         lines = text.splitlines()
         skill_sections = _extract_sections(text, skill_id)
-        section_mapping = map_skill_sections(text, skill_name=name, known_skill_ids=known_skill_names)
+        section_mapping = map_skill_sections(
+            text, skill_name=name, known_skill_ids=known_skill_names
+        )
         mapped_dependencies = section_mapping.dependencies
         mapped_dependency_targets = {
             f"skill:{dependency.target_skill_id}" for dependency in mapped_dependencies

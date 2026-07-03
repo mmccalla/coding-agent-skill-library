@@ -16,6 +16,15 @@ Use this skill when there are multiple possible actions and not all can or shoul
 
 Rank candidate actions consistently using explicit criteria, dependencies, safety impact, and reversibility.
 
+## Procedure
+
+1. List candidate tasks or actions.
+2. Define prioritization criteria before scoring.
+3. Score each candidate consistently.
+4. Account for dependencies and blockers.
+5. Select the next best action or ordered sequence.
+6. Re-prioritise when new evidence arrives.
+
 ## Core pattern
 
 1. List candidate tasks or actions.
