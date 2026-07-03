@@ -17,6 +17,7 @@ if __package__ in {None, ""}:
 from scripts import (
     embed_skill_chunks,
     evaluate_skill_retrieval,
+    load_skills_neo4j,
     retrieve_skills_hybrid,
     skills_query_graph,
     skills_router,
@@ -128,12 +129,12 @@ RUNTIME_SCENARIOS = (
 )
 
 
-def _manual_loading_token_cost(plan: object, skill_id: str) -> int:
+def _manual_loading_token_cost(plan: load_skills_neo4j.LoadPlan, skill_id: str) -> int:
     cost = 0
-    for node in getattr(plan, "nodes", ()):
-        if getattr(node, "label", "") != "RetrievalUnit":
+    for node in plan.nodes:
+        if node.label != "RetrievalUnit":
             continue
-        properties = getattr(node, "properties", {})
+        properties = node.properties
         if not isinstance(properties, dict):
             continue
         if properties.get("skill_id") != skill_id:
@@ -159,7 +160,7 @@ def _is_read_only_cypher(cypher: str) -> bool:
 
 
 def _run_runtime_scenario(
-    plan: object,
+    plan: load_skills_neo4j.LoadPlan,
     embedder: embed_skill_chunks.DeterministicEmbeddingProvider,
     scenario: RuntimeScenario,
     limit: int,

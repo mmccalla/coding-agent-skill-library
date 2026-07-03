@@ -14,7 +14,9 @@ if __package__ in {None, ""}:
 
 from scripts.evaluate_skill_retrieval import (
     DEFAULT_DATASET,
+    EvaluationCase,
     EvaluationCaseResult,
+    RetrievalEvaluationReport,
     evaluate_offline,
     filter_cases_by_promotion,
     load_cases,
@@ -42,7 +44,7 @@ class EvalArmSummary:
 
 def _rank_failures(
     case_results: tuple[EvaluationCaseResult, ...],
-    cases_by_id: dict[str, object],
+    cases_by_id: dict[str, EvaluationCase],
 ) -> tuple[dict[str, object], ...]:
     failures: list[dict[str, object]] = []
     for result in case_results:
@@ -54,8 +56,8 @@ def _rank_failures(
         failures.append(
             {
                 "id": result.id,
-                "query": getattr(case, "query", ""),
-                "expected_skill_ids": list(getattr(case, "expected_skill_ids", ())),
+                "query": case.query,
+                "expected_skill_ids": list(case.expected_skill_ids),
                 "ranked_skill_ids": list(result.ranked_skill_ids),
                 "failures": list(result.failures),
             }
@@ -63,7 +65,11 @@ def _rank_failures(
     return tuple(failures)
 
 
-def _summarise_arm(name: str, report: object, cases_by_id: dict[str, object]) -> EvalArmSummary:
+def _summarise_arm(
+    name: str,
+    report: RetrievalEvaluationReport,
+    cases_by_id: dict[str, EvaluationCase],
+) -> EvalArmSummary:
     failed = sum(1 for result in report.case_results if not result.passed)
     return EvalArmSummary(
         name=name,
@@ -166,7 +172,9 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(report, indent=2, sort_keys=True))
     else:
         release = report["release_arm"]
+        assert isinstance(release, dict)
         full = report["full_corpus_arm"]
+        assert isinstance(full, dict)
         print("Skills KG realistic e2e evaluation")
         print(f"Promoted skills: {report['promoted_skill_count']}")
         print(

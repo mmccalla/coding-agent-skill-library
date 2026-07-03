@@ -6,7 +6,7 @@ from __future__ import annotations
 import re
 from collections import defaultdict
 from collections.abc import Mapping, Sequence
-from typing import NamedTuple
+from typing import NamedTuple, TypedDict
 
 from scripts import load_skills_neo4j, skills_router
 
@@ -64,7 +64,16 @@ CONSTRAINT_TERMS = frozenset(
 )
 EVIDENCE_TERMS = frozenset({"evidence", "citation", "citations", "source", "sources", "proof"})
 
-QUERY_TEMPLATES = {
+
+class QueryTemplate(TypedDict):
+    cypher_template_id: str
+    read_only: bool
+    labels: tuple[str, ...]
+    relationship_types: tuple[str, ...]
+    max_depth: int
+
+
+QUERY_TEMPLATES: dict[str, QueryTemplate] = {
     QUERY_FAMILY_EXACT_SKILL_LOOKUP: {
         "cypher_template_id": "skill_lookup_v1",
         "read_only": True,
@@ -179,6 +188,12 @@ def _tokens(text: str) -> set[str]:
 
 def _string(value: object) -> str:
     return value if isinstance(value, str) else ""
+
+
+def _string_token_set(raw: object) -> set[str]:
+    if not isinstance(raw, list):
+        return set()
+    return {token for token in raw if isinstance(token, str) and token}
 
 
 def _skill_nodes(plan: load_skills_neo4j.LoadPlan) -> tuple[load_skills_neo4j.GraphNode, ...]:
@@ -338,17 +353,13 @@ def execute_planned_query(
     query_family = _string(graph_query_plan.get("query_family"))
     if query_family not in APPROVED_QUERY_FAMILIES:
         return {"status": "abstain", "reason": "Query family is not approved for execution."}
-    parameters = (
-        graph_query_plan.get("parameters")
-        if isinstance(graph_query_plan.get("parameters"), dict)
-        else {}
-    )
-    limit = (
-        graph_query_plan.get("result_bounds")
-        if isinstance(graph_query_plan.get("result_bounds"), dict)
-        else {}
-    ).get("limit", 5)
-    bounded_limit = int(limit) if isinstance(limit, int) and limit > 0 else 5
+    result_bounds = graph_query_plan.get("result_bounds")
+    bounds = result_bounds if isinstance(result_bounds, dict) else {}
+    limit_value = bounds.get("limit", 5)
+    bounded_limit = int(limit_value) if isinstance(limit_value, int) and limit_value > 0 else 5
+
+    parameters_raw = graph_query_plan.get("parameters")
+    parameters: Mapping[str, object] = parameters_raw if isinstance(parameters_raw, dict) else {}
 
     if query_family == QUERY_FAMILY_EXACT_SKILL_LOOKUP:
         return _execute_exact_skill_lookup(plan, parameters, bounded_limit)
@@ -419,9 +430,7 @@ def _execute_related_skill_traversal(
 def _execute_capability_task_lookup(
     plan: load_skills_neo4j.LoadPlan, parameters: Mapping[str, object], limit: int
 ) -> Mapping[str, object]:
-    query_tokens = {
-        token for token in parameters.get("query_tokens", []) if isinstance(token, str) and token
-    }
+    query_tokens = _string_token_set(parameters.get("query_tokens", []))
     matches: list[dict[str, object]] = []
     evidence_paths: list[str] = []
     scores: defaultdict[str, int] = defaultdict(int)
@@ -485,9 +494,7 @@ def _execute_constraint_verification_retrieval(
 def _execute_pack_membership_lookup(
     plan: load_skills_neo4j.LoadPlan, parameters: Mapping[str, object], limit: int
 ) -> Mapping[str, object]:
-    query_tokens = {
-        token for token in parameters.get("query_tokens", []) if isinstance(token, str) and token
-    }
+    query_tokens = _string_token_set(parameters.get("query_tokens", []))
     matches: list[dict[str, object]] = []
     for skill in _skill_nodes(plan):
         pack_id = _string(skill.properties.get("skill_pack_id"))

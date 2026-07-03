@@ -182,8 +182,7 @@ def validate_coverage_matrix(
     missing = sorted(promoted_ids - set(skills_map))
     if missing:
         errors.append(
-            f"coverage: missing promoted skills: {', '.join(missing[:5])} "
-            f"({len(missing)} total)"
+            f"coverage: missing promoted skills: {', '.join(missing[:5])} ({len(missing)} total)"
         )
 
     queries_by_skill: dict[str, list[str]] = defaultdict(list)
@@ -224,7 +223,9 @@ def validate_confuser_pairs(
         preferred = str(pair.get("preferred_skill_id", ""))
         confuser = str(pair.get("confuser_skill_id", ""))
         if not pair_id or not preferred or not confuser:
-            errors.append("confuser_pairs: each entry needs id, preferred_skill_id, confuser_skill_id")
+            errors.append(
+                "confuser_pairs: each entry needs id, preferred_skill_id, confuser_skill_id"
+            )
             continue
         matched = False
         for case in realistic_cases:

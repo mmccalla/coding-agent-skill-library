@@ -2,7 +2,7 @@
 
 **Last updated:** 2026-07-03  
 **Branch context:** `plan/golden-corpus-status-closeout` (ready to merge)  
-**Closeout programme:** [`CLOSEOUT_PLAN.md`](CLOSEOUT_PLAN.md) — **waves 0–4 complete**; Wave 5 partial (mypy only)
+**Closeout programme:** [`CLOSEOUT_PLAN.md`](CLOSEOUT_PLAN.md) — **waves 0–5 complete** (optional P2/P3 expansions remain advisory)
 
 This is the **single live roadmap** for the Knowledge Graph service. Completed phase plans are archived under `skills_docs/archive/planning/`.
 
@@ -51,7 +51,7 @@ Phases 1–9: vocabulary, authoring, trust, ingest, projections, MCP usage, eval
 | 2 | Done | Tiered `generate_golden_queries.py`, shrunk corpora, shadow baseline, delta eval |
 | 3 | Done | Skills UI admin ingest after trust preview |
 | 4 | Done | JRN-08 … JRN-11, confuser catalogue, journey tests |
-| 5 | Partial | Nightly workflow + docs aligned; **mypy** remains |
+| 5 | Partial | Done — nightly workflow, docs aligned, **mypy** green |
 
 ---
 
@@ -59,7 +59,6 @@ Phases 1–9: vocabulary, authoring, trust, ingest, projections, MCP usage, eval
 
 | Item | Priority | Acceptance |
 | --- | --- | --- |
-| `ci_local.sh` mypy green | P1 | `python3 -m mypy` exits 0 |
 | Expand realistic tier toward ~100 curated/journey cases | P2 | Category balance per `EVALUATION_CORPUS_CONTRACT.md` |
 | Natural-language OOD abstention probes | P3 | Gate weather/stock-style queries when retrieval abstains reliably |
 
@@ -69,7 +68,6 @@ Phases 1–9: vocabulary, authoring, trust, ingest, projections, MCP usage, eval
 
 | Gap | Impact | Notes |
 | --- | --- | --- |
-| `ci_local.sh` mypy failures (~68 errors) | Local/CI typing gate not green | Wave 5 residual |
 | Realistic tier below target size (31 vs ~100) | Less journey/category diversity in PR eval | Expand catalogue over time |
 | OOD abstention uses gibberish probes only | Natural-language off-domain not CI-gated | Documented in `EVALUATION.md` |
 

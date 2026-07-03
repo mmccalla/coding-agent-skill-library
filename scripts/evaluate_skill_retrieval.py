@@ -108,11 +108,16 @@ def load_promoted_skill_ids(skills_root: Path | None = None) -> frozenset[str]:
 
     root = skills_root or Path("skills")
     records = extract_skills_graph_records(root.resolve())
-    return frozenset(
-        str(skill["id"])
-        for skill in records["skills"]
-        if str(skill.get("promotion_status", "")) == "promoted"
-    )
+    skills = records.get("skills")
+    if not isinstance(skills, list):
+        return frozenset()
+    promoted: list[str] = []
+    for skill in skills:
+        if not isinstance(skill, dict):
+            continue
+        if str(skill.get("promotion_status", "")) == "promoted":
+            promoted.append(str(skill["id"]))
+    return frozenset(promoted)
 
 
 def filter_cases_by_promotion(

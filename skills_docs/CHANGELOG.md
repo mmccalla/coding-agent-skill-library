@@ -23,7 +23,7 @@ Release-level changes to the portable skills library and Skills KG service.
 
 ### Residual (Wave 5)
 
-- `python3 -m mypy` — ~68 errors in `scripts/`; not yet green in `ci_local.sh`.
+- Resolved: `python3 -m mypy` passes on `scripts/`.
 
 ## 2026-07-03 (earlier)
 

@@ -21,7 +21,8 @@ def build_weekly_rollup(*, skills_root: Path, period_days: int = 7) -> dict[str,
     now = datetime.now(UTC)
     window_start = now - timedelta(days=period_days)
     usage = build_usage_report(skills_root=skills_root)
-    zero_hits = usage["zero_hit_promoted_skills"]
+    zero_hits_raw = usage.get("zero_hit_promoted_skills", [])
+    zero_hits = zero_hits_raw if isinstance(zero_hits_raw, list) else []
     return {
         "rollup_type": "weekly_skill_usage",
         "period_days": period_days,
@@ -57,10 +58,12 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Weekly Skills KG usage rollup ({rollup['period_days']}d)")
     print(f"Promoted skills: {rollup['promoted_skill_count']}")
     print(f"Skills with hits: {rollup['skills_with_hits']}")
-    zero_hits = rollup["zero_hit_promoted_skills"]
+    zero_hits_raw = rollup["zero_hit_promoted_skills"]
+    zero_hits = zero_hits_raw if isinstance(zero_hits_raw, list) else []
     print(f"Zero-hit promoted skills: {len(zero_hits)}")
     for skill_id in zero_hits[:25]:
-        print(f"- {skill_id}")
+        if isinstance(skill_id, str):
+            print(f"- {skill_id}")
     if len(zero_hits) > 25:
         print(f"... and {len(zero_hits) - 25} more")
     print(rollup["notes"])

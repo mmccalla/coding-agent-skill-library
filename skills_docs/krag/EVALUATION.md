@@ -147,7 +147,7 @@ Every promoted skill has ≥2 distinct `query_archetype` rows in `coverage_matri
 3. **Exclusion at ranks 2–3** — graph `COMPLEMENTS` edges surface neighbours by design.
 4. **Legacy `golden_queries.json`** — union re-export for compatibility; do not regenerate 11×91 templates.
 5. **Offline harness** — `evaluate_offline` uses in-process graph plan; journeys use fixture or embedded servers.
-6. **mypy debt** — `python3 -m mypy` reports ~68 errors in `scripts/`; tracked in `STATUS.md` Wave 5.
+6. **mypy debt** — resolved 2026-07-03; `python3 -m mypy` passes on `scripts/`.
 
 ---
 

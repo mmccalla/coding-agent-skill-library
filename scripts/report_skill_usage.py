@@ -69,12 +69,16 @@ def main(argv: list[str] | None = None) -> int:
     if args.json:
         print(json.dumps(report, indent=2, sort_keys=True))
     else:
-        print(f"Promoted skills: {report['promoted_skill_count']}")
-        print(f"Skills with hits: {report['skills_with_hits']}")
-        zero_hits = report["zero_hit_promoted_skills"]
+        promoted_count = report["promoted_skill_count"]
+        skills_with_hits = report["skills_with_hits"]
+        zero_hits_raw = report["zero_hit_promoted_skills"]
+        zero_hits = zero_hits_raw if isinstance(zero_hits_raw, list) else []
+        print(f"Promoted skills: {promoted_count}")
+        print(f"Skills with hits: {skills_with_hits}")
         print(f"Zero-hit promoted skills: {len(zero_hits)}")
         for skill_id in zero_hits[:20]:
-            print(f"- {skill_id}")
+            if isinstance(skill_id, str):
+                print(f"- {skill_id}")
         if len(zero_hits) > 20:
             print(f"... and {len(zero_hits) - 20} more")
     return 0

@@ -40,11 +40,26 @@ def _description_fragment(description: str) -> str:
     return fragment.rstrip(".")
 
 
+def _skill_id_set(raw: object) -> set[str]:
+    if not isinstance(raw, list):
+        return set()
+    return {str(item) for item in raw if isinstance(item, str)}
+
+
+def _graph_skills(records: dict[str, object]) -> list[dict[str, object]]:
+    skills = records.get("skills")
+    if not isinstance(skills, list):
+        return []
+    return [skill for skill in skills if isinstance(skill, dict)]
+
+
 def _promotion_tier_for_case(
     case: dict[str, object],
     promoted_ids: frozenset[str],
 ) -> str:
-    expected = set(case.get("expected_skill_ids", [])) | set(case.get("required_skill_ids", []))
+    expected = _skill_id_set(case.get("expected_skill_ids")) | _skill_id_set(
+        case.get("required_skill_ids")
+    )
     if case.get("promotion_tier"):
         return str(case["promotion_tier"])
     if not expected:
@@ -117,13 +132,9 @@ def build_coverage_cases(
         aliases = _skill_aliases(name, skills_root)
 
         if aliases:
-            task_query = (
-                f"When should I use {aliases[0]} for {fragment.lower()}?"
-            )
+            task_query = f"When should I use {aliases[0]} for {fragment.lower()}?"
         else:
-            task_query = (
-                f"When should I follow the {name} practice for {fragment.lower()}?"
-            )
+            task_query = f"When should I follow the {name} practice for {fragment.lower()}?"
         cases.append(
             {
                 "id": f"coverage_{slug}_task",
@@ -215,7 +226,9 @@ def build_smoke_cases(
             cases.append(dict(case))
     if not cases:
         cases = [dict(case) for case in catalogue[:25]]
-    absent = next((dict(case) for case in abstention if case.get("id") == "abstain_nonsense_tokens"), None)
+    absent = next(
+        (dict(case) for case in abstention if case.get("id") == "abstain_nonsense_tokens"), None
+    )
     if absent:
         cases.append(absent)
     for case in cases:
@@ -284,15 +297,14 @@ def emit_stubs(catalogue_path: Path, skills_root: Path) -> int:
     records = extract_skills_graph_records(skills_root)
     promoted = {
         str(skill["name"])
-        for skill in records["skills"]
+        for skill in _graph_skills(records)
         if str(skill.get("promotion_status", "")) == "promoted"
     }
     catalogue = load_cases(catalogue_path)
     covered = {
         skill_id.removeprefix("skill:")
         for case in catalogue
-        for skill_id in case.get("expected_skill_ids", [])
-        if isinstance(skill_id, str)
+        for skill_id in _skill_id_set(case.get("expected_skill_ids"))
     }
     missing = sorted(promoted - covered)
     for name in missing:
@@ -324,9 +336,7 @@ def archive_shadow_baseline(
     positives = [case for case in legacy_cases if case.get("expected_skill_ids")]
     rng = random.Random(SHADOW_SEED)
     sample = (
-        rng.sample(positives, min(SHADOW_LEGACY_SAMPLE_SIZE, len(positives)))
-        if positives
-        else []
+        rng.sample(positives, min(SHADOW_LEGACY_SAMPLE_SIZE, len(positives))) if positives else []
     )
     BASELINE_PATH.parent.mkdir(parents=True, exist_ok=True)
     BASELINE_PATH.write_text(
@@ -349,12 +359,11 @@ def generate_tier(
     skills_root: Path,
 ) -> list[dict[str, object]]:
     records = extract_skills_graph_records(skills_root)
+    skills = _graph_skills(records)
     promoted_ids = frozenset(
-        str(skill["id"])
-        for skill in records["skills"]
-        if str(skill.get("promotion_status", "")) == "promoted"
+        str(skill["id"]) for skill in skills if str(skill.get("promotion_status", "")) == "promoted"
     )
-    skills = sorted(records["skills"], key=lambda skill: str(skill["name"]))
+    skills = sorted(skills, key=lambda skill: str(skill["name"]))
     catalogue = load_cases(CATALOGUE_PATH)
     abstention = load_cases(ABSTENTION_PATH)
     pairs = load_cases(CONFUSER_PAIRS_PATH)
@@ -364,7 +373,9 @@ def generate_tier(
     if tier == "abstention":
         return abstention
     if tier == "coverage":
-        return build_coverage_cases(skills, skills_root=skills_root, pairs=pairs, promoted_ids=promoted_ids)
+        return build_coverage_cases(
+            skills, skills_root=skills_root, pairs=pairs, promoted_ids=promoted_ids
+        )
     if tier == "smoke":
         return build_smoke_cases(catalogue, abstention, promoted_ids)
     if tier == "realistic":
@@ -429,7 +440,9 @@ def main(argv: list[str] | None = None) -> int:
 
         matrix = build_coverage_matrix(coverage)
         MATRIX_PATH.write_text(json.dumps(matrix, indent=2) + "\n", encoding="utf-8")
-        print(f"wrote smoke={len(smoke)} realistic={len(realistic)} coverage={len(coverage)} abstention={len(abstention)}")
+        print(
+            f"wrote smoke={len(smoke)} realistic={len(realistic)} coverage={len(coverage)} abstention={len(abstention)}"
+        )
         return 0
 
     write_cases(outputs[args.tier], cases)
