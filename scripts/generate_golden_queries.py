@@ -42,8 +42,14 @@ SEED_CASES = (
         "query": "KRAG architecture summary graph schema outline retrieval strategy implementation backlog thin vertical slices",
         "expected_skill_ids": ["skill:krag-system-design"],
         "required_skill_ids": ["skill:krag-system-design"],
-        "excluded_skill_ids": ["skill:accessibility-wcag", "skill:ci-cd-and-automation"],
+        "excluded_skill_ids": [
+            "skill:accessibility-wcag",
+            "skill:ci-cd-and-automation",
+            "skill:knowledge-graph-rag",
+            "skill:ontology-and-knowledge-graph-modeling",
+        ],
         "expect_uncertain": False,
+        "promotion_tier": "release",
     },
     {
         "id": "krag_ingestion_graph_construction",
@@ -58,7 +64,10 @@ SEED_CASES = (
         "query": "KRAG retrieval plan queries pseudocode evidence set citations uncertainty follow up data gaps",
         "expected_skill_ids": ["skill:krag-retrieval-answering"],
         "required_skill_ids": ["skill:krag-retrieval-answering"],
-        "excluded_skill_ids": ["skill:release-engineering-and-progressive-delivery", "skill:business-capability-modeling"],
+        "excluded_skill_ids": [
+            "skill:release-engineering-and-progressive-delivery",
+            "skill:business-capability-modeling",
+        ],
         "expect_uncertain": False,
     },
     {
@@ -73,7 +82,28 @@ SEED_CASES = (
         "id": "human_approval",
         "query": "approval before destructive command human review",
         "expected_skill_ids": ["skill:human-in-the-loop"],
+        "required_skill_ids": ["skill:human-in-the-loop"],
+        "excluded_skill_ids": ["skill:agentic-ux-patterns", "skill:git-workflow-and-versioning"],
         "expect_uncertain": False,
+        "promotion_tier": "release",
+    },
+    {
+        "id": "confuser_guardrails_vs_hitl",
+        "query": "policy enforcement tool restrictions before destructive actions",
+        "expected_skill_ids": ["skill:guardrails-safety-patterns"],
+        "required_skill_ids": ["skill:guardrails-safety-patterns"],
+        "excluded_skill_ids": ["skill:human-in-the-loop"],
+        "expect_uncertain": False,
+        "promotion_tier": "release",
+    },
+    {
+        "id": "confuser_rag_vs_krag_retrieval",
+        "query": "retrieval augmented generation document grounding citations",
+        "expected_skill_ids": ["skill:knowledge-retrieval-rag"],
+        "required_skill_ids": ["skill:knowledge-retrieval-rag"],
+        "excluded_skill_ids": ["skill:krag-retrieval-answering"],
+        "expect_uncertain": False,
+        "promotion_tier": "release",
     },
     {
         "id": "accessibility",
@@ -119,8 +149,29 @@ def _description_fragment(description: str) -> str:
     return fragment.rstrip(".")
 
 
+def _promotion_tier_for_case(
+    case: dict[str, object],
+    promoted_ids: frozenset[str],
+) -> str:
+    expected = set(case.get("expected_skill_ids", [])) | set(case.get("required_skill_ids", []))
+    if case.get("promotion_tier"):
+        return str(case["promotion_tier"])
+    if not expected:
+        return "release"
+    if expected <= promoted_ids:
+        return "release"
+    if expected & promoted_ids:
+        return "release"
+    return "diagnostic"
+
+
 def build_cases() -> list[dict[str, object]]:
     records = extract_skills_graph_records(REPO_ROOT / "skills")
+    promoted_ids = frozenset(
+        str(skill["id"])
+        for skill in records["skills"]
+        if str(skill.get("promotion_status", "")) == "promoted"
+    )
     skills = sorted(records["skills"], key=lambda skill: str(skill["name"]))
     cases: list[dict[str, object]] = [dict(case) for case in SEED_CASES]
 
@@ -150,8 +201,7 @@ def build_cases() -> list[dict[str, object]]:
                 {
                     "id": f"{name.replace('-', '_')}_negative_{negative_index:02d}",
                     "query": (
-                        f"irrelevant synthetic retrieval probe "
-                        f"qxjv{name.count('-')}{negative_index} "
+                        f"zzqp qxjv{name.count('-')}{negative_index} "
                         f"blorf{len(name)} "
                         f"nzpt{len(description_fragment)} "
                         f"yqqx{negative_index}{len(skill_id)}"
@@ -162,6 +212,9 @@ def build_cases() -> list[dict[str, object]]:
                     "expect_uncertain": True,
                 }
             )
+
+    for case in cases:
+        case["promotion_tier"] = _promotion_tier_for_case(case, promoted_ids)
 
     if len(cases) < MIN_CASES:
         raise ValueError(f"expected at least {MIN_CASES} cases, generated {len(cases)}")

@@ -16,6 +16,15 @@ Use when designing the end-to-end architecture, graph role, provenance model, re
 
 Design a Knowledge Graph-Augmented Retrieval system where the graph materially improves retrieval, reasoning, provenance, navigation, governance, or explainability.
 
+## Procedure
+
+1. Classify the primary question class and intended graph role.
+2. Choose storage, reasoning, and evidence models explicitly.
+3. Outline the reference architecture from ingestion through evaluation.
+4. State non-negotiable invariants for evidence, schema, and writes.
+5. Define retrieval strategy, ranking signals, and abstention rules.
+6. Produce architecture summary, schema outline, evaluation gates, and thin-slice backlog.
+
 ## Core decisions
 
 Make these explicit before designing:

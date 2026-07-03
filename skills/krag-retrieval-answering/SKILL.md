@@ -17,6 +17,14 @@ Use when building or debugging the query planner, graph traversal, hybrid rankin
 
 Answer questions using graph structure plus grounded evidence, not unverified model memory.
 
+## Procedure
+
+1. Classify the question (lookup, semantic discovery, traversal, impact analysis, synthesis).
+2. Select the smallest sufficient retrieval strategy (graph, vector, keyword, hybrid, iterative).
+3. Plan and execute bounded, read-only graph queries where applicable.
+4. Rank candidates using semantic, graph proximity, authority, recency, and confidence signals.
+5. Synthesise an answer with citations, uncertainty, and abstention when evidence is weak.
+
 ## Retrieval planner
 
 Classify the question before querying:

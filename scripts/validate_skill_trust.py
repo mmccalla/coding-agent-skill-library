@@ -21,6 +21,7 @@ from scripts.validate_skill_security import (
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+CI_INGEST_BLOCKING_LAYERS = ("L2_security",)
 
 
 @dataclass(frozen=True)
@@ -102,6 +103,12 @@ def validate_skill_trust_paths(
     return [validate_skill_trust_file(path, allowlist_path=allowlist_path) for path in paths]
 
 
+def ci_ingest_gate_passed(report: TrustReport) -> bool:
+    """Return True when CI should allow ingest (L2 security gate only)."""
+
+    return all(report.layers[layer].passed for layer in CI_INGEST_BLOCKING_LAYERS)
+
+
 def _detail_items(details: dict[str, object], key: str) -> list[object]:
     value = details.get(key, [])
     return value if isinstance(value, list) else []
@@ -125,6 +132,11 @@ def main(argv: list[str] | None = None) -> int:
         help="Path to skill security allowlist JSON",
     )
     parser.add_argument("--json", action="store_true", help="Emit machine-readable JSON report")
+    parser.add_argument(
+        "--ci-gate",
+        action="store_true",
+        help="CI ingest mode: block only on L2 security failures (L3/L4 are advisory).",
+    )
     args = parser.parse_args(argv)
 
     paths = list(args.paths)
@@ -136,7 +148,10 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("provide skill file paths or --skills-root")
 
     reports = validate_skill_trust_paths(paths, allowlist_path=args.allowlist)
-    passed = all(report.passed for report in reports)
+    if args.ci_gate:
+        passed = all(ci_ingest_gate_passed(report) for report in reports)
+    else:
+        passed = all(report.passed for report in reports)
 
     if args.json:
         if len(reports) == 1:

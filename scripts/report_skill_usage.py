@@ -13,7 +13,7 @@ if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.evaluate_skill_retrieval import load_promoted_skill_ids
-from scripts.skills_usage import usage_metrics_text
+from scripts.skills_metrics import metrics_text
 
 _COUNTER_LINE = re.compile(
     r"^skills_usage_hits_total\{skill_id=\"([^\"]+)\",tool=\"([^\"]+)\"\} (\d+(?:\.\d+)?)$"
@@ -39,21 +39,21 @@ def zero_hit_promoted_skills(
 ) -> tuple[str, ...]:
     """Return promoted skill ids with no recorded usage hits."""
 
-    return tuple(
-        sorted(skill_id for skill_id in promoted_ids if hit_counts.get(skill_id, 0) == 0)
-    )
+    return tuple(sorted(skill_id for skill_id in promoted_ids if hit_counts.get(skill_id, 0) == 0))
 
 
 def build_usage_report(*, skills_root: Path | None = None) -> dict[str, object]:
     """Build an operator snapshot from in-process usage metrics."""
 
-    metrics_text = usage_metrics_text()
-    hit_counts = parse_skill_hit_counts(metrics_text)
+    metrics_text_value = metrics_text()
+    hit_counts = parse_skill_hit_counts(metrics_text_value)
     promoted_ids = load_promoted_skill_ids(skills_root)
     zero_hits = zero_hit_promoted_skills(promoted_ids, hit_counts)
     return {
         "promoted_skill_count": len(promoted_ids),
-        "skills_with_hits": len([skill_id for skill_id in promoted_ids if hit_counts.get(skill_id, 0) > 0]),
+        "skills_with_hits": len(
+            [skill_id for skill_id in promoted_ids if hit_counts.get(skill_id, 0) > 0]
+        ),
         "zero_hit_promoted_skills": list(zero_hits),
         "hit_counts": {skill_id: hit_counts[skill_id] for skill_id in sorted(hit_counts)},
     }

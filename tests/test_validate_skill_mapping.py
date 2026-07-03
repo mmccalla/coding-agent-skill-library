@@ -42,7 +42,9 @@ description: A skill with no governed mapping signals.
 ## When to use
 Use for nothing in particular.
 """
-        result = self.module.validate_skill_mapping_file("skills/empty-skill/SKILL.md", markdown=markdown)
+        result = self.module.validate_skill_mapping_file(
+            "skills/empty-skill/SKILL.md", markdown=markdown
+        )
         self.assertFalse(result.passed)
         self.assertEqual("quarantined", result.promotion_prediction)
 

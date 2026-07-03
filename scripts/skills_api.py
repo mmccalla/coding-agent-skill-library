@@ -18,27 +18,23 @@ from typing import Annotated
 
 from fastapi import FastAPI, File, HTTPException, Query, Request, Response, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from prometheus_client import (
-    CONTENT_TYPE_LATEST,
-    CollectorRegistry,
-    Counter,
-    Gauge,
-    Histogram,
-    generate_latest,
-)
+from prometheus_client import CollectorRegistry, Counter, Gauge, Histogram
 
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts import (
+    admin_skill_ingest,
     check_neo4j_readiness,
     load_skills_neo4j,
     skills_config,
     skills_contracts,
     skills_ollama,
     skills_query_graph,
+    skills_trust_metrics,
 )
 from scripts.skills_mcp_server import SkillsMcpServer, build_fastmcp_server
+from scripts.skills_metrics import metrics_content_type, render_all_metrics
 from scripts.validate_skill_trust import validate_skill_trust_file
 
 ReadinessProvider = Callable[[], Mapping[str, object]]
@@ -143,6 +139,8 @@ def create_app(
     readiness_provider: ReadinessProvider | None = None,
     query_provider: QueryProvider | None = None,
     model_provider: ModelProvider | None = None,
+    skills_root: Path | None = None,
+    admin_config: admin_skill_ingest.AdminIngestConfig | None = None,
 ) -> FastAPI:
     """Create the FastAPI app with a narrow read-only Skills service boundary."""
 
@@ -150,6 +148,7 @@ def create_app(
     readiness = readiness_provider or _default_readiness
     answer_query = query_provider or skills_ollama.answer_graph_query
     list_models = model_provider or skills_ollama.list_ollama_models
+    resolved_admin_config = admin_config or admin_skill_ingest.load_admin_config()
     _record_graph_snapshot_metrics(skills_server)
     # The FastMCP HTTP app defaults to serving at "/mcp". When we mount it under
     # "/mcp" in this API, override the inner path so the external endpoint stays
@@ -228,7 +227,10 @@ def create_app(
     def metrics() -> Response:
         _record_graph_snapshot_metrics(skills_server)
         _record_readiness_metrics(readiness())
-        return Response(generate_latest(METRICS_REGISTRY), media_type=CONTENT_TYPE_LATEST)
+        return Response(
+            render_all_metrics(api_registry=METRICS_REGISTRY),
+            media_type=metrics_content_type(),
+        )
 
     @app.get("/skills/search")
     def search_skills(
@@ -252,9 +254,7 @@ def create_app(
     async def upload_skill_preview(
         file: Annotated[UploadFile, File(...)],
     ) -> Mapping[str, object]:
-        content = await file.read(MAX_UPLOAD_BYTES + 1)
-        if len(content) > MAX_UPLOAD_BYTES:
-            raise HTTPException(status_code=413, detail="Skill upload preview exceeds 256 KiB.")
+        content = await _read_upload_bytes(file)
         text = content.decode("utf-8", errors="replace")
         frontmatter = _extract_frontmatter(text)
         name = _frontmatter_value(frontmatter, "name")
@@ -282,6 +282,49 @@ def create_app(
             "trust": trust,
             "persisted": False,
             "message": "Upload preview only; no graph writes are performed by this endpoint.",
+        }
+
+    def _require_admin(request: Request) -> str:
+        if not admin_skill_ingest.admin_ingest_enabled(resolved_admin_config):
+            raise HTTPException(status_code=403, detail="Admin ingest is not configured.")
+        provided = request.headers.get("x-skills-admin-key", "").strip()
+        if not provided:
+            auth_header = request.headers.get("authorization", "")
+            if auth_header.lower().startswith("bearer "):
+                provided = auth_header[7:].strip()
+        if provided != resolved_admin_config.api_key:
+            raise HTTPException(status_code=403, detail="Invalid admin credentials.")
+        return request.headers.get("x-skills-admin-actor", "admin")
+
+    @app.post("/skills/admin/ingest")
+    async def admin_ingest_skill(
+        request: Request,
+        file: Annotated[UploadFile, File(...)],
+    ) -> Mapping[str, object]:
+        actor = _require_admin(request)
+        content = await _read_upload_bytes(file)
+        text = content.decode("utf-8", errors="replace")
+        result = admin_skill_ingest.run_admin_skill_ingest(
+            content=text,
+            actor=actor,
+            skills_root=resolved_admin_config.write_root,
+            config=resolved_admin_config,
+        )
+        skills_trust_metrics.record_admin_ingest(outcome=result.outcome)
+        if result.outcome == "rejected":
+            raise HTTPException(status_code=422, detail=result.to_dict())
+        skills_server.reload_from_repository(resolved_admin_config.write_root)
+        _record_graph_snapshot_metrics(skills_server)
+        return result.to_dict()
+
+    @app.get("/skills/admin/ingests")
+    def list_admin_ingests(
+        request: Request, limit: int = Query(default=20, ge=1, le=100)
+    ) -> Mapping[str, object]:
+        _require_admin(request)
+        return {
+            "status": "ok",
+            "ingests": admin_skill_ingest.list_recent_ingests(limit),
         }
 
     @app.get("/mcp/technical-info")
@@ -408,6 +451,13 @@ def create_app(
     return app
 
 
+async def _read_upload_bytes(file: UploadFile) -> bytes:
+    content = await file.read(MAX_UPLOAD_BYTES + 1)
+    if len(content) > MAX_UPLOAD_BYTES:
+        raise HTTPException(status_code=413, detail="Skill upload exceeds 256 KiB.")
+    return content
+
+
 def _trust_report_for_uploaded_content(text: str) -> dict[str, object]:
     """Run L2–L4 trust gates against uploaded SKILL.md content via a temp file."""
     temp_path = ""
@@ -456,7 +506,9 @@ def _query_evidence_for_route(
         resolved_skill_id=_safe_log_value(skill_id),
         limit=request.limit,
     )
-    graph_query_result = skills_query_graph.execute_planned_query(skills_server.plan, graph_query_plan)
+    graph_query_result = skills_query_graph.execute_planned_query(
+        skills_server.plan, graph_query_plan
+    )
     if route == "direct_lookup" and isinstance(skill_id, str):
         skill = skills_server.call_tool(
             "get_skill",
