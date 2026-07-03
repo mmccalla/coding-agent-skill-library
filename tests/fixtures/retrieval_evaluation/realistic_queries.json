@@ -497,6 +497,54 @@
     "realistic_tier": true
   },
   {
+    "id": "message_based_integration_design",
+    "query": "message-based integration design EIP messaging style topology shared database exception",
+    "expected_skill_ids": [
+      "skill:message-based-integration-design"
+    ],
+    "required_skill_ids": [
+      "skill:message-based-integration-design"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "task",
+    "naturalness": "high",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "message_channel_dead_letter",
+    "query": "message channel design point-to-point publish-subscribe dead letter channel invalid message channel",
+    "expected_skill_ids": [
+      "skill:message-channel-design"
+    ],
+    "required_skill_ids": [
+      "skill:message-channel-design"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "task",
+    "naturalness": "high",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "idempotent_message_endpoint",
+    "query": "message endpoint design competing consumers transactional client idempotent receiver",
+    "expected_skill_ids": [
+      "skill:message-endpoint-design"
+    ],
+    "required_skill_ids": [
+      "skill:message-endpoint-design"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "task",
+    "naturalness": "high",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
     "id": "journey_harvest_01",
     "query": "tell me about tdd-practice",
     "expected_skill_ids": [

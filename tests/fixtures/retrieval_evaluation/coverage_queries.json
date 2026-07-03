@@ -864,6 +864,38 @@
     "promotion_tier": "release"
   },
   {
+    "id": "coverage_eip_integration_validation_task",
+    "query": "When should I use eip-validation for reviews integration designs against eip, reliability, security and operability criteria?",
+    "expected_skill_ids": [
+      "skill:eip-integration-validation"
+    ],
+    "required_skill_ids": [
+      "skill:eip-integration-validation"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_eip_integration_validation_alias",
+    "query": "When should I use eip-validation for this kind of work?",
+    "expected_skill_ids": [
+      "skill:eip-integration-validation"
+    ],
+    "required_skill_ids": [
+      "skill:eip-integration-validation"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
     "id": "coverage_evaluation_and_monitoring_task",
     "query": "When should I follow the evaluation-and-monitoring practice for use when measuring coding-agent quality, regression risk, latency, cost, reliability, safety, drift, or production performance?",
     "expected_skill_ids": [
@@ -1362,6 +1394,38 @@
     "expect_uncertain": false,
     "query_source": "archetype",
     "query_archetype": "direct",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_integration_message_construction_task",
+    "query": "When should I use eip-message-construction for defines integration message intent, envelopes, identifiers and lifecycle metadata?",
+    "expected_skill_ids": [
+      "skill:integration-message-construction"
+    ],
+    "required_skill_ids": [
+      "skill:integration-message-construction"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_integration_message_construction_alias",
+    "query": "When should I use eip-message-construction for this kind of work?",
+    "expected_skill_ids": [
+      "skill:integration-message-construction"
+    ],
+    "required_skill_ids": [
+      "skill:integration-message-construction"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
     "naturalness": "medium",
     "promotion_tier": "release"
   },
@@ -1895,6 +1959,198 @@
     ],
     "required_skill_ids": [
       "skill:memory-management"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_message_based_integration_design_task",
+    "query": "When should I use eip-integration-design for designs message-based enterprise integrations and eip topologies?",
+    "expected_skill_ids": [
+      "skill:message-based-integration-design"
+    ],
+    "required_skill_ids": [
+      "skill:message-based-integration-design"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_message_based_integration_design_alias",
+    "query": "When should I use eip-integration-design for this kind of work?",
+    "expected_skill_ids": [
+      "skill:message-based-integration-design"
+    ],
+    "required_skill_ids": [
+      "skill:message-based-integration-design"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_message_channel_design_task",
+    "query": "When should I use eip-message-channels for designs message channels, delivery guarantees and error-channel boundaries?",
+    "expected_skill_ids": [
+      "skill:message-channel-design"
+    ],
+    "required_skill_ids": [
+      "skill:message-channel-design"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_message_channel_design_alias",
+    "query": "When should I use eip-message-channels for this kind of work?",
+    "expected_skill_ids": [
+      "skill:message-channel-design"
+    ],
+    "required_skill_ids": [
+      "skill:message-channel-design"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_message_endpoint_design_task",
+    "query": "When should I use eip-message-endpoints for designs reliable message producers, consumers, gateways and receiver semantics?",
+    "expected_skill_ids": [
+      "skill:message-endpoint-design"
+    ],
+    "required_skill_ids": [
+      "skill:message-endpoint-design"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_message_endpoint_design_alias",
+    "query": "When should I use eip-message-endpoints for this kind of work?",
+    "expected_skill_ids": [
+      "skill:message-endpoint-design"
+    ],
+    "required_skill_ids": [
+      "skill:message-endpoint-design"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_message_routing_design_task",
+    "query": "When should I use eip-message-routing for designs message routing, split, aggregate, resequence and orchestration flows?",
+    "expected_skill_ids": [
+      "skill:message-routing-design"
+    ],
+    "required_skill_ids": [
+      "skill:message-routing-design"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_message_routing_design_alias",
+    "query": "When should I use eip-message-routing for this kind of work?",
+    "expected_skill_ids": [
+      "skill:message-routing-design"
+    ],
+    "required_skill_ids": [
+      "skill:message-routing-design"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_message_transformation_design_task",
+    "query": "When should I use eip-message-transformation for designs message translation, enrichment, filtering and normalisation?",
+    "expected_skill_ids": [
+      "skill:message-transformation-design"
+    ],
+    "required_skill_ids": [
+      "skill:message-transformation-design"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_message_transformation_design_alias",
+    "query": "When should I use eip-message-transformation for this kind of work?",
+    "expected_skill_ids": [
+      "skill:message-transformation-design"
+    ],
+    "required_skill_ids": [
+      "skill:message-transformation-design"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_messaging_system_management_task",
+    "query": "When should I use eip-system-management for designs observability, control, replay and operational safety for messaging integrations?",
+    "expected_skill_ids": [
+      "skill:messaging-system-management"
+    ],
+    "required_skill_ids": [
+      "skill:messaging-system-management"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_messaging_system_management_alias",
+    "query": "When should I use eip-system-management for this kind of work?",
+    "expected_skill_ids": [
+      "skill:messaging-system-management"
+    ],
+    "required_skill_ids": [
+      "skill:messaging-system-management"
     ],
     "excluded_skill_ids": [],
     "expect_uncertain": false,

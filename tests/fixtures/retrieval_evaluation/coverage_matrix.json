@@ -513,6 +513,25 @@
         }
       ]
     },
+    "skill:eip-integration-validation": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_eip_integration_validation_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_eip_integration_validation_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
     "skill:evaluation-and-monitoring": {
       "case_count": 2,
       "archetypes": [
@@ -793,6 +812,25 @@
         {
           "case_id": "coverage_incremental_implementation_direct",
           "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:integration-message-construction": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_integration_message_construction_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_integration_message_construction_alias",
+          "query_archetype": "alias",
           "query_source": "archetype"
         }
       ]
@@ -1088,6 +1126,120 @@
         },
         {
           "case_id": "coverage_memory_management_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:message-based-integration-design": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_message_based_integration_design_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_message_based_integration_design_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:message-channel-design": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_message_channel_design_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_message_channel_design_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:message-endpoint-design": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_message_endpoint_design_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_message_endpoint_design_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:message-routing-design": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_message_routing_design_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_message_routing_design_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:message-transformation-design": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_message_transformation_design_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_message_transformation_design_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:messaging-system-management": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_messaging_system_management_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_messaging_system_management_alias",
           "query_archetype": "alias",
           "query_source": "archetype"
         }

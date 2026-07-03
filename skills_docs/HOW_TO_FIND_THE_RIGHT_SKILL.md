@@ -31,6 +31,7 @@ Then continue with the steps below. See `LIBRARY_CONTRACT.md` for portable consi
 | UI, accessibility, dashboards, interaction states, agent supervision | `user-experience` |
 | Reliability, incidents, observability, CI/CD, release, launch | `reliability-and-delivery` |
 | Events, CDC, stream processing, real-time operations | `event-driven-and-real-time-data` |
+| Message-based enterprise integration, channels, routing, endpoints | `enterprise-integration-patterns` |
 | Capabilities, value streams, processes, operating model, traceability | `business-architecture` |
 | Data models, products, contracts, governance, lineage, knowledge graphs | `data-architecture` |
 | End-to-end KRAG system design, graph construction, retrieval or KRAG evaluation | `krag-systems` |
@@ -44,6 +45,7 @@ Then continue with the steps below. See `LIBRARY_CONTRACT.md` for portable consi
 | Multi-step implementation | `planning-and-task-decomposition`, then `incremental-implementation` |
 | Generic document-grounded RAG | `knowledge-retrieval-rag` |
 | GraphRAG or Neo4j-native KG-backed RAG | `knowledge-graph-rag`, plus `knowledge-retrieval-rag` |
+| Message-based enterprise integration / EIP | `message-based-integration-design`, then the smallest EIP skill; use `eip-integration-validation` after design |
 | End-to-end KRAG system delivery | `krag-system-design`, then the smallest relevant KRAG systems skill |
 | Knowledge graph design | `ontology-and-knowledge-graph-modeling` |
 | Business-facing behaviour change | `bdd-practice`, then `tdd-practice` |

@@ -8,7 +8,7 @@ Use this command to list installed skills:
 find skills -name "SKILL.md" | sort
 ```
 
-After the agentic, control, engineering, user-experience, reliability-and-delivery, event-driven, business-architecture, data-architecture and KRAG systems skills are installed, the library should contain 91 skills (including mandatory `apply-laws-of-ai`).
+After the agentic, control, engineering, user-experience, reliability-and-delivery, event-driven, enterprise-integration-patterns, business-architecture, data-architecture and KRAG systems skills are installed, the library should contain 99 skills (including mandatory `apply-laws-of-ai`).
 
 ## Workflow spine skills
 
@@ -33,6 +33,7 @@ Adjacent needs remain covered by existing agentic, control, engineering and arch
 | `user-experience` | UX, accessibility, UI component, frontend-state, dashboard, design-system, usability-testing and agentic-UX skills. | Fully populated. |
 | `reliability-and-delivery` | SRE, SLO/error-budget, incident, observability, browser verification, CI/CD, deprecation, documentation, launch, toil-reduction, progressive-delivery and DORA Four Keys skills. | Fully populated. |
 | `event-driven-and-real-time-data` | Event-driven architecture, event modelling, streaming platform, schema contract, CDC, stream processing, event governance and real-time operability skills. | Fully populated. |
+| `enterprise-integration-patterns` | Message-based integration design, channels, construction, routing, transformation, endpoints, system management and EIP validation skills. | Fully populated. |
 | `business-architecture` | Capability, value-stream, process, operating-model, strategy traceability, maturity, business concept and organisation design skills. | Fully populated. |
 | `data-architecture` | DAMA-DMBOK2-aligned and CDMC-aware data modelling, products, contracts, metadata, governance, quality, security, lifecycle, integration, lakehouse, MDM/RDM, ontology and lineage skills. | Fully populated. |
 | `krag-systems` | KRAG system design, ingestion/graph construction, retrieval/answering and evaluation/governance skills. | Fully populated. |
@@ -170,6 +171,33 @@ These skills are fully included in the flat library and grouped under `event-dri
 - Define producer, consumer, schema, compatibility, partition key, ordering, idempotency, retention, replay and lineage before implementation.
 - Design for duplicates unless the platform and processing model explicitly guarantee otherwise.
 - Do not treat raw CDC records as business events without translation.
+
+## Enterprise Integration Patterns
+
+These skills are fully included in the flat library and grouped under `enterprise-integration-patterns`.
+
+Pattern names and taxonomy are derived from Enterprise Integration Patterns by Gregor Hohpe and Bobby Woolf: https://www.enterpriseintegrationpatterns.com/patterns/messaging/.
+
+| Skill | Use when | Avoid when |
+|---|---|---|
+| `message-based-integration-design` | Choosing messaging, request-reply, file transfer, broker mediation or overall integration style/topology. | The work is a single local API call with no system boundary. |
+| `message-channel-design` | Defining queues, topics, streams, dead-letter handling, bridges, adapters or delivery guarantees. | No transport or channel decision is required. |
+| `integration-message-construction` | Creating command, event, document or request-reply message contracts and envelopes. | Payloads are ephemeral and not shared across systems. |
+| `message-routing-design` | Building routers, filters, split/aggregate, scatter-gather, process managers or routing slips. | Routing is a trivial static destination. |
+| `message-transformation-design` | Mapping schemas, enriching payloads, filtering content or defining canonical models. | Source and target already share an identical contract. |
+| `message-endpoint-design` | Building producers, consumers, gateways, transactional clients or idempotent receivers. | No messaging endpoint is being implemented. |
+| `messaging-system-management` | Adding monitoring, wire taps, message stores, test messages, replay or operational runbooks. | The integration is non-production and disposable. |
+| `eip-integration-validation` | Reviewing an integration design or implementation against EIP and operability criteria. | No design artefact exists yet to review. |
+
+### Enterprise integration rules
+
+- Separate channel, message construction, routing, transformation, endpoint and management decisions.
+- Prefer asynchronous messaging when decoupling, buffering or independent deployment matters.
+- Make message intent explicit: command, event, document or request/reply.
+- Design for at-least-once delivery with idempotent receivers unless a stronger guarantee is proven.
+- Use `eip-integration-validation` after design or implementation work.
+
+Pack overview: `skills_docs/enterprise-integration-patterns.md`.
 
 ## Business Architecture
 

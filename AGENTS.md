@@ -126,7 +126,7 @@ For KRAG work, do not treat a manually curated routing overlay as sufficient evi
 
 ### Business, data and event-driven architecture
 
-For architecture work, load the smallest relevant skill from the flat `skills/` directory using the `business-architecture`, `data-architecture` and `event-driven-and-real-time-data` groupings in `skills/PACK_METADATA.json` and `skills/MANIFEST.md`.
+For architecture work, load the smallest relevant skill from the flat `skills/` directory using the `business-architecture`, `data-architecture`, `event-driven-and-real-time-data` and `enterprise-integration-patterns` groupings in `skills/PACK_METADATA.json` and `skills/MANIFEST.md`.
 
 Use business architecture skills to clarify capabilities, value streams, processes, operating models, maturity, organisation design and strategy-to-execution traceability:
 
@@ -167,6 +167,17 @@ Use event-driven and real-time data skills to define business events, event sche
 - Use `event-governance-and-lineage` for event ownership, metadata, classification, lineage and discoverability.
 - Use `streaming-operations-and-slos` for lag, freshness, replay, back-pressure, SLOs and streaming operations.
 
+Use enterprise-integration-patterns skills for message-based integration design and review:
+
+- Use `message-based-integration-design` for integration style and topology selection.
+- Use `message-channel-design` for queues, topics, delivery guarantees and dead-letter channels.
+- Use `integration-message-construction` for command, event, document and request-reply contracts.
+- Use `message-routing-design` for routers, splitters, aggregators and process managers.
+- Use `message-transformation-design` for translators, enrichers, filters and canonical models.
+- Use `message-endpoint-design` for producers, consumers, gateways and idempotent receivers.
+- Use `messaging-system-management` for observability, replay, control and operational safety.
+- Use `eip-integration-validation` after design or implementation to review against EIP criteria.
+
 For architecture work, preserve traceability:
 
 ```text
@@ -180,7 +191,7 @@ strategy/outcome
 → metadata, quality, security, lifecycle and lineage controls
 ```
 
-Do not collapse business architecture, data architecture and event-driven architecture into one undifferentiated design. Keep capability, value stream, process, conceptual data, logical data, data product, contract, event and stream-processing concerns distinct, then link them explicitly.
+Do not collapse business architecture, data architecture, event-driven architecture and enterprise integration patterns into one undifferentiated design. Keep capability, value stream, process, conceptual data, logical data, data product, contract, event, stream-processing and messaging-pattern concerns distinct, then link them explicitly.
 
 ### User experience and interface design
 
