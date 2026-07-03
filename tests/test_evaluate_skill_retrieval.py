@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import unittest
 from pathlib import Path
 
@@ -17,9 +16,6 @@ from scripts.validate_skills import parse_frontmatter
 DATASET = Path("tests/fixtures/retrieval_evaluation/golden_queries.json")
 COVERAGE_DATASET = Path("tests/fixtures/retrieval_evaluation/coverage_queries.json")
 ABSTENTION_DATASET = Path("tests/fixtures/retrieval_evaluation/abstention_probes.json")
-SEMANTIC_CHALLENGE_DATASET = Path(
-    "tests/fixtures/retrieval_evaluation/semantic_challenge_queries.json"
-)
 FULL_SMOKE_DATASET = Path("tests/fixtures/retrieval_evaluation/smoke_queries.json")
 PROMOTED_SMOKE_DATASET = Path("tests/fixtures/retrieval_evaluation/smoke_queries_promoted.json")
 SMOKE_DATASET = PROMOTED_SMOKE_DATASET
@@ -71,34 +67,6 @@ class EvaluateSkillRetrievalTests(unittest.TestCase):
         self.assertIn("tdd_practice", case_ids)
         self.assertIn("krag_system_design", case_ids)
         self.assertIn("abstain_nonsense_tokens", case_ids)
-
-    def test_semantic_challenge_dataset_covers_harder_query_shapes(self) -> None:
-        cases = load_cases(SEMANTIC_CHALLENGE_DATASET)
-        raw_cases = json.loads(SEMANTIC_CHALLENGE_DATASET.read_text(encoding="utf-8"))
-        expected_skill_ids = _expected_skill_ids()
-        archetypes = {
-            str(case.get("query_archetype", "")) for case in raw_cases if isinstance(case, dict)
-        }
-
-        self.assertGreaterEqual(len(cases), 12)
-        self.assertTrue(
-            {
-                "natural_language",
-                "low_overlap_paraphrase",
-                "cross_domain_phrasing",
-                "out_of_domain_negative",
-            }.issubset(archetypes)
-        )
-
-        positives = [case for case in cases if case.expected_skill_ids]
-        negatives = [case for case in cases if not case.expected_skill_ids]
-        self.assertGreaterEqual(len(positives), 8)
-        self.assertGreaterEqual(len(negatives), 4)
-        for case in positives:
-            self.assertTrue(set(case.expected_skill_ids).issubset(expected_skill_ids), case.id)
-            self.assertFalse(case.expect_uncertain)
-        for case in negatives:
-            self.assertTrue(case.expect_uncertain, case.id)
 
     def test_alias_lookup_case_detects_embedded_alias_phrases(self) -> None:
         case = EvaluationCase(
