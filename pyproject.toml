@@ -44,6 +44,8 @@ markers = [
   "unit: fast unit and contract tests",
   "integration: integration tests that do not require external services",
   "live_neo4j: tests that require a disposable live Neo4j service",
+  "eval_pr: PR-tier offline retrieval eval (realistic + abstention tiers)",
+  "slow: nightly retrieval eval (coverage arm, golden-union runner)",
   "e2e: end-to-end service or protocol tests",
 ]
 filterwarnings = [

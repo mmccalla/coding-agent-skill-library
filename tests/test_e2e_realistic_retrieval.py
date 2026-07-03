@@ -5,6 +5,8 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
+import pytest
+
 from scripts.evaluate_skill_retrieval import evaluate_offline, load_cases
 from scripts.run_e2e_retrieval_eval import REALISTIC_DATASET, run_realistic_e2e
 
@@ -24,6 +26,7 @@ RELEASE_CITATION_COVERAGE = 0.95
 
 
 class RealisticE2eRetrievalTests(unittest.TestCase):
+    @pytest.mark.eval_pr
     def test_realistic_confuser_dataset_passes(self) -> None:
         report = evaluate_offline(
             REALISTIC_DATASET,
@@ -46,6 +49,7 @@ class RealisticE2eRetrievalTests(unittest.TestCase):
         ]
         self.assertEqual([], rank_failures, [item.failures for item in rank_failures])
 
+    @pytest.mark.eval_pr
     def test_abstention_probes_pass(self) -> None:
         report = evaluate_offline(
             ABSTENTION_DATASET,
@@ -59,6 +63,7 @@ class RealisticE2eRetrievalTests(unittest.TestCase):
         self.assertGreaterEqual(report.cases, 10)
         self.assertGreaterEqual(report.uncertainty_accuracy, 0.9)
 
+    @pytest.mark.slow
     def test_coverage_arm_meets_honest_thresholds(self) -> None:
         report = evaluate_offline(
             COVERAGE_DATASET,
@@ -81,6 +86,7 @@ class RealisticE2eRetrievalTests(unittest.TestCase):
         self.assertIn("release", tiers)
         self.assertGreaterEqual(sum(1 for case in cases if case.promotion_tier == "release"), 200)
 
+    @pytest.mark.slow
     def test_e2e_runner_reports_all_arms(self) -> None:
         payload = run_realistic_e2e(skills_root=REPO_ROOT / "skills", golden_dataset=GOLDEN_DATASET)
         self.assertGreaterEqual(int(payload["promoted_skill_count"]), 90)
