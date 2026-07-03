@@ -6,7 +6,9 @@ Knowledge Graph-Augmented Retrieval for the skills library: versioned ingest, ev
 
 | Document | Purpose |
 | --- | --- |
-| [`STATUS.md`](STATUS.md) | Done, in progress, to-do |
+| [`STATUS.md`](STATUS.md) | Done, closeout programme, to-do |
+| [`CLOSEOUT_PLAN.md`](CLOSEOUT_PLAN.md) | Golden corpus realism + STATUS closeout waves |
+| [`EVALUATION_CORPUS_CONTRACT.md`](EVALUATION_CORPUS_CONTRACT.md) | Tiered eval corpus schema and gates |
 | [`CONTRACTS.md`](CONTRACTS.md) | Ingest, runtime, trust, projections, vocabulary, eval gates |
 | [`ONTOLOGY.md`](ONTOLOGY.md) | Semantic model narrative |
 | [`EVALUATION.md`](EVALUATION.md) | Measured retrieval quality (living report) |

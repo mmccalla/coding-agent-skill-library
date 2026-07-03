@@ -1,11 +1,13 @@
 # Skills KG — status and roadmap
 
 **Last updated:** 2026-07-03  
-**Branch context:** `krag-v2/semantic-selection`
+**Branch context:** `main`  
+**Closeout programme:** [`CLOSEOUT_PLAN.md`](CLOSEOUT_PLAN.md) on branch `plan/golden-corpus-status-closeout`
 
 This is the **single live roadmap** for the Knowledge Graph service. Completed phase plans are archived under `skills_docs/archive/planning/`.
 
-For measured retrieval quality, see `krag/EVALUATION.md`.
+For measured retrieval quality, see [`EVALUATION.md`](EVALUATION.md).  
+For the evaluation corpus redesign, see [`EVALUATION_CORPUS_CONTRACT.md`](EVALUATION_CORPUS_CONTRACT.md).
 
 ---
 
@@ -25,6 +27,8 @@ For measured retrieval quality, see `krag/EVALUATION.md`.
 | Usage metrics + Grafana dashboard | `skills-kg-usage.json`, `GET /metrics` |
 | MCP agent journeys **JRN-01 … JRN-07** | `tests/fixtures/agent_journeys.json` |
 | Docker Neo4j loader | 91 Skills, 810 RetrievalUnits |
+| Documentation consolidation (Waves A–D) | `GETTING_STARTED.md`, `krag/*`, `archive/planning/` |
+| Phase 10 admin ingest (backend) | `admin_skill_ingest.py`, `POST /skills/admin/ingest`, tests |
 
 ### KRAG v2 phases (complete)
 
@@ -36,33 +40,41 @@ Phases 1–9: vocabulary, authoring, trust, ingest, projections, MCP usage, eval
 
 ---
 
-## In progress
+## Closeout programme (in progress)
 
-| Item | Surface | Notes |
+All rows below are tracked in [`CLOSEOUT_PLAN.md`](CLOSEOUT_PLAN.md). Target: **empty** in progress / to do / known gaps when programme completes.
+
+| Wave | Scope | Closes |
 | --- | --- | --- |
-| Documentation consolidation | `skills_docs/` | Waves A–D; simpler paths for repo users |
-| Phase 10 — admin skill ingest | `admin_skill_ingest.py`, `skills_api.py` | `POST /skills/admin/ingest`, pack-metadata registration, MCP reload |
-| Synthetic negative abstention tuning | `retrieve_skills_hybrid.py` | Token-overlap gate without vector signal; golden generator nonce probes |
+| 0 | Plan, STATUS hygiene, `rdflib` dep, corpus contract | Stale STATUS rows; CI import reliability |
+| 1 | `query_catalog.json`, `abstention_probes.json`, `validate_eval_corpus.py` | Corpus contract |
+| 2 | Tiered generator; shrink 1,194 → ~365 cases; new gates | Abstention corpus; blended pass-rate gap |
+| 3 | Skills UI admin ingest | Phase 10 UI; preview-only gap |
+| 4 | JRN-08 … JRN-11; confuser catalogue | Journey + exclusion gaps |
+| 5 | `ci_local.sh` green (mypy); nightly coverage; STATUS final | CI typing debt |
 
 ---
 
-## To do
+## To do (programme backlog)
 
-| Item | Priority | Acceptance |
-| --- | --- | --- |
-| Skills UI **Ingest** button after trust report | P1 | Same gate as CI; confirmation modal |
-| Agent journeys **JRN-08 … JRN-11** | P2 | Out-of-domain, malicious block, usage trace, admin upload |
-| Exclusion at ranks 2–3 (near-neighbours) | P2 | KRAG vs graph-RAG confuser cases |
+| Item | Priority | Wave | Acceptance |
+| --- | --- | --- | --- |
+| Realistic golden corpus (Option B) | P0 | 1–2 | Tiered files; <150 CI cases; per-tier metrics |
+| Skills UI **Ingest** button after trust report | P1 | 3 | Same gate as CI; confirmation modal |
+| Agent journeys **JRN-08 … JRN-11** | P2 | 4 | Out-of-domain, malicious block, usage trace, admin upload |
+| Exclusion at ranks 2–3 (near-neighbours) | P2 | 4–5 | Confuser catalogue; realistic tier gates |
 
 ---
 
-## Known gaps (not hidden)
+## Known gaps (until programme complete)
 
-| Gap | Impact | CI gated? |
+| Gap | Impact | Programme wave |
 | --- | --- | --- |
-| Abstention on nonsense queries | Overall golden pass **84.6%** (1,010/1,194) | No |
-| 2 exclusion failures in full golden set | Related skills co-rank at 2–3 | Partial (realistic set) |
-| `POST /skills/upload/preview` only | Preview path remains non-persisting; use admin ingest for writes | N/A |
+| Template-heavy golden corpus (1,194 cases) | Misleading blended pass **84.6%** | 2 |
+| Abstention on 182 nonce negatives | Dominated by synthetic probes | 2 |
+| 2 exclusion failures in full golden set | Co-rank at 2–3 | 4 |
+| Upload preview without UI persist path | Operators use API for ingest | 3 |
+| `ci_local.sh` mypy failures | Merge CI not fully green | 5 |
 
 ---
 
