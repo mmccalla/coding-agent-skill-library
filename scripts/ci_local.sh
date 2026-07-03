@@ -4,11 +4,17 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
+echo "==> validate_docs.py"
+python3 scripts/validate_docs.py
+
 echo "==> validate_skills.py"
 python3 scripts/validate_skills.py
 
 echo "==> validate_skills_graph.py"
 python3 scripts/validate_skills_graph.py
+
+echo "==> ci_ingest_gate.py"
+python3 scripts/ci_ingest_gate.py
 
 echo "==> ruff check"
 python3 -m ruff check scripts tests

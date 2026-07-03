@@ -10,54 +10,25 @@ find skills -name "SKILL.md" | sort
 
 After the agentic, control, engineering, user-experience, reliability-and-delivery, event-driven, business-architecture, data-architecture and KRAG systems skills are installed, the library should contain 91 skills (including mandatory `apply-laws-of-ai`).
 
-## Gap coverage map
+## Workflow spine skills
 
-The local library keeps its broader domain focus. The following map records where the new workflow spine was added and where existing local skills already covered an adjacent need.
+Session and delivery skills added for discovery-through-ship flow:
 
-This is a local library, not a replica of any external skill pack.
+- `skill-discovery-and-selection`, `requirements-elicitation`, `idea-refinement`
+- `spec-driven-development`, `incremental-implementation`, `context-engineering`
+- `source-driven-development`, `uncertainty-driven-development`
+- `browser-testing-with-devtools`, `code-review-and-quality`, `git-workflow-and-versioning`
+- `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs`, `shipping-and-launch`
+- `knowledge-graph-rag` (graph-native RAG specialist)
 
-### Added in this pass
-
-- `knowledge-graph-rag`
-- `skill-discovery-and-selection`
-- `requirements-elicitation`
-- `idea-refinement`
-- `spec-driven-development`
-- `incremental-implementation`
-- `context-engineering`
-- `source-driven-development`
-- `uncertainty-driven-development`
-- `browser-testing-with-devtools`
-- `code-review-and-quality`
-- `git-workflow-and-versioning`
-- `ci-cd-and-automation`
-- `deprecation-and-migration`
-- `documentation-and-adrs`
-- `shipping-and-launch`
-
-### Already covered by existing local skills
-
-- `prompt-chaining`, `routing`, `parallelization`, `reflection-and-verification`, `tool-use-and-function-calling`, `planning-and-task-decomposition`, `multi-agent-collaboration`, `memory-management`, `learning-and-adaptation` and `mcp-server-design`.
-- `tdd-practice` for `test-driven-development`.
-- `guardrails-safety-patterns` for safety and policy controls.
-- `resource-aware-optimization` for cost, latency, context and compute tradeoffs.
-- `kiss-principle` and `dry-principle` for code simplification and over-complexity removal.
-- `exception-handling-and-recovery` and `reflection-and-verification` for debugging and recovery-oriented review.
-
-### Intentionally broader local equivalents
-
-- `frontend-ui-engineering` is represented by the local UX skill set: `ux-design-principles`, `accessibility-wcag`, `ui-component-design` and `frontend-state-and-interaction-design`.
-- `api-and-interface-design` is represented by `data-contract-design`, `ui-component-design` and `solid-principles`.
-- `security-and-hardening` is represented by `guardrails-safety-patterns` plus `data-security-and-privacy-architecture`.
-- `performance-optimization` is represented by `resource-aware-optimization` plus `observability-and-telemetry`.
-- `graph-enabled-rag` is represented by the specialist `knowledge-graph-rag` skill plus the existing `knowledge-retrieval-rag`, `ontology-and-knowledge-graph-modeling` and `data-lineage-and-provenance` skills.
+Adjacent needs remain covered by existing agentic, control, engineering and architecture skills in the inventory below.
 
 ## Category model
 
-| Category grouping | Contents | Status in this package |
+| Category grouping | Contents | Status |
 |---|---|---|
-| `agentic-patterns` | Core agent workflow patterns from Chapters 1-10 and the local session/spec/implementation spine. | Fully populated. |
-| `agent-control-patterns` | Advanced agent control patterns from Chapters 11-20. | Fully populated. |
+| `agentic-patterns` | Core agent workflow and session/spec/implementation spine. | Fully populated. |
+| `agent-control-patterns` | Safety, guardrails, recovery, RAG, evaluation and prioritisation. | Fully populated. |
 | `engineering-practices` | KISS, SOLID, DRY, TDD, BDD, DDD, code review and Git workflow skills. | Fully populated. |
 | `user-experience` | UX, accessibility, UI component, frontend-state, dashboard, design-system, usability-testing and agentic-UX skills. | Fully populated. |
 | `reliability-and-delivery` | SRE, SLO/error-budget, incident, observability, browser verification, CI/CD, deprecation, documentation, launch, toil-reduction, progressive-delivery and DORA Four Keys skills. | Fully populated. |

@@ -22,9 +22,6 @@ from scripts import skills_query_graph, skills_router
 from scripts.extract_skills_graph import extract_skills_graph_records
 
 DEFAULT_DATASET = Path("tests") / "fixtures" / "retrieval_evaluation" / "golden_queries.json"
-PROMOTED_RELEASE_DATASET = (
-    Path("tests") / "fixtures" / "retrieval_evaluation" / "golden_queries_promoted_release.json"
-)
 
 
 class EvaluationCase(BaseModel):
