@@ -135,6 +135,36 @@ class SkillsMcpServerTests(unittest.TestCase):
         for response in (direct, recommendation, context, execution_plan):
             self.assertGreaterEqual(response["confidence"], 0.6)
             self.assertIn("rationale", response)
+            trace = response["selection_trace"]
+            self.assertEqual("route_skill_query", trace["tool"])
+            self.assertEqual(response["route"], trace["query_intent"])
+            self.assertTrue(str(trace["usage_event_id"]).startswith("sel-"))
+            self.assertIn("filter", trace)
+
+    def test_recommend_skills_includes_audit_selection_trace(self) -> None:
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+
+        response = server.call_tool(
+            "recommend_skills",
+            {
+                "query": "graph rag ontology retrieval",
+                "limit": 2,
+                "token_budget": 60,
+            },
+        )
+
+        trace = response["selection_trace"]
+        self.assertEqual("recommend_skills", trace["tool"])
+        self.assertEqual("recommendation", trace["query_intent"])
+        self.assertTrue(str(trace["usage_event_id"]).startswith("sel-"))
+        self.assertIn("filter", trace)
+        self.assertIn("rank", trace)
+        self.assertIn("evidence_anchor_ids", trace)
+        self.assertIn("selected", trace)
+        self.assertIn("request", trace)
+        self.assertIn("rejected", trace)
+        self.assertTrue(trace["selected"]["evidence_anchors"])
 
     def test_resolve_skill_maps_names_to_canonical_skill_ids(self) -> None:
         mcp = load_module()

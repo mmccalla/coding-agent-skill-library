@@ -19,8 +19,12 @@ if __package__ in {None, ""}:
 
 from scripts import embed_skill_chunks, retrieve_skills_hybrid, skills_config
 from scripts import skills_query_graph, skills_router
+from scripts.extract_skills_graph import extract_skills_graph_records
 
 DEFAULT_DATASET = Path("tests") / "fixtures" / "retrieval_evaluation" / "golden_queries.json"
+PROMOTED_RELEASE_DATASET = (
+    Path("tests") / "fixtures" / "retrieval_evaluation" / "golden_queries_promoted_release.json"
+)
 
 
 class EvaluationCase(BaseModel):
@@ -34,6 +38,7 @@ class EvaluationCase(BaseModel):
     required_skill_ids: tuple[str, ...] = ()
     excluded_skill_ids: tuple[str, ...] = ()
     expect_uncertain: bool = False
+    promotion_tier: str | None = None
 
 
 class EvaluationCaseResult(BaseModel):
@@ -94,6 +99,43 @@ def load_cases(path: Path = DEFAULT_DATASET) -> tuple[EvaluationCase, ...]:
     if not isinstance(data, list):
         raise ValueError("retrieval evaluation dataset must be a JSON array")
     return tuple(EvaluationCase.model_validate(item) for item in data)
+
+
+def load_promoted_skill_ids(skills_root: Path | None = None) -> frozenset[str]:
+    """Return skill ids currently marked promoted in the extract pipeline."""
+
+    root = skills_root or Path("skills")
+    records = extract_skills_graph_records(root.resolve())
+    return frozenset(
+        str(skill["id"])
+        for skill in records["skills"]
+        if str(skill.get("promotion_status", "")) == "promoted"
+    )
+
+
+def filter_cases_by_promotion(
+    cases: Sequence[EvaluationCase],
+    promoted_ids: frozenset[str],
+    *,
+    case_filter: str,
+) -> tuple[EvaluationCase, ...]:
+    """Filter golden cases for release (promoted-eligible) or diagnostic arms."""
+
+    if case_filter == "all":
+        return tuple(cases)
+    if case_filter == "promoted_eligible":
+        filtered: list[EvaluationCase] = []
+        for case in cases:
+            if case.promotion_tier == "release":
+                filtered.append(case)
+                continue
+            expected = set(case.expected_skill_ids) | set(case.required_skill_ids)
+            if expected & promoted_ids:
+                filtered.append(case)
+        return tuple(filtered)
+    raise ValueError(
+        f"Unknown case_filter '{case_filter}'. Expected one of: all, promoted_eligible"
+    )
 
 
 def _reciprocal_rank(ranked_ids: Sequence[str], expected_ids: Sequence[str]) -> float:
@@ -305,12 +347,17 @@ def evaluate_offline(
     mrr_threshold: float = 1.0,
     source_threshold: float = 1.0,
     uncertainty_threshold: float = 1.0,
+    *,
+    case_filter: str = "all",
+    skills_root: Path | None = None,
 ) -> RetrievalEvaluationReport:
     """Run deterministic offline retrieval evaluation."""
 
     start = time.perf_counter()
     settings = skills_config.load_settings()
-    cases = load_cases(dataset_path)
+    all_cases = load_cases(dataset_path)
+    promoted_ids = load_promoted_skill_ids(skills_root)
+    cases = filter_cases_by_promotion(all_cases, promoted_ids, case_filter=case_filter)
     plan = embed_skill_chunks.build_embedded_repository_load_plan()
     embedder = embed_skill_chunks.DeterministicEmbeddingProvider(
         dimension=settings.neo4j.embedding_dimensions
@@ -567,8 +614,18 @@ def main(argv: Sequence[str] | None = None) -> int:  # pragma: no cover
     parser = ArgumentParser(description="Evaluate Skills KG retrieval quality.")
     parser.add_argument("--dataset", default=str(DEFAULT_DATASET))
     parser.add_argument("--limit", type=int, default=3)
+    parser.add_argument(
+        "--case-filter",
+        choices=("all", "promoted_eligible"),
+        default="all",
+        help="Evaluate all cases or only promoted-eligible release cases.",
+    )
     args = parser.parse_args(list(sys.argv[1:] if argv is None else argv))
-    report = evaluate_offline(Path(args.dataset), limit=args.limit)
+    report = evaluate_offline(
+        Path(args.dataset),
+        limit=args.limit,
+        case_filter=args.case_filter,
+    )
     print(report.model_dump_json(indent=2))
     return 0 if report.passed else 1
 

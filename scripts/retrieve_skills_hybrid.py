@@ -22,7 +22,6 @@ MIN_CONFIDENT_SCORE = DEFAULT_RETRIEVAL_SETTINGS.min_confident_score
 DEFAULT_TOKEN_BUDGET = DEFAULT_RETRIEVAL_SETTINGS.default_token_budget
 CONNECTED_RELATIONSHIP_TYPES = frozenset(
     {
-        "RELATED_TO",
         "PRECEDES",
         "REQUIRES",
         "COMPLEMENTS",
@@ -108,6 +107,13 @@ def _policy_exclusion_reason(
     skill: load_skills_neo4j.GraphNode,
     query_tokens: set[str],
 ) -> str:
+    promotion_status = _string(skill.properties, "promotion_status")
+    if promotion_status != "promoted":
+        status_label = promotion_status or "missing"
+        return (
+            "Non-promoted skill filtered from retrieval "
+            f"(promotion_status={status_label})."
+        )
     if _bool(skill.properties, "deprecated"):
         return "Deprecated skill filtered from automatic selection."
     superseded_by = _string(skill.properties, "superseded_by")
@@ -675,6 +681,7 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
                 "id": "skill:knowledge-graph-rag",
                 "name": "knowledge-graph-rag",
                 "aliases": ["kg-enabled-rag", "graph-rag"],
+                "promotion_status": "promoted",
             },
         ),
         load_skills_neo4j.GraphNode(
@@ -684,12 +691,36 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
                 "id": "skill:knowledge-retrieval-rag",
                 "name": "knowledge-retrieval-rag",
                 "aliases": ["rag", "retrieval-augmented-generation"],
+                "promotion_status": "promoted",
             },
         ),
         load_skills_neo4j.GraphNode(
             "Skill",
             "skill:generic-documentation",
-            {"id": "skill:generic-documentation", "name": "generic-documentation"},
+            {
+                "id": "skill:generic-documentation",
+                "name": "generic-documentation",
+                "promotion_status": "promoted",
+            },
+        ),
+        load_skills_neo4j.GraphNode(
+            "Skill",
+            "skill:tdd-practice",
+            {
+                "id": "skill:tdd-practice",
+                "name": "tdd-practice",
+                "aliases": ["test-driven-development", "tdd"],
+                "promotion_status": "promoted",
+            },
+        ),
+        load_skills_neo4j.GraphNode(
+            "Skill",
+            "skill:reflection-and-verification",
+            {
+                "id": "skill:reflection-and-verification",
+                "name": "reflection-and-verification",
+                "promotion_status": "promoted",
+            },
         ),
         load_skills_neo4j.GraphNode(
             "RetrievalUnit",
@@ -789,6 +820,88 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
                 "line_end": 12,
             },
         ),
+        load_skills_neo4j.GraphNode(
+            "RetrievalUnit",
+            "retrieval:skill:tdd-practice:section:0:tdd-when",
+            {
+                "id": "retrieval:skill:tdd-practice:section:0:tdd-when",
+                "skill_id": "skill:tdd-practice",
+                "text": (
+                    "Use this skill when adding behaviour, fixing a defect, refactoring risky code, "
+                    "or improving code where expected behaviour can be specified with executable tests."
+                ),
+                "source_path": "skills/tdd-practice/SKILL.md",
+                "heading_path": "When to use",
+                "section_id": "skill:tdd-practice:section:0-when-to-use",
+                "line_start": 11,
+                "line_end": 13,
+            },
+        ),
+        load_skills_neo4j.GraphNode(
+            "RetrievalUnit",
+            "retrieval:skill:tdd-practice:section:1:tdd-procedure",
+            {
+                "id": "retrieval:skill:tdd-practice:section:1:tdd-procedure",
+                "skill_id": "skill:tdd-practice",
+                "text": (
+                    "Write the smallest failing test that proves the behaviour is missing or broken. "
+                    "Implement the smallest production change that makes the test pass."
+                ),
+                "source_path": "skills/tdd-practice/SKILL.md",
+                "heading_path": "Procedure",
+                "section_id": "skill:tdd-practice:section:0-procedure",
+                "line_start": 21,
+                "line_end": 24,
+            },
+        ),
+        load_skills_neo4j.GraphNode(
+            "RetrievalUnit",
+            "retrieval:skill:tdd-practice:section:2:tdd-verification",
+            {
+                "id": "retrieval:skill:tdd-practice:section:2:tdd-verification",
+                "skill_id": "skill:tdd-practice",
+                "text": "- [ ] Failing test added before production change.\n- [ ] Production change made and targeted tests pass.",
+                "source_path": "skills/tdd-practice/SKILL.md",
+                "heading_path": "Verification",
+                "section_id": "skill:tdd-practice:section:0-verification",
+                "line_start": 55,
+                "line_end": 56,
+            },
+        ),
+        load_skills_neo4j.GraphNode(
+            "RetrievalUnit",
+            "retrieval:skill:reflection-and-verification:section:0:reflection-when",
+            {
+                "id": "retrieval:skill:reflection-and-verification:section:0:reflection-when",
+                "skill_id": "skill:reflection-and-verification",
+                "text": (
+                    "Use this skill after an initial implementation, plan or generated artefact exists "
+                    "and quality matters."
+                ),
+                "source_path": "skills/reflection-and-verification/SKILL.md",
+                "heading_path": "When to use",
+                "section_id": "skill:reflection-and-verification:section:0-when-to-use",
+                "line_start": 8,
+                "line_end": 10,
+            },
+        ),
+        load_skills_neo4j.GraphNode(
+            "RetrievalUnit",
+            "retrieval:skill:reflection-and-verification:section:1:reflection-procedure",
+            {
+                "id": "retrieval:skill:reflection-and-verification:section:1:reflection-procedure",
+                "skill_id": "skill:reflection-and-verification",
+                "text": (
+                    "Evaluate the artefact against explicit criteria and apply targeted fixes after "
+                    "deterministic checks fail."
+                ),
+                "source_path": "skills/reflection-and-verification/SKILL.md",
+                "heading_path": "Procedure",
+                "section_id": "skill:reflection-and-verification:section:0-procedure",
+                "line_start": 18,
+                "line_end": 25,
+            },
+        ),
     )
     relationships = (
         load_skills_neo4j.GraphRelationship(
@@ -822,6 +935,14 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
             "TaskShape",
             "ontology-retrieval",
             {},
+        ),
+        load_skills_neo4j.GraphRelationship(
+            "VALIDATES",
+            "Skill",
+            "skill:reflection-and-verification",
+            "Skill",
+            "skill:tdd-practice",
+            {"mapping_rule_id": "test-rule"},
         ),
     )
     return load_skills_neo4j.LoadPlan(nodes=nodes, relationships=relationships)

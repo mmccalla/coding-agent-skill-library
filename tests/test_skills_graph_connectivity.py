@@ -354,7 +354,7 @@ class SkillsGraphConnectivityTests(unittest.TestCase):
         self.assertFalse(result.valid)
         self.assertTrue(any("invalid bridge provenance" in e for e in result.errors))
 
-    def test_missing_related_skill_relationship_provenance_fails_validation(self) -> None:
+    def test_missing_typed_skill_relationship_provenance_fails_validation(self) -> None:
         extractor = load_module(
             REPO_ROOT / "scripts" / "extract_skills_graph.py", "extract_skills_graph"
         )
@@ -363,9 +363,9 @@ class SkillsGraphConnectivityTests(unittest.TestCase):
         relationship = next(
             relationship
             for relationship in records["relationships"]
-            if relationship["type"] == "RELATED_TO"
+            if relationship.get("mapping_rule_id")
         )
-        del relationship["source_section_id"]
+        del relationship["mapping_rule_id"]
 
         result = module.validate_graph_records(records)
 

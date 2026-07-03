@@ -1,0 +1,43 @@
+[
+  {
+    "id": "tdd_practice",
+    "query": "fixing a defect with a failing test first and executable expectations",
+    "expected_skill_ids": ["skill:tdd-practice"],
+    "required_skill_ids": ["skill:tdd-practice"],
+    "expect_uncertain": false
+  },
+  {
+    "id": "spec_before_build",
+    "query": "clear specification before code or skill edits are made",
+    "expected_skill_ids": ["skill:spec-driven-development"],
+    "required_skill_ids": ["skill:spec-driven-development"],
+    "expect_uncertain": false
+  },
+  {
+    "id": "post_artefact_review",
+    "query": "review after implementation critique existing artefact quality matters",
+    "expected_skill_ids": ["skill:reflection-and-verification"],
+    "required_skill_ids": ["skill:reflection-and-verification"],
+    "expect_uncertain": false
+  },
+  {
+    "id": "planning",
+    "query": "multi-step implementation decompose ordered dependency-aware steps with validation checkpoints",
+    "expected_skill_ids": ["skill:planning-and-task-decomposition"],
+    "required_skill_ids": ["skill:planning-and-task-decomposition"],
+    "expect_uncertain": false
+  },
+  {
+    "id": "git_workflow",
+    "query": "branching commit hygiene git workflow versioning",
+    "expected_skill_ids": ["skill:git-workflow-and-versioning"],
+    "required_skill_ids": ["skill:git-workflow-and-versioning"],
+    "expect_uncertain": false
+  },
+  {
+    "id": "absent",
+    "query": "zzzz qqqq nonsense",
+    "expected_skill_ids": [],
+    "expect_uncertain": true
+  }
+]

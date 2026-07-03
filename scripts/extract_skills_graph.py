@@ -15,6 +15,28 @@ if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts import skills_inventory
+from scripts.skill_section_mapping import (
+    ConstraintMapping,
+    SkillDependencyMapping,
+    SkillSectionMapping,
+    TaskIntentMapping,
+    extract_section,
+    map_skill_sections,
+    promotion_ready_task_intents,
+)
+from scripts.validate_skill_security import DEFAULT_ALLOWLIST
+from scripts.validate_skill_trust import TrustReport, validate_skill_trust_file
+
+PROMOTION_STATUSES = frozenset({"promoted", "quarantined", "rejected"})
+DEPENDENCY_TYPE_TO_RELATIONSHIP = {
+    "precedes": "PRECEDES",
+    "validates": "VALIDATES",
+    "complements": "COMPLEMENTS",
+}
+# Phase 9 will wire full CI trust gates for all 91 library skills. Until then,
+# grandfather_practice_waiver=True keeps legacy L3 practice failures quarantined
+# rather than rejected so existing graph extraction tests remain stable.
+DEFAULT_GRANDFATHER_PRACTICE_WAIVER = True
 
 STOP_WORDS = {
     "and",
@@ -231,12 +253,6 @@ def _capabilities(
     )
 
 
-def _section_id_for_heading(sections: Sequence[SkillSection], heading: str) -> str:
-    for section in sections:
-        if section.heading == heading:
-            return section.id
-    return ""
-
 
 def _reference_records(
     text: str,
@@ -267,9 +283,13 @@ def _bridge_record(
     rationale: str,
     source_scope: str,
     source_ref: str,
+    *,
+    mapping_source: str = "",
+    evidence_line_start: int | None = None,
+    evidence_line_end: int | None = None,
 ) -> dict[str, object]:
     bridge_id = f"{skill_id}:bridge:{kind}:{_slug(value)}"
-    return {
+    record: dict[str, object] = {
         "id": bridge_id,
         "skill_id": skill_id,
         "name": value,
@@ -283,6 +303,203 @@ def _bridge_record(
         "rationale": rationale,
         "source_scope": source_scope,
         "source_ref": source_ref,
+    }
+    if mapping_source:
+        record["mapping_source"] = mapping_source
+    if evidence_line_start is not None:
+        record["evidence_line_start"] = evidence_line_start
+    if evidence_line_end is not None:
+        record["evidence_line_end"] = evidence_line_end
+    return record
+
+
+def _mapping_task_intent_bridge(
+    skill_id: str,
+    mapping: TaskIntentMapping,
+    source_path: str,
+) -> dict[str, object]:
+    return _bridge_record(
+        skill_id=skill_id,
+        kind="task_shape",
+        value=mapping.task_intent_id,
+        source_path=source_path,
+        source=f"{skill_id}:mapping:task_intent:{mapping.task_intent_id}",
+        confidence=mapping.confidence,
+        rationale=(
+            f"Mapped from '{mapping.section_heading}' via phrase '{mapping.matched_phrase}' "
+            f"(source={mapping.mapping_source})."
+        ),
+        source_scope="section" if mapping.section_heading != "skill_registry" else "skill",
+        source_ref=mapping.section_heading,
+        mapping_source=mapping.mapping_source,
+        evidence_line_start=mapping.evidence.line_start,
+        evidence_line_end=mapping.evidence.line_end,
+    )
+
+
+def _mapping_constraint_bridge(
+    skill_id: str,
+    mapping: ConstraintMapping,
+    source_path: str,
+) -> dict[str, object]:
+    return _bridge_record(
+        skill_id=skill_id,
+        kind="invocation_condition",
+        value=mapping.constraint_id,
+        source_path=source_path,
+        source=f"{skill_id}:mapping:constraint:{mapping.constraint_id}",
+        confidence=0.95,
+        rationale=(
+            f"Mapped from '{mapping.section_heading}' via phrase '{mapping.matched_phrase}'."
+        ),
+        source_scope="section",
+        source_ref=mapping.section_heading,
+        mapping_source="when_not_to_use",
+        evidence_line_start=mapping.evidence.line_start,
+        evidence_line_end=mapping.evidence.line_end,
+    )
+
+
+def _task_intent_records(
+    mappings: Sequence[TaskIntentMapping],
+) -> list[dict[str, object]]:
+    return [
+        {
+            "task_intent_id": mapping.task_intent_id,
+            "matched_phrase": mapping.matched_phrase,
+            "section_heading": mapping.section_heading,
+            "evidence_line_start": mapping.evidence.line_start,
+            "evidence_line_end": mapping.evidence.line_end,
+            "mapping_source": mapping.mapping_source,
+            "confidence": mapping.confidence,
+        }
+        for mapping in mappings
+    ]
+
+
+def _constraint_records(
+    mappings: Sequence[ConstraintMapping],
+) -> list[dict[str, object]]:
+    return [
+        {
+            "constraint_id": mapping.constraint_id,
+            "matched_phrase": mapping.matched_phrase,
+            "section_heading": mapping.section_heading,
+            "evidence_line_start": mapping.evidence.line_start,
+            "evidence_line_end": mapping.evidence.line_end,
+        }
+        for mapping in mappings
+    ]
+
+
+def _resolve_promotion_status(
+    trust_report: TrustReport | None,
+    section_mapping: SkillSectionMapping,
+    *,
+    trust_gate: bool,
+    grandfather_practice_waiver: bool,
+) -> str:
+    if not trust_gate:
+        if promotion_ready_task_intents(section_mapping.task_intents):
+            return "promoted"
+        return "quarantined"
+
+    assert trust_report is not None
+    if not trust_report.layers["L2_security"].passed:
+        return "rejected"
+    if not trust_report.layers["L3_practice"].passed:
+        if grandfather_practice_waiver:
+            return "quarantined"
+        return "rejected"
+    if not promotion_ready_task_intents(section_mapping.task_intents):
+        return "quarantined"
+    return "promoted"
+
+
+def _mapping_bridge_records(
+    skill_id: str,
+    source_path: str,
+    section_mapping: SkillSectionMapping,
+) -> list[dict[str, object]]:
+    records: list[dict[str, object]] = []
+    for mapping in section_mapping.task_intents:
+        records.append(_mapping_task_intent_bridge(skill_id, mapping, source_path))
+    for mapping in section_mapping.constraints:
+        records.append(_mapping_constraint_bridge(skill_id, mapping, source_path))
+    return records
+
+
+def _mapping_relationship_records(
+    skill_id: str,
+    source_path: str,
+    dependencies: Sequence[SkillDependencyMapping],
+) -> list[dict[str, object]]:
+    relationships: list[dict[str, object]] = []
+    for dependency in dependencies:
+        relationship_type = DEPENDENCY_TYPE_TO_RELATIONSHIP.get(
+            dependency.dependency_type,
+            "COMPLEMENTS",
+        )
+        mapping_rule_id = (
+            f"{skill_id}:mapping:dependency:{dependency.dependency_type}:"
+            f"{dependency.target_skill_id}"
+        )
+        relationships.append(
+            {
+                "source": skill_id,
+                "type": relationship_type,
+                "target": f"skill:{dependency.target_skill_id}",
+                "source_path": source_path,
+                "mapping_rule_id": mapping_rule_id,
+                "confidence": 0.95,
+                "rationale": dependency.rationale,
+                "source_scope": "section",
+                "source_ref": dependency.section_heading,
+                "evidence_line_start": dependency.evidence.line_start,
+                "evidence_line_end": dependency.evidence.line_end,
+            }
+        )
+    return relationships
+
+
+def _unmapped_dependency_relationship(
+    skill_id: str,
+    related_name: str,
+    source_path: str,
+    markdown: str,
+) -> dict[str, object]:
+    section = extract_section(markdown, "Related skills")
+    line_start = section.line_start if section else 1
+    line_end = line_start
+    rationale = f"Related skill `{related_name}` referenced in Related skills."
+    if section and section.text:
+        match = re.search(rf"`{re.escape(related_name)}`", section.text)
+        if match:
+            line_start = section.line_start + section.text[: match.start()].count("\n")
+            line_end = section.line_start + section.text[: match.end()].count("\n")
+            for line in section.text.splitlines():
+                if f"`{related_name}`" in line:
+                    cleaned = line.strip()
+                    if cleaned.startswith("|"):
+                        cleaned = cleaned.strip("|").strip()
+                    elif cleaned.startswith("-"):
+                        cleaned = cleaned.lstrip("-").strip()
+                    if cleaned:
+                        rationale = cleaned
+                    break
+
+    return {
+        "source": skill_id,
+        "type": "COMPLEMENTS",
+        "target": f"skill:{related_name}",
+        "source_path": source_path,
+        "mapping_rule_id": f"{skill_id}:mapping:dependency:complements:{related_name}",
+        "confidence": 0.7,
+        "rationale": rationale,
+        "source_scope": "section",
+        "source_ref": "Related skills",
+        "evidence_line_start": line_start,
+        "evidence_line_end": line_end,
     }
 
 
@@ -356,7 +573,13 @@ def _bridge_records(
     return records
 
 
-def extract_skills_graph_records(skills_root: Path) -> dict[str, object]:
+def extract_skills_graph_records(
+    skills_root: Path,
+    *,
+    trust_gate: bool = True,
+    grandfather_practice_waiver: bool = DEFAULT_GRANDFATHER_PRACTICE_WAIVER,
+    allowlist_path: str | Path = DEFAULT_ALLOWLIST,
+) -> dict[str, object]:
     """Extract all `SKILL.md` files under `skills_root` into graph records."""
 
     resolved_root = skills_root.resolve()
@@ -391,13 +614,31 @@ def extract_skills_graph_records(skills_root: Path) -> dict[str, object]:
         content_hash = _sha256(text)
         lines = text.splitlines()
         skill_sections = _extract_sections(text, skill_id)
+        section_mapping = map_skill_sections(text, skill_name=name, known_skill_ids=known_skill_names)
+        mapped_dependencies = section_mapping.dependencies
+        mapped_dependency_targets = {
+            f"skill:{dependency.target_skill_id}" for dependency in mapped_dependencies
+        }
         related_names = _related_skill_names(text, known_skill_names)
-        related_section_id = _section_id_for_heading(skill_sections, "Related skills")
-        task_shapes = _task_shapes(name, description, aliases)
+        mapped_task_intent_ids = tuple(
+            mapping.task_intent_id for mapping in section_mapping.task_intents
+        )
+        task_shapes = _unique((*mapped_task_intent_ids, *_task_shapes(name, description, aliases)))
         workflow_stages = _workflow_stages(f"{name} {description}")
         capabilities = _capabilities(name, description, aliases)
         control_themes = (category,) if category else ()
         knowledge_domains = (category,) if category else ()
+        trust_report = (
+            validate_skill_trust_file(str(path), allowlist_path=allowlist_path)
+            if trust_gate
+            else None
+        )
+        promotion_status = _resolve_promotion_status(
+            trust_report,
+            section_mapping,
+            trust_gate=trust_gate,
+            grandfather_practice_waiver=grandfather_practice_waiver,
+        )
 
         skills.append(
             {
@@ -413,6 +654,9 @@ def extract_skills_graph_records(skills_root: Path) -> dict[str, object]:
                 "control_themes": list(control_themes),
                 "knowledge_domains": list(knowledge_domains),
                 "related_skill_ids": [f"skill:{related_name}" for related_name in related_names],
+                "supported_task_intents": _task_intent_records(section_mapping.task_intents),
+                "excluded_constraints": _constraint_records(section_mapping.constraints),
+                "promotion_status": promotion_status,
                 "path": source_path,
                 "skill_pack_id": str(pack_metadata.get("skill_pack_id", "")).strip()
                 if isinstance(pack_metadata, dict)
@@ -428,27 +672,36 @@ def extract_skills_graph_records(skills_root: Path) -> dict[str, object]:
         )
         sections.extend(section._asdict() for section in skill_sections)
         references.extend(_reference_records(text, skill_id, source_path))
+        mapping_bridges = _mapping_bridge_records(skill_id, source_path, section_mapping)
+        heuristic_bridges = _bridge_records(
+            skill_id=skill_id,
+            source_path=source_path,
+            task_shapes=task_shapes,
+            workflow_stages=workflow_stages,
+            capabilities=capabilities,
+            control_themes=control_themes,
+            knowledge_domains=knowledge_domains,
+        )
+        mapped_bridge_ids = {str(bridge["id"]) for bridge in mapping_bridges}
+        bridges.extend(mapping_bridges)
         bridges.extend(
-            _bridge_records(
-                skill_id=skill_id,
-                source_path=source_path,
-                task_shapes=task_shapes,
-                workflow_stages=workflow_stages,
-                capabilities=capabilities,
-                control_themes=control_themes,
-                knowledge_domains=knowledge_domains,
-            )
+            bridge for bridge in heuristic_bridges if str(bridge["id"]) not in mapped_bridge_ids
         )
 
+        relationships.extend(
+            _mapping_relationship_records(skill_id, source_path, mapped_dependencies)
+        )
         for related_name in related_names:
+            related_target = f"skill:{related_name}"
+            if related_target in mapped_dependency_targets:
+                continue
             relationships.append(
-                {
-                    "source": skill_id,
-                    "type": "RELATED_TO",
-                    "target": f"skill:{related_name}",
-                    "source_path": source_path,
-                    "source_section_id": related_section_id,
-                }
+                _unmapped_dependency_relationship(
+                    skill_id,
+                    related_name,
+                    source_path,
+                    text,
+                )
             )
 
     skill_pack: dict[str, object] | None = None

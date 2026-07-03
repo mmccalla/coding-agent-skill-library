@@ -16,6 +16,7 @@ from typing import Any, NamedTuple, Protocol, cast
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from scripts.build_retrieval_projections import build_retrieval_projection_records
 from scripts.extract_skills_graph import extract_skills_graph_records
 from scripts.skills_config import Neo4jSettings, load_settings
 from scripts.validate_skills_graph import validate_graph_records
@@ -479,7 +480,6 @@ def build_load_plan(records: Mapping[str, object]) -> LoadPlan:
     skill_pack = (
         records.get("skill_pack") if isinstance(records.get("skill_pack"), dict) else None
     )
-    skills_by_id = {_string(skill, "id"): skill for skill in skills}
     nodes: dict[tuple[str, str], GraphNode] = {}
     relationships: dict[tuple[str, str, str, str, str], GraphRelationship] = {}
 
@@ -531,22 +531,25 @@ def build_load_plan(records: Mapping[str, object]) -> LoadPlan:
         add_relationship(
             _relationship("HAS_SECTION", "Skill", skill_id, "SkillSection", section_id)
         )
-        retrieval_unit = _retrieval_unit_from_section(section, skills_by_id.get(skill_id, {}))
-        add_node(retrieval_unit)
+
+    for unit_record in build_retrieval_projection_records(records):
+        unit_id = _string(unit_record, "id")
+        section_id = _string(unit_record, "section_id")
+        add_node(_node("RetrievalUnit", unit_id, unit_record))
         add_relationship(
             _relationship(
                 "HAS_RETRIEVAL_UNIT",
                 "SkillSection",
                 section_id,
                 "RetrievalUnit",
-                retrieval_unit.id,
+                unit_id,
             )
         )
         add_relationship(
             _relationship(
                 "DERIVED_FROM",
                 "RetrievalUnit",
-                retrieval_unit.id,
+                unit_id,
                 "SkillSection",
                 section_id,
             )

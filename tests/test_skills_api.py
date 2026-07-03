@@ -4,12 +4,16 @@ from __future__ import annotations
 
 import unittest
 from collections.abc import Mapping
+from pathlib import Path
 
 from fastapi.testclient import TestClient
 
 from scripts import skills_contracts
 from scripts.skills_api import create_app
 from scripts.skills_mcp_server import SkillsMcpServer
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+TRUST_FIXTURES = REPO_ROOT / "tests" / "fixtures" / "skill_trust"
 
 
 class SkillsApiTests(unittest.TestCase):
@@ -99,6 +103,15 @@ description: Use when validating a safe upload preview for a skill file.
 
 ## When to use
 Use when validating uploads.
+
+## Procedure
+
+1. Upload the skill file for preview.
+2. Review warnings and trust report before persisting.
+
+## Verification
+
+- [ ] Preview returns structure metadata without graph writes.
 """
 
         response = client.post(
@@ -111,6 +124,41 @@ Use when validating uploads.
         self.assertEqual("ok", payload["status"])
         self.assertEqual("example-skill", payload["name"])
         self.assertFalse(payload["persisted"])
+        self.assertTrue(payload["trust"]["passed"])
+        self.assertIn("L2_security", payload["trust"]["layers"])
+        self.assertIn("L3_practice", payload["trust"]["layers"])
+
+    def test_upload_preview_passes_benign_trust_fixture(self) -> None:
+        client = TestClient(create_app(SkillsMcpServer.for_test_fixture()))
+        content = (TRUST_FIXTURES / "benign" / "guardrails-teaching.md").read_bytes()
+
+        response = client.post(
+            "/skills/upload/preview",
+            files={"file": ("SKILL.md", content, "text/markdown")},
+        )
+
+        self.assertEqual(200, response.status_code)
+        payload = response.json()
+        self.assertEqual("ok", payload["status"])
+        self.assertTrue(payload["trust"]["passed"])
+        self.assertTrue(payload["trust"]["layers"]["L2_security"]["passed"])
+        self.assertTrue(payload["trust"]["layers"]["L3_practice"]["passed"])
+
+    def test_upload_preview_rejects_malicious_trust_fixture(self) -> None:
+        client = TestClient(create_app(SkillsMcpServer.for_test_fixture()))
+        content = (TRUST_FIXTURES / "malicious" / "instruction-override.md").read_bytes()
+
+        response = client.post(
+            "/skills/upload/preview",
+            files={"file": ("SKILL.md", content, "text/markdown")},
+        )
+
+        self.assertEqual(200, response.status_code)
+        payload = response.json()
+        self.assertEqual("rejected", payload["status"])
+        self.assertFalse(payload["trust"]["passed"])
+        self.assertFalse(payload["trust"]["layers"]["L2_security"]["passed"])
+        self.assertEqual("fail", payload["trust"]["layers"]["L2_security"]["status"])
 
     def test_upload_preview_rejects_oversized_files(self) -> None:
         client = TestClient(create_app(SkillsMcpServer.for_test_fixture()))

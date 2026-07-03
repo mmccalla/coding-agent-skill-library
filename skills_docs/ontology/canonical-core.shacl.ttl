@@ -316,13 +316,31 @@ skills:BridgeConceptLifecycleShape a sh:NodeShape ;
             PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
             SELECT $this
             WHERE {
-              $this skos:inScheme ?scheme ;
-                    ?labelPredicate ?label .
-              VALUES ?labelPredicate { skos:altLabel skos:hiddenLabel }
-              ?other skos:inScheme ?scheme ;
-                     ?otherPredicate ?label .
-              VALUES ?otherPredicate { skos:prefLabel skos:altLabel skos:hiddenLabel }
-              FILTER (?other != $this)
+              {
+                $this skos:inScheme ?scheme ;
+                      skos:altLabel ?label .
+                ?other skos:inScheme ?scheme .
+                {
+                  ?other skos:prefLabel ?label
+                } UNION {
+                  ?other skos:altLabel ?label
+                } UNION {
+                  ?other skos:hiddenLabel ?label
+                }
+                FILTER (?other != $this)
+              } UNION {
+                $this skos:inScheme ?scheme ;
+                      skos:hiddenLabel ?label .
+                ?other skos:inScheme ?scheme .
+                {
+                  ?other skos:prefLabel ?label
+                } UNION {
+                  ?other skos:altLabel ?label
+                } UNION {
+                  ?other skos:hiddenLabel ?label
+                }
+                FILTER (?other != $this)
+              }
             }
         """ ;
     ] ;
@@ -350,10 +368,15 @@ skills:BridgeConceptHierarchyShape a sh:NodeShape ;
             PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
             SELECT $this
             WHERE {
-              $this skos:inScheme ?scheme ;
-                    ?hierarchyPredicate ?other .
-              VALUES ?hierarchyPredicate { skos:broader skos:narrower }
-              FILTER NOT EXISTS { ?other skos:inScheme ?scheme }
+              {
+                $this skos:inScheme ?scheme ;
+                      skos:broader ?other .
+                FILTER NOT EXISTS { ?other skos:inScheme ?scheme }
+              } UNION {
+                $this skos:inScheme ?scheme ;
+                      skos:narrower ?other .
+                FILTER NOT EXISTS { ?other skos:inScheme ?scheme }
+              }
             }
         """ ;
     ] .

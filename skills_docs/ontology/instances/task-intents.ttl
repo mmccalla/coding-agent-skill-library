@@ -1,0 +1,111 @@
+@prefix skills: <urn:coding-agent-skill-library:ontology:skills#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+# Governed task intents (TaskShape instances). TaskIntent in KRAG v2 contracts.
+
+skills:task-intent-defect-fix-with-tests a skills:TaskShape ;
+    skos:prefLabel "Defect fix with tests" ;
+    skos:altLabel "failing test first", "tdd defect fix" ;
+    skos:definition "Use when fixing a defect or adding behaviour with a failing test first and executable expectations." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-post-artefact-review a skills:TaskShape ;
+    skos:prefLabel "Post-artefact review" ;
+    skos:altLabel "review after implementation", "critique existing artefact" ;
+    skos:definition "Use after an initial implementation or artefact exists and needs critique, repair or verification." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-spec-before-build a skills:TaskShape ;
+    skos:prefLabel "Specification before build" ;
+    skos:altLabel "spec before code" ;
+    skos:definition "Use when a decision-complete specification is required before implementation begins." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-feature-implementation a skills:TaskShape ;
+    skos:prefLabel "Feature implementation" ;
+    skos:definition "Use when starting or delivering a new feature or externally visible behaviour change." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-refactor-with-tests a skills:TaskShape ;
+    skos:prefLabel "Refactor with tests" ;
+    skos:definition "Use when refactoring risky code under executable test protection." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-behaviour-change a skills:TaskShape ;
+    skos:prefLabel "Behaviour change" ;
+    skos:definition "Use when changing externally visible behaviour with testable outcomes." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-library-function-creation a skills:TaskShape ;
+    skos:prefLabel "Library function creation" ;
+    skos:definition "Use when creating reusable library functions with executable contracts." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-plan-before-build a skills:TaskShape ;
+    skos:prefLabel "Plan before build" ;
+    skos:definition "Use when decomposing work into ordered, dependency-aware implementation steps." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-debug-with-verification a skills:TaskShape ;
+    skos:prefLabel "Debug with verification" ;
+    skos:definition "Use when debugging with deterministic checks and verification loops." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-test-harness-bootstrap a skills:TaskShape ;
+    skos:prefLabel "Test harness bootstrap" ;
+    skos:definition "Use when establishing or repairing a minimal executable test harness first." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-ci-pipeline-change a skills:TaskShape ;
+    skos:prefLabel "CI pipeline change" ;
+    skos:altLabel "continuous integration", "github actions" ;
+    skos:definition "Use when changing CI/CD pipelines, gates or automation workflows." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-git-workflow a skills:TaskShape ;
+    skos:prefLabel "Git workflow" ;
+    skos:altLabel "branching", "commit hygiene" ;
+    skos:definition "Use for version control workflow, branching, commits and pull request discipline." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-mcp-server-design a skills:TaskShape ;
+    skos:prefLabel "MCP server design" ;
+    skos:definition "Use when designing or implementing Model Context Protocol servers and tool contracts." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-krag-architecture a skills:TaskShape ;
+    skos:prefLabel "KRAG architecture" ;
+    skos:altLabel "graphrag system design" ;
+    skos:definition "Use for end-to-end KRAG or GraphRAG architecture, graph role and retrieval strategy." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-accessibility-audit a skills:TaskShape ;
+    skos:prefLabel "Accessibility audit" ;
+    skos:altLabel "wcag", "keyboard focus" ;
+    skos:definition "Use when auditing or implementing accessible UI, forms and keyboard interaction." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-security-hardening a skills:TaskShape ;
+    skos:prefLabel "Security hardening" ;
+    skos:altLabel "guardrails", "secure defaults" ;
+    skos:definition "Use when applying security controls, guardrails or secure coding patterns." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-code-review a skills:TaskShape ;
+    skos:prefLabel "Code review" ;
+    skos:definition "Use when reviewing code before merge for correctness, tests and security." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-session-baseline a skills:TaskShape ;
+    skos:prefLabel "Session safety baseline" ;
+    skos:altLabel "apply laws of ai" ;
+    skos:definition "Use at session start for mandatory safety baseline before other skills." ;
+    skos:inScheme skills:TaskShapeScheme .
+
+skills:task-intent-out-of-domain a skills:TaskShape ;
+    skos:prefLabel "Out of domain" ;
+    skos:definition "Marker for queries outside the skills library domain; supports abstention routing." ;
+    skos:inScheme skills:TaskShapeScheme .

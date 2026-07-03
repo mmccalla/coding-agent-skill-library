@@ -32,7 +32,6 @@ BRIDGE_FIELD_KINDS = {
 }
 ALLOWED_BRIDGE_KINDS = set(BRIDGE_FIELD_KINDS.values())
 ALLOWED_RELATIONSHIP_TYPES = {
-    "RELATED_TO",
     "PRECEDES",
     "REQUIRES",
     "COMPLEMENTS",
@@ -209,7 +208,6 @@ def validate_graph_records(records: Mapping[str, object]) -> GraphValidationResu
         target = _string_value(relationship, "target")
         rel_type = _string_value(relationship, "type")
         source_path = _string_value(relationship, "source_path")
-        source_section_id = _string_value(relationship, "source_section_id")
         mapping_rule_id = _string_value(relationship, "mapping_rule_id")
         has_curated_metadata = (
             _valid_confidence(relationship.get("confidence"))
@@ -222,10 +220,8 @@ def validate_graph_records(records: Mapping[str, object]) -> GraphValidationResu
             and target in skills_by_id
             and rel_type in ALLOWED_RELATIONSHIP_TYPES
             and bool(source_path)
-            and (
-                (rel_type == "RELATED_TO" and bool(source_section_id))
-                or (rel_type != "RELATED_TO" and bool(mapping_rule_id) and has_curated_metadata)
-            )
+            and bool(mapping_rule_id)
+            and has_curated_metadata
         )
         if not relationship_valid:
             errors.append(
