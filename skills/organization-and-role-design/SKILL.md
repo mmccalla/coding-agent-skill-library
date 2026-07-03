@@ -32,7 +32,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Gaps/risks
 
 ## Best-practice alignment
-Keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
+Align with **BIZBOK** business architecture practice: keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
 
 ## Quality checks
 - Accountability is not assigned to a committee.
@@ -45,6 +45,11 @@ Do not confuse consultation with accountability.
 ## Mini example
 
 For a shared streaming platform, assign one accountable platform owner, domain event owners, data stewards and support roles. Use RACI only after naming decision rights such as schema approval, access approval and incident escalation. If one role owns too many critical decisions, flag capacity risk and define an escalation path.
+
+## References
+
+- Business Architecture Guild BIZBOK (capabilities, value streams, organisation, information): https://www.businessarchitectureguild.org/
+- The Open Group TOGAF Standard (business architecture domain): https://www.opengroup.org/togaf
 
 ## Verification
 

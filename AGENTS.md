@@ -216,7 +216,7 @@ For AI or agent-mediated workflows, always show what the agent plans to do, what
 - Use `observability-and-telemetry` for logs, metrics, traces, dashboards, alerts and telemetry standards.
 - Use `toil-reduction-and-automation` for safe reduction of repetitive operational work.
 - Use `release-engineering-and-progressive-delivery` for canary releases, rollback, blue/green deployment, feature flags and release safety.
-- Use `dora-four-keys` for DevOps Research and Assessment metrics: deployment frequency, lead time for changes, change failure rate and failed deployment recovery time.
+- Use `dora-four-keys` for DevOps Research and Assessment metrics: deployment frequency, lead time for changes, change failure rate, failed deployment recovery time and deployment rework rate (throughput and instability factors).
 
 For production, platform, CI/CD, operational resilience or service reliability work, load the relevant reliability skill from the flat `skills/` directory using the `reliability-and-delivery` grouping in `skills/PACK_METADATA.json` and `skills/MANIFEST.md`.
 

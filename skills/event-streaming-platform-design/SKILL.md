@@ -30,7 +30,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Support model
 
 ## Best-practice alignment
-Apply event-driven best practice: business event semantics, producer/consumer ownership, schema contracts, compatibility, ordering, partitioning, idempotency, replay, retention, lineage, observability and operational SLOs.
+Apply event-driven best practice: business event semantics, producer/consumer ownership, schema contracts, compatibility, ordering, partitioning, idempotency, replay, retention, lineage, observability and operational SLOs. Prefer **CloudEvents** for interoperable envelopes and **AsyncAPI** (or registry-backed schemas) for channel and message contracts on the platform.
 
 ## Quality checks
 - Topics have owners.
@@ -44,6 +44,11 @@ Do not allow unowned shared topics.
 ## Decision template
 
 For each topic family, define naming convention, environment strategy, tenant, owner, partition key, retention, replay expectation, schema subject, access policy, quota, support tier and deprecation route. Reject unowned shared topics because they become hidden integration contracts with unclear cost, lineage and incident accountability.
+
+## References
+
+- CloudEvents specification: https://cloudevents.io/
+- AsyncAPI specification: https://www.asyncapi.com/
 
 ## Verification
 

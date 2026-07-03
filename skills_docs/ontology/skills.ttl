@@ -351,6 +351,12 @@ skills:isBaselineSkill a owl:DatatypeProperty ;
     rdfs:domain skills:Skill ;
     rdfs:range xsd:boolean .
 
+skills:standardsReference a owl:DatatypeProperty ;
+    rdfs:label "standards reference" ;
+    rdfs:comment "Primary-source URL for an open standard, industry standard or authoritative best-practice document grounding a skill version." ;
+    rdfs:domain skills:SkillVersion ;
+    rdfs:range xsd:anyURI .
+
 skills:confidence a owl:DatatypeProperty ;
     rdfs:label "confidence" ;
     rdfs:domain skills:SemanticAssertion ;

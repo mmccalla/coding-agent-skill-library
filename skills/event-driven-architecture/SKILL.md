@@ -32,6 +32,8 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 ## Best-practice alignment
 Apply event-driven best practice: business event semantics, producer/consumer ownership, schema contracts, compatibility, ordering, partitioning, idempotency, replay, retention, lineage, observability and operational SLOs.
 
+Use open standards where they fit: **CloudEvents** for a common event envelope and metadata (`id`, `source`, `type`, `time`, `dataschema`), and **AsyncAPI** for application-level channel, operation and message contracts. CloudEvents and AsyncAPI are complementary (envelope vs interface).
+
 ## Quality checks
 - Events have business meaning.
 - Ownership is clear.
@@ -44,6 +46,12 @@ Do not use events to disguise tight coupling.
 ## Decision aid
 
 Choose event-driven architecture when producers and consumers can evolve independently, consumers need replay, or business facts must be observed by multiple domains. Prefer request/response when the caller needs an immediate answer and no other consumer benefits. For each event, record owner, contract, idempotency key, ordering assumption, retry policy and observable failure path.
+
+## References
+
+- CloudEvents specification: https://cloudevents.io/
+- AsyncAPI specification: https://www.asyncapi.com/
+- AsyncAPI and CloudEvents comparison: https://www.asyncapi.com/blog/asyncapi-cloud-events
 
 ## Verification
 

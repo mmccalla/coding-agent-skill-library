@@ -33,7 +33,7 @@ DEPENDENCY_TYPE_TO_RELATIONSHIP = {
     "validates": "VALIDATES",
     "complements": "COMPLEMENTS",
 }
-# Phase 9 will wire full CI trust gates for all 91 library skills. Until then,
+# Phase 9 will wire full CI trust gates for all library skills. Until then,
 # grandfather_practice_waiver=True keeps legacy L3 practice failures quarantined
 # rather than rejected so existing graph extraction tests remain stable.
 DEFAULT_GRANDFATHER_PRACTICE_WAIVER = True
@@ -259,17 +259,52 @@ def _reference_records(
     source_path: str,
 ) -> list[dict[str, object]]:
     references: list[dict[str, object]] = []
-    for index, match in enumerate(re.finditer(r"\[([^\]]+)\]\(([^)]+)\)", text)):
+    seen_targets: set[str] = set()
+    index = 0
+    for match in re.finditer(r"\[([^\]]+)\]\(([^)]+)\)", text):
+        target = match.group(2).strip()
+        if target in seen_targets:
+            continue
+        seen_targets.add(target)
         references.append(
             {
                 "id": f"{skill_id}:reference:{index}",
                 "skill_id": skill_id,
                 "label": match.group(1),
-                "target": match.group(2),
+                "target": target,
                 "source_path": source_path,
             }
         )
+        index += 1
+    for match in re.finditer(r"(?<!\()(https?://[^\s\)\]]+)", text):
+        target = match.group(1).rstrip(".,;")
+        if target in seen_targets:
+            continue
+        seen_targets.add(target)
+        references.append(
+            {
+                "id": f"{skill_id}:reference:{index}",
+                "skill_id": skill_id,
+                "label": target,
+                "target": target,
+                "source_path": source_path,
+            }
+        )
+        index += 1
     return references
+
+
+def _standards_references(text: str) -> list[str]:
+    """Extract primary-source http(s) URLs for ontology skills:standardsReference."""
+    urls: list[str] = []
+    seen: set[str] = set()
+    for match in re.finditer(r"https?://[^\s\)\]]+", text):
+        url = match.group(0).rstrip(".,;")
+        if url in seen:
+            continue
+        seen.add(url)
+        urls.append(url)
+    return urls
 
 
 def _bridge_record(
@@ -671,6 +706,7 @@ def extract_skills_graph_records(
                 "wordCount": len(re.findall(r"\b\w+\b", text)),
                 "lineCount": len(lines),
                 "isBaselineSkill": name == "apply-laws-of-ai",
+                "standardsReferences": _standards_references(text),
             }
         )
         sections.extend(section._asdict() for section in skill_sections)

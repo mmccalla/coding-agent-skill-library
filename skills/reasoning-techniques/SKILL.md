@@ -34,16 +34,6 @@ Select a reasoning approach that matches task complexity and produces externally
 - Use ReAct when tool results should change the next action.
 - Use self-correction when tests, static analysis or critique reveal defects.
 
-## Core pattern
-
-1. Restate the objective and constraints.
-2. Identify unknowns and gather evidence.
-3. Select a reasoning strategy appropriate to risk and complexity.
-4. Execute small verifiable steps.
-5. Use tool observations to revise the plan.
-6. Validate the result with deterministic checks.
-7. Present concise rationale, not hidden internal reasoning.
-
 ## Coding-agent guidance
 
 Prefer externally verifiable reasoning over persuasive explanation. For code, the strongest reasoning evidence is a passing test, type check, reproducible command, benchmark, schema validation or diff review.

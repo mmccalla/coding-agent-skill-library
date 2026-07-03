@@ -17,6 +17,9 @@ run_quality() {
   echo "==> validate_skills.py"
   python3 scripts/validate_skills.py
 
+  echo "==> validate_skill_practice.py --all"
+  python3 scripts/validate_skill_practice.py --all
+
   echo "==> validate_skills_graph.py"
   python3 scripts/validate_skills_graph.py
 

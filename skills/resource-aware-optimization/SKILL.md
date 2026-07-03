@@ -25,15 +25,6 @@ Balance quality, cost, latency, model choice, context budget, and fallback paths
 5. Monitor actual consumption during execution.
 6. Fall back or degrade gracefully when limits are reached.
 
-## Core pattern
-
-1. Identify resource constraints and service limits.
-2. Estimate task complexity before execution.
-3. Select the cheapest reliable strategy that satisfies the success criteria.
-4. Escalate to more capable models, deeper reasoning or broader search only when justified.
-5. Monitor actual consumption during execution.
-6. Fall back or degrade gracefully when limits are reached.
-
 ## Model/tool selection
 
 Use small, fast models for classification, formatting, simple extraction and guardrail checks. Use larger models for architecture, ambiguous reasoning, multi-file code changes and synthesis. Use deterministic tools for tests, parsing, type checking, formatting and calculations.

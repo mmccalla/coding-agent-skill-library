@@ -21,14 +21,6 @@ Make failures explicit, recover safely where possible, and preserve enough evide
 4. Preserve evidence: error message, stack trace, command, inputs, outputs and affected files.
 5. Resume only from a known-good state.
 
-## Core pattern
-
-1. Detect errors early: tool exceptions, malformed outputs, timeout, unavailable service, failed tests, invalid schema, unexpected state.
-2. Classify the failure as transient, deterministic, recoverable, unsafe, or unknown.
-3. Select a recovery strategy: retry, fallback, rollback, repair, degrade, ask clarification, or escalate.
-4. Preserve evidence: error message, stack trace, command, inputs, outputs and affected files.
-5. Resume only from a known-good state.
-
 ## Recovery strategies
 
 - Retry transient failures with bounded attempts and back-off.

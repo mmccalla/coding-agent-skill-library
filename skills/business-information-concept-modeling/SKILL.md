@@ -33,7 +33,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Exclusions
 
 ## Best-practice alignment
-Keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
+Align with **BIZBOK** business architecture practice: keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
 
 ## Quality checks
 - Concepts have definitions.
@@ -46,6 +46,11 @@ Do not convert every noun into an entity.
 ## Mini example
 
 From an onboarding value stream, extract concepts such as `Customer`, `Application`, `Identity Evidence`, `Eligibility Decision` and `Account`. Record synonyms like applicant/customer, define relationships such as customer submits application, and exclude implementation-only terms such as API payload or staging table. Hand the agreed concepts to conceptual data modelling with source traceability.
+
+## References
+
+- Business Architecture Guild BIZBOK (capabilities, value streams, organisation, information): https://www.businessarchitectureguild.org/
+- The Open Group TOGAF Standard (business architecture domain): https://www.opengroup.org/togaf
 
 ## Verification
 
