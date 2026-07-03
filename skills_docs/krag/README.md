@@ -28,7 +28,7 @@ SKILL.md change or pack add
 
 The graph is the primary retrieval substrate for graph-relevant questions. Vector search supports recall; the system fails its purpose if the graph cannot improve precision, provenance and safe answer generation.
 
-Historical phase plans are in `../archive/planning/` (Wave C).
+Historical phase plans are in `../archive/planning/`.
 
 ## Quick validation
 

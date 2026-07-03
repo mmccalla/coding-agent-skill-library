@@ -3,7 +3,7 @@
 **Last updated:** 2026-07-03  
 **Branch context:** `krag-v2/semantic-selection`
 
-This is the **single live roadmap** for the Knowledge Graph service. Completed phase plans are archived under `skills_docs/archive/planning/` (Wave C).
+This is the **single live roadmap** for the Knowledge Graph service. Completed phase plans are archived under `skills_docs/archive/planning/`.
 
 For measured retrieval quality, see `krag/EVALUATION.md`.
 

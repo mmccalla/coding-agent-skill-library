@@ -30,7 +30,8 @@ Documentation for agents and humans. Pick one path — you do not need every fil
 - `krag/ONTOLOGY.md` — semantic model narrative
 - `krag/EVALUATION.md` — measured retrieval quality
 - `ontology/` — TTL and SHACL source (`ontology/README.md`)
-- `ontology/krag_v2/` — legacy paths (archived in Wave C)
+- `ontology/README.md` — TTL and SHACL layout
+- `archive/planning/` — historical phase plans (read-only)
 - `SKILLS_KG_MCP_RUNBOOK.md` — operator runbook
 
 ## Other
