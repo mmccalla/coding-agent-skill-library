@@ -1,0 +1,47 @@
+name: Nightly evaluation coverage
+
+on:
+  schedule:
+    - cron: "0 2 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  SKILLS_EMBEDDING_PROVIDER: deterministic
+
+jobs:
+  coverage-eval:
+    name: Nightly eval
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install project dependencies
+        run: python -m pip install -e ".[dev]"
+
+      - name: Validate evaluation corpora
+        run: python3 scripts/validate_eval_corpus.py --check-skill-sync --emit-matrix
+
+      - name: Run nightly retrieval eval arms
+        run: python3 -m pytest -m slow -q
+
+      - name: Upload coverage matrix artefact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-matrix
+          path: tests/fixtures/retrieval_evaluation/coverage_matrix.json
+          if-no-files-found: error

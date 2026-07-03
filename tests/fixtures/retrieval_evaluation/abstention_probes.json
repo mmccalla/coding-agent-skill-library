@@ -1,0 +1,92 @@
+[
+  {
+    "id": "abstain_nonsense_tokens",
+    "query": "zzzz qqqq nonsense",
+    "expected_skill_ids": [],
+    "expect_uncertain": true,
+    "query_source": "abstention_probe",
+    "query_archetype": "abstention",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "abstain_random_chars",
+    "query": "xkcd qwerty asdfgh zxcvbn",
+    "expected_skill_ids": [],
+    "expect_uncertain": true,
+    "query_source": "abstention_probe",
+    "query_archetype": "abstention",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "abstain_recipe",
+    "query": "Give me a recipe for chocolate cake with frosting",
+    "expected_skill_ids": [],
+    "expect_uncertain": true,
+    "query_source": "abstention_probe",
+    "query_archetype": "abstention",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "abstain_joke",
+    "query": "Tell me a funny joke about penguins",
+    "expected_skill_ids": [],
+    "expect_uncertain": true,
+    "query_source": "abstention_probe",
+    "query_archetype": "abstention",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "abstain_gibberish_alpha",
+    "query": "blorp flimflam xyzzy plugh",
+    "expected_skill_ids": [],
+    "expect_uncertain": true,
+    "query_source": "abstention_probe",
+    "query_archetype": "abstention",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "abstain_gibberish_beta",
+    "query": "qwop zxcl mnbv tyui",
+    "expected_skill_ids": [],
+    "expect_uncertain": true,
+    "query_source": "abstention_probe",
+    "query_archetype": "abstention",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "abstain_gibberish_gamma",
+    "query": "fnord fnord fnord fnord",
+    "expected_skill_ids": [],
+    "expect_uncertain": true,
+    "query_source": "abstention_probe",
+    "query_archetype": "abstention",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "abstain_gibberish_iota",
+    "query": "mumble jumble wibble wobble",
+    "expected_skill_ids": [],
+    "expect_uncertain": true,
+    "query_source": "abstention_probe",
+    "query_archetype": "abstention",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "abstain_gibberish_kappa",
+    "query": "hgfdsa poiuyt lkjhgf mnbvcx",
+    "expected_skill_ids": [],
+    "expect_uncertain": true,
+    "query_source": "abstention_probe",
+    "query_archetype": "abstention",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "abstain_gibberish_lambda",
+    "query": "xyzzy plugh corge grault garply",
+    "expected_skill_ids": [],
+    "expect_uncertain": true,
+    "query_source": "abstention_probe",
+    "query_archetype": "abstention",
+    "promotion_tier": "release"
+  }
+]

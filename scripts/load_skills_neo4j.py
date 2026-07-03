@@ -432,18 +432,29 @@ def _retrieval_unit_from_section(
     content_hash = _string(section, "contentHash")
     skill_name = _string(skill, "name")
     skill_path = _string(skill, "path")
-    aliases = tuple(
-        str(alias).strip() for alias in skill.get("aliases", []) if isinstance(alias, str)
+    aliases_raw = skill.get("aliases", [])
+    aliases = (
+        tuple(str(alias).strip() for alias in aliases_raw if isinstance(alias, str))
+        if isinstance(aliases_raw, list)
+        else ()
     )
-    task_shapes = tuple(
-        str(task_shape).strip()
-        for task_shape in skill.get("task_shapes", [])
-        if isinstance(task_shape, str)
+    task_shapes_raw = skill.get("task_shapes", [])
+    task_shapes = (
+        tuple(
+            str(task_shape).strip() for task_shape in task_shapes_raw if isinstance(task_shape, str)
+        )
+        if isinstance(task_shapes_raw, list)
+        else ()
     )
-    capabilities = tuple(
-        str(capability).strip()
-        for capability in skill.get("capabilities", [])
-        if isinstance(capability, str)
+    capabilities_raw = skill.get("capabilities", [])
+    capabilities = (
+        tuple(
+            str(capability).strip()
+            for capability in capabilities_raw
+            if isinstance(capability, str)
+        )
+        if isinstance(capabilities_raw, list)
+        else ()
     )
     section_heading = _string(section, "heading")
     lexical_boost_terms = _unique_strings(

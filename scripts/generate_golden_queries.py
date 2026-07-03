@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Generate a large golden retrieval evaluation dataset from the installed skill library."""
+"""Generate tiered retrieval evaluation corpora from the skills library."""
 
 from __future__ import annotations
 
+import argparse
 import json
+import random
 import re
 import sys
 from pathlib import Path
@@ -14,131 +16,20 @@ if __package__ in {None, ""}:
 from scripts.extract_skills_graph import extract_skills_graph_records
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_OUTPUT = REPO_ROOT / "tests" / "fixtures" / "retrieval_evaluation" / "golden_queries.json"
-MIN_CASES = 500
-TEMPLATES = (
-    "{name}",
-    "tell me about {name}",
-    "how do I apply {name}",
-    "when should I use {name}",
-    "explain {name}",
-    "execution guide for {name}",
-    "{name} skill overview: {description}",
-    "I need the {name} skill. {description}",
-    "what does {name} cover? {description}",
-    "how to implement {name} based on this guidance: {description}",
-    "use {name} when {description_fragment}",
-)
-NEGATIVE_CASES_PER_SKILL = 2
-SEED_CASES = (
-    {
-        "id": "kg_rag",
-        "query": "neo4j-native kg-backed retrieval with text-to-cypher and provenance",
-        "expected_skill_ids": ["skill:knowledge-graph-rag"],
-        "expect_uncertain": False,
-    },
-    {
-        "id": "krag_system_design",
-        "query": "KRAG architecture summary graph schema outline retrieval strategy implementation backlog thin vertical slices",
-        "expected_skill_ids": ["skill:krag-system-design"],
-        "required_skill_ids": ["skill:krag-system-design"],
-        "excluded_skill_ids": [
-            "skill:accessibility-wcag",
-            "skill:ci-cd-and-automation",
-            "skill:knowledge-graph-rag",
-            "skill:ontology-and-knowledge-graph-modeling",
-        ],
-        "expect_uncertain": False,
-        "promotion_tier": "release",
-    },
-    {
-        "id": "krag_ingestion_graph_construction",
-        "query": "KRAG ingestion design graph schema changes validation rules idempotency strategy failure handling",
-        "expected_skill_ids": ["skill:krag-ingestion-graph-construction"],
-        "required_skill_ids": ["skill:krag-ingestion-graph-construction"],
-        "excluded_skill_ids": ["skill:ux-design-principles", "skill:dora-four-keys"],
-        "expect_uncertain": False,
-    },
-    {
-        "id": "krag_retrieval_answering",
-        "query": "KRAG retrieval plan queries pseudocode evidence set citations uncertainty follow up data gaps",
-        "expected_skill_ids": ["skill:krag-retrieval-answering"],
-        "required_skill_ids": ["skill:krag-retrieval-answering"],
-        "excluded_skill_ids": [
-            "skill:release-engineering-and-progressive-delivery",
-            "skill:business-capability-modeling",
-        ],
-        "expect_uncertain": False,
-    },
-    {
-        "id": "krag_evaluation_governance",
-        "query": "KRAG evaluation plan metrics acceptance thresholds release gates monitoring signals remediation actions",
-        "expected_skill_ids": ["skill:krag-evaluation-governance"],
-        "required_skill_ids": ["skill:krag-evaluation-governance"],
-        "excluded_skill_ids": ["skill:ui-component-design", "skill:event-modeling"],
-        "expect_uncertain": False,
-    },
-    {
-        "id": "human_approval",
-        "query": "approval before destructive command human review",
-        "expected_skill_ids": ["skill:human-in-the-loop"],
-        "required_skill_ids": ["skill:human-in-the-loop"],
-        "excluded_skill_ids": ["skill:agentic-ux-patterns", "skill:git-workflow-and-versioning"],
-        "expect_uncertain": False,
-        "promotion_tier": "release",
-    },
-    {
-        "id": "confuser_guardrails_vs_hitl",
-        "query": "policy enforcement tool restrictions before destructive actions",
-        "expected_skill_ids": ["skill:guardrails-safety-patterns"],
-        "required_skill_ids": ["skill:guardrails-safety-patterns"],
-        "excluded_skill_ids": ["skill:human-in-the-loop"],
-        "expect_uncertain": False,
-        "promotion_tier": "release",
-    },
-    {
-        "id": "confuser_rag_vs_krag_retrieval",
-        "query": "retrieval augmented generation document grounding citations",
-        "expected_skill_ids": ["skill:knowledge-retrieval-rag"],
-        "required_skill_ids": ["skill:knowledge-retrieval-rag"],
-        "excluded_skill_ids": ["skill:krag-retrieval-answering"],
-        "expect_uncertain": False,
-        "promotion_tier": "release",
-    },
-    {
-        "id": "accessibility",
-        "query": "keyboard focus accessible form labels",
-        "expected_skill_ids": ["skill:accessibility-wcag"],
-        "expect_uncertain": False,
-    },
-    {
-        "id": "event_streaming_iceberg_pipeline",
-        "query": "I've been instructed to build an event driven and real time data streaming pipeline that stores data in iceberg tables using apache pulsar and apache flink. How should this be done?",
-        "expected_skill_ids": [
-            "skill:streaming-operations-and-slos",
-            "skill:event-streaming-platform-design",
-            "skill:stream-processing-patterns",
-            "skill:lakehouse-and-medallion-architecture",
-        ],
-        "required_skill_ids": [
-            "skill:event-streaming-platform-design",
-            "skill:stream-processing-patterns",
-        ],
-        "excluded_skill_ids": [
-            "skill:accessibility-wcag",
-            "skill:ci-cd-and-automation",
-            "skill:ddd-practice",
-            "skill:dora-four-keys",
-        ],
-        "expect_uncertain": False,
-    },
-    {
-        "id": "absent",
-        "query": "zzzz qqqq nonsense",
-        "expected_skill_ids": [],
-        "expect_uncertain": True,
-    },
-)
+EVAL_DIR = REPO_ROOT / "tests" / "fixtures" / "retrieval_evaluation"
+
+CATALOGUE_PATH = EVAL_DIR / "query_catalog.json"
+ABSTENTION_PATH = EVAL_DIR / "abstention_probes.json"
+CONFUSER_PAIRS_PATH = EVAL_DIR / "confuser_pairs.json"
+SMOKE_PATH = EVAL_DIR / "smoke_queries_promoted.json"
+REALISTIC_PATH = EVAL_DIR / "realistic_queries.json"
+COVERAGE_PATH = EVAL_DIR / "coverage_queries.json"
+LEGACY_GOLDEN_PATH = EVAL_DIR / "golden_queries.json"
+MATRIX_PATH = EVAL_DIR / "coverage_matrix.json"
+BASELINE_PATH = REPO_ROOT / "skills_docs" / "archive" / "planning" / "CORPUS_SHRINK_BASELINE.json"
+
+SHADOW_LEGACY_SAMPLE_SIZE = 100
+SHADOW_SEED = 42
 
 
 def _description_fragment(description: str) -> str:
@@ -149,11 +40,26 @@ def _description_fragment(description: str) -> str:
     return fragment.rstrip(".")
 
 
+def _skill_id_set(raw: object) -> set[str]:
+    if not isinstance(raw, list):
+        return set()
+    return {str(item) for item in raw if isinstance(item, str)}
+
+
+def _graph_skills(records: dict[str, object]) -> list[dict[str, object]]:
+    skills = records.get("skills")
+    if not isinstance(skills, list):
+        return []
+    return [skill for skill in skills if isinstance(skill, dict)]
+
+
 def _promotion_tier_for_case(
     case: dict[str, object],
     promoted_ids: frozenset[str],
 ) -> str:
-    expected = set(case.get("expected_skill_ids", [])) | set(case.get("required_skill_ids", []))
+    expected = _skill_id_set(case.get("expected_skill_ids")) | _skill_id_set(
+        case.get("required_skill_ids")
+    )
     if case.get("promotion_tier"):
         return str(case["promotion_tier"])
     if not expected:
@@ -165,66 +71,382 @@ def _promotion_tier_for_case(
     return "diagnostic"
 
 
-def build_cases() -> list[dict[str, object]]:
-    records = extract_skills_graph_records(REPO_ROOT / "skills")
-    promoted_ids = frozenset(
-        str(skill["id"])
-        for skill in records["skills"]
-        if str(skill.get("promotion_status", "")) == "promoted"
-    )
-    skills = sorted(records["skills"], key=lambda skill: str(skill["name"]))
-    cases: list[dict[str, object]] = [dict(case) for case in SEED_CASES]
+def load_cases(path: Path) -> list[dict[str, object]]:
+    if not path.is_file():
+        return []
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, list):
+        raise ValueError(f"{path}: expected array")
+    return [dict(item) for item in payload if isinstance(item, dict)]
 
+
+def _skill_aliases(skill_name: str, skills_root: Path) -> tuple[str, ...]:
+    path = skills_root / skill_name / "SKILL.md"
+    if not path.is_file():
+        return ()
+    text = path.read_text(encoding="utf-8")
+    if not text.startswith("---\n"):
+        return ()
+    end = text.find("\n---\n", 4)
+    if end == -1:
+        return ()
+    frontmatter = text[4:end]
+    aliases: list[str] = []
+    in_aliases = False
+    for line in frontmatter.splitlines():
+        if line.startswith("aliases:"):
+            in_aliases = True
+            continue
+        if in_aliases:
+            if line.startswith("  - "):
+                aliases.append(line[4:].strip().strip("\"'"))
+            elif line and not line.startswith(" "):
+                in_aliases = False
+    return tuple(aliases)
+
+
+def _confuser_skills_for(skill_id: str, pairs: list[dict[str, object]]) -> tuple[str, ...]:
+    confusers: list[str] = []
+    for pair in pairs:
+        if str(pair.get("preferred_skill_id", "")) == skill_id:
+            confusers.append(str(pair.get("confuser_skill_id", "")))
+    return tuple(conf for conf in confusers if conf)
+
+
+def build_coverage_cases(
+    skills: list[dict[str, object]],
+    *,
+    skills_root: Path,
+    pairs: list[dict[str, object]],
+    promoted_ids: frozenset[str],
+) -> list[dict[str, object]]:
+    cases: list[dict[str, object]] = []
     for skill in skills:
+        skill_id = str(skill["id"])
+        if skill_id not in promoted_ids:
+            continue
         name = str(skill["name"])
         description = str(skill["description"])
-        skill_id = str(skill["id"])
-        description_fragment = _description_fragment(description)
-        for index, template in enumerate(TEMPLATES, start=1):
-            query = template.format(
-                name=name,
-                description=description,
-                description_fragment=description_fragment,
-            )
+        fragment = _description_fragment(description)
+        slug = name.replace("-", "_")
+        aliases = _skill_aliases(name, skills_root)
+
+        if aliases:
+            task_query = f"When should I use {aliases[0]} for {fragment.lower()}?"
+        else:
+            task_query = f"When should I follow the {name} practice for {fragment.lower()}?"
+        cases.append(
+            {
+                "id": f"coverage_{slug}_task",
+                "query": task_query,
+                "expected_skill_ids": [skill_id],
+                "required_skill_ids": [skill_id],
+                "excluded_skill_ids": [],
+                "expect_uncertain": False,
+                "query_source": "archetype",
+                "query_archetype": "task",
+                "naturalness": "medium",
+            }
+        )
+
+        if aliases:
+            alias = aliases[0]
             cases.append(
                 {
-                    "id": f"{name.replace('-', '_')}_generated_{index:02d}",
-                    "query": query,
+                    "id": f"coverage_{slug}_alias",
+                    "query": f"When should I use {alias} for this kind of work?",
                     "expected_skill_ids": [skill_id],
                     "required_skill_ids": [skill_id],
                     "excluded_skill_ids": [],
                     "expect_uncertain": False,
+                    "query_source": "archetype",
+                    "query_archetype": "alias",
+                    "naturalness": "medium",
                 }
             )
-        for negative_index in range(1, NEGATIVE_CASES_PER_SKILL + 1):
+        else:
             cases.append(
                 {
-                    "id": f"{name.replace('-', '_')}_negative_{negative_index:02d}",
+                    "id": f"coverage_{slug}_direct",
+                    "query": f"I need a practical checklist for applying {name} on a coding task.",
+                    "expected_skill_ids": [skill_id],
+                    "required_skill_ids": [skill_id],
+                    "excluded_skill_ids": [],
+                    "expect_uncertain": False,
+                    "query_source": "archetype",
+                    "query_archetype": "direct",
+                    "naturalness": "medium",
+                }
+            )
+
+        confusers = _confuser_skills_for(skill_id, pairs)
+        if confusers:
+            cases.append(
+                {
+                    "id": f"coverage_{slug}_confuser",
                     "query": (
-                        f"zzqp qxjv{name.count('-')}{negative_index} "
-                        f"blorf{len(name)} "
-                        f"nzpt{len(description_fragment)} "
-                        f"yqqx{negative_index}{len(skill_id)}"
+                        f"Choose {name.replace('-', ' ')} (not a related substitute) "
+                        f"for: {fragment.lower()}"
                     ),
-                    "expected_skill_ids": [],
-                    "required_skill_ids": [],
-                    "excluded_skill_ids": [skill_id],
-                    "expect_uncertain": True,
+                    "expected_skill_ids": [skill_id],
+                    "required_skill_ids": [skill_id],
+                    "excluded_skill_ids": [confusers[0]],
+                    "expect_uncertain": False,
+                    "query_source": "archetype",
+                    "query_archetype": "confuser",
+                    "naturalness": "medium",
                 }
             )
 
     for case in cases:
         case["promotion_tier"] = _promotion_tier_for_case(case, promoted_ids)
-
-    if len(cases) < MIN_CASES:
-        raise ValueError(f"expected at least {MIN_CASES} cases, generated {len(cases)}")
     return cases
 
 
-def main() -> int:
-    cases = build_cases()
-    DEFAULT_OUTPUT.write_text(json.dumps(cases, indent=2) + "\n", encoding="utf-8")
-    print(f"wrote {len(cases)} cases to {DEFAULT_OUTPUT.relative_to(REPO_ROOT)}")
+def build_smoke_cases(
+    catalogue: list[dict[str, object]],
+    abstention: list[dict[str, object]],
+    promoted_ids: frozenset[str],
+) -> list[dict[str, object]]:
+    smoke_ids = {
+        "tdd_practice",
+        "spec_before_build",
+        "post_artefact_review",
+        "planning",
+        "git_workflow",
+        "human_approval",
+        "krag_system_design",
+        "kg_rag",
+        "confuser_guardrails_vs_hitl",
+        "apply_laws_baseline",
+    }
+    cases: list[dict[str, object]] = []
+    for case in catalogue:
+        if str(case.get("id", "")) in smoke_ids or case.get("smoke"):
+            cases.append(dict(case))
+    if not cases:
+        cases = [dict(case) for case in catalogue[:25]]
+    absent = next(
+        (dict(case) for case in abstention if case.get("id") == "abstain_nonsense_tokens"), None
+    )
+    if absent:
+        cases.append(absent)
+    for case in cases:
+        case["promotion_tier"] = _promotion_tier_for_case(case, promoted_ids)
+    return cases
+
+
+def build_realistic_cases(
+    catalogue: list[dict[str, object]],
+    journeys_path: Path,
+    promoted_ids: frozenset[str],
+) -> list[dict[str, object]]:
+    cases = [
+        dict(case)
+        for case in catalogue
+        if case.get("realistic_tier") and not case.get("expect_uncertain")
+    ]
+    journey_queries: list[tuple[str, list[str]]] = []
+    if journeys_path.is_file():
+        journeys = json.loads(journeys_path.read_text(encoding="utf-8"))
+        if isinstance(journeys, list):
+            for journey in journeys:
+                if not isinstance(journey, dict):
+                    continue
+                for step in journey.get("steps", []):
+                    if not isinstance(step, dict):
+                        continue
+                    args = step.get("arguments", {})
+                    expect = step.get("expect", {})
+                    if not isinstance(args, dict) or not isinstance(expect, dict):
+                        continue
+                    query = args.get("query")
+                    skill_id = expect.get("top_skill_id") or expect.get("resolved_skill_id")
+                    if isinstance(query, str) and isinstance(skill_id, str):
+                        journey_queries.append((query, [skill_id]))
+    seen_queries = {str(case["query"]) for case in cases}
+    for index, (query, skill_ids) in enumerate(journey_queries, start=1):
+        if query in seen_queries:
+            continue
+        cases.append(
+            {
+                "id": f"journey_harvest_{index:02d}",
+                "query": query,
+                "expected_skill_ids": skill_ids,
+                "required_skill_ids": skill_ids[:1],
+                "expect_uncertain": False,
+                "query_source": "journey",
+                "query_archetype": "task",
+                "naturalness": "high",
+                "promotion_tier": "release",
+            }
+        )
+        seen_queries.add(query)
+    for case in cases:
+        case.setdefault("query_source", "curated")
+        case.setdefault("naturalness", "high")
+        case["promotion_tier"] = _promotion_tier_for_case(case, promoted_ids)
+    return cases
+
+
+def write_cases(path: Path, cases: list[dict[str, object]]) -> None:
+    path.write_text(json.dumps(cases, indent=2) + "\n", encoding="utf-8")
+
+
+def emit_stubs(catalogue_path: Path, skills_root: Path) -> int:
+    records = extract_skills_graph_records(skills_root)
+    promoted = {
+        str(skill["name"])
+        for skill in _graph_skills(records)
+        if str(skill.get("promotion_status", "")) == "promoted"
+    }
+    catalogue = load_cases(catalogue_path)
+    covered = {
+        skill_id.removeprefix("skill:")
+        for case in catalogue
+        for skill_id in _skill_id_set(case.get("expected_skill_ids"))
+    }
+    missing = sorted(promoted - covered)
+    for name in missing:
+        catalogue.append(
+            {
+                "id": f"TODO_stub_{name.replace('-', '_')}",
+                "query": f"TODO: add curated query for {name}",
+                "expected_skill_ids": [f"skill:{name}"],
+                "required_skill_ids": [f"skill:{name}"],
+                "expect_uncertain": False,
+                "query_source": "curated",
+                "query_archetype": "task",
+                "naturalness": "high",
+                "promotion_tier": "release",
+                "review_status": "TODO",
+            }
+        )
+    write_cases(catalogue_path, catalogue)
+    print(f"added {len(missing)} stub(s) to {catalogue_path.relative_to(REPO_ROOT)}")
+    return 0
+
+
+def archive_shadow_baseline(
+    *,
+    legacy_path: Path,
+    new_union: list[dict[str, object]],
+) -> None:
+    legacy_cases = load_cases(legacy_path)
+    positives = [case for case in legacy_cases if case.get("expected_skill_ids")]
+    rng = random.Random(SHADOW_SEED)
+    sample = (
+        rng.sample(positives, min(SHADOW_LEGACY_SAMPLE_SIZE, len(positives))) if positives else []
+    )
+    BASELINE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    BASELINE_PATH.write_text(
+        json.dumps(
+            {
+                "legacy_template_sample_size": len(sample),
+                "legacy_template_sample_ids": [case.get("id") for case in sample],
+                "new_tier_union_size": len(new_union),
+            },
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+
+def generate_tier(
+    tier: str,
+    *,
+    skills_root: Path,
+) -> list[dict[str, object]]:
+    records = extract_skills_graph_records(skills_root)
+    skills = _graph_skills(records)
+    promoted_ids = frozenset(
+        str(skill["id"]) for skill in skills if str(skill.get("promotion_status", "")) == "promoted"
+    )
+    skills = sorted(skills, key=lambda skill: str(skill["name"]))
+    catalogue = load_cases(CATALOGUE_PATH)
+    abstention = load_cases(ABSTENTION_PATH)
+    pairs = load_cases(CONFUSER_PAIRS_PATH)
+
+    if tier == "catalogue":
+        return catalogue
+    if tier == "abstention":
+        return abstention
+    if tier == "coverage":
+        return build_coverage_cases(
+            skills, skills_root=skills_root, pairs=pairs, promoted_ids=promoted_ids
+        )
+    if tier == "smoke":
+        return build_smoke_cases(catalogue, abstention, promoted_ids)
+    if tier == "realistic":
+        return build_realistic_cases(
+            catalogue,
+            REPO_ROOT / "tests" / "fixtures" / "agent_journeys.json",
+            promoted_ids,
+        )
+    if tier == "all":
+        coverage = build_coverage_cases(
+            skills, skills_root=skills_root, pairs=pairs, promoted_ids=promoted_ids
+        )
+        realistic = build_realistic_cases(
+            catalogue,
+            REPO_ROOT / "tests" / "fixtures" / "agent_journeys.json",
+            promoted_ids,
+        )
+        smoke = build_smoke_cases(catalogue, abstention, promoted_ids)
+        return smoke + realistic + coverage + abstention
+    raise ValueError(f"unknown tier: {tier}")
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Generate tiered retrieval evaluation corpora.")
+    parser.add_argument(
+        "--tier",
+        choices=["catalogue", "smoke", "realistic", "coverage", "abstention", "all"],
+        default="all",
+    )
+    parser.add_argument("--skills-root", default=str(REPO_ROOT / "skills"))
+    parser.add_argument("--emit-stubs", action="store_true")
+    parser.add_argument("--write-legacy-golden", action="store_true")
+    args = parser.parse_args(argv)
+    skills_root = Path(args.skills_root)
+
+    if args.emit_stubs:
+        return emit_stubs(CATALOGUE_PATH, skills_root)
+
+    cases = generate_tier(args.tier, skills_root=skills_root)
+    outputs = {
+        "catalogue": CATALOGUE_PATH,
+        "smoke": SMOKE_PATH,
+        "realistic": REALISTIC_PATH,
+        "coverage": COVERAGE_PATH,
+        "abstention": ABSTENTION_PATH,
+    }
+    if args.tier == "all":
+        smoke = generate_tier("smoke", skills_root=skills_root)
+        realistic = generate_tier("realistic", skills_root=skills_root)
+        coverage = generate_tier("coverage", skills_root=skills_root)
+        abstention = generate_tier("abstention", skills_root=skills_root)
+        write_cases(SMOKE_PATH, smoke)
+        write_cases(REALISTIC_PATH, realistic)
+        write_cases(COVERAGE_PATH, coverage)
+        write_cases(ABSTENTION_PATH, abstention)
+        union = smoke + realistic + coverage + abstention
+        if args.write_legacy_golden:
+            write_cases(LEGACY_GOLDEN_PATH, union)
+        if LEGACY_GOLDEN_PATH.is_file():
+            archive_shadow_baseline(legacy_path=LEGACY_GOLDEN_PATH, new_union=union)
+        from scripts.validate_eval_corpus import build_coverage_matrix
+
+        matrix = build_coverage_matrix(coverage)
+        MATRIX_PATH.write_text(json.dumps(matrix, indent=2) + "\n", encoding="utf-8")
+        print(
+            f"wrote smoke={len(smoke)} realistic={len(realistic)} coverage={len(coverage)} abstention={len(abstention)}"
+        )
+        return 0
+
+    write_cases(outputs[args.tier], cases)
+    print(f"wrote {len(cases)} cases to {outputs[args.tier].relative_to(REPO_ROOT)}")
     return 0
 
 

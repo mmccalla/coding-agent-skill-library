@@ -1,0 +1,1811 @@
+{
+  "skills": {
+    "skill:accessibility-wcag": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_accessibility_wcag_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_accessibility_wcag_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:agentic-ux-patterns": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_agentic_ux_patterns_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_agentic_ux_patterns_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:apply-laws-of-ai": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_apply_laws_of_ai_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_apply_laws_of_ai_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:bdd-practice": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_bdd_practice_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_bdd_practice_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:browser-testing-with-devtools": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_browser_testing_with_devtools_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_browser_testing_with_devtools_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:business-capability-modeling": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_business_capability_modeling_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_business_capability_modeling_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:business-information-concept-modeling": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_business_information_concept_modeling_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_business_information_concept_modeling_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:capability-maturity-assessment": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_capability_maturity_assessment_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_capability_maturity_assessment_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:cdc-and-source-to-stream-ingestion": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_cdc_and_source_to_stream_ingestion_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_cdc_and_source_to_stream_ingestion_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:ci-cd-and-automation": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_ci_cd_and_automation_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_ci_cd_and_automation_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:code-review-and-quality": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_code_review_and_quality_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_code_review_and_quality_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:conceptual-data-modeling": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_conceptual_data_modeling_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_conceptual_data_modeling_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:context-engineering": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_context_engineering_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_context_engineering_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:data-contract-design": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_data_contract_design_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_data_contract_design_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:data-governance-and-quality": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_data_governance_and_quality_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_data_governance_and_quality_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:data-integration-and-interoperability": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_data_integration_and_interoperability_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_data_integration_and_interoperability_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:data-lifecycle-and-retention-management": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_data_lifecycle_and_retention_management_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_data_lifecycle_and_retention_management_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:data-lineage-and-provenance": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_data_lineage_and_provenance_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_data_lineage_and_provenance_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:data-product-dashboard-design": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_data_product_dashboard_design_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_data_product_dashboard_design_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:data-product-design": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_data_product_design_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_data_product_design_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:data-security-and-privacy-architecture": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_data_security_and_privacy_architecture_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_data_security_and_privacy_architecture_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:ddd-practice": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_ddd_practice_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_ddd_practice_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:deprecation-and-migration": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_deprecation_and_migration_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_deprecation_and_migration_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:design-system-practice": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_design_system_practice_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_design_system_practice_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:documentation-and-adrs": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_documentation_and_adrs_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_documentation_and_adrs_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:dora-four-keys": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_dora_four_keys_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_dora_four_keys_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:dry-principle": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_dry_principle_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_dry_principle_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:evaluation-and-monitoring": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_evaluation_and_monitoring_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_evaluation_and_monitoring_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:event-driven-architecture": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_event_driven_architecture_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_event_driven_architecture_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:event-governance-and-lineage": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_event_governance_and_lineage_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_event_governance_and_lineage_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:event-modeling": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_event_modeling_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_event_modeling_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:event-streaming-platform-design": {
+      "case_count": 3,
+      "archetypes": [
+        "confuser",
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_event_streaming_platform_design_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_event_streaming_platform_design_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_event_streaming_platform_design_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:exception-handling-and-recovery": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_exception_handling_and_recovery_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_exception_handling_and_recovery_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:frontend-state-and-interaction-design": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_frontend_state_and_interaction_design_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_frontend_state_and_interaction_design_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:git-workflow-and-versioning": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_git_workflow_and_versioning_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_git_workflow_and_versioning_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:goal-setting-and-monitoring": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_goal_setting_and_monitoring_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_goal_setting_and_monitoring_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:guardrails-safety-patterns": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_guardrails_safety_patterns_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_guardrails_safety_patterns_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_guardrails_safety_patterns_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:human-in-the-loop": {
+      "case_count": 3,
+      "archetypes": [
+        "confuser",
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_human_in_the_loop_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_human_in_the_loop_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_human_in_the_loop_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:idea-refinement": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_idea_refinement_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_idea_refinement_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:incident-response-and-postmortems": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_incident_response_and_postmortems_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_incident_response_and_postmortems_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:incremental-implementation": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_incremental_implementation_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_incremental_implementation_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:inter-agent-communication-a2a": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_inter_agent_communication_a2a_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_inter_agent_communication_a2a_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:kiss-principle": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_kiss_principle_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_kiss_principle_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:knowledge-graph-rag": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_knowledge_graph_rag_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_knowledge_graph_rag_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:knowledge-retrieval-rag": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_knowledge_retrieval_rag_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_knowledge_retrieval_rag_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_knowledge_retrieval_rag_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:krag-evaluation-governance": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_krag_evaluation_governance_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_krag_evaluation_governance_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_krag_evaluation_governance_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:krag-ingestion-graph-construction": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_krag_ingestion_graph_construction_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_krag_ingestion_graph_construction_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_krag_ingestion_graph_construction_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:krag-retrieval-answering": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_krag_retrieval_answering_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_krag_retrieval_answering_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:krag-system-design": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_krag_system_design_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_krag_system_design_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_krag_system_design_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:lakehouse-and-medallion-architecture": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_lakehouse_and_medallion_architecture_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_lakehouse_and_medallion_architecture_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:learning-and-adaptation": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_learning_and_adaptation_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_learning_and_adaptation_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:logical-data-modeling": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_logical_data_modeling_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_logical_data_modeling_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:master-and-reference-data-management": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_master_and_reference_data_management_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_master_and_reference_data_management_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:mcp-server-design": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_mcp_server_design_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_mcp_server_design_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_mcp_server_design_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:memory-management": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_memory_management_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_memory_management_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:metadata-management": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_metadata_management_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_metadata_management_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:multi-agent-collaboration": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_multi_agent_collaboration_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_multi_agent_collaboration_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:observability-and-telemetry": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_observability_and_telemetry_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_observability_and_telemetry_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:ontology-and-knowledge-graph-modeling": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_ontology_and_knowledge_graph_modeling_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_ontology_and_knowledge_graph_modeling_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:operating-model-design": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_operating_model_design_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_operating_model_design_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:organization-and-role-design": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_organization_and_role_design_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_organization_and_role_design_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:parallelization": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_parallelization_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_parallelization_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:planning-and-task-decomposition": {
+      "case_count": 3,
+      "archetypes": [
+        "confuser",
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_planning_and_task_decomposition_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_planning_and_task_decomposition_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_planning_and_task_decomposition_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:prioritization": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_prioritization_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_prioritization_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:process-modeling": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_process_modeling_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_process_modeling_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:prompt-chaining": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_prompt_chaining_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_prompt_chaining_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:reasoning-techniques": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_reasoning_techniques_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_reasoning_techniques_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:reflection-and-verification": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_reflection_and_verification_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_reflection_and_verification_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:release-engineering-and-progressive-delivery": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_release_engineering_and_progressive_delivery_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_release_engineering_and_progressive_delivery_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:requirements-elicitation": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_requirements_elicitation_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_requirements_elicitation_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:resource-aware-optimization": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_resource_aware_optimization_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_resource_aware_optimization_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:routing": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_routing_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_routing_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:schema-registry-and-contracts": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_schema_registry_and_contracts_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_schema_registry_and_contracts_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:shipping-and-launch": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_shipping_and_launch_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_shipping_and_launch_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:skill-discovery-and-selection": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_skill_discovery_and_selection_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_skill_discovery_and_selection_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:slo-error-budget-management": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_slo_error_budget_management_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_slo_error_budget_management_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:solid-principles": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_solid_principles_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_solid_principles_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:source-driven-development": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_source_driven_development_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_source_driven_development_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:spec-driven-development": {
+      "case_count": 3,
+      "archetypes": [
+        "confuser",
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_spec_driven_development_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_spec_driven_development_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_spec_driven_development_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:sre-practice": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_sre_practice_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_sre_practice_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_sre_practice_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:strategy-to-execution-traceability": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_strategy_to_execution_traceability_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_strategy_to_execution_traceability_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:stream-processing-patterns": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_stream_processing_patterns_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_stream_processing_patterns_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:streaming-operations-and-slos": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_streaming_operations_and_slos_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_streaming_operations_and_slos_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:tdd-practice": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_tdd_practice_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_tdd_practice_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_tdd_practice_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:toil-reduction-and-automation": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_toil_reduction_and_automation_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_toil_reduction_and_automation_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:tool-use-and-function-calling": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_tool_use_and_function_calling_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_tool_use_and_function_calling_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:ui-component-design": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_ui_component_design_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_ui_component_design_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:uncertainty-driven-development": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_uncertainty_driven_development_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_uncertainty_driven_development_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:user-research-and-usability-testing": {
+      "case_count": 2,
+      "archetypes": [
+        "direct",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_user_research_and_usability_testing_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_user_research_and_usability_testing_direct",
+          "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:ux-design-principles": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_ux_design_principles_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_ux_design_principles_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_ux_design_principles_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:value-stream-modeling": {
+      "case_count": 2,
+      "archetypes": [
+        "alias",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_value_stream_modeling_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_value_stream_modeling_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    }
+  }
+}

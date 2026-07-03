@@ -10,16 +10,19 @@ import {
   fetchGraph,
   fetchReadiness,
   fetchTechnicalInfo,
+  ingestSkill,
   queryGraph,
   uploadSkillPreview,
 } from "./api";
 import { GraphView } from "./components/GraphView";
 import type {
+  AdminIngestResult,
   GraphQueryResponse,
   GraphResponse,
   OllamaModel,
   OpenApiSpec,
   ReadyResponse,
+  SkillTrustReport,
   TechnicalInfo,
   UploadPreview,
 } from "./types";
@@ -47,6 +50,8 @@ interface DisplayError {
 const DEFAULT_OLLAMA_ENDPOINT =
   import.meta.env.VITE_DEFAULT_OLLAMA_ENDPOINT ?? "http://127.0.0.1:11434";
 
+const ADMIN_KEY_STORAGE_KEY = "skills-ui-admin-key";
+
 type WorkspaceSection = "ask" | "workflow" | "api" | "upload" | "graph";
 
 const workspaceSections: Array<{
@@ -72,7 +77,7 @@ const workspaceSections: Array<{
   {
     id: "upload",
     label: "Upload",
-    description: "Preview a candidate SKILL.md without persistence.",
+    description: "Preview trust gates or ingest with an admin key.",
   },
   {
     id: "graph",
@@ -102,6 +107,13 @@ export function App() {
   const [uploadPreview, setUploadPreview] = useState<UploadPreview | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [adminKey, setAdminKey] = useState(
+    () => localStorage.getItem(ADMIN_KEY_STORAGE_KEY) ?? "",
+  );
+  const [showIngestModal, setShowIngestModal] = useState(false);
+  const [ingesting, setIngesting] = useState(false);
+  const [ingestResult, setIngestResult] = useState<AdminIngestResult | null>(null);
+  const [ingestError, setIngestError] = useState<string | null>(null);
 
   useEffect(() => {
     void loadDashboard();
@@ -140,6 +152,8 @@ export function App() {
     }
     setUploading(true);
     setUploadError(null);
+    setIngestResult(null);
+    setIngestError(null);
     try {
       const preview = await uploadSkillPreview(selectedFile);
       setUploadPreview(preview);
@@ -147,6 +161,52 @@ export function App() {
       setUploadError(error instanceof Error ? error.message : "Upload preview failed");
     } finally {
       setUploading(false);
+    }
+  }
+
+  function handleAdminKeyChange(value: string) {
+    setAdminKey(value);
+    if (value.trim()) {
+      localStorage.setItem(ADMIN_KEY_STORAGE_KEY, value);
+    } else {
+      localStorage.removeItem(ADMIN_KEY_STORAGE_KEY);
+    }
+  }
+
+  function handleFileChange(file: File | null) {
+    setSelectedFile(file);
+    setUploadPreview(null);
+    setUploadError(null);
+    setIngestResult(null);
+    setIngestError(null);
+    setShowIngestModal(false);
+  }
+
+  async function handleIngestConfirm() {
+    if (!selectedFile) {
+      setIngestError("Choose a SKILL.md file before ingesting.");
+      return;
+    }
+    if (!adminKey.trim()) {
+      setIngestError("Enter the admin key in settings before ingesting.");
+      return;
+    }
+    setIngesting(true);
+    setIngestError(null);
+    setIngestResult(null);
+    try {
+      const result = await ingestSkill(selectedFile, adminKey.trim());
+      setIngestResult(result);
+      setShowIngestModal(false);
+    } catch (error) {
+      if (error instanceof ApiRequestError && isAdminIngestDetail(error.detail)) {
+        setIngestError(error.detail.message ?? error.message);
+        setIngestResult(error.detail);
+      } else {
+        setIngestError(error instanceof Error ? error.message : "Admin ingest failed");
+      }
+    } finally {
+      setIngesting(false);
     }
   }
 
@@ -288,8 +348,20 @@ export function App() {
             uploading={uploading}
             preview={uploadPreview}
             error={uploadError}
-            onFileChange={(file) => setSelectedFile(file)}
+            adminKey={adminKey}
+            ingesting={ingesting}
+            showIngestModal={showIngestModal}
+            ingestResult={ingestResult}
+            ingestError={ingestError}
+            onFileChange={handleFileChange}
+            onAdminKeyChange={handleAdminKeyChange}
             onSubmit={handleUpload}
+            onOpenIngestModal={() => setShowIngestModal(true)}
+            onCloseIngestModal={() => {
+              setShowIngestModal(false);
+              setIngestError(null);
+            }}
+            onConfirmIngest={() => void handleIngestConfirm()}
           />
           {technicalInfo.status === "ready" ? (
             <TechnicalInfoPanel technicalInfo={technicalInfo.data} />
@@ -866,8 +938,17 @@ interface UploadPanelProps {
   uploading: boolean;
   preview: UploadPreview | null;
   error: string | null;
+  adminKey: string;
+  ingesting: boolean;
+  showIngestModal: boolean;
+  ingestResult: AdminIngestResult | null;
+  ingestError: string | null;
   onFileChange: (file: File | null) => void;
+  onAdminKeyChange: (value: string) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  onOpenIngestModal: () => void;
+  onCloseIngestModal: () => void;
+  onConfirmIngest: () => void;
 }
 
 function UploadPanel({
@@ -875,9 +956,21 @@ function UploadPanel({
   uploading,
   preview,
   error,
+  adminKey,
+  ingesting,
+  showIngestModal,
+  ingestResult,
+  ingestError,
   onFileChange,
+  onAdminKeyChange,
   onSubmit,
+  onOpenIngestModal,
+  onCloseIngestModal,
+  onConfirmIngest,
 }: UploadPanelProps) {
+  const trustPassed = preview?.trust?.passed === true;
+  const canIngest = trustPassed && adminKey.trim().length > 0 && selectedFile !== null;
+
   return (
     <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-5 shadow-xl">
       <div className="flex items-center gap-3">
@@ -885,11 +978,30 @@ function UploadPanel({
         <div>
           <h2 className="text-xl font-semibold text-white">Upload Skill Preview</h2>
           <p className="text-sm text-slate-300">
-            Preview validates a candidate file; it does not persist or write to Neo4j.
+            Preview validates trust gates without persistence. Ingest writes the skill when trust
+            passes and a valid admin key is configured.
           </p>
         </div>
       </div>
       <form className="mt-5 grid gap-4" onSubmit={onSubmit}>
+        <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4">
+          <label htmlFor="admin-key" className="block text-sm font-medium text-slate-100">
+            Admin key (local settings)
+          </label>
+          <input
+            id="admin-key"
+            type="password"
+            autoComplete="off"
+            value={adminKey}
+            onChange={(event) => onAdminKeyChange(event.target.value)}
+            className="mt-2 block w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 font-mono text-sm text-slate-100"
+            placeholder="Matches SKILLS_ADMIN_API_KEY on the API"
+            aria-describedby="admin-key-help"
+          />
+          <p id="admin-key-help" className="mt-2 text-sm text-slate-400">
+            Stored in this browser only. Required for ingest; preview works without it.
+          </p>
+        </div>
         <div>
           <label htmlFor="skill-file" className="block text-sm font-medium text-slate-100">
             Skill markdown file
@@ -932,6 +1044,7 @@ function UploadPanel({
             <Metric label="Persisted" value={preview.persisted ? "Yes" : "No"} />
             <Metric label="Status" value={preview.status} />
           </dl>
+          {preview.trust && <TrustReportPanel trust={preview.trust} />}
           {preview.warnings.length > 0 && (
             <div className="mt-4 rounded-xl border border-amber-400/40 bg-amber-400/10 p-3">
               <h4 className="text-sm font-semibold text-amber-100">Warnings</h4>
@@ -942,10 +1055,154 @@ function UploadPanel({
               </ul>
             </div>
           )}
+          <p className="mt-4 text-sm text-slate-400">{preview.message}</p>
+          {canIngest && (
+            <div className="mt-4">
+              <button
+                type="button"
+                onClick={onOpenIngestModal}
+                className="rounded-2xl border border-emerald-300 px-5 py-3 font-semibold text-emerald-100 transition hover:bg-emerald-300 hover:text-slate-950"
+              >
+                Ingest skill
+              </button>
+            </div>
+          )}
+          {trustPassed && !adminKey.trim() && (
+            <p className="mt-4 text-sm text-amber-200">Enter an admin key above to enable ingest.</p>
+          )}
         </div>
+      )}
+      {ingestResult?.outcome === "success" && (
+        <div
+          aria-label="Ingest success"
+          className="mt-5 rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-4"
+        >
+          <h3 className="font-semibold text-emerald-50">Skill ingested</h3>
+          <p className="mt-2 text-sm text-emerald-100">{ingestResult.message}</p>
+          <dl className="mt-4 grid gap-3 text-sm">
+            <Metric label="Skill" value={ingestResult.skill_name} />
+            <Metric label="Written path" value={ingestResult.written_path} />
+            <Metric label="Promotion" value={ingestResult.promotion_status} />
+            <Metric label="Trust hash" value={ingestResult.trust_hash.slice(0, 16)} />
+          </dl>
+        </div>
+      )}
+      {showIngestModal && preview && (
+        <IngestConfirmationModal
+          skillName={preview.name || "Unnamed skill"}
+          trustHash={ingestResult?.trust_hash}
+          ingesting={ingesting}
+          error={ingestError}
+          failedTrust={ingestResult?.outcome === "rejected" ? ingestResult.trust : undefined}
+          onCancel={onCloseIngestModal}
+          onConfirm={onConfirmIngest}
+        />
       )}
     </section>
   );
+}
+
+function TrustReportPanel({ trust }: { trust: SkillTrustReport }) {
+  const layerEntries = Object.entries(trust.layers);
+  return (
+    <div
+      className={`mt-4 rounded-xl border p-3 ${
+        trust.passed
+          ? "border-emerald-500/40 bg-emerald-500/10"
+          : "border-rose-500/40 bg-rose-500/10"
+      }`}
+    >
+      <h4
+        className={`text-sm font-semibold ${trust.passed ? "text-emerald-100" : "text-rose-100"}`}
+      >
+        Trust gates: {trust.passed ? "passed" : "failed"}
+      </h4>
+      {layerEntries.length > 0 && (
+        <ul className="mt-2 grid gap-2 text-sm">
+          {layerEntries.map(([key, layer]) => (
+            <li key={key} className="rounded-lg bg-slate-900/80 p-2 text-slate-200">
+              <span className="font-mono text-sky-200">{layer.layer}</span>
+              <span className="ml-2">{layer.passed ? "pass" : "fail"}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+interface IngestConfirmationModalProps {
+  skillName: string;
+  trustHash?: string;
+  ingesting: boolean;
+  error: string | null;
+  failedTrust?: SkillTrustReport;
+  onCancel: () => void;
+  onConfirm: () => void;
+}
+
+function IngestConfirmationModal({
+  skillName,
+  trustHash,
+  ingesting,
+  error,
+  failedTrust,
+  onCancel,
+  onConfirm,
+}: IngestConfirmationModalProps) {
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="ingest-modal-title"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4"
+    >
+      <div className="w-full max-w-lg rounded-3xl border border-slate-700 bg-slate-900 p-6 shadow-2xl">
+        <h3 id="ingest-modal-title" className="text-xl font-semibold text-white">
+          Confirm admin ingest
+        </h3>
+        <p className="mt-3 text-sm text-slate-300">
+          This will write <span className="font-semibold text-white">{skillName}</span> to the
+          skills repository, register pack metadata, and reload the graph plan.
+        </p>
+        {trustHash && (
+          <p className="mt-2 font-mono text-xs text-slate-400">Trust hash: {trustHash.slice(0, 16)}…</p>
+        )}
+        {error && (
+          <p className="mt-4 rounded-xl border border-rose-500/40 bg-rose-500/10 p-3 text-sm text-rose-100">
+            {error}
+          </p>
+        )}
+        {failedTrust && <TrustReportPanel trust={failedTrust} />}
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={ingesting}
+            className="rounded-2xl border border-slate-600 px-5 py-3 font-semibold text-slate-200 transition hover:border-slate-400 disabled:cursor-not-allowed"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            disabled={ingesting}
+            className="rounded-2xl bg-emerald-300 px-5 py-3 font-semibold text-slate-950 transition hover:bg-emerald-200 disabled:cursor-not-allowed disabled:bg-slate-600 disabled:text-slate-300"
+          >
+            {ingesting ? "Ingesting..." : "Confirm ingest"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function isAdminIngestDetail(detail: ApiRequestError["detail"]): detail is AdminIngestResult {
+  if (typeof detail !== "object" || detail === null) {
+    return false;
+  }
+  const candidate = detail as Partial<AdminIngestResult>;
+  return typeof candidate.outcome === "string" && typeof candidate.skill_name === "string";
 }
 
 function TechnicalInfoPanel({ technicalInfo }: { technicalInfo: TechnicalInfo }) {

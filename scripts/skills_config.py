@@ -26,8 +26,11 @@ class Neo4jSettings(BaseModel):
     user: str = ""
     password: str = Field(default="", repr=False, exclude=True)
     database: str = "neo4j"
-    embedding_dimensions: PositiveInt = 1536
-    embedding_provider: str = "deterministic-test-embedding"
+    # Production default: BGE-M3 via Ollama. CI overrides with SKILLS_EMBEDDING_PROVIDER=deterministic.
+    embedding_dimensions: PositiveInt = 1024
+    embedding_provider: str = "ollama-bge-m3"
+    ollama_base_url: str = "http://127.0.0.1:11434"
+    ollama_model: str = "bge-m3:567m"
     vector_similarity_function: str = "cosine"
     vector_index: str = "retrieval_unit_embedding_vector"
     metadata_fulltext_index: str = "skill_metadata_fulltext"
@@ -39,7 +42,14 @@ class RetrievalSettings(BaseModel):
 
     model_config = ConfigDict(frozen=True)
 
-    min_confident_score: float = Field(default=0.2, ge=0.0, le=1.0)
+    # Calibrated with bge-m3:567m on abstention_probes + semantic-challenge OOD.
+    min_confident_score: float = Field(default=0.35, ge=0.0, le=1.0)
+    min_top1_margin: float = Field(
+        default=0.02,
+        ge=0.0,
+        le=1.0,
+        description="Abstain when top-1 and top-2 hybrid scores differ by less than this margin.",
+    )
     min_vector_candidate_score: float = Field(default=0.2, ge=0.0, le=1.0)
     default_token_budget: PositiveInt = 1200
     default_limit: PositiveInt = 5
@@ -105,12 +115,17 @@ def load_settings(
     mcp_config = _nested_mapping(raw, "mcp")
     api_config = _nested_mapping(raw, "api")
 
-    env_overrides = {
+    env_overrides: dict[str, object] = {
         "uri": env.get("NEO4J_URI", ""),
         "user": env.get("NEO4J_USER", ""),
         "password": env.get("NEO4J_PASSWORD", ""),
         "database": env.get("NEO4J_DATABASE", "neo4j"),
+        "embedding_provider": env.get("SKILLS_EMBEDDING_PROVIDER", ""),
+        "ollama_base_url": env.get("SKILLS_OLLAMA_BASE_URL", ""),
+        "ollama_model": env.get("SKILLS_OLLAMA_MODEL", ""),
     }
+    if env.get("SKILLS_EMBEDDING_DIMENSIONS"):
+        env_overrides["embedding_dimensions"] = int(env["SKILLS_EMBEDDING_DIMENSIONS"])
     neo4j_config.update({key: value for key, value in env_overrides.items() if value})
 
     return SkillsKgSettings(

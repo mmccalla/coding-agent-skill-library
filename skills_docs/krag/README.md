@@ -6,7 +6,9 @@ Knowledge Graph-Augmented Retrieval for the skills library: versioned ingest, ev
 
 | Document | Purpose |
 | --- | --- |
-| [`STATUS.md`](STATUS.md) | Done, in progress, to-do |
+| [`STATUS.md`](STATUS.md) | Done, closeout programme, to-do |
+| [`CLOSEOUT_PLAN.md`](CLOSEOUT_PLAN.md) | Golden corpus realism + STATUS closeout waves |
+| [`EVALUATION_CORPUS_CONTRACT.md`](EVALUATION_CORPUS_CONTRACT.md) | Tiered eval corpus schema and gates |
 | [`CONTRACTS.md`](CONTRACTS.md) | Ingest, runtime, trust, projections, vocabulary, eval gates |
 | [`ONTOLOGY.md`](ONTOLOGY.md) | Semantic model narrative |
 | [`EVALUATION.md`](EVALUATION.md) | Measured retrieval quality (living report) |
@@ -34,6 +36,7 @@ Historical phase plans are in `../archive/planning/`.
 
 ```bash
 python3 scripts/validate_skills_ontology.py
+python3 scripts/validate_eval_corpus.py --check-skill-sync
 python3 scripts/ci_ingest_gate.py
 python3 scripts/krag_cutover_acceptance.py --dataset tests/fixtures/retrieval_evaluation/smoke_queries_promoted.json --limit 3
 ```

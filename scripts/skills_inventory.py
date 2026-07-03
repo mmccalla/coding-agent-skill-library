@@ -38,7 +38,10 @@ def load_pack_metadata(
     """Load machine-readable skill-pack metadata for flat-layout ingestion."""
 
     resolved_metadata_path = _resolved_metadata_path(skills_root, metadata_path)
-    return json.loads(resolved_metadata_path.read_text(encoding="utf-8"))
+    payload = json.loads(resolved_metadata_path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError(f"{resolved_metadata_path}: expected JSON object")
+    return payload
 
 
 def skill_category_map(
@@ -49,7 +52,10 @@ def skill_category_map(
 
     metadata = load_pack_metadata(skills_root, metadata_path)
     mapping: dict[str, str] = {}
-    for category in metadata.get("categories", []):
+    categories_raw = metadata.get("categories", [])
+    if not isinstance(categories_raw, list):
+        return mapping
+    for category in categories_raw:
         if not isinstance(category, dict):
             continue
         category_id = str(category.get("id", "")).strip()

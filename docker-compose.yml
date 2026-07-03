@@ -48,11 +48,17 @@ services:
     depends_on:
       neo4j:
         condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       NEO4J_URI: bolt://neo4j:7687
       NEO4J_USER: neo4j
       NEO4J_PASSWORD: ${NEO4J_PASSWORD}
       NEO4J_DATABASE: neo4j
+      SKILLS_EMBEDDING_PROVIDER: ${SKILLS_EMBEDDING_PROVIDER:-ollama-bge-m3}
+      SKILLS_OLLAMA_BASE_URL: ${SKILLS_OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      SKILLS_OLLAMA_MODEL: ${SKILLS_OLLAMA_MODEL:-bge-m3:567m}
+      SKILLS_EMBEDDING_DIMENSIONS: ${SKILLS_EMBEDDING_DIMENSIONS:-1024}
     command: ["python", "scripts/embed_skill_chunks.py", "--apply", "--batch-size", "500"]
     restart: "no"
     # Security: Resource limits
@@ -95,7 +101,10 @@ services:
       NEO4J_USER: neo4j
       NEO4J_PASSWORD: ${NEO4J_PASSWORD}
       NEO4J_DATABASE: neo4j
-      SKILLS_OLLAMA_MODEL: ${SKILLS_OLLAMA_MODEL:-}
+      SKILLS_EMBEDDING_PROVIDER: ${SKILLS_EMBEDDING_PROVIDER:-ollama-bge-m3}
+      SKILLS_OLLAMA_BASE_URL: ${SKILLS_OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      SKILLS_OLLAMA_MODEL: ${SKILLS_OLLAMA_MODEL:-bge-m3:567m}
+      SKILLS_EMBEDDING_DIMENSIONS: ${SKILLS_EMBEDDING_DIMENSIONS:-1024}
       OLLAMA_MODEL: ${OLLAMA_MODEL:-}
       OLLAMA_CHAT_MODEL: ${OLLAMA_CHAT_MODEL:-}
     healthcheck:

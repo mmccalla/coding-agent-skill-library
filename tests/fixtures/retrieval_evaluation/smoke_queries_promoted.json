@@ -1,43 +1,206 @@
 [
   {
+    "id": "kg_rag",
+    "query": "neo4j-native kg-backed retrieval with text-to-cypher and provenance",
+    "expected_skill_ids": [
+      "skill:knowledge-graph-rag"
+    ],
+    "required_skill_ids": [
+      "skill:knowledge-graph-rag"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "confuser",
+    "naturalness": "high",
+    "smoke": true,
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "krag_system_design",
+    "query": "KRAG architecture summary graph schema outline retrieval strategy implementation backlog thin vertical slices",
+    "expected_skill_ids": [
+      "skill:krag-system-design"
+    ],
+    "required_skill_ids": [
+      "skill:krag-system-design"
+    ],
+    "excluded_skill_ids": [
+      "skill:accessibility-wcag",
+      "skill:ci-cd-and-automation",
+      "skill:knowledge-graph-rag",
+      "skill:ontology-and-knowledge-graph-modeling"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "confuser",
+    "naturalness": "high",
+    "smoke": true,
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "human_approval",
+    "query": "approval before destructive command human review",
+    "expected_skill_ids": [
+      "skill:human-in-the-loop"
+    ],
+    "required_skill_ids": [
+      "skill:human-in-the-loop"
+    ],
+    "excluded_skill_ids": [
+      "skill:agentic-ux-patterns",
+      "skill:git-workflow-and-versioning"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "task",
+    "naturalness": "high",
+    "smoke": true,
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_guardrails_vs_hitl",
+    "query": "policy enforcement tool restrictions before destructive actions",
+    "expected_skill_ids": [
+      "skill:guardrails-safety-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:guardrails-safety-patterns"
+    ],
+    "excluded_skill_ids": [
+      "skill:human-in-the-loop"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "confuser",
+    "naturalness": "high",
+    "smoke": true,
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
     "id": "tdd_practice",
     "query": "fixing a defect with a failing test first and executable expectations",
-    "expected_skill_ids": ["skill:tdd-practice"],
-    "required_skill_ids": ["skill:tdd-practice"],
-    "expect_uncertain": false
+    "expected_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "excluded_skill_ids": [
+      "skill:reflection-and-verification"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "confuser",
+    "naturalness": "high",
+    "smoke": true,
+    "promotion_tier": "release",
+    "realistic_tier": true
   },
   {
     "id": "spec_before_build",
     "query": "clear specification before code or skill edits are made",
-    "expected_skill_ids": ["skill:spec-driven-development"],
-    "required_skill_ids": ["skill:spec-driven-development"],
-    "expect_uncertain": false
+    "expected_skill_ids": [
+      "skill:spec-driven-development"
+    ],
+    "required_skill_ids": [
+      "skill:spec-driven-development"
+    ],
+    "excluded_skill_ids": [
+      "skill:incremental-implementation"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "confuser",
+    "naturalness": "high",
+    "smoke": true,
+    "promotion_tier": "release",
+    "realistic_tier": true
   },
   {
     "id": "post_artefact_review",
     "query": "review after implementation critique existing artefact quality matters",
-    "expected_skill_ids": ["skill:reflection-and-verification"],
-    "required_skill_ids": ["skill:reflection-and-verification"],
-    "expect_uncertain": false
+    "expected_skill_ids": [
+      "skill:reflection-and-verification"
+    ],
+    "required_skill_ids": [
+      "skill:reflection-and-verification"
+    ],
+    "excluded_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "confuser",
+    "naturalness": "high",
+    "smoke": true,
+    "promotion_tier": "release",
+    "realistic_tier": true
   },
   {
     "id": "planning",
     "query": "multi-step implementation decompose ordered dependency-aware steps with validation checkpoints",
-    "expected_skill_ids": ["skill:planning-and-task-decomposition"],
-    "required_skill_ids": ["skill:planning-and-task-decomposition"],
-    "expect_uncertain": false
+    "expected_skill_ids": [
+      "skill:planning-and-task-decomposition"
+    ],
+    "required_skill_ids": [
+      "skill:planning-and-task-decomposition"
+    ],
+    "excluded_skill_ids": [
+      "skill:prioritization"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "confuser",
+    "naturalness": "high",
+    "smoke": true,
+    "promotion_tier": "release",
+    "realistic_tier": true
   },
   {
     "id": "git_workflow",
     "query": "branching commit hygiene git workflow versioning",
-    "expected_skill_ids": ["skill:git-workflow-and-versioning"],
-    "required_skill_ids": ["skill:git-workflow-and-versioning"],
-    "expect_uncertain": false
+    "expected_skill_ids": [
+      "skill:git-workflow-and-versioning"
+    ],
+    "required_skill_ids": [
+      "skill:git-workflow-and-versioning"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "task",
+    "naturalness": "high",
+    "smoke": true,
+    "promotion_tier": "release",
+    "realistic_tier": true
   },
   {
-    "id": "absent",
+    "id": "apply_laws_baseline",
+    "query": "execute apply laws of ai mandatory immutable baseline at every session start",
+    "expected_skill_ids": [
+      "skill:apply-laws-of-ai"
+    ],
+    "required_skill_ids": [
+      "skill:apply-laws-of-ai"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "task",
+    "naturalness": "high",
+    "smoke": true,
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "abstain_nonsense_tokens",
     "query": "zzzz qqqq nonsense",
     "expected_skill_ids": [],
-    "expect_uncertain": true
+    "expect_uncertain": true,
+    "query_source": "abstention_probe",
+    "query_archetype": "abstention",
+    "promotion_tier": "release"
   }
 ]

@@ -276,8 +276,8 @@ def _verification_checklist(text: str) -> tuple[str, ...]:
 
 def _section_evidence(
     retrieval_units: Sequence[load_skills_neo4j.GraphNode],
-) -> tuple[dict[str, str], ...]:
-    evidence: list[dict[str, str]] = []
+) -> tuple[dict[str, object], ...]:
+    evidence: list[dict[str, object]] = []
     for unit in retrieval_units:
         section_id = _string(unit.properties.get("section_id"))
         if any(
@@ -290,8 +290,8 @@ def _section_evidence(
                     "section_id": section_id,
                     "source_path": _string(unit.properties.get("source_path")),
                     "heading_path": _string(unit.properties.get("heading_path")),
-                    "line_start": unit.properties.get("line_start", 0),
-                    "line_end": unit.properties.get("line_end", 0),
+                    "line_start": _int_property(unit.properties.get("line_start")),
+                    "line_end": _int_property(unit.properties.get("line_end")),
                 }
             )
     return tuple(evidence)
@@ -407,3 +407,7 @@ def _skill_name(skill: load_skills_neo4j.GraphNode) -> str:
 
 def _string(value: object) -> str:
     return value if isinstance(value, str) else ""
+
+
+def _int_property(value: object, default: int = 0) -> int:
+    return int(value) if isinstance(value, int) else default

@@ -237,5 +237,136 @@
         }
       }
     ]
+  },
+  {
+    "id": "JRN-08-out-of-domain-weather",
+    "description": "Agent routes an out-of-domain weather question and abstains on recommendation.",
+    "server": "fixture",
+    "tags": ["abstention", "out_of_domain"],
+    "steps": [
+      {
+        "tool": "route_skill_query",
+        "arguments": { "query": "What is the weather in London tomorrow?" },
+        "expect": {
+          "status": "ok",
+          "route": "recommendation",
+          "resolved_skill_id": null,
+          "suggested_tool": "recommend_skills"
+        },
+        "expect_selection_trace": {
+          "tool": "route_skill_query",
+          "query_intent": "recommendation",
+          "requires_usage_event_id": true
+        }
+      },
+      {
+        "tool": "recommend_skills",
+        "arguments": {
+          "query": "What is the weather in London tomorrow?",
+          "limit": 3,
+          "token_budget": 60
+        },
+        "expect": {
+          "status": "ok",
+          "uncertain": true,
+          "recommendation_count": 0
+        },
+        "expect_selection_trace": {
+          "tool": "recommend_skills",
+          "query_intent": "recommendation",
+          "requires_usage_event_id": true,
+          "requires_abstention_reason": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "JRN-09-security-destructive-approval",
+    "description": "Embedded repository recommends human-in-the-loop for destructive command approval.",
+    "server": "embedded",
+    "tags": ["recommendation", "embedded", "security"],
+    "steps": [
+      {
+        "tool": "recommend_skills",
+        "arguments": {
+          "query": "approval before destructive command human review",
+          "limit": 3,
+          "token_budget": 120
+        },
+        "expect": {
+          "status": "ok",
+          "uncertain": false,
+          "top_skill_id": "skill:human-in-the-loop"
+        },
+        "expect_selection_trace": {
+          "tool": "recommend_skills",
+          "query_intent": "recommendation",
+          "requires_usage_event_id": true,
+          "requires_rank": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "JRN-10-usage-metrics-trace",
+    "description": "Agent recommendation emits usage_event_id in selection trace for metrics.",
+    "server": "embedded",
+    "tags": ["recommendation", "embedded", "usage_metrics"],
+    "steps": [
+      {
+        "tool": "recommend_skills",
+        "arguments": {
+          "query": "observability telemetry usage metrics skill selection trace",
+          "limit": 2,
+          "token_budget": 80
+        },
+        "expect": {
+          "status": "ok",
+          "uncertain": false,
+          "top_skill_id": "skill:observability-and-telemetry"
+        },
+        "expect_selection_trace": {
+          "tool": "recommend_skills",
+          "query_intent": "recommendation",
+          "requires_usage_event_id": true,
+          "requires_rank": true,
+          "requires_selected_evidence": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "JRN-11-session-start-baseline-resolve",
+    "description": "Agent routes session-start baseline lookup and resolves apply-laws-of-ai via MCP.",
+    "server": "embedded",
+    "tags": ["direct_lookup", "embedded", "session_start", "baseline"],
+    "steps": [
+      {
+        "tool": "route_skill_query",
+        "arguments": {
+          "query": "apply_laws_of_AI mandatory baseline at every session start"
+        },
+        "expect": {
+          "status": "ok",
+          "route": "execution_plan",
+          "resolved_skill_id": "skill:apply-laws-of-ai",
+          "suggested_tool": "get_skill_execution_guide"
+        },
+        "expect_selection_trace": {
+          "tool": "route_skill_query",
+          "query_intent": "execution_plan",
+          "requires_usage_event_id": true,
+          "requires_evidence": true
+        }
+      },
+      {
+        "tool": "resolve_skill",
+        "arguments": { "name": "apply-laws-of-ai" },
+        "expect": {
+          "status": "ok",
+          "skill_id": "skill:apply-laws-of-ai"
+        }
+      }
+    ]
   }
 ]

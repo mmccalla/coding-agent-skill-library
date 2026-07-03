@@ -90,12 +90,25 @@ describe("App", () => {
   let queryShouldReturnStructuredError = false;
   let lastQueryRequest: unknown = null;
   let lastModelListUrl = "";
+  let lastIngestAdminKey = "";
+  let ingestShouldReject = false;
+
+  const passingTrust = {
+    passed: true,
+    layers: {
+      L2_security: { layer: "L2_security", status: "pass", passed: true, details: {} },
+      L3_practice: { layer: "L3_practice", status: "pass", passed: true, details: {} },
+    },
+  };
 
   beforeEach(() => {
     queryShouldFail = false;
     queryShouldReturnStructuredError = false;
     lastQueryRequest = null;
     lastModelListUrl = "";
+    lastIngestAdminKey = "";
+    ingestShouldReject = false;
+    localStorage.clear();
     vi.stubGlobal(
       "fetch",
       vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -132,8 +145,74 @@ describe("App", () => {
             line_count: 8,
             word_count: 16,
             warnings: [],
+            trust: passingTrust,
             persisted: false,
             message: "Upload preview only.",
+          });
+        }
+        if (url.endsWith("/skills/admin/ingest")) {
+          lastIngestAdminKey = String(
+            init?.headers instanceof Headers
+              ? init.headers.get("X-Skills-Admin-Key")
+              : (init?.headers as Record<string, string> | undefined)?.["X-Skills-Admin-Key"] ?? "",
+          );
+          if (ingestShouldReject) {
+            return jsonResponse(
+              {
+                detail: {
+                  outcome: "rejected",
+                  skill_name: "example-skill",
+                  skill_id: "skill:example-skill",
+                  promotion_status: "rejected",
+                  trust_hash: "abc123",
+                  trust: {
+                    passed: false,
+                    layers: {
+                      L2_security: {
+                        layer: "L2_security",
+                        status: "fail",
+                        passed: false,
+                        details: {},
+                      },
+                    },
+                  },
+                  written_path: "",
+                  persisted: false,
+                  message: "Trust gates failed; skill was not written.",
+                  actor: "admin",
+                },
+              },
+              422,
+              "Unprocessable Entity",
+            );
+          }
+          return jsonResponse({
+            outcome: "success",
+            skill_name: "example-skill",
+            skill_id: "skill:example-skill",
+            promotion_status: "promoted",
+            trust_hash: "abc123def456",
+            trust: passingTrust,
+            written_path: "skills/example-skill/SKILL.md",
+            persisted: true,
+            message: "Skill ingested; graph plan can be reloaded from repository.",
+            actor: "admin",
+          });
+        }
+        if (url.includes("/skills/admin/ingests")) {
+          return jsonResponse({
+            status: "ok",
+            ingests: [
+              {
+                timestamp: "2026-07-03T12:00:00+00:00",
+                actor: "admin",
+                skill_name: "example-skill",
+                outcome: "success",
+                trust_hash: "abc123def456",
+                written_path: "skills/example-skill/SKILL.md",
+                promotion_status: "promoted",
+              },
+            ],
           });
         }
         if (url.endsWith("/skills/query")) {
@@ -427,6 +506,71 @@ describe("App", () => {
 
     await waitFor(() => expect(screen.getByText("example-skill")).toBeInTheDocument());
     expect(screen.getByText("No")).toBeInTheDocument();
+    expect(screen.getByText(/Trust gates: passed/i)).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Ingest skill/i })).not.toBeInTheDocument();
+  });
+
+  it("ingests a trusted skill after preview confirmation", async () => {
+    render(<App />);
+    await screen.findByRole("heading", { name: "Ask the Skills Graph" });
+    fireEvent.click(screen.getByRole("button", { name: "Upload" }));
+
+    fireEvent.change(screen.getByLabelText(/Admin key/i), {
+      target: { value: "secret-key" },
+    });
+
+    const input = screen.getByLabelText(/Skill markdown file/i);
+    const file = new File(["---\nname: example-skill\n---"], "SKILL.md", {
+      type: "text/markdown",
+    });
+    fireEvent.change(input, { target: { files: [file] } });
+    fireEvent.click(screen.getByRole("button", { name: /Preview upload/i }));
+
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: /Ingest skill/i })).toBeInTheDocument(),
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /Ingest skill/i }));
+    expect(screen.getByRole("dialog", { name: /Confirm admin ingest/i })).toBeInTheDocument();
+    expect(screen.getByText(/This will write/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /Confirm ingest/i }));
+
+    await waitFor(() =>
+      expect(screen.getByLabelText(/Ingest success/i)).toBeInTheDocument(),
+    );
+    expect(screen.getByText("skills/example-skill/SKILL.md")).toBeInTheDocument();
+    expect(lastIngestAdminKey).toBe("secret-key");
+  });
+
+  it("shows trust failure details when admin ingest is rejected", async () => {
+    ingestShouldReject = true;
+    render(<App />);
+    await screen.findByRole("heading", { name: "Ask the Skills Graph" });
+    fireEvent.click(screen.getByRole("button", { name: "Upload" }));
+
+    fireEvent.change(screen.getByLabelText(/Admin key/i), {
+      target: { value: "secret-key" },
+    });
+
+    const input = screen.getByLabelText(/Skill markdown file/i);
+    const file = new File(["---\nname: example-skill\n---"], "SKILL.md", {
+      type: "text/markdown",
+    });
+    fireEvent.change(input, { target: { files: [file] } });
+    fireEvent.click(screen.getByRole("button", { name: /Preview upload/i }));
+
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: /Ingest skill/i })).toBeInTheDocument(),
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /Ingest skill/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Confirm ingest/i }));
+
+    await waitFor(() =>
+      expect(screen.getByText(/Trust gates failed; skill was not written/i)).toBeInTheDocument(),
+    );
+    expect(screen.getByText(/Trust gates: failed/i)).toBeInTheDocument();
   });
 
   it("shows the agent workflow contract as a first-class workspace section", async () => {

@@ -108,11 +108,16 @@ def load_promoted_skill_ids(skills_root: Path | None = None) -> frozenset[str]:
 
     root = skills_root or Path("skills")
     records = extract_skills_graph_records(root.resolve())
-    return frozenset(
-        str(skill["id"])
-        for skill in records["skills"]
-        if str(skill.get("promotion_status", "")) == "promoted"
-    )
+    skills = records.get("skills")
+    if not isinstance(skills, list):
+        return frozenset()
+    promoted: list[str] = []
+    for skill in skills:
+        if not isinstance(skill, dict):
+            continue
+        if str(skill.get("promotion_status", "")) == "promoted":
+            promoted.append(str(skill["id"]))
+    return frozenset(promoted)
 
 
 def filter_cases_by_promotion(
@@ -364,10 +369,12 @@ def evaluate_offline(
     all_cases = load_cases(dataset_path)
     promoted_ids = load_promoted_skill_ids(skills_root)
     cases = filter_cases_by_promotion(all_cases, promoted_ids, case_filter=case_filter)
-    plan = embed_skill_chunks.build_embedded_repository_load_plan()
-    embedder = embed_skill_chunks.DeterministicEmbeddingProvider(
-        dimension=settings.neo4j.embedding_dimensions
+    # Offline evaluation and PR CI always use deterministic embeddings.
+    embedder = embed_skill_chunks.resolve_embedding_provider(
+        settings,
+        force_deterministic=True,
     )
+    plan = embed_skill_chunks.build_embedded_repository_load_plan(embedder=embedder)
     alias_map = _skill_alias_map(plan)
     positives = [case for case in cases if case.expected_skill_ids]
     hits = 0
