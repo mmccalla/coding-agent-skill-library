@@ -421,10 +421,10 @@ def _mapping_bridge_records(
     section_mapping: SkillSectionMapping,
 ) -> list[dict[str, object]]:
     records: list[dict[str, object]] = []
-    for mapping in section_mapping.task_intents:
-        records.append(_mapping_task_intent_bridge(skill_id, mapping, source_path))
-    for mapping in section_mapping.constraints:
-        records.append(_mapping_constraint_bridge(skill_id, mapping, source_path))
+    for task_mapping in section_mapping.task_intents:
+        records.append(_mapping_task_intent_bridge(skill_id, task_mapping, source_path))
+    for constraint_mapping in section_mapping.constraints:
+        records.append(_mapping_constraint_bridge(skill_id, constraint_mapping, source_path))
     return records
 
 
@@ -711,11 +711,12 @@ def extract_skills_graph_records(
     if isinstance(pack_metadata, dict):
         metadata_text = pack_metadata_path.read_text(encoding="utf-8")
         pack_content_hash = _sha256("\n".join((metadata_text, *sorted(pack_hash_inputs))))
-        category_ids = [
-            category["id"]
-            for category in pack_metadata.get("categories", [])
-            if isinstance(category, dict) and isinstance(category.get("id"), str)
-        ]
+        category_ids: list[str] = []
+        categories_raw = pack_metadata.get("categories", [])
+        if isinstance(categories_raw, list):
+            for category in categories_raw:
+                if isinstance(category, dict) and isinstance(category.get("id"), str):
+                    category_ids.append(category["id"])
         skill_pack = {
             "id": str(pack_metadata.get("skill_pack_id", "")).strip(),
             "name": str(pack_metadata.get("display_name", "")).strip(),

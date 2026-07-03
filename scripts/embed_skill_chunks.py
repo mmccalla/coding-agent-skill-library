@@ -5,11 +5,14 @@ from __future__ import annotations
 
 import hashlib
 import math
+import os
 import sys
 from argparse import ArgumentParser
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Any, NamedTuple, Protocol
+
+import httpx
 
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -28,6 +31,19 @@ class EmbeddingProvider(Protocol):
 
     def embed(self, text: str) -> tuple[float, ...]:
         """Return an embedding vector for the supplied text."""
+
+
+class EmbeddingHttpClient(Protocol):
+    """Small HTTP client contract for embedding providers."""
+
+    def post(
+        self,
+        url: str,
+        *,
+        json: Mapping[str, object],
+        timeout: float,
+    ) -> httpx.Response:
+        """POST JSON to an embedding endpoint."""
 
 
 class DeterministicEmbeddingProvider:
@@ -51,6 +67,54 @@ class DeterministicEmbeddingProvider:
                     break
             counter += 1
         return _normalise(tuple(values))
+
+
+class BgeM3OllamaEmbeddingProvider:
+    """Ollama-backed BGE-M3 embedding provider for production vector embeddings."""
+
+    def __init__(
+        self,
+        *,
+        model: str = "bge-m3:567m",
+        base_url: str = "http://127.0.0.1:11434",
+        dimension: int = 1024,
+        timeout_seconds: float = 30.0,
+        http_client: EmbeddingHttpClient | None = None,
+    ) -> None:
+        if dimension <= 0:
+            raise ValueError("embedding dimension must be positive")
+        if not model.strip():
+            raise ValueError("embedding model must be non-empty")
+        self.model = model
+        self.base_url = base_url.rstrip("/")
+        self.dimension = dimension
+        self.timeout_seconds = timeout_seconds
+        self.provider_name = f"ollama:{model}"
+        self._http_client = http_client or httpx.Client()
+
+    def embed(self, text: str) -> tuple[float, ...]:
+        """Return a normalised BGE-M3 embedding from a local Ollama endpoint."""
+
+        if not text.strip():
+            # Ollama returns an empty list for blank prompts; keep plan embedding valid.
+            return tuple(0.0 for _ in range(self.dimension))
+
+        response = self._http_client.post(
+            f"{self.base_url}/api/embeddings",
+            json={"model": self.model, "prompt": text},
+            timeout=self.timeout_seconds,
+        )
+        response.raise_for_status()
+        payload = response.json()
+        embedding = payload.get("embedding") if isinstance(payload, dict) else None
+        if not isinstance(embedding, list):
+            raise ValueError("Ollama embedding response did not include an embedding list")
+        vector = tuple(float(value) for value in embedding)
+        if len(vector) != self.dimension:
+            raise ValueError(
+                f"embedding dimension mismatch: expected {self.dimension}, got {len(vector)}"
+            )
+        return _normalise(vector)
 
 
 class VectorCandidate(NamedTuple):
@@ -140,6 +204,43 @@ def _float(value: object) -> float:
 
 def _embedding_dimension_from_config(config_path: Path = DEFAULT_CONFIG_PATH) -> int:
     return skills_config.load_settings(config_path).neo4j.embedding_dimensions
+
+
+def resolve_embedding_provider(
+    settings: skills_config.SkillsKgSettings | None = None,
+    *,
+    environ: Mapping[str, str] | None = None,
+    force_deterministic: bool = False,
+    http_client: EmbeddingHttpClient | None = None,
+) -> EmbeddingProvider:
+    """Resolve the embedding provider for production, CI, or explicit overrides.
+
+    Production defaults to pinned Ollama BGE-M3. PR CI and offline evaluation force
+    deterministic embeddings via ``force_deterministic=True`` or
+    ``SKILLS_EMBEDDING_PROVIDER=deterministic``.
+    """
+
+    runtime_settings = settings or skills_config.load_settings(environ=environ)
+    env = os.environ if environ is None else environ
+    provider = env.get("SKILLS_EMBEDDING_PROVIDER", runtime_settings.neo4j.embedding_provider)
+    dimension = runtime_settings.neo4j.embedding_dimensions
+    if force_deterministic or provider in {"deterministic", "deterministic-test-embedding"}:
+        return DeterministicEmbeddingProvider(dimension=dimension)
+    if provider == "ollama-bge-m3" or provider.startswith("ollama:"):
+        model = runtime_settings.neo4j.ollama_model
+        if provider.startswith("ollama:") and provider != "ollama-bge-m3":
+            model = provider.removeprefix("ollama:")
+        return BgeM3OllamaEmbeddingProvider(
+            model=model,
+            base_url=runtime_settings.neo4j.ollama_base_url,
+            dimension=dimension,
+            http_client=http_client,
+        )
+    raise ValueError(
+        "Unsupported embedding provider "
+        f"'{provider}'. Expected deterministic, deterministic-test-embedding, "
+        "ollama-bge-m3, or ollama:<model>."
+    )
 
 
 def embed_retrieval_units(
@@ -248,32 +349,75 @@ def vector_candidates_from_records(
 def build_embedded_repository_load_plan(
     skills_root: Path = Path("skills"),
     config_path: Path = DEFAULT_CONFIG_PATH,
+    *,
+    embedder: EmbeddingProvider | None = None,
+    force_deterministic: bool = False,
 ) -> load_skills_neo4j.LoadPlan:
-    dimension = _embedding_dimension_from_config(config_path)
+    """Build an embedded load plan using production or CI embedding policy."""
+
+    settings = skills_config.load_settings(config_path)
+    runtime_embedder = embedder or resolve_embedding_provider(
+        settings,
+        force_deterministic=force_deterministic,
+    )
     plan = load_skills_neo4j.build_repository_load_plan(skills_root)
-    return embed_retrieval_units(plan, DeterministicEmbeddingProvider(dimension=dimension))
+    return embed_retrieval_units(plan, runtime_embedder)
 
 
 def main(argv: Sequence[str] | None = None) -> int:  # pragma: no cover
-    parser = ArgumentParser(description="Create deterministic RetrievalUnit embeddings.")
+    parser = ArgumentParser(description="Create RetrievalUnit embeddings for the Skills KG.")
     parser.add_argument(
-        "--apply", action="store_true", help="Write embedded retrieval units to Neo4j."
+        "--apply",
+        action="store_true",
+        help="Idempotently write embedded retrieval units to Neo4j.",
     )
     parser.add_argument(
         "--batch-size", type=int, default=500, help="Transactional load batch size."
+    )
+    parser.add_argument(
+        "--provider",
+        choices=("auto", "deterministic", "ollama-bge-m3"),
+        default="auto",
+        help="Embedding provider override. auto uses config/env (production BGE, CI deterministic).",
+    )
+    parser.add_argument(
+        "--ollama-url",
+        default=None,
+        help="Base URL for the local Ollama embedding endpoint.",
+    )
+    parser.add_argument(
+        "--ollama-model",
+        default=None,
+        help="Ollama embedding model for --provider ollama-bge-m3.",
+    )
+    parser.add_argument(
+        "--embedding-dimensions",
+        type=int,
+        default=None,
+        help="Override embedding dimensions for the selected provider.",
     )
     parser.add_argument("--query", help="Optional query text for local candidate inspection.")
     parser.add_argument("--limit", type=int, default=5, help="Maximum candidates to print.")
     args = parser.parse_args(list(sys.argv[1:] if argv is None else argv))
 
-    settings = skills_config.load_settings()
-    dimension = settings.neo4j.embedding_dimensions
-    embedder = DeterministicEmbeddingProvider(dimension=dimension)
+    environ = dict(os.environ)
+    if args.provider != "auto":
+        environ["SKILLS_EMBEDDING_PROVIDER"] = args.provider
+    if args.ollama_url:
+        environ["SKILLS_OLLAMA_BASE_URL"] = args.ollama_url
+    if args.ollama_model:
+        environ["SKILLS_OLLAMA_MODEL"] = args.ollama_model
+    if isinstance(args.embedding_dimensions, int):
+        environ["SKILLS_EMBEDDING_DIMENSIONS"] = str(args.embedding_dimensions)
+
+    settings = skills_config.load_settings(environ=environ)
+    embedder = resolve_embedding_provider(settings, environ=environ)
     plan = embed_retrieval_units(load_skills_neo4j.build_repository_load_plan(), embedder)
     retrieval_unit_count = sum(1 for node in plan.nodes if node.label == "RetrievalUnit")
     print(
         "Embedded RetrievalUnit nodes: "
-        f"{retrieval_unit_count}; provider={embedder.provider_name}; dimensions={dimension}"
+        f"{retrieval_unit_count}; provider={embedder.provider_name}; "
+        f"dimensions={embedder.dimension}"
     )
     if args.apply:
         graph = load_skills_neo4j.neo4j_graph_from_env()

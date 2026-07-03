@@ -1,4 +1,6 @@
 import type {
+  AdminIngestResult,
+  AdminIngestsListResponse,
   GraphQueryRequest,
   GraphQueryResponse,
   GraphResponse,
@@ -127,6 +129,30 @@ export function uploadSkillPreview(file: File): Promise<UploadPreview> {
   return requestJson<UploadPreview>("/skills/upload/preview", {
     method: "POST",
     body: formData,
+  });
+}
+
+function adminRequestHeaders(adminKey: string): HeadersInit {
+  return { "X-Skills-Admin-Key": adminKey };
+}
+
+export function ingestSkill(file: File, adminKey: string): Promise<AdminIngestResult> {
+  const formData = new FormData();
+  formData.append("file", file);
+  return requestJson<AdminIngestResult>("/skills/admin/ingest", {
+    method: "POST",
+    headers: adminRequestHeaders(adminKey),
+    body: formData,
+  });
+}
+
+export function listRecentIngests(
+  adminKey: string,
+  limit = 20,
+): Promise<AdminIngestsListResponse> {
+  const params = new URLSearchParams({ limit: String(limit) });
+  return requestJson<AdminIngestsListResponse>(`/skills/admin/ingests?${params.toString()}`, {
+    headers: adminRequestHeaders(adminKey),
   });
 }
 

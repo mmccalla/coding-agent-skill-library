@@ -12,11 +12,14 @@ class SkillsConfigTests(unittest.TestCase):
     def test_loads_yaml_defaults_and_shared_limits(self) -> None:
         settings = load_settings(Path("configs/skills_kg.yaml"), environ={})
 
-        self.assertEqual(1536, settings.neo4j.embedding_dimensions)
-        self.assertEqual("deterministic-test-embedding", settings.neo4j.embedding_provider)
+        self.assertEqual(1024, settings.neo4j.embedding_dimensions)
+        self.assertEqual("ollama-bge-m3", settings.neo4j.embedding_provider)
+        self.assertEqual("bge-m3:567m", settings.neo4j.ollama_model)
         self.assertEqual("retrieval_unit_embedding_vector", settings.neo4j.vector_index)
         self.assertEqual(10, settings.mcp.recommend_limit_max)
         self.assertEqual(1200, settings.retrieval.default_token_budget)
+        self.assertEqual(0.35, settings.retrieval.min_confident_score)
+        self.assertEqual(0.02, settings.retrieval.min_top1_margin)
 
     def test_environment_overrides_connection_without_leaking_password(self) -> None:
         settings = load_settings(
@@ -35,6 +38,14 @@ class SkillsConfigTests(unittest.TestCase):
         self.assertEqual("skills", settings.neo4j.database)
         self.assertNotIn("super-secret", repr(settings))
         self.assertNotIn("super-secret", str(settings.model_dump()))
+
+    def test_embedding_provider_env_override_forces_deterministic_for_ci(self) -> None:
+        settings = load_settings(
+            Path("configs/skills_kg.yaml"),
+            environ={"SKILLS_EMBEDDING_PROVIDER": "deterministic"},
+        )
+
+        self.assertEqual("deterministic", settings.neo4j.embedding_provider)
 
 
 if __name__ == "__main__":

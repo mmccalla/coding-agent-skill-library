@@ -620,28 +620,29 @@ class SkillsMcpServer:
             token_budget=token_budget,
         )
         selection_trace = _enrich_recommendation_selection_trace(query, result)
-        response = {
+        recommendations: list[dict[str, object]] = [
+            {
+                "skill_id": item.skill_id,
+                "skill_name": item.skill_name,
+                "score": item.score,
+                "rationale": item.why,
+                "evidence_snippets": item.evidence_snippets,
+                "source_paths": item.source_paths,
+                "section_ids": item.section_ids,
+                "evidence_anchors": item.evidence_anchors,
+                "evidence_paths": item.evidence_paths,
+            }
+            for item in result.recommendations
+        ]
+        response: dict[str, object] = {
             "status": "ok",
             "uncertain": result.uncertain,
             "message": result.message,
             "selection_trace": selection_trace,
-            "recommendations": [
-                {
-                    "skill_id": item.skill_id,
-                    "skill_name": item.skill_name,
-                    "score": item.score,
-                    "rationale": item.why,
-                    "evidence_snippets": item.evidence_snippets,
-                    "source_paths": item.source_paths,
-                    "section_ids": item.section_ids,
-                    "evidence_anchors": item.evidence_anchors,
-                    "evidence_paths": item.evidence_paths,
-                }
-                for item in result.recommendations
-            ],
+            "recommendations": recommendations,
         }
         selection_run_id = skills_usage.new_selection_run_id()
-        for rank, recommendation in enumerate(response["recommendations"], start=1):
+        for rank, recommendation in enumerate(recommendations, start=1):
             recommendation_skill_id = _string(recommendation.get("skill_id"))
             if recommendation_skill_id:
                 skills_usage.record_skill_hit(
@@ -659,7 +660,7 @@ class SkillsMcpServer:
                 "uncertain": result.uncertain,
                 "selected": [
                     _string(item.get("skill_id"))
-                    for item in response["recommendations"]
+                    for item in recommendations
                     if _string(item.get("skill_id"))
                 ],
                 "selection_trace": selection_trace,
@@ -693,11 +694,11 @@ class SkillsMcpServer:
                 if relationship.source_label == "Skill":
                     related.append(relationship.source_id)
         related_skill_ids = tuple(dict.fromkeys(related))[:limit]
-        response = {
+        response: dict[str, object] = {
             "status": "ok",
             "skill_id": skill_id,
-            "related_skill_ids": related_skill_ids,
-            "evidence_paths": tuple(evidence_paths[:limit]),
+            "related_skill_ids": list(related_skill_ids),
+            "evidence_paths": list(evidence_paths[:limit]),
         }
         selection_run_id = skills_usage.new_selection_run_id()
         skills_usage.record_skill_hit(skill_id, "get_skill_context")

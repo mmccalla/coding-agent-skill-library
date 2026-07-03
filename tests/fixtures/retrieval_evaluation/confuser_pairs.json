@@ -1,0 +1,77 @@
+[
+  {
+    "id": "krag_system_design_vs_kg_rag",
+    "preferred_skill_id": "skill:krag-system-design",
+    "confuser_skill_id": "skill:knowledge-graph-rag"
+  },
+  {
+    "id": "krag_system_design_vs_ontology",
+    "preferred_skill_id": "skill:krag-system-design",
+    "confuser_skill_id": "skill:ontology-and-knowledge-graph-modeling"
+  },
+  {
+    "id": "guardrails_vs_hitl",
+    "preferred_skill_id": "skill:guardrails-safety-patterns",
+    "confuser_skill_id": "skill:human-in-the-loop"
+  },
+  {
+    "id": "hitl_vs_guardrails",
+    "preferred_skill_id": "skill:human-in-the-loop",
+    "confuser_skill_id": "skill:guardrails-safety-patterns"
+  },
+  {
+    "id": "rag_vs_krag_retrieval",
+    "preferred_skill_id": "skill:knowledge-retrieval-rag",
+    "confuser_skill_id": "skill:krag-retrieval-answering"
+  },
+  {
+    "id": "rag_vs_krag_retrieval",
+    "preferred_skill_id": "skill:knowledge-retrieval-rag",
+    "confuser_skill_id": "skill:krag-retrieval-answering"
+  },
+  {
+    "id": "tdd_vs_reflection",
+    "preferred_skill_id": "skill:tdd-practice",
+    "confuser_skill_id": "skill:reflection-and-verification"
+  },
+  {
+    "id": "spec_vs_incremental",
+    "preferred_skill_id": "skill:spec-driven-development",
+    "confuser_skill_id": "skill:incremental-implementation"
+  },
+  {
+    "id": "planning_vs_prioritization",
+    "preferred_skill_id": "skill:planning-and-task-decomposition",
+    "confuser_skill_id": "skill:prioritization"
+  },
+  {
+    "id": "sre_vs_observability",
+    "preferred_skill_id": "skill:sre-practice",
+    "confuser_skill_id": "skill:observability-and-telemetry"
+  },
+  {
+    "id": "event_streaming_vs_cdc",
+    "preferred_skill_id": "skill:event-streaming-platform-design",
+    "confuser_skill_id": "skill:cdc-and-source-to-stream-ingestion"
+  },
+  {
+    "id": "ux_vs_ui_component",
+    "preferred_skill_id": "skill:ux-design-principles",
+    "confuser_skill_id": "skill:ui-component-design"
+  },
+  {
+    "id": "krag_ingestion_vs_krag_design",
+    "preferred_skill_id": "skill:krag-ingestion-graph-construction",
+    "confuser_skill_id": "skill:krag-system-design"
+  },
+  {
+    "id": "krag_eval_vs_eval_monitoring",
+    "preferred_skill_id": "skill:krag-evaluation-governance",
+    "confuser_skill_id": "skill:evaluation-and-monitoring"
+  },
+  {
+    "id": "mcp_vs_a2a",
+    "preferred_skill_id": "skill:mcp-server-design",
+    "confuser_skill_id": "skill:inter-agent-communication-a2a"
+  }
+]

@@ -173,11 +173,14 @@ Canonical-name lookups, alias lookups, vague semantic questions, near-neighbour 
 - Citation-backed material claims  
 - Forbidden Cypher rejected  
 - Idempotent ingestion  
-- Near-neighbour disambiguation on `realistic_queries.json`  
+- Near-neighbour disambiguation on `realistic_queries.json` (precision@1 = 1.0; exclusion ≥ 0.5)  
+- Tiered corpus contract (`EVALUATION_CORPUS_CONTRACT.md`) passes `validate_eval_corpus.py`  
+- Change-scoped delta eval passes for touched `skills/*/SKILL.md` when `DELTA_EVAL_BASE_REF` is set  
 
-### Known gap (not CI-gated)
+### Known gaps (not CI-gated)
 
-Synthetic negative **abstention** accuracy (~0.5% on 183 probes). See `EVALUATION.md`.
+- Natural-language **OOD abstention** — only gibberish/low-confidence probes are gated in `abstention_probes.json`. See `EVALUATION.md`.
+- **mypy** typing debt in `scripts/` (~68 errors) — `ci_local.sh` target; tracked in `STATUS.md`.
 
 ### Observability per query
 

@@ -6,8 +6,13 @@ import importlib.util
 import unittest
 from pathlib import Path
 
+from scripts.skills_config import RetrievalSettings
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = REPO_ROOT / "scripts" / "retrieve_skills_hybrid.py"
+# Ranking-focused tests use open abstention thresholds so production calibration
+# does not mask hybrid scoring behaviour.
+OPEN_ABSTENTION = RetrievalSettings(min_confident_score=0.01, min_top1_margin=0.0)
 
 
 def load_module() -> object:
@@ -40,6 +45,7 @@ class HybridRetrievalTests(unittest.TestCase):
                 ),
             ),
             limit=3,
+            retrieval_settings=OPEN_ABSTENTION,
         )
 
         self.assertFalse(result.uncertain)
@@ -89,6 +95,7 @@ class HybridRetrievalTests(unittest.TestCase):
                 ),
             ),
             limit=2,
+            retrieval_settings=OPEN_ABSTENTION,
         )
 
         self.assertEqual("skill:knowledge-graph-rag", result.recommendations[0].skill_id)
@@ -112,6 +119,46 @@ class HybridRetrievalTests(unittest.TestCase):
         self.assertIn("narrower task description", result.message)
         self.assertEqual((), result.recommendations)
         self.assertEqual({}, result.selection_trace["selected"])
+
+    def test_close_top_scores_abstain_when_margin_required(self) -> None:
+        from scripts.skills_config import RetrievalSettings
+
+        retrieval = load_module()
+        plan = retrieval.fixture_load_plan()
+        settings = RetrievalSettings(min_confident_score=0.01, min_top1_margin=0.5)
+
+        result = retrieval.retrieve_hybrid_skills(
+            plan,
+            query_text="graph retrieval ontology provenance",
+            vector_candidates=(
+                retrieval.VectorCandidate(
+                    retrieval_unit_id="retrieval:skill:knowledge-graph-rag:section:1:kg",
+                    score=0.8,
+                    source_path="skills/knowledge-graph-rag/SKILL.md",
+                    section_id="skill:knowledge-graph-rag:section:0-objective",
+                    skill_id="skill:knowledge-graph-rag",
+                    text="Use KG-enabled RAG for graph-grounded retrieval.",
+                    embedding_provider="deterministic-test-embedding",
+                    embedding_dimensions=8,
+                ),
+                retrieval.VectorCandidate(
+                    retrieval_unit_id="retrieval:skill:knowledge-retrieval-rag:section:0:retrieval",
+                    score=0.79,
+                    source_path="skills/knowledge-retrieval-rag/SKILL.md",
+                    section_id="skill:knowledge-retrieval-rag:section:0-objective",
+                    skill_id="skill:knowledge-retrieval-rag",
+                    text="Use retrieval evidence and source-backed context.",
+                    embedding_provider="deterministic-test-embedding",
+                    embedding_dimensions=8,
+                ),
+            ),
+            limit=3,
+            retrieval_settings=settings,
+        )
+
+        self.assertTrue(result.uncertain)
+        self.assertEqual((), result.recommendations)
+        self.assertIn("Ambiguous skill match", result.message)
 
     def test_synthetic_nonce_probe_abstains_without_vector_signal(self) -> None:
         retrieval = load_module()

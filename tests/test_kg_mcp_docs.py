@@ -60,8 +60,11 @@ class SkillsKgMcpDocsTests(unittest.TestCase):
 
         self.assertIn("python3 scripts/skills_mcp_server.py --list-tools", text)
         self.assertIn("python3 scripts/embed_skill_chunks.py --query", text)
-        self.assertIn("python3 scripts/evaluate_skill_retrieval.py", text)
+        self.assertIn("python3 scripts/ci_ingest_gate.py", text)
+        self.assertIn("python3 scripts/validate_skills_graph.py", text)
+        self.assertIn("-m eval_pr", text)
         self.assertNotIn("--apply", text)
+        self.assertNotIn("python3 scripts/evaluate_skill_retrieval.py", text)
 
 
 if __name__ == "__main__":

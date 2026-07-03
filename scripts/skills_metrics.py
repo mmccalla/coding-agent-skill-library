@@ -5,7 +5,8 @@ from __future__ import annotations
 
 from prometheus_client import CONTENT_TYPE_LATEST, CollectorRegistry, generate_latest
 
-from scripts import skills_trust_metrics, skills_usage
+import scripts.skills_usage as skills_usage
+from scripts import skills_trust_metrics
 
 
 def render_all_metrics(*, api_registry: CollectorRegistry | None = None) -> bytes:

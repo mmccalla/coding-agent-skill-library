@@ -1,6 +1,17 @@
 neo4j:
-  embedding_dimensions: 1536
-  embedding_provider: deterministic-test-embedding
+  # Production vector embeddings: pinned BGE-M3 via local Ollama.
+  # PR CI forces deterministic embeddings with SKILLS_EMBEDDING_PROVIDER=deterministic.
+  embedding_dimensions: 1024
+  embedding_provider: ollama-bge-m3
+  ollama_base_url: http://127.0.0.1:11434
+  ollama_model: bge-m3:567m
   vector_similarity_function: cosine
   vector_index: retrieval_unit_embedding_vector
   retrieval_unit_fulltext_index: retrieval_unit_text_fulltext
+
+retrieval:
+  # Calibrated on abstention_probes + semantic-challenge OOD with bge-m3:567m
+  # (smoke/realistic hybrid recall guardrails >= 0.9).
+  min_confident_score: 0.35
+  min_top1_margin: 0.02
+  min_vector_candidate_score: 0.2
