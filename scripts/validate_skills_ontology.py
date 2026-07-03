@@ -16,6 +16,10 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 ONTOLOGY_DIR = REPO_ROOT / "skills_docs" / "ontology"
 DEFAULT_DATA_GRAPH = REPO_ROOT / "skills_docs" / "ontology" / "skills.ttl"
 DEFAULT_SHAPES_GRAPH = ONTOLOGY_DIR / "skills.shacl.ttl"
+INSTANCE_GRAPHS = (
+    ONTOLOGY_DIR / "instances" / "task-intents.ttl",
+    ONTOLOGY_DIR / "instances" / "workflow-stages.ttl",
+)
 PROFILE_SHAPES_GRAPHS = {
     "canonical-core": ONTOLOGY_DIR / "canonical-core.shacl.ttl",
     "retrieval-projection": ONTOLOGY_DIR / "retrieval-projection.shacl.ttl",
@@ -58,11 +62,29 @@ def _pyshacl_validate():
     return validate_fn
 
 
+def build_data_graph(
+    data_graph_path: Path = DEFAULT_DATA_GRAPH,
+    *,
+    include_instances: bool = False,
+) -> Graph:
+    """Load the ontology TBox and optionally merge governed vocabulary instances."""
+
+    data_graph = _load_graph(data_graph_path)
+    if not include_instances:
+        return data_graph
+    for instance_path in INSTANCE_GRAPHS:
+        if instance_path.is_file():
+            data_graph += _load_graph(instance_path)
+    return data_graph
+
+
 def _validate_graphs(
     data_graph_path: Path,
     shapes_graph_path: Path,
+    *,
+    include_instances: bool = False,
 ) -> ValidationResult:
-    data_graph = _load_graph(data_graph_path)
+    data_graph = build_data_graph(data_graph_path, include_instances=include_instances)
     shapes_graph = _load_graph(shapes_graph_path)
     validate_fn = _pyshacl_validate()
 
@@ -78,10 +100,11 @@ def _validate_graphs(
         advanced=True,
     )
 
+    instance_note = " (with instances)" if include_instances else ""
     if conforms:
         report = (
             "SHACL PASS\n"
-            f"- data graph: {data_graph_path}\n"
+            f"- data graph: {data_graph_path}{instance_note}\n"
             f"- shapes graph: {shapes_graph_path}\n"
             f"- triples: data={len(data_graph)}, shapes={len(shapes_graph)}\n"
             f"- report triples: {len(report_graph)}"
@@ -90,7 +113,7 @@ def _validate_graphs(
 
     report = (
         "SHACL FAIL\n"
-        f"- data graph: {data_graph_path}\n"
+        f"- data graph: {data_graph_path}{instance_note}\n"
         f"- shapes graph: {shapes_graph_path}\n"
         f"- triples: data={len(data_graph)}, shapes={len(shapes_graph)}\n"
         f"{report_text.strip()}"
@@ -101,11 +124,17 @@ def _validate_graphs(
 def validate_ontology_profile(
     profile: str,
     data_graph_path: Path = DEFAULT_DATA_GRAPH,
+    *,
+    include_instances: bool = False,
 ) -> ValidationResult:
     """Validate one named SHACL profile against the ontology data graph."""
 
     if profile == "combined":
-        return _validate_graphs(data_graph_path, DEFAULT_SHAPES_GRAPH)
+        return _validate_graphs(
+            data_graph_path,
+            DEFAULT_SHAPES_GRAPH,
+            include_instances=include_instances,
+        )
     try:
         shapes_graph_path = PROFILE_SHAPES_GRAPHS[profile]
     except KeyError as exc:
@@ -113,7 +142,11 @@ def validate_ontology_profile(
             f"Unknown ontology validation profile '{profile}'. "
             f"Expected one of: combined, {', '.join(sorted(PROFILE_SHAPES_GRAPHS))}, all"
         ) from exc
-    return _validate_graphs(data_graph_path, shapes_graph_path)
+    return _validate_graphs(
+        data_graph_path,
+        shapes_graph_path,
+        include_instances=include_instances,
+    )
 
 
 def validate_skills_ontology(
@@ -121,21 +154,34 @@ def validate_skills_ontology(
     shapes_graph_path: Path = DEFAULT_SHAPES_GRAPH,
     *,
     profile: str | None = None,
+    include_instances: bool = False,
 ) -> ValidationResult:
     """Validate ontology data and shapes graph conformance with pySHACL."""
 
     selected_profile = profile or "combined"
     if shapes_graph_path != DEFAULT_SHAPES_GRAPH and profile is None:
-        return _validate_graphs(data_graph_path, shapes_graph_path)
+        return _validate_graphs(
+            data_graph_path,
+            shapes_graph_path,
+            include_instances=include_instances,
+        )
     if selected_profile == "all":
         results: list[str] = []
         all_valid = True
         for profile_name in ("combined", *PROFILE_SHAPES_GRAPHS):
-            profile_result = validate_ontology_profile(profile_name, data_graph_path)
+            profile_result = validate_ontology_profile(
+                profile_name,
+                data_graph_path,
+                include_instances=include_instances,
+            )
             all_valid = all_valid and profile_result.valid
             results.append(f"[profile: {profile_name}]\n{profile_result.report}")
         return ValidationResult(all_valid, "\n\n".join(results))
-    return validate_ontology_profile(selected_profile, data_graph_path)
+    return validate_ontology_profile(
+        selected_profile,
+        data_graph_path,
+        include_instances=include_instances,
+    )
 
 
 def _build_argument_parser() -> ArgumentParser:
@@ -148,6 +194,11 @@ def _build_argument_parser() -> ArgumentParser:
         "--profile",
         choices=("combined", "canonical-core", "retrieval-projection", "runtime-selection", "all"),
         help="Run the combined shapes graph, one split profile, or all available profiles.",
+    )
+    parser.add_argument(
+        "--include-instances",
+        action="store_true",
+        help="Merge governed vocabulary instance graphs before SHACL validation.",
     )
     return parser
 
@@ -188,6 +239,7 @@ def main(argv: list[str] | None = None) -> int:
             data_graph_path,
             shapes_graph_path,
             profile=args.profile,
+            include_instances=args.include_instances,
         )
     except Exception as exc:  # pragma: no cover - defensive CLI path
         print("FAIL")

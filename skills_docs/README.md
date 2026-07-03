@@ -1,30 +1,42 @@
 # Skills Docs
 
-This directory contains the lightweight documentation layer that helps agents and humans enter the library consistently.
+Documentation for agents and humans. Pick one path — you do not need every file.
 
-## Read in this order
+## Choose your path
 
-1. `LIBRARY_CONTRACT.md` for mandatory startup order and portable rules.
-2. `SKILL_AUTHORING_GUIDE.md` when creating or revising skills.
-3. `HOW_TO_FIND_THE_RIGHT_SKILL.md` for routing by task shape (after executing `apply-laws-of-ai`).
-4. `DROP_IN_BOOTSTRAP.md` for the portable installation model.
-5. `../skills/README.md` for the structure of the portable flat `skills/` library.
-6. `../skills/MANIFEST.md` for the full inventory.
+| Goal | Start here |
+| --- | --- |
+| **Use skills in an agent** | `HOW_TO_FIND_THE_RIGHT_SKILL.md` (after `apply-laws-of-ai`) |
+| **Copy the library to another repo** | `GETTING_STARTED.md` → `DROP_IN_BOOTSTRAP.md` |
+| **Run MCP / Docker / Neo4j locally** | `GETTING_STARTED.md` → `SKILLS_KG_MCP_RUNBOOK.md` |
+| **Write or change skills** | `SKILL_AUTHORING_GUIDE.md` |
+| **KRAG roadmap and status** | `krag/STATUS.md` |
+| **Measured retrieval quality** | `ontology/krag_v2/E2E_EVALUATION_REPORT.md` (→ `krag/EVALUATION.md` after Wave B) |
 
-## Document roles
+## Portable library (always relevant)
 
-- `LIBRARY_CONTRACT.md`: portable consistency rules and immutable baseline
-- `SKILL_AUTHORING_GUIDE.md`: authoring standards, progressive disclosure and validation guidance
-- `HOW_TO_FIND_THE_RIGHT_SKILL.md`: fastest routing guide
-- `CHANGELOG.md`: phased library changes and validation notes
-- `DROP_IN_BOOTSTRAP.md`: opinionated drop-in install model
-- `templates/`: optional spec and backlog templates
-- `README.md`: docs hub for this directory
+1. `LIBRARY_CONTRACT.md` — mandatory startup order and portable rules
+2. `HOW_TO_FIND_THE_RIGHT_SKILL.md` — route by task shape
+3. `SKILL_AUTHORING_GUIDE.md` — authoring standards
+4. `DROP_IN_BOOTSTRAP.md` — drop-in install model
+5. `CHANGELOG.md` — release-level changes
+6. `../skills/README.md` and `../skills/MANIFEST.md` — inventory
+
+## KRAG service
+
+- `krag/STATUS.md` — done, in progress, to-do (single roadmap)
+- `ontology/krag_v2/` — contracts and design package (consolidating to `krag/` in Wave B)
+- `ontology/*.ttl` — schema source for validators and ingest
+- `SKILLS_KG_MCP_RUNBOOK.md` — operator runbook
+
+## Other
+
+- `templates/` — optional epic and story templates
+- `overlays/` — product-specific guidance overlays
+- `security/OWASP_ASI_CROSSWALK.md` — agentic security control map
 
 ## Principle
 
-This directory should not compete with the root `README.md`.
-
-- Root `README.md` explains what the library is and how to install it.
-- `skills_docs/` explains how to route through it quickly.
-- `skills/` contains the portable operational core.
+- Root `README.md` — short billboard for the whole repository
+- `skills_docs/` — how to route and operate
+- `skills/` — portable operational core (`SKILL.md` files)

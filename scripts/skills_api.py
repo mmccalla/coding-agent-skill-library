@@ -8,6 +8,7 @@ import logging
 import os
 import re
 import sys
+import tempfile
 import time
 import uuid
 from collections.abc import AsyncIterator, Awaitable, Callable, Mapping
@@ -32,12 +33,13 @@ if __package__ in {None, ""}:
 from scripts import (
     check_neo4j_readiness,
     load_skills_neo4j,
-    skills_query_graph,
     skills_config,
     skills_contracts,
     skills_ollama,
+    skills_query_graph,
 )
 from scripts.skills_mcp_server import SkillsMcpServer, build_fastmcp_server
+from scripts.validate_skill_trust import validate_skill_trust_file
 
 ReadinessProvider = Callable[[], Mapping[str, object]]
 QueryProvider = Callable[
@@ -266,14 +268,18 @@ def create_app(
             warnings.append("Missing frontmatter description.")
         if "## When to use" not in text:
             warnings.append("Missing canonical '## When to use' section.")
+        trust = _trust_report_for_uploaded_content(text)
+        structure_status = "ok" if name and description else "warning"
+        status = "rejected" if not trust["passed"] else structure_status
         return {
-            "status": "ok" if name and description else "warning",
+            "status": status,
             "filename": file.filename,
             "name": name,
             "description": description,
             "line_count": len(text.splitlines()),
             "word_count": len(re.findall(r"\b\w+\b", text)),
             "warnings": warnings,
+            "trust": trust,
             "persisted": False,
             "message": "Upload preview only; no graph writes are performed by this endpoint.",
         }
@@ -400,6 +406,27 @@ def create_app(
 
     app.mount("/mcp", mounted_mcp_server.streamable_http_app())
     return app
+
+
+def _trust_report_for_uploaded_content(text: str) -> dict[str, object]:
+    """Run L2–L4 trust gates against uploaded SKILL.md content via a temp file."""
+    temp_path = ""
+    with tempfile.NamedTemporaryFile(
+        mode="w",
+        encoding="utf-8",
+        suffix=".md",
+        delete=False,
+    ) as temp_file:
+        temp_file.write(text)
+        temp_path = temp_file.name
+    try:
+        report = validate_skill_trust_file(temp_path)
+        return {
+            "passed": report.passed,
+            "layers": report.to_dict()["layers"],
+        }
+    finally:
+        Path(temp_path).unlink(missing_ok=True)
 
 
 def _extract_frontmatter(text: str) -> str:

@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import re
 from collections.abc import Sequence
 
@@ -86,6 +87,15 @@ def route_skill_query(plan: load_skills_neo4j.LoadPlan, query: str) -> dict[str,
         rationale = "No exact skill was detected; use task-oriented recommendation evidence."
         suggested_tool = "recommend_skills"
 
+    selection_trace = _route_selection_trace(
+        plan,
+        clean_query,
+        route=route,
+        confidence=confidence,
+        rationale=rationale,
+        resolved_skill_id=resolved_skill_id,
+        suggested_tool=suggested_tool,
+    )
     return {
         "status": "ok",
         "route": route,
@@ -94,6 +104,7 @@ def route_skill_query(plan: load_skills_neo4j.LoadPlan, query: str) -> dict[str,
         "resolved_skill_id": resolved_skill_id or None,
         "suggested_tool": suggested_tool,
         "evidence_required": _evidence_required(route),
+        "selection_trace": selection_trace,
     }
 
 
@@ -307,6 +318,55 @@ def _related_skill_ids(
             if relationship.source_label == "Skill":
                 related.append(relationship.source_id)
     return tuple(dict.fromkeys(related))[:limit], tuple(evidence_paths[:limit])
+
+
+def usage_event_id(tool: str, query: str) -> str:
+    """Return a deterministic, audit-friendly usage event id for selection traces."""
+
+    digest = hashlib.sha256(f"{tool}:{query.strip()}".encode()).hexdigest()[:16]
+    return f"sel-{digest}"
+
+
+def _route_selection_trace(
+    plan: load_skills_neo4j.LoadPlan,
+    query: str,
+    *,
+    route: str,
+    confidence: float,
+    rationale: str,
+    resolved_skill_id: str,
+    suggested_tool: str,
+) -> dict[str, object]:
+    trace: dict[str, object] = {
+        "tool": "route_skill_query",
+        "query_intent": route,
+        "usage_event_id": usage_event_id("route_skill_query", query),
+        "route": route,
+        "confidence": confidence,
+        "rationale": rationale,
+        "suggested_tool": suggested_tool,
+        "resolved_skill_id": resolved_skill_id or None,
+        "filter": {
+            "resolved": bool(resolved_skill_id),
+            "evidence_required": list(_evidence_required(route)),
+        },
+    }
+    if resolved_skill_id:
+        skill = _skill_by_id(plan, resolved_skill_id)
+        if skill is not None:
+            evidence_anchors = _section_evidence(_retrieval_units_for_skill(plan, resolved_skill_id))
+            trace["evidence"] = {
+                "skill_id": resolved_skill_id,
+                "skill_name": _skill_name(skill),
+                "source_paths": list(_source_paths_for_skill(plan, resolved_skill_id)),
+                "evidence_anchors": list(evidence_anchors),
+            }
+            trace["evidence_anchor_ids"] = [
+                anchor.get("section_id") or anchor.get("retrieval_unit_id")
+                for anchor in evidence_anchors
+                if anchor.get("section_id") or anchor.get("retrieval_unit_id")
+            ]
+    return trace
 
 
 def _evidence_required(route: str) -> tuple[str, ...]:

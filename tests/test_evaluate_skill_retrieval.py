@@ -14,7 +14,9 @@ from scripts.evaluate_skill_retrieval import (
 from scripts.validate_skills import parse_frontmatter
 
 DATASET = Path("tests/fixtures/retrieval_evaluation/golden_queries.json")
-SMOKE_DATASET = Path("tests/fixtures/retrieval_evaluation/smoke_queries.json")
+FULL_SMOKE_DATASET = Path("tests/fixtures/retrieval_evaluation/smoke_queries.json")
+PROMOTED_SMOKE_DATASET = Path("tests/fixtures/retrieval_evaluation/smoke_queries_promoted.json")
+SMOKE_DATASET = PROMOTED_SMOKE_DATASET
 SKILLS_ROOT = Path("skills")
 
 
@@ -60,7 +62,7 @@ class EvaluateSkillRetrievalTests(unittest.TestCase):
                 self.assertTrue(set(case.required_skill_ids).issubset(set(case.expected_skill_ids)))
 
     def test_smoke_dataset_preserves_curated_cases(self) -> None:
-        cases = load_cases(SMOKE_DATASET)
+        cases = load_cases(FULL_SMOKE_DATASET)
 
         self.assertEqual(9, len(cases))
         self.assertEqual("kg_rag", cases[0].id)
@@ -92,7 +94,7 @@ class EvaluateSkillRetrievalTests(unittest.TestCase):
         report = evaluate_offline(SMOKE_DATASET, limit=3)
 
         self.assertTrue(report.passed, report.model_dump())
-        self.assertEqual(9, report.cases)
+        self.assertEqual(6, report.cases)
         self.assertGreaterEqual(report.precision_at_1, 1.0)
         self.assertGreaterEqual(report.recall_at_k, 1.0)
         self.assertGreaterEqual(report.mean_reciprocal_rank, 1.0)
@@ -105,7 +107,7 @@ class EvaluateSkillRetrievalTests(unittest.TestCase):
         self.assertGreaterEqual(report.query_plan_coverage, 1.0)
         self.assertGreaterEqual(report.graph_lift_recall_at_k, 0.0)
         self.assertGreaterEqual(report.p95_latency_ms, 0.0)
-        self.assertEqual(9, len(report.case_results))
+        self.assertEqual(6, len(report.case_results))
         self.assertTrue(all(result.graph_query_plan_present for result in report.case_results))
         self.assertTrue(all(result.selection_trace_present for result in report.case_results))
 

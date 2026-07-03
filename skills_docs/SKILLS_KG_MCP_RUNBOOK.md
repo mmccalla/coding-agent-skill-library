@@ -83,6 +83,33 @@ The server denies unsupported write or arbitrary Cypher tools. Agent-facing reso
 
 Before acting, agents must return or retain the selected route, resolved skill id where applicable, source paths, heading paths, line ranges, `source_section_id` or other evidence paths, and the verification checklist for execution-plan routes. The contract examples cover direct lookup, recommendation, context expansion and execution-plan requests.
 
+### Agent workflow and selection trace fields
+
+Follow this tool sequence for natural-language skill questions:
+
+1. `route_skill_query` — classify the request and read `selection_trace.query_intent`, `suggested_tool` and `evidence_required`.
+2. `resolve_skill` — when the user names a skill in prose, resolve the canonical `skill_id` before lookup, context or execution-guide calls.
+3. Route-specific follow-up:
+   - `direct_lookup` → `get_skill` (optionally `get_skill_context`)
+   - `recommendation` → `recommend_skills`
+   - `context` → `get_skill_context`
+   - `execution_plan` → `get_skill_execution_guide`
+
+`route_skill_query` and `recommend_skills` both return a `selection_trace` object for audit. Existing keys (`request`, `selected`, `rejected`) are preserved; Phase 7 adds:
+
+| Field | Tool(s) | Purpose |
+| --- | --- | --- |
+| `tool` | route, recommend | MCP tool that produced the trace |
+| `query_intent` | route, recommend | Route or recommendation intent (`direct_lookup`, `recommendation`, etc.) |
+| `usage_event_id` | route, recommend | Deterministic id (`sel-…`) for correlating logs and metrics |
+| `filter` | route, recommend | Resolution or promotion filters applied (`promotion_status`, `rejected_count`, `evidence_required`) |
+| `rank` | recommend | Ordered candidates with `skill_id`, `rank` and `score` |
+| `evidence` | route | Resolved skill `source_paths` and `evidence_anchors` when available |
+| `evidence_anchor_ids` | route, recommend | Section or retrieval-unit ids cited in the trace |
+| `abstention_reason` | recommend | Present when `uncertain=true` and no confident match was promoted |
+
+Retain `selection_trace` alongside tool results before acting. Do not expose raw user query text in metrics labels; use `query_intent`, `tool`, `skill_id`, `rank` and `outcome` only.
+
 ## FastAPI Usage
 
 The FastAPI app factory lives in `scripts/skills_api.py`. It exposes read-only endpoints:
@@ -191,6 +218,12 @@ The report must pass these metrics:
 - mean reciprocal rank
 - source and section coverage
 - uncertainty accuracy for absent answers
+
+Agent journey fixtures live in `tests/fixtures/agent_journeys.json`. Run them with:
+
+```bash
+python3 -m pytest tests/test_agent_journeys.py -q
+```
 
 ## Connectedness Failure Runbook
 

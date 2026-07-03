@@ -26,6 +26,7 @@ from scripts import (
     skills_config,
     skills_query_graph,
     skills_router,
+    skills_usage,
 )
 
 
@@ -69,6 +70,51 @@ def _string_list(value: object) -> tuple[str, ...]:
     if not isinstance(value, list):
         return ()
     return tuple(item for item in value if isinstance(item, str) and item.strip())
+
+
+def _enrich_recommendation_selection_trace(
+    query: str,
+    result: retrieve_skills_hybrid.HybridRetrievalResult,
+) -> dict[str, object]:
+    """Extend hybrid retrieval traces with MCP audit fields while preserving existing keys."""
+
+    trace = dict(result.selection_trace)
+    trace.setdefault("request", {"query": query})
+    trace["tool"] = "recommend_skills"
+    trace["query_intent"] = "recommendation"
+    trace["usage_event_id"] = skills_router.usage_event_id("recommend_skills", query)
+    rejected = trace.get("rejected", ())
+    rejected_count = len(rejected) if isinstance(rejected, Sequence) else 0
+    trace["filter"] = {
+        "promotion_status": "promoted",
+        "rejected_count": rejected_count,
+    }
+    trace["rank"] = [
+        {
+            "skill_id": item.skill_id,
+            "skill_name": item.skill_name,
+            "rank": index + 1,
+            "score": item.score,
+        }
+        for index, item in enumerate(result.recommendations)
+    ]
+    selected = trace.get("selected")
+    evidence_anchor_ids: list[str] = []
+    if isinstance(selected, dict):
+        anchors = selected.get("evidence_anchors", ())
+        if isinstance(anchors, Sequence):
+            for anchor in anchors:
+                if not isinstance(anchor, Mapping):
+                    continue
+                anchor_id = _string(anchor.get("section_id")) or _string(
+                    anchor.get("retrieval_unit_id")
+                )
+                if anchor_id:
+                    evidence_anchor_ids.append(anchor_id)
+    trace["evidence_anchor_ids"] = evidence_anchor_ids
+    if result.uncertain:
+        trace["abstention_reason"] = result.message
+    return trace
 
 
 class SkillsMcpServer:
@@ -564,11 +610,12 @@ class SkillsMcpServer:
             max_depth=max_depth,
             token_budget=token_budget,
         )
-        return {
+        selection_trace = _enrich_recommendation_selection_trace(query, result)
+        response = {
             "status": "ok",
             "uncertain": result.uncertain,
             "message": result.message,
-            "selection_trace": result.selection_trace,
+            "selection_trace": selection_trace,
             "recommendations": [
                 {
                     "skill_id": item.skill_id,
@@ -584,6 +631,37 @@ class SkillsMcpServer:
                 for item in result.recommendations
             ],
         }
+        selection_run_id = skills_usage.new_selection_run_id()
+        for rank, recommendation in enumerate(response["recommendations"], start=1):
+            recommendation_skill_id = _string(recommendation.get("skill_id"))
+            if recommendation_skill_id:
+                skills_usage.record_skill_hit(
+                    recommendation_skill_id,
+                    "recommend_skills",
+                    rank=rank,
+                )
+        if result.uncertain:
+            skills_usage.record_abstention("recommend_skills", "low_confidence")
+        skills_usage.emit_skill_selection_run(
+            {
+                "selection_run_id": selection_run_id,
+                "tool": "recommend_skills",
+                "query_intent": "recommendation",
+                "uncertain": result.uncertain,
+                "selected": [
+                    _string(item.get("skill_id"))
+                    for item in response["recommendations"]
+                    if _string(item.get("skill_id"))
+                ],
+                "selection_trace": selection_trace,
+            }
+        )
+        return skills_usage.attach_usage_metadata(
+            response,
+            selection_run_id,
+            tool="recommend_skills",
+            uncertain=result.uncertain,
+        )
 
     def _get_skill_context(self, arguments: Mapping[str, object]) -> dict[str, object]:
         skill_id = _string(arguments.get("skill_id"))
@@ -605,16 +683,55 @@ class SkillsMcpServer:
                 )
                 if relationship.source_label == "Skill":
                     related.append(relationship.source_id)
-        return {
+        related_skill_ids = tuple(dict.fromkeys(related))[:limit]
+        response = {
             "status": "ok",
             "skill_id": skill_id,
-            "related_skill_ids": tuple(dict.fromkeys(related))[:limit],
+            "related_skill_ids": related_skill_ids,
             "evidence_paths": tuple(evidence_paths[:limit]),
         }
+        selection_run_id = skills_usage.new_selection_run_id()
+        skills_usage.record_skill_hit(skill_id, "get_skill_context")
+        skills_usage.emit_skill_selection_run(
+            {
+                "selection_run_id": selection_run_id,
+                "tool": "get_skill_context",
+                "query_intent": "context",
+                "selected": [skill_id, *list(related_skill_ids)],
+            }
+        )
+        return skills_usage.attach_usage_metadata(
+            response,
+            selection_run_id,
+            tool="get_skill_context",
+        )
 
     def _route_skill_query(self, arguments: Mapping[str, object]) -> dict[str, object]:
         query = _string(arguments.get("query"))
-        return skills_router.route_skill_query(self._plan, query)
+        result = skills_router.route_skill_query(self._plan, query)
+        selection_run_id = skills_usage.new_selection_run_id()
+        resolved_skill_id = result.get("resolved_skill_id")
+        if isinstance(resolved_skill_id, str) and resolved_skill_id:
+            skills_usage.record_skill_hit(resolved_skill_id, "route_skill_query")
+        selected: list[str] = []
+        if isinstance(resolved_skill_id, str) and resolved_skill_id:
+            selected.append(resolved_skill_id)
+        skills_usage.emit_skill_selection_run(
+            {
+                "selection_run_id": selection_run_id,
+                "tool": "route_skill_query",
+                "query_intent": result.get("route"),
+                "selected": selected,
+                "confidence": result.get("confidence"),
+                "suggested_tool": result.get("suggested_tool"),
+            }
+        )
+        return skills_usage.attach_usage_metadata(
+            result,
+            selection_run_id,
+            tool="route_skill_query",
+            route=result.get("route"),
+        )
 
     def _resolve_skill(self, arguments: Mapping[str, object]) -> dict[str, object]:
         name = _string(arguments.get("name"))
@@ -625,10 +742,28 @@ class SkillsMcpServer:
         related_limit = _bounded_int(
             arguments.get("related_limit"), 10, 1, self._settings.mcp.context_limit_max
         )
-        return skills_router.get_skill_execution_guide(
+        result = skills_router.get_skill_execution_guide(
             self._plan,
             skill_id,
             related_limit=related_limit,
+        )
+        if result.get("status") != "ok":
+            return result
+        selection_run_id = skills_usage.new_selection_run_id()
+        skills_usage.record_execution_guide(skill_id, "get_skill_execution_guide")
+        skills_usage.record_skill_hit(skill_id, "get_skill_execution_guide")
+        skills_usage.emit_skill_selection_run(
+            {
+                "selection_run_id": selection_run_id,
+                "tool": "get_skill_execution_guide",
+                "query_intent": "execution_plan",
+                "selected": [skill_id],
+            }
+        )
+        return skills_usage.attach_usage_metadata(
+            result,
+            selection_run_id,
+            tool="get_skill_execution_guide",
         )
 
 
