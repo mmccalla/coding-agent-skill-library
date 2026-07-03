@@ -69,7 +69,8 @@ def test_live_neo4j_fixture_load_is_idempotent_and_indexes_are_ready() -> None:
 
     assert first.logical_counts == second.logical_counts
     assert first.logical_counts["node:Skill"] == CI_FIXTURE_SKILL_COUNT
-    assert first.logical_counts["node:RetrievalUnit"] >= CI_FIXTURE_SKILL_COUNT
+    expected_retrieval_units = sum(1 for node in plan.nodes if node.label == "RetrievalUnit")
+    assert first.logical_counts["node:RetrievalUnit"] == expected_retrieval_units
     assert readiness.ready, readiness.errors
     assert readiness.vector_query_ok
     assert not retrieval.uncertain
