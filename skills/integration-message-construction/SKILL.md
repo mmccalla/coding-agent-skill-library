@@ -86,3 +86,4 @@ Define well-formed integration messages with clear intent, stable contracts and 
 ## References
 
 - Enterprise Integration Patterns, Message Construction patterns: https://www.enterpriseintegrationpatterns.com/patterns/messaging/
+- CloudEvents specification (interoperable event envelopes): https://cloudevents.io/

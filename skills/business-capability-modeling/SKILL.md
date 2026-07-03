@@ -32,7 +32,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Traceability links
 
 ## Best-practice alignment
-Keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
+Align with **BIZBOK** business architecture practice: keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
 
 ## Quality checks
 - Capabilities are stable abilities.
@@ -45,6 +45,11 @@ Do not mirror the organisation chart.
 ## Mini example
 
 For a retail returns programme, model `Manage Returns` as the capability and decompose it into `Authorise Return`, `Receive Returned Item`, `Assess Refund Eligibility` and `Recover Inventory Value`. Do not name capabilities after systems such as `Returns Portal`; link the capability to the returns value stream, return request information concept, owner and heatmap criteria.
+
+## References
+
+- Business Architecture Guild BIZBOK (capabilities, value streams, organisation, information): https://www.businessarchitectureguild.org/
+- The Open Group TOGAF Standard (business architecture domain): https://www.opengroup.org/togaf
 
 ## Verification
 

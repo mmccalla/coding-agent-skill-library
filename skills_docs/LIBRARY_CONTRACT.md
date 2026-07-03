@@ -38,7 +38,7 @@ Steps 1–3 are non-negotiable. No task skill may run before step 3 completes.
 
 ## Skill count invariant
 
-With all nine categories installed, the library contains **91** skills, including the mandatory `apply-laws-of-ai` baseline.
+With all category groupings installed (including enterprise-integration-patterns and krag-systems), the library contains **99** skills, including the mandatory `apply-laws-of-ai` baseline.
 
 ## Discovery metadata contract
 
@@ -97,7 +97,7 @@ If a target repository installed an earlier drop-in without `apply-laws-of-ai`:
 
 1. Copy `skills/apply-laws-of-ai/` from this library.
 2. Replace `AGENTS.md`, `CLAUDE.md`, and `skills_docs/` with the current versions (or merge the **Mandatory startup order** section).
-3. Update `skills/MANIFEST.md` skill counts to **91** where the full nine-category library is installed.
+3. Update `skills/MANIFEST.md` skill counts to **99** where the full library is installed.
 4. Run `python3 scripts/validate_skills.py` and confirm PASS.
 
 Do not skip step 1 — agents must execute the baseline skill before any other reasoning.

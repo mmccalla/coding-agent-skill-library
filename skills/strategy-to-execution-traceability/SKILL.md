@@ -32,7 +32,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Gaps and duplicates
 
 ## Best-practice alignment
-Keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
+Align with **BIZBOK** business architecture practice: keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
 
 ## Quality checks
 - Objectives have measurable outcomes.
@@ -45,6 +45,11 @@ Do not treat a list of projects as strategy.
 ## Mini example
 
 If the objective is reduce onboarding abandonment by 15%, trace it to the `Onboard Customer` value stream, `Verify Identity` capability, identity evidence concepts, delivery initiatives and metrics such as completion rate and review time. Mark initiatives with no measurable outcome as orphan work until a clear strategic link is agreed.
+
+## References
+
+- Business Architecture Guild BIZBOK (capabilities, value streams, organisation, information): https://www.businessarchitectureguild.org/
+- The Open Group TOGAF Standard (business architecture domain): https://www.opengroup.org/togaf
 
 ## Verification
 

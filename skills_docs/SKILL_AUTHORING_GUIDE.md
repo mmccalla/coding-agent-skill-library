@@ -65,11 +65,27 @@ Follow Anthropic's Agent Skills guidance: the agent sees skill names and descrip
 
 Keep references one level deep under the skill folder, for example `reference/testing-contract.md`.
 
+## Standards Grounding
+
+When a skill encodes open standards, industry standards or authoritative best practice:
+
+- name the standard explicitly (for example WCAG 2.2, ODCS, CloudEvents, AsyncAPI, BIZBOK, DORA, EIP, MCP, A2A, Google SRE Workbook);
+- include a `## References` section with primary-source `http(s)` URLs;
+- keep guidance current (for example DORA throughput/instability metrics including rework rate; multi-window multi-burn-rate SLO alerts; architectural HITL gates outside the model);
+- do not duplicate identical numbered steps under both `## Procedure` and `## Core pattern`.
+
+L3 practice validation enforces these rules for standards-sensitive skills:
+
+```bash
+python3 scripts/validate_skill_practice.py --all
+```
+
 ## Quality Bar
 
 Before proposing a skill change:
 
 - run `python3 scripts/validate_skills.py`;
+- run `python3 scripts/validate_skill_practice.py --all`;
 - run `./scripts/ci_local.sh` for material changes;
 - check that descriptions remain discoverable;
 - verify related skill links use installed folder names;

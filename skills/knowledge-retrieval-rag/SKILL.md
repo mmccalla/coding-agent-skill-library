@@ -29,17 +29,6 @@ Ground agent answers and changes in retrievable, permission-aware source evidenc
 7. Generate an answer grounded only in retrieved evidence.
 8. Cite sources or file paths so claims are inspectable.
 
-## Core pattern
-
-1. Ingest documents or code into clean text.
-2. Split content into meaningful chunks that preserve context.
-3. Store metadata: source path, section, timestamp, owner, commit, permissions and content type.
-4. Index chunks using embeddings and, where useful, keyword search.
-5. Retrieve relevant chunks for the user query.
-6. Rerank or filter results for relevance, freshness and permissions.
-7. Generate an answer grounded only in retrieved evidence.
-8. Cite sources or file paths so claims are inspectable.
-
 ## Retrieval strategy
 
 Prefer hybrid retrieval for coding agents:

@@ -31,6 +31,8 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 ## Best-practice alignment
 Apply event-driven best practice: business event semantics, producer/consumer ownership, schema contracts, compatibility, ordering, partitioning, idempotency, replay, retention, lineage, observability and operational SLOs.
 
+Prefer **CloudEvents** attributes for interoperable envelopes and **AsyncAPI** (or equivalent registry-backed Avro/Protobuf/JSON Schema contracts) for channel and message definitions. Treat syntactic compatibility as necessary but not sufficient; document semantic meaning and consumer obligations.
+
 ## Quality checks
 - Compatibility is explicit.
 - Semantic meaning is documented.
@@ -38,6 +40,11 @@ Apply event-driven best practice: business event semantics, producer/consumer ow
 
 ## Avoid
 Do not treat syntactic compatibility as sufficient.
+
+## References
+
+- CloudEvents specification: https://cloudevents.io/
+- AsyncAPI specification: https://www.asyncapi.com/
 
 ## Decision template
 
