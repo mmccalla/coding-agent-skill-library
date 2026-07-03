@@ -96,7 +96,9 @@ class SkillsQueryGraphTests(unittest.TestCase):
             relationships=(),
         )
 
-        query_plan = module.plan_graph_query(plan, "show skills in the coding-agent-skill-library pack")
+        query_plan = module.plan_graph_query(
+            plan, "show skills in the coding-agent-skill-library pack"
+        )
         result = module.execute_planned_query(plan, query_plan)
 
         self.assertEqual("pack_skill_membership_lookup", query_plan["query_family"])
@@ -110,7 +112,12 @@ class SkillsQueryGraphTests(unittest.TestCase):
 
         result = module.execute_planned_query(
             plan,
-            {"status": "ok", "query_family": "unsafe_family", "parameters": {}, "result_bounds": {}},
+            {
+                "status": "ok",
+                "query_family": "unsafe_family",
+                "parameters": {},
+                "result_bounds": {},
+            },
         )
 
         self.assertEqual("abstain", result["status"])

@@ -24,7 +24,6 @@ from scripts import (
     load_skills_neo4j,
     retrieve_skills_hybrid,
     skills_config,
-    skills_query_graph,
     skills_router,
     skills_usage,
 )
@@ -138,6 +137,16 @@ class SkillsMcpServer:
     def from_repository(cls, skills_root: Path = Path("skills")) -> SkillsMcpServer:
         plan = embed_skill_chunks.build_embedded_repository_load_plan(skills_root)
         return cls(plan)
+
+    def reload_plan(self, plan: load_skills_neo4j.LoadPlan) -> None:
+        """Replace the in-memory graph plan after admin ingest or repository reload."""
+
+        self._plan = plan
+
+    def reload_from_repository(self, skills_root: Path) -> None:
+        """Rebuild the graph plan from an on-disk skills tree."""
+
+        self.reload_plan(embed_skill_chunks.build_embedded_repository_load_plan(skills_root))
 
     def list_tools(self) -> tuple[dict[str, object], ...]:
         mcp_limits = self._settings.mcp
@@ -880,7 +889,17 @@ def main(argv: Sequence[str] | None = None) -> int:  # pragma: no cover
         "--sdk-stdio", action="store_true", help="Run official MCP SDK stdio server."
     )
     parser.add_argument("--fixture", action="store_true", help="Use a deterministic fixture graph.")
+    parser.add_argument(
+        "--metrics",
+        action="store_true",
+        help="Print combined usage and trust Prometheus metrics to stdout.",
+    )
     args = parser.parse_args(list(sys.argv[1:] if argv is None else argv))
+    if args.metrics:
+        from scripts.skills_metrics import metrics_text
+
+        print(metrics_text(), end="")
+        return 0
     server = (
         SkillsMcpServer.for_test_fixture() if args.fixture else SkillsMcpServer.from_repository()
     )

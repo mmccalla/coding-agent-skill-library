@@ -17,6 +17,15 @@ Use when defining quality gates, test sets, observability, governance controls, 
 
 Prove that the KRAG system retrieves the right evidence, constructs a valid graph, answers faithfully, and fails safely.
 
+## Procedure
+
+1. Define evaluation layers (source, graph, retrieval, answer, operational, governance).
+2. Build the minimum test set covering lookup, traversal, synthesis, conflict, and abstention.
+3. Establish quality gates and acceptance thresholds per layer.
+4. Instrument observability for query intent, strategy, evidence, latency, and cost.
+5. Run release checks and block promotion when gates fail.
+6. Record remediation actions and governance evidence for audit.
+
 ## Evaluation layers
 
 1. **Source quality**: parser coverage, structure preservation, extraction errors, checksum/version integrity.

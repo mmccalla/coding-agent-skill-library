@@ -69,9 +69,7 @@ def build_retrieval_projection_records(
     from scripts import load_skills_neo4j
 
     promoted_records = filter_promoted_records(records)
-    skills_by_id = {
-        str(skill["id"]): skill for skill in _records_list(promoted_records, "skills")
-    }
+    skills_by_id = {str(skill["id"]): skill for skill in _records_list(promoted_records, "skills")}
     units: list[dict[str, object]] = []
     for section in _records_list(promoted_records, "sections"):
         skill_id = str(section.get("skill_id"))
@@ -88,8 +86,7 @@ def build_retrieval_projections(records: Mapping[str, object]) -> dict[str, obje
 
     promoted_records = filter_promoted_records(records)
     status_counts = Counter(
-        str(skill.get("promotion_status", "unknown"))
-        for skill in _records_list(records, "skills")
+        str(skill.get("promotion_status", "unknown")) for skill in _records_list(records, "skills")
     )
     return {
         "skills": promoted_records["skills"],

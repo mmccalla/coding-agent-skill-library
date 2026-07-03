@@ -9,7 +9,7 @@ import re
 import sys
 import time
 from argparse import ArgumentParser
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -17,8 +17,13 @@ from pydantic import BaseModel, ConfigDict, Field
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts import embed_skill_chunks, retrieve_skills_hybrid, skills_config
-from scripts import skills_query_graph, skills_router
+from scripts import (
+    embed_skill_chunks,
+    retrieve_skills_hybrid,
+    skills_config,
+    skills_query_graph,
+    skills_router,
+)
 from scripts.extract_skills_graph import extract_skills_graph_records
 
 DEFAULT_DATASET = Path("tests") / "fixtures" / "retrieval_evaluation" / "golden_queries.json"
@@ -213,11 +218,9 @@ def _skill_alias_map(plan: object) -> dict[str, tuple[str, ...]]:
             continue
         raw_aliases = properties.get("aliases")
         if isinstance(raw_aliases, list):
-            aliases[getattr(node, "id")] = tuple(
-                alias for alias in raw_aliases if isinstance(alias, str)
-            )
+            aliases[node.id] = tuple(alias for alias in raw_aliases if isinstance(alias, str))
         else:
-            aliases[getattr(node, "id")] = ()
+            aliases[node.id] = ()
     return aliases
 
 
@@ -286,9 +289,13 @@ def _route_aware_result(
     if route_name == skills_router.ROUTE_RECOMMENDATION or not resolved_skill_id:
         ranked_ids = tuple(item.skill_id for item in recommendation_result.recommendations)
         matching = [
-            item for item in recommendation_result.recommendations if item.skill_id in set(case.expected_skill_ids)
+            item
+            for item in recommendation_result.recommendations
+            if item.skill_id in set(case.expected_skill_ids)
         ]
-        source_covered = bool(matching and all(item.source_paths and item.section_ids for item in matching))
+        source_covered = bool(
+            matching and all(item.source_paths and item.section_ids for item in matching)
+        )
         citation_covered = bool(matching and all(item.evidence_snippets for item in matching))
         selection_trace_present = bool(recommendation_result.selection_trace)
         uncertain = recommendation_result.uncertain
@@ -313,7 +320,11 @@ def _route_aware_result(
             for record in records:
                 if isinstance(record, dict):
                     related_skill_id = record.get("related_skill_id")
-                    if isinstance(related_skill_id, str) and related_skill_id and related_skill_id != resolved_skill_id:
+                    if (
+                        isinstance(related_skill_id, str)
+                        and related_skill_id
+                        and related_skill_id != resolved_skill_id
+                    ):
                         ranked_ids += (related_skill_id,)
         ranked_ids = ranked_ids[:limit]
 
@@ -323,9 +334,7 @@ def _route_aware_result(
     records = graph_query_result.get("records")
     source_covered = bool(units) or bool(isinstance(records, list) and records)
     citation_covered = bool(
-        (isinstance(citations, list) and citations)
-        or (isinstance(paths, list) and paths)
-        or units
+        (isinstance(citations, list) and citations) or (isinstance(paths, list) and paths) or units
     )
     return (
         ranked_ids,
@@ -468,7 +477,9 @@ def evaluate_offline(
         if set(case.expected_skill_ids) & set(ranked_ids):
             hits += 1
         else:
-            case_failures.append(f"{case.id}: expected one of {case.expected_skill_ids}, got {ranked_ids}")
+            case_failures.append(
+                f"{case.id}: expected one of {case.expected_skill_ids}, got {ranked_ids}"
+            )
         if _precision_at_1(ranked_ids, case.expected_skill_ids):
             top1_hits += 1
         missing_required = tuple(
@@ -504,7 +515,10 @@ def evaluate_offline(
             if ranked_ids and ranked_ids[0] in set(case.expected_skill_ids):
                 alias_hits += 1
 
-        if graph_query_plan.get("status") == "ok" and graph_query_plan.get("query_family") != "exact_skill_lookup":
+        if (
+            graph_query_plan.get("status") == "ok"
+            and graph_query_plan.get("query_family") != "exact_skill_lookup"
+        ):
             graph_relevant_cases += 1
             if set(case.expected_skill_ids) & set(ranked_ids):
                 graph_relevant_hits += 1
@@ -555,8 +569,7 @@ def evaluate_offline(
     latency_p95 = _p95(latencies)
     passed = (
         precision_at_1 >= recall_threshold
-        and
-        recall_at_k >= recall_threshold
+        and recall_at_k >= recall_threshold
         and mrr >= mrr_threshold
         and source_coverage >= source_threshold
         and uncertainty_accuracy >= uncertainty_threshold

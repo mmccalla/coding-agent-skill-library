@@ -17,6 +17,16 @@ Use when implementing or reviewing the ingestion, extraction, evidence anchoring
 
 Convert sources into a validated, evidence-backed graph that supports retrieval, reasoning, navigation, and auditability.
 
+## Procedure
+
+1. Register the source resource with stable identifiers and provenance metadata.
+2. Parse and preserve document structure down to evidence-bearing elements.
+3. Anchor evidence spans with locators, confidence, and parser provenance.
+4. Extract candidate entities, concepts, relationships, and claims.
+5. Normalise identifiers, resolve entities, and map concepts to governed vocabulary.
+6. Validate against schema, cardinality, and mandatory provenance rules.
+7. Promote accepted facts while retaining rejected candidates for audit.
+
 ## Pipeline
 
 1. **Register resource**: assign stable `resource_id`, source URI/path, owner, licence, classification, version, checksum, timestamps.

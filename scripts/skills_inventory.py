@@ -19,13 +19,7 @@ def iter_skill_files(skills_root: Path = DEFAULT_SKILLS_ROOT) -> tuple[Path, ...
     """
 
     resolved_root = skills_root.resolve()
-    return tuple(
-        sorted(
-            path
-            for path in resolved_root.glob("*/SKILL.md")
-            if path.is_file()
-        )
-    )
+    return tuple(sorted(path for path in resolved_root.glob("*/SKILL.md") if path.is_file()))
 
 
 def _resolved_metadata_path(

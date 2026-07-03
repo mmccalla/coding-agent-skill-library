@@ -16,6 +16,15 @@ Use this skill when an agent can affect files, systems, users, data, external se
 
 Apply layered deterministic controls that constrain unsafe inputs, tool use, outputs, and escalation paths.
 
+## Procedure
+
+1. Validate and classify incoming requests against scope, safety, and policy rules.
+2. Restrict tools and permissions to the minimum required for the task.
+3. Sandbox execution and constrain file, network, and data access.
+4. Validate outputs, schemas, and generated artefacts before release.
+5. Escalate to human review when risk exceeds the safe automation threshold.
+6. Record policy decisions, tool use, and outcomes for audit.
+
 ## Layered guardrail model
 
 1. Input validation: reject malformed, malicious, irrelevant or out-of-scope requests.

@@ -119,9 +119,7 @@ class AgentJourneyTests(unittest.TestCase):
                     elif key == "requires_verification_checklist":
                         assert response.get("verification_checklist")
                     else:
-                        assert response.get(key) == expected, (
-                            f"{journey_id} step {tool_name}.{key}"
-                        )
+                        assert response.get(key) == expected, f"{journey_id} step {tool_name}.{key}"
 
                 trace_expectations = step.get("expect_selection_trace")
                 if trace_expectations is not None:

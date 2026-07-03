@@ -30,45 +30,35 @@ class ValidateSkillSecurityTests(unittest.TestCase):
 
     def test_security_blocks_instruction_override(self) -> None:
         path = FIXTURES / "malicious" / "instruction-override.md"
-        result = self.module.validate_skill_security(
-            str(path), allowlist_path=str(ALLOWLIST)
-        )
+        result = self.module.validate_skill_security(str(path), allowlist_path=str(ALLOWLIST))
         self.assertFalse(result.passed)
         categories = {violation.category for violation in result.violations}
         self.assertIn("instruction_override", categories)
 
     def test_security_blocks_disable_checks(self) -> None:
         path = FIXTURES / "malicious" / "disable-checks.md"
-        result = self.module.validate_skill_security(
-            str(path), allowlist_path=str(ALLOWLIST)
-        )
+        result = self.module.validate_skill_security(str(path), allowlist_path=str(ALLOWLIST))
         self.assertFalse(result.passed)
         categories = {violation.category for violation in result.violations}
         self.assertIn("privilege_escalation", categories)
 
     def test_security_blocks_secrets(self) -> None:
         path = FIXTURES / "malicious" / "fake-pem-key.md"
-        result = self.module.validate_skill_security(
-            str(path), allowlist_path=str(ALLOWLIST)
-        )
+        result = self.module.validate_skill_security(str(path), allowlist_path=str(ALLOWLIST))
         self.assertFalse(result.passed)
         categories = {violation.category for violation in result.violations}
         self.assertIn("secret_exfiltration", categories)
 
     def test_security_blocks_destructive_without_escalation(self) -> None:
         path = FIXTURES / "malicious" / "destructive-rm.md"
-        result = self.module.validate_skill_security(
-            str(path), allowlist_path=str(ALLOWLIST)
-        )
+        result = self.module.validate_skill_security(str(path), allowlist_path=str(ALLOWLIST))
         self.assertFalse(result.passed)
         categories = {violation.category for violation in result.violations}
         self.assertIn("destructive_commands", categories)
 
     def test_security_allowlist_guardrails_teaching_fixture(self) -> None:
         path = FIXTURES / "benign" / "guardrails-teaching.md"
-        result = self.module.validate_skill_security(
-            str(path), allowlist_path=str(ALLOWLIST)
-        )
+        result = self.module.validate_skill_security(str(path), allowlist_path=str(ALLOWLIST))
         self.assertTrue(result.passed, msg=[v.message for v in result.violations])
         self.assertTrue(result.allowlisted)
 
@@ -92,9 +82,7 @@ class ValidateSkillSecurityTests(unittest.TestCase):
 
     def test_security_result_serialises_to_dict(self) -> None:
         path = FIXTURES / "malicious" / "instruction-override.md"
-        result = self.module.validate_skill_security(
-            str(path), allowlist_path=str(ALLOWLIST)
-        )
+        result = self.module.validate_skill_security(str(path), allowlist_path=str(ALLOWLIST))
         payload = result.to_dict()
         self.assertIn("passed", payload)
         self.assertIn("violations", payload)

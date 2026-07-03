@@ -253,13 +253,16 @@ class SkillSectionMappingTests(unittest.TestCase):
         self.assertGreater(len(result.task_intents), 0)
         self.assertGreater(len(result.dependencies), 0)
         self.assertEqual(result.constraints, ())
-        self.assertTrue(all(mapping.task_intent_id in self.module.GOVERNED_TASK_INTENT_IDS for mapping in result.task_intents))
+        self.assertTrue(
+            all(
+                mapping.task_intent_id in self.module.GOVERNED_TASK_INTENT_IDS
+                for mapping in result.task_intents
+            )
+        )
 
     def test_only_governed_task_intent_ids_are_emitted(self) -> None:
         markdown = (
-            "# Sample\n\n"
-            "## When to use\n\n"
-            "Use when deploying to production with canary releases.\n"
+            "# Sample\n\n## When to use\n\nUse when deploying to production with canary releases.\n"
         )
         mappings = self.module.map_when_to_use_task_intents(markdown)
         self.assertEqual(mappings, ())

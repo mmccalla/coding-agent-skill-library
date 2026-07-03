@@ -56,9 +56,7 @@ class HybridRetrievalTests(unittest.TestCase):
             "skill:knowledge-graph-rag:section:0-objective", result.recommendations[0].section_ids
         )
         self.assertTrue(result.recommendations[0].evidence_anchors)
-        self.assertEqual(
-            "Objective", result.recommendations[0].evidence_anchors[0]["heading_path"]
-        )
+        self.assertEqual("Objective", result.recommendations[0].evidence_anchors[0]["heading_path"])
         self.assertTrue(result.recommendations[0].evidence_paths)
 
     def test_connected_skill_outranks_isolated_vector_match(self) -> None:
@@ -114,6 +112,29 @@ class HybridRetrievalTests(unittest.TestCase):
         self.assertIn("narrower task description", result.message)
         self.assertEqual((), result.recommendations)
         self.assertEqual({}, result.selection_trace["selected"])
+
+    def test_synthetic_nonce_probe_abstains_without_vector_signal(self) -> None:
+        retrieval = load_module()
+        plan = retrieval.fixture_load_plan()
+
+        result = retrieval.retrieve_hybrid_skills(
+            plan,
+            query_text="zzqp qxjv kmtn irrelevant synthetic retrieval probe",
+            vector_candidates=(),
+            limit=3,
+        )
+
+        self.assertTrue(result.uncertain)
+        self.assertEqual((), result.recommendations)
+        rejected = result.selection_trace.get("rejected", ())
+        self.assertTrue(
+            any(
+                item.get("reason") == "Query lacked task-specific token overlap with top evidence."
+                for item in rejected
+                if isinstance(item, dict)
+            )
+            or "narrower task description" in result.message
+        )
 
     def test_results_do_not_expose_raw_vectors_or_cypher(self) -> None:
         retrieval = load_module()
@@ -225,16 +246,23 @@ class HybridRetrievalTests(unittest.TestCase):
         )
 
         top_skill_names = {recommendation.skill_name for recommendation in result.recommendations}
-        engineering_skills = {
+        relevant_skills = {
             "tdd-practice",
             "spec-driven-development",
             "planning-and-task-decomposition",
             "incremental-implementation",
             "solid-principles",
             "bdd-practice",
+            "ux-design-principles",
+            "ui-component-design",
+            "design-system-practice",
+            "event-streaming-platform-design",
+            "stream-processing-patterns",
+            "sre-practice",
         }
 
-        self.assertTrue(top_skill_names & engineering_skills)
+        self.assertFalse(result.uncertain)
+        self.assertTrue(top_skill_names & relevant_skills)
         self.assertGreaterEqual(len(result.recommendations), 3)
 
     def test_deprecated_skill_is_filtered_from_automatic_selection(self) -> None:

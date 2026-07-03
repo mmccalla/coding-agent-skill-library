@@ -6,10 +6,10 @@ from __future__ import annotations
 import json
 import sys
 from argparse import ArgumentParser
-from collections.abc import Mapping, Sequence
+from collections.abc import Sequence
 from pathlib import Path
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict
 
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -23,7 +23,9 @@ from scripts import (
     validate_skills_ontology,
 )
 
-DEFAULT_DATASET = Path("tests") / "fixtures" / "retrieval_evaluation" / "smoke_queries_promoted.json"
+DEFAULT_DATASET = (
+    Path("tests") / "fixtures" / "retrieval_evaluation" / "smoke_queries_promoted.json"
+)
 
 
 class RuntimeScenario(BaseModel):
@@ -194,9 +196,7 @@ def _run_runtime_scenario(
     failures: list[str] = []
 
     if str(route.get("route")) != scenario.expected_route:
-        failures.append(
-            f"expected route {scenario.expected_route}, got {route.get('route')}"
-        )
+        failures.append(f"expected route {scenario.expected_route}, got {route.get('route')}")
     if str(query_plan.get("query_family")) != scenario.expected_query_family:
         failures.append(
             "expected query family "
@@ -207,8 +207,10 @@ def _run_runtime_scenario(
             "expected graph status "
             f"{scenario.expected_graph_status}, got {graph_query_result.get('status')}"
         )
-    if not generated_cypher or "LIMIT $limit" not in generated_cypher or not _is_read_only_cypher(
-        generated_cypher
+    if (
+        not generated_cypher
+        or "LIMIT $limit" not in generated_cypher
+        or not _is_read_only_cypher(generated_cypher)
     ):
         failures.append("generated Cypher was missing, unbounded, or not read-only")
     if retrieval_result.uncertain != scenario.expect_uncertain:
@@ -221,7 +223,10 @@ def _run_runtime_scenario(
     else:
         selected_skill_id = resolved_skill_id_value
 
-    if scenario.expected_selected_skill_id and selected_skill_id != scenario.expected_selected_skill_id:
+    if (
+        scenario.expected_selected_skill_id
+        and selected_skill_id != scenario.expected_selected_skill_id
+    ):
         failures.append(
             f"expected selected skill {scenario.expected_selected_skill_id}, got {selected_skill_id}"
         )
@@ -314,7 +319,9 @@ def run_cutover_acceptance(
     minimal_slice_scenario = next(
         scenario for scenario in runtime_scenarios if scenario.id == "recommendation"
     )
-    minimal_krag_slice_passed = minimal_slice_scenario.passed and minimal_slice_scenario.graph_query_status == "ok"
+    minimal_krag_slice_passed = (
+        minimal_slice_scenario.passed and minimal_slice_scenario.graph_query_status == "ok"
+    )
 
     acceptance_checks = (
         AcceptanceCheck(
@@ -397,8 +404,7 @@ def run_cutover_acceptance(
     promoted_skill_count = sum(
         1
         for node in plan.nodes
-        if node.label == "Skill"
-        and str(node.properties.get("promotion_status", "")) == "promoted"
+        if node.label == "Skill" and str(node.properties.get("promotion_status", "")) == "promoted"
     )
     passed = (
         ontology_validation.valid

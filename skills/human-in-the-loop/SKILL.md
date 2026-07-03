@@ -13,6 +13,14 @@ Use this skill when automation alone is insufficient because the task is ambiguo
 
 Introduce human judgement at the right decision points without slowing safe, reversible work unnecessarily.
 
+## Procedure
+
+1. Detect the need for human judgement using confidence, impact, reversibility and policy checks.
+2. Pause execution before the risky action.
+3. Present a concise decision packet: context, options, recommendation, trade-off, risk and required approval.
+4. Resume only after clear approval or revised instructions.
+5. Record the decision and rationale in the implementation notes.
+
 ## Intervention points
 
 Ask for human input before:

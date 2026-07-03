@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from pathlib import Path
 
 if __package__ in {None, ""}:
@@ -49,7 +49,9 @@ def _skill_name_from_path(path: str) -> str:
     return Path(path).parent.name or Path(path).stem
 
 
-def validate_skill_mapping_file(skill_path: str, markdown: str | None = None) -> MappingReadinessResult:
+def validate_skill_mapping_file(
+    skill_path: str, markdown: str | None = None
+) -> MappingReadinessResult:
     """Predict promotion readiness from semantic mapping sources."""
 
     text = markdown if markdown is not None else Path(skill_path).read_text(encoding="utf-8")
