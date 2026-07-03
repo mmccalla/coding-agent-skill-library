@@ -29,7 +29,7 @@ echo "==> mypy"
 python3 -m mypy
 
 echo "==> pytest"
-python3 -m pytest --cov=scripts --cov-report=term-missing
+python3 -m pytest --cov=scripts --cov-report=term-missing -m "not live_neo4j"
 
 echo "==> offline KG/MCP smoke"
 python3 scripts/embed_skill_chunks.py --query "approval before destructive command" --limit 1 >/dev/null
