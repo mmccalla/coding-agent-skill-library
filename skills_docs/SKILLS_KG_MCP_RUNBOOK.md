@@ -152,11 +152,12 @@ VITE_API_BASE_URL=http://localhost:8000 npm run dev
 The UI supports:
 
 - upload preview for candidate `SKILL.md` files through `POST /skills/upload/preview`;
+- **admin ingest** after a trust-passing preview when an admin key is configured (`POST /skills/admin/ingest` via the Ingest skill modal);
 - D3 graph inspection through `GET /skills/graph`;
 - local Ollama-backed graph questions through `POST /skills/query`;
 - API readiness and MCP boundary checks through `GET /health/ready` and `GET /mcp/technical-info`.
 
-Upload preview is intentionally non-persistent. It validates the file shape and frontmatter but does not write to the repository or Neo4j.
+Upload preview is intentionally non-persistent. It validates the file shape, frontmatter and trust layers but does not write to the repository or Neo4j. Use **Ingest skill** (admin key required) to persist a trust-passing upload through the same gate as `POST /skills/admin/ingest`.
 
 The Ollama query flow defaults to `http://127.0.0.1:11434` and lets the user edit the endpoint. Server-side guardrails allow only local endpoints such as `127.0.0.1`, `localhost`, `::1` and `host.docker.internal`, reject URLs containing credentials, and send only bounded graph evidence to the selected model. Keep `.env` files out of source control. The UI calls `GET /ollama/models` so users can choose from running and installed local Ollama models before submitting a graph query.
 
@@ -219,7 +220,7 @@ Skill changes run the Phase 9 ingest gate from `./scripts/ci_local.sh`:
 python3 scripts/ci_ingest_gate.py
 ```
 
-The gate runs, in order: L2 trust validation (`validate_skill_trust.py --ci-gate` semantics), graph connectivity, SHACL with governed instances, promoted-release retrieval smoke (`tests/fixtures/retrieval_evaluation/smoke_queries_promoted.json`) and a Neo4j dry-run load plan. Merge is blocked on L2 security failure or promoted retrieval regression.
+The gate runs, in order: L2 trust validation (`validate_skill_trust.py --ci-gate` semantics), graph connectivity, SHACL with governed instances, tiered corpus validation (`validate_eval_corpus.py`), change-scoped delta retrieval eval when `DELTA_EVAL_BASE_REF` is set (or `--delta-base-ref` / `--changed-skill`), promoted-release retrieval smoke (`tests/fixtures/retrieval_evaluation/smoke_queries_promoted.json`) and a Neo4j dry-run load plan. Merge is blocked on L2 security failure, corpus contract failure, delta regression on changed skills, or promoted retrieval regression.
 
 Weekly zero-hit promoted skills rollup:
 
@@ -241,20 +242,38 @@ GitHub Actions uses a disposable `neo4j:5.26-community` service with placeholder
 
 ## Retrieval Evaluation
 
-Golden cases are stored in `tests/fixtures/retrieval_evaluation/golden_queries.json`. The gate runs:
+Evaluation uses a **tiered corpus** (see `skills_docs/krag/EVALUATION_CORPUS_CONTRACT.md`):
+
+| Tier | Fixture | PR gate |
+| --- | --- | --- |
+| Smoke | `smoke_queries_promoted.json` | Yes (`ci_ingest_gate.py`) |
+| Realistic | `realistic_queries.json` | Yes (`test_e2e_realistic_retrieval.py`) |
+| Abstention | `abstention_probes.json` | Yes (`test_e2e_realistic_retrieval.py`) |
+| Coverage | `coverage_queries.json` | Nightly workflow |
+
+Validate and regenerate:
 
 ```bash
-python3 scripts/evaluate_skill_retrieval.py --limit 3
+python3 scripts/validate_eval_corpus.py --check-skill-sync
+python3 scripts/generate_golden_queries.py --tier all --write-legacy-golden
+python3 scripts/evaluate_skill_retrieval.py \
+  --dataset tests/fixtures/retrieval_evaluation/smoke_queries_promoted.json \
+  --limit 3
 ```
 
-The report must pass these metrics:
+Release gates (see `krag/EVALUATION.md`):
 
-- recall@k
-- mean reciprocal rank
-- source and section coverage
-- uncertainty accuracy for absent answers
+- smoke / realistic: **precision@1 = 1.0**; exclusion_accuracy **≥ 0.5**
+- abstention: **uncertainty_accuracy ≥ 0.9**
+- coverage (nightly): **precision@1 ≥ 0.98**
 
-Agent journey fixtures live in `tests/fixtures/agent_journeys.json`. Run them with:
+Change-scoped delta eval on touched skills:
+
+```bash
+DELTA_EVAL_BASE_REF=origin/main python3 scripts/ci_ingest_gate.py
+```
+
+Agent journey fixtures live in `tests/fixtures/agent_journeys.json` (**11** journeys, JRN-01 … JRN-11). Run them with:
 
 ```bash
 python3 -m pytest tests/test_agent_journeys.py -q

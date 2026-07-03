@@ -2,6 +2,7 @@
 
 **Branch:** `plan/golden-corpus-status-closeout`  
 **Last updated:** 2026-07-03  
+**Programme status:** Waves **0–4 shipped**; Wave **5** partial (mypy debt only)  
 **Owner:** Skills KG / KRAG delivery  
 **Living status:** [`STATUS.md`](STATUS.md)  
 **Evaluation detail:** [`EVALUATION.md`](EVALUATION.md)

@@ -5,7 +5,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import subprocess
 import sys
+import tempfile
 from collections import Counter
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -28,6 +31,13 @@ DEFAULT_SKILLS_ROOT = REPO_ROOT / "skills"
 DEFAULT_ONTOLOGY_GRAPH = REPO_ROOT / "skills_docs" / "ontology" / "skills.ttl"
 DEFAULT_PROMOTED_SMOKE_DATASET = (
     REPO_ROOT / "tests" / "fixtures" / "retrieval_evaluation" / "smoke_queries_promoted.json"
+)
+EVAL_DIR = REPO_ROOT / "tests" / "fixtures" / "retrieval_evaluation"
+DELTA_EVAL_DATASETS = (
+    EVAL_DIR / "coverage_queries.json",
+    EVAL_DIR / "realistic_queries.json",
+    EVAL_DIR / "query_catalog.json",
+    EVAL_DIR / "smoke_queries_promoted.json",
 )
 
 
@@ -75,6 +85,138 @@ def record_trust_gate_metrics(reports: list[validate_skill_trust.TrustReport]) -
         )
 
 
+def discover_changed_skill_names(
+    *,
+    base_ref: str | None = None,
+    changed_skill_names: frozenset[str] | None = None,
+) -> frozenset[str]:
+    """Return skill folder names for changed `skills/*/SKILL.md` paths."""
+
+    if changed_skill_names is not None:
+        return changed_skill_names
+
+    ref = base_ref or os.environ.get("DELTA_EVAL_BASE_REF")
+    if not ref:
+        return frozenset()
+
+    result = subprocess.run(
+        ["git", "diff", "--name-only", f"{ref}...", "--", "skills/"],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        return frozenset()
+
+    names: set[str] = set()
+    for line in result.stdout.splitlines():
+        parts = Path(line.strip()).parts
+        if len(parts) >= 2 and parts[0] == "skills" and parts[-1] == "SKILL.md":
+            names.add(parts[1])
+    return frozenset(names)
+
+
+def build_delta_eval_cases(skill_names: frozenset[str]) -> list[dict[str, object]]:
+    """Collect evaluation cases that exercise any of the changed skills."""
+
+    if not skill_names:
+        return []
+
+    selected: dict[str, dict[str, object]] = {}
+    for dataset_path in DELTA_EVAL_DATASETS:
+        if not dataset_path.is_file():
+            continue
+        payload = json.loads(dataset_path.read_text(encoding="utf-8"))
+        if not isinstance(payload, list):
+            continue
+        for raw in payload:
+            if not isinstance(raw, dict):
+                continue
+            case = dict(raw)
+            if case.get("expect_uncertain"):
+                continue
+            tagged_skill_names = {
+                str(skill_id).removeprefix("skill:")
+                for skill_id in (
+                    *(
+                        skill_id
+                        for skill_id in case.get("expected_skill_ids", ())
+                        if isinstance(skill_id, str)
+                    ),
+                    *(
+                        skill_id
+                        for skill_id in case.get("required_skill_ids", ())
+                        if isinstance(skill_id, str)
+                    ),
+                )
+            }
+            if tagged_skill_names & skill_names:
+                selected[str(case.get("id", ""))] = case
+    return list(selected.values())
+
+
+def run_delta_eval_step(
+    *,
+    skills_root: Path,
+    retrieval_limit: int,
+    base_ref: str | None = None,
+    changed_skill_names: frozenset[str] | None = None,
+) -> GateStepResult:
+    """Run retrieval eval only for cases tied to changed skills."""
+
+    skill_names = discover_changed_skill_names(
+        base_ref=base_ref,
+        changed_skill_names=changed_skill_names,
+    )
+    if not skill_names:
+        return GateStepResult(
+            name="delta_eval_changed_skills",
+            passed=True,
+            detail="no changed skills; skipped",
+        )
+
+    cases = build_delta_eval_cases(skill_names)
+    if not cases:
+        return GateStepResult(
+            name="delta_eval_changed_skills",
+            passed=True,
+            detail=f"skills={sorted(skill_names)}; no matching eval cases",
+        )
+
+    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as handle:
+        json.dump(cases, handle, indent=2)
+        handle.write("\n")
+        temp_path = Path(handle.name)
+
+    try:
+        report = evaluate_skill_retrieval.evaluate_offline(
+            temp_path,
+            limit=retrieval_limit,
+            skills_root=skills_root,
+            source_threshold=0.5,
+            recall_threshold=1.0,
+            mrr_threshold=1.0,
+        )
+    finally:
+        temp_path.unlink(missing_ok=True)
+
+    rank_failures = [
+        result.id
+        for result in report.case_results
+        if any("expected one of" in failure for failure in result.failures)
+    ]
+    passed = report.precision_at_1 >= 1.0 and not rank_failures
+    return GateStepResult(
+        name="delta_eval_changed_skills",
+        passed=passed,
+        detail=(
+            f"skills={sorted(skill_names)}; cases={report.cases}; "
+            f"precision@1={report.precision_at_1:.3f}; rank_failures={len(rank_failures)}"
+        ),
+    )
+
+
 def record_promotion_metrics(records: dict[str, object]) -> None:
     skills = records.get("skills")
     if not isinstance(skills, list):
@@ -99,6 +241,8 @@ def run_ingest_gate(
     ontology_graph: Path = DEFAULT_ONTOLOGY_GRAPH,
     promoted_smoke_dataset: Path = DEFAULT_PROMOTED_SMOKE_DATASET,
     retrieval_limit: int = 3,
+    delta_base_ref: str | None = None,
+    changed_skill_names: frozenset[str] | None = None,
 ) -> IngestGateReport:
     """Execute the Phase 9 ingest gate pipeline."""
 
@@ -169,6 +313,16 @@ def run_ingest_gate(
     if not corpus_result.valid:
         return IngestGateReport(passed=False, steps=tuple(steps))
 
+    delta_step = run_delta_eval_step(
+        skills_root=skills_root,
+        retrieval_limit=retrieval_limit,
+        base_ref=delta_base_ref,
+        changed_skill_names=changed_skill_names,
+    )
+    steps.append(delta_step)
+    if not delta_step.passed:
+        return IngestGateReport(passed=False, steps=tuple(steps))
+
     evaluation = evaluate_skill_retrieval.evaluate_offline(
         promoted_smoke_dataset,
         limit=retrieval_limit,
@@ -209,14 +363,28 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--ontology-graph", default=str(DEFAULT_ONTOLOGY_GRAPH))
     parser.add_argument("--promoted-smoke-dataset", default=str(DEFAULT_PROMOTED_SMOKE_DATASET))
     parser.add_argument("--retrieval-limit", type=int, default=3)
+    parser.add_argument(
+        "--delta-base-ref",
+        default=os.environ.get("DELTA_EVAL_BASE_REF"),
+        help="Git ref for change-scoped delta eval (e.g. origin/main).",
+    )
+    parser.add_argument(
+        "--changed-skill",
+        action="append",
+        default=[],
+        help="Force delta eval for a skill folder name (repeatable).",
+    )
     parser.add_argument("--json", action="store_true", help="Emit machine-readable JSON report")
     args = parser.parse_args(argv)
 
+    forced_skills = frozenset(args.changed_skill) if args.changed_skill else None
     report = run_ingest_gate(
         skills_root=Path(args.skills_root),
         ontology_graph=Path(args.ontology_graph),
         promoted_smoke_dataset=Path(args.promoted_smoke_dataset),
         retrieval_limit=args.retrieval_limit,
+        delta_base_ref=args.delta_base_ref,
+        changed_skill_names=forced_skills,
     )
 
     if args.json:

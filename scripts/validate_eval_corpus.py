@@ -129,11 +129,16 @@ def validate_tier_file(path: Path, tier: str) -> ValidationResult:
 
 def promoted_skill_ids(skills_root: Path) -> frozenset[str]:
     records = extract_skills_graph_records(skills_root)
-    return frozenset(
-        str(skill["id"])
-        for skill in records["skills"]
-        if str(skill.get("promotion_status", "")) == "promoted"
-    )
+    skills = records.get("skills")
+    if not isinstance(skills, list):
+        return frozenset()
+    promoted: list[str] = []
+    for skill in skills:
+        if not isinstance(skill, dict):
+            continue
+        if str(skill.get("promotion_status", "")) == "promoted":
+            promoted.append(str(skill["id"]))
+    return frozenset(promoted)
 
 
 def build_coverage_matrix(

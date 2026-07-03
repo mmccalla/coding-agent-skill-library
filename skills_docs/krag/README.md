@@ -36,6 +36,7 @@ Historical phase plans are in `../archive/planning/`.
 
 ```bash
 python3 scripts/validate_skills_ontology.py
+python3 scripts/validate_eval_corpus.py --check-skill-sync
 python3 scripts/ci_ingest_gate.py
 python3 scripts/krag_cutover_acceptance.py --dataset tests/fixtures/retrieval_evaluation/smoke_queries_promoted.json --limit 3
 ```
