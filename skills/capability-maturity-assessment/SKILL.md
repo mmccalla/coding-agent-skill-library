@@ -29,7 +29,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Prioritised roadmap
 
 ## Best-practice alignment
-Keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
+Align with **BIZBOK** business architecture practice: keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
 
 ## Quality checks
 - Scores are evidence-based.
@@ -42,6 +42,11 @@ Do not score maturity by opinion alone.
 ## Mini example
 
 For `Manage Supplier Risk`, use a five-level maturity scale with evidence for policy coverage, data quality, automated monitoring and remediation cadence. A current score of 2 and target of 4 may be justified for regulated suppliers, while low-risk office suppliers stay at 2. Prioritise actions by business exposure, not by a blanket maturity target.
+
+## References
+
+- Business Architecture Guild BIZBOK (capabilities, value streams, organisation, information): https://www.businessarchitectureguild.org/
+- The Open Group TOGAF Standard (business architecture domain): https://www.opengroup.org/togaf
 
 ## Verification
 

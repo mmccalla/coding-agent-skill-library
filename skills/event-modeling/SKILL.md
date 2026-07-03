@@ -32,7 +32,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Open questions
 
 ## Best-practice alignment
-Apply event-driven best practice: business event semantics, producer/consumer ownership, schema contracts, compatibility, ordering, partitioning, idempotency, replay, retention, lineage, observability and operational SLOs.
+Apply event-driven best practice: business event semantics, producer/consumer ownership, schema contracts, compatibility, ordering, partitioning, idempotency, replay, retention, lineage, observability and operational SLOs. After semantics are agreed, map payloads to **CloudEvents** envelopes and **AsyncAPI** (or schema-registry) contracts where interoperability matters.
 
 ## Quality checks
 - Events are past-tense facts.
@@ -45,6 +45,11 @@ Do not name events after database operations.
 ## Decision aid
 
 Start with sticky-note style discovery: commands in imperative form, events in past tense, decisions as policy points and read models as views. If a candidate event is named `UpdateCustomer`, challenge it until the business fact is clear, such as `CustomerAddressChanged`. Capture open questions where language is disputed.
+
+## References
+
+- CloudEvents specification: https://cloudevents.io/
+- AsyncAPI specification: https://www.asyncapi.com/
 
 ## Verification
 

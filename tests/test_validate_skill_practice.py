@@ -11,6 +11,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 VALIDATOR = REPO_ROOT / "scripts" / "validate_skill_practice.py"
 FIXTURES = REPO_ROOT / "tests" / "fixtures" / "skill_trust"
+SKILLS_ROOT = REPO_ROOT / "skills"
 
 
 def load_validator_module():
@@ -102,6 +103,111 @@ class ValidateSkillPracticeTests(unittest.TestCase):
         self.assertIn("passed", payload)
         self.assertIn("issues", payload)
         json.dumps(payload)
+
+    def test_rejects_duplicate_procedure_and_core_pattern(self) -> None:
+        steps = "1. Define the agent card.\n2. Exchange tasks.\n3. Return artefacts.\n"
+        content = (
+            "---\n"
+            "name: inter-agent-communication-a2a\n"
+            "description: Use when agents must collaborate across boundaries.\n"
+            "---\n\n"
+            "# A2A\n\n"
+            "## Procedure\n\n"
+            f"{steps}\n"
+            "## Core pattern\n\n"
+            f"{steps}\n"
+            "## Verification\n\n"
+            "- [ ] Done.\n"
+        )
+        result = self.module.validate_skill_practice_content(
+            content, "skills/inter-agent-communication-a2a/SKILL.md"
+        )
+        self.assertFalse(result.passed)
+        codes = {issue.code for issue in result.issues}
+        self.assertIn("duplicate_procedure_content", codes)
+
+    def test_dora_requires_rework_rate_and_primary_source(self) -> None:
+        content = (
+            "---\n"
+            "name: dora-four-keys\n"
+            "description: Use when measuring delivery performance with DORA metrics.\n"
+            "---\n\n"
+            "# DORA\n\n"
+            "## Procedure\n\n"
+            "1. Measure deployment frequency.\n\n"
+            "## Verification\n\n"
+            "- [ ] Metrics defined.\n"
+        )
+        result = self.module.validate_skill_practice_content(
+            content, "skills/dora-four-keys/SKILL.md"
+        )
+        self.assertFalse(result.passed)
+        codes = {issue.code for issue in result.issues}
+        self.assertIn("missing_standards_grounding", codes)
+
+    def test_dora_passes_when_grounded(self) -> None:
+        content = (
+            "---\n"
+            "name: dora-four-keys\n"
+            "description: Use when measuring delivery performance with DORA metrics.\n"
+            "---\n\n"
+            "# DORA\n\n"
+            "## Procedure\n\n"
+            "1. Measure throughput and instability metrics including rework rate.\n\n"
+            "## References\n\n"
+            "- https://dora.dev/insights/dora-metrics-history/\n\n"
+            "## Verification\n\n"
+            "- [ ] Metrics defined.\n"
+        )
+        result = self.module.validate_skill_practice_content(
+            content, "skills/dora-four-keys/SKILL.md"
+        )
+        self.assertTrue(result.passed, msg=[issue.message for issue in result.issues])
+
+    def test_data_contract_requires_odcs(self) -> None:
+        content = (
+            "---\n"
+            "name: data-contract-design\n"
+            "description: Use when formalising producer-consumer data agreements.\n"
+            "---\n\n"
+            "# Data contracts\n\n"
+            "## Procedure\n\n"
+            "1. Define schema.\n\n"
+            "## Verification\n\n"
+            "- [ ] Contract defined.\n"
+        )
+        result = self.module.validate_skill_practice_content(
+            content, "skills/data-contract-design/SKILL.md"
+        )
+        codes = {issue.code for issue in result.issues}
+        self.assertIn("missing_standards_grounding", codes)
+
+    def test_human_in_the_loop_requires_architectural_enforcement(self) -> None:
+        content = (
+            "---\n"
+            "name: human-in-the-loop\n"
+            "description: Use when high-risk actions need human approval.\n"
+            "---\n\n"
+            "# HITL\n\n"
+            "## Procedure\n\n"
+            "1. Ask the user before acting.\n\n"
+            "## Verification\n\n"
+            "- [ ] Approval recorded.\n"
+        )
+        result = self.module.validate_skill_practice_content(
+            content, "skills/human-in-the-loop/SKILL.md"
+        )
+        codes = {issue.code for issue in result.issues}
+        self.assertIn("missing_standards_grounding", codes)
+
+    def test_all_repository_skills_pass_practice_validation(self) -> None:
+        reports = self.module.validate_all_skills(SKILLS_ROOT)
+        failures = [
+            f"{report.skill_path}: {[issue.message for issue in report.issues]}"
+            for report in reports
+            if not report.passed
+        ]
+        self.assertEqual(failures, [], msg="\n".join(failures))
 
 
 if __name__ == "__main__":

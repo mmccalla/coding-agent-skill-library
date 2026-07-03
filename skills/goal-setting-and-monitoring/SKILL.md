@@ -23,16 +23,6 @@ Define observable goals, measurable success criteria, stop conditions, and progr
 6. Monitor evidence after each increment: tests, linting, type checks, logs, benchmark results or user-visible artefacts.
 7. Stop when success criteria are met, the iteration budget is exhausted, or risk requires escalation.
 
-## Core pattern
-
-1. Define the goal state in observable terms.
-2. Capture the initial state: repository structure, failing tests, requirements, constraints and available tools.
-3. Decompose the goal into sub-goals that can be checked independently.
-4. Define measurable indicators for each sub-goal.
-5. Execute work in small increments.
-6. Monitor evidence after each increment: tests, linting, type checks, logs, benchmark results or user-visible artefacts.
-7. Stop when success criteria are met, the iteration budget is exhausted, or risk requires escalation.
-
 ## Implementation guidance
 
 Represent goals as structured data, not vague prose:

@@ -1625,7 +1625,7 @@
   },
   {
     "id": "coverage_dora_four_keys_task",
-    "query": "When should I use devops-four-keys for uses devops research and assessment four keys to improve delivery performance without gaming metrics?",
+    "query": "When should I use devops-four-keys for uses devops research and assessment delivery metrics (classic four keys plus rework rate) to improve delivery performance without gaming metrics?",
     "expected_skill_ids": [
       "skill:dora-four-keys"
     ],

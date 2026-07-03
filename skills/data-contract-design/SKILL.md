@@ -32,6 +32,8 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 ## Best-practice alignment
 Apply DAMA-DMBOK2-style separation of data governance, architecture, modelling, security, integration/interoperability, master/reference data, metadata and quality. For cloud/shared data, apply CDMC-style expectations: ownership, classification, entitlement/access evidence, lineage/provenance, lifecycle/retention, quality controls and auditable evidence.
 
+Align producer-consumer contracts with the **Open Data Contract Standard (ODCS)** where a portable YAML/JSON contract is appropriate: fundamentals, schema, quality rules, team/ownership, roles, SLA, support channels and infrastructure. Prefer contract-first design, semantic versioning for breaking changes, contracts co-located with the data product, and executable validation in CI (for example Data Contract CLI).
+
 ## Quality checks
 - Contract has syntax and semantics.
 - Breaking changes are defined.
@@ -40,6 +42,12 @@ Apply DAMA-DMBOK2-style separation of data governance, architecture, modelling, 
 
 ## Avoid
 Do not define schemas without semantics or change management.
+Do not treat contracts as documentation-only; enforce them with tests and pipeline checks.
+
+## References
+
+- Open Data Contract Standard (ODCS): https://bitol-io.github.io/open-data-contract-standard
+- ODCS source and schema: https://github.com/bitol-io/open-data-contract-standard
 
 ## Verification
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic L3 best-practice validation for SKILL.md content."""
+"""Deterministic L3 best-practice and standards-grounding validation for SKILL.md content."""
 
 from __future__ import annotations
 
@@ -13,6 +13,67 @@ from pathlib import Path
 WHEN_TRIGGER = re.compile(r"\buse when\b", re.I)
 NUMBERED_STEP = re.compile(r"^\s*\d+\.\s+\S", re.M)
 VERIFICATION_CHECKBOX = re.compile(r"^- \[ \]", re.M)
+HTTP_URL = re.compile(r"https?://[^\s\)\]]+", re.I)
+NUMBERED_BLOCK = re.compile(
+    r"(?:^## (?:Procedure|Core pattern)\s*\n)((?:(?:\d+\..+\n)+))",
+    re.M,
+)
+
+# Skill-folder name → required content markers (all must match, case-insensitive).
+# Markers close the standards-validation gaps identified in the library audit.
+STANDARDS_GROUNDING: dict[str, tuple[str, ...]] = {
+    "accessibility-wcag": (
+        r"3\.2\.6",
+        r"WCAG\s*2\.2",
+        r"https?://www\.w3\.org/TR/WCAG22",
+    ),
+    "business-capability-modeling": (r"BIZBOK", r"https?://"),
+    "business-information-concept-modeling": (r"BIZBOK", r"https?://"),
+    "capability-maturity-assessment": (r"BIZBOK", r"https?://"),
+    "data-contract-design": (
+        r"ODCS|Open Data Contract Standard",
+        r"https?://bitol-io\.github\.io/open-data-contract-standard|https?://github\.com/bitol-io/open-data-contract-standard",
+    ),
+    "dora-four-keys": (
+        r"rework rate",
+        r"throughput",
+        r"instability",
+        r"https?://dora\.dev",
+    ),
+    "event-driven-architecture": (
+        r"CloudEvents",
+        r"AsyncAPI",
+        r"https?://",
+    ),
+    "event-modeling": (r"CloudEvents|AsyncAPI|BIZBOK|event", r"https?://"),
+    "event-streaming-platform-design": (r"CloudEvents|AsyncAPI", r"https?://"),
+    "human-in-the-loop": (
+        r"outside the (?:model|LLM)|architectural enforcement|policy engine|dispatcher",
+        r"https?://|OWASP",
+    ),
+    "integration-message-construction": (
+        r"CloudEvents|EIP|Enterprise Integration Patterns",
+        r"https?://",
+    ),
+    "inter-agent-communication-a2a": (
+        r"https?://a2a-protocol\.org|https?://github\.com/a2aproject/A2A",
+    ),
+    "operating-model-design": (r"BIZBOK", r"https?://"),
+    "organization-and-role-design": (r"BIZBOK|RACI", r"https?://"),
+    "process-modeling": (r"BPMN|BIZBOK", r"https?://"),
+    "schema-registry-and-contracts": (
+        r"CloudEvents",
+        r"AsyncAPI",
+        r"https?://",
+    ),
+    "slo-error-budget-management": (
+        r"multi-window|multi window",
+        r"burn rate",
+        r"https?://sre\.google",
+    ),
+    "strategy-to-execution-traceability": (r"BIZBOK", r"https?://"),
+    "value-stream-modeling": (r"BIZBOK", r"https?://"),
+}
 
 
 @dataclass(frozen=True)
@@ -42,6 +103,13 @@ def read_skill_content(skill_path: str, content: str | None = None) -> str:
     return Path(skill_path).read_text(encoding="utf-8")
 
 
+def skill_folder_name(skill_path: str) -> str:
+    path = Path(skill_path)
+    if path.name == "SKILL.md":
+        return path.parent.name
+    return path.stem
+
+
 def extract_frontmatter_description(content: str) -> str:
     if not content.startswith("---\n"):
         return ""
@@ -60,6 +128,25 @@ def extract_section(content: str, heading: str) -> str:
         flags=re.S | re.M,
     )
     return match.group(1) if match else ""
+
+
+def _normalise_block(block: str) -> str:
+    return re.sub(r"\s+", " ", block).strip()
+
+
+def find_duplicate_procedure_blocks(content: str) -> bool:
+    """Return True when Procedure and Core pattern (or two Procedure blocks) share identical steps."""
+    blocks = [_normalise_block(match.group(1)) for match in NUMBERED_BLOCK.finditer(content)]
+    if len(blocks) < 2:
+        return False
+    seen: set[str] = set()
+    for block in blocks:
+        if len(block) < 40:
+            continue
+        if block in seen:
+            return True
+        seen.add(block)
+    return False
 
 
 def validate_skill_practice_content(content: str, skill_path: str) -> PracticeValidationResult:
@@ -106,6 +193,43 @@ def validate_skill_practice_content(content: str, skill_path: str) -> PracticeVa
             )
         )
 
+    if find_duplicate_procedure_blocks(content):
+        issues.append(
+            PracticeIssue(
+                code="duplicate_procedure_content",
+                message=(
+                    "Procedure and Core pattern (or repeated Procedure) must not "
+                    "duplicate the same numbered steps."
+                ),
+            )
+        )
+
+    skill_id = skill_folder_name(skill_path)
+    required_markers = STANDARDS_GROUNDING.get(skill_id)
+    if required_markers:
+        for marker in required_markers:
+            if not re.search(marker, content, flags=re.I):
+                issues.append(
+                    PracticeIssue(
+                        code="missing_standards_grounding",
+                        message=(
+                            f"Skill '{skill_id}' must include standards grounding "
+                            f"matching /{marker}/."
+                        ),
+                    )
+                )
+        references = extract_section(content, "References")
+        if not references.strip() and not HTTP_URL.search(content):
+            issues.append(
+                PracticeIssue(
+                    code="missing_standards_reference_url",
+                    message=(
+                        f"Skill '{skill_id}' must include a ## References section "
+                        "or at least one http(s) primary-source URL."
+                    ),
+                )
+            )
+
     return PracticeValidationResult(
         skill_path=skill_path,
         passed=not issues,
@@ -122,13 +246,34 @@ def validate_skill_practice(
     return validate_skill_practice_content(text, skill_path)
 
 
+def iter_repository_skill_paths(skills_root: Path | str = "skills") -> list[Path]:
+    root = Path(skills_root)
+    return sorted(root.glob("*/SKILL.md"))
+
+
+def validate_all_skills(skills_root: Path | str = "skills") -> list[PracticeValidationResult]:
+    return [validate_skill_practice(str(path)) for path in iter_repository_skill_paths(skills_root)]
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Validate SKILL.md practice rubric (L3).")
-    parser.add_argument("paths", nargs="+", help="Skill file paths to validate")
+    parser.add_argument(
+        "paths",
+        nargs="*",
+        help="Skill file paths to validate (default: all skills/*/SKILL.md)",
+    )
     parser.add_argument("--json", action="store_true", help="Emit machine-readable JSON report")
+    parser.add_argument(
+        "--all",
+        action="store_true",
+        help="Validate every skill under skills/",
+    )
     args = parser.parse_args(argv)
 
-    reports = [validate_skill_practice(path) for path in args.paths]
+    if args.all or not args.paths:
+        reports = validate_all_skills()
+    else:
+        reports = [validate_skill_practice(path) for path in args.paths]
     passed = all(report.passed for report in reports)
 
     if args.json:
@@ -140,7 +285,7 @@ def main(argv: list[str] | None = None) -> int:
             print("FAIL")
             for report in reports:
                 for issue in report.issues:
-                    print(f"- {report.skill_path}: {issue.message}")
+                    print(f"- {report.skill_path}: [{issue.code}] {issue.message}")
     return 0 if passed else 1
 
 

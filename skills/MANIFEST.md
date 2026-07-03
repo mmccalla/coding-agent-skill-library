@@ -31,7 +31,7 @@ Adjacent needs remain covered by existing agentic, control, engineering and arch
 | `agent-control-patterns` | Safety, guardrails, recovery, RAG, evaluation and prioritisation. | Fully populated. |
 | `engineering-practices` | KISS, SOLID, DRY, TDD, BDD, DDD, code review and Git workflow skills. | Fully populated. |
 | `user-experience` | UX, accessibility, UI component, frontend-state, dashboard, design-system, usability-testing and agentic-UX skills. | Fully populated. |
-| `reliability-and-delivery` | SRE, SLO/error-budget, incident, observability, browser verification, CI/CD, deprecation, documentation, launch, toil-reduction, progressive-delivery and DORA Four Keys skills. | Fully populated. |
+| `reliability-and-delivery` | SRE, SLO/error-budget, incident, observability, browser verification, CI/CD, deprecation, documentation, launch, toil-reduction, progressive-delivery and DORA delivery-metrics skills. | Fully populated. |
 | `event-driven-and-real-time-data` | Event-driven architecture, event modelling, streaming platform, schema contract, CDC, stream processing, event governance and real-time operability skills. | Fully populated. |
 | `enterprise-integration-patterns` | Message-based integration design, channels, construction, routing, transformation, endpoints, system management and EIP validation skills. | Fully populated. |
 | `business-architecture` | Capability, value-stream, process, operating-model, strategy traceability, maturity, business concept and organisation design skills. | Fully populated. |
@@ -138,7 +138,7 @@ DORA means **DevOps Research and Assessment** in this library, not financial-ser
 | `git-workflow-and-versioning` | Source-control hygiene, branching, commits, tags or release/version workflow decisions matter. | No repository history or version-control action is involved. |
 | `toil-reduction-and-automation` | Reducing repetitive manual operational work through safe, tested and auditable automation. | Automation would increase risk, hide judgement or remove necessary human approval. |
 | `release-engineering-and-progressive-delivery` | Improving deployment safety through rollback, canary, blue/green, feature flags, release gates or staged rollout. | The task has no deployment or release impact. |
-| `dora-four-keys` | Improving deployment frequency, lead time for changes, change failure rate or failed deployment recovery time. | The task is unrelated to software delivery performance. |
+| `dora-four-keys` | Improving deployment frequency, lead time for changes, change failure rate, failed deployment recovery time or deployment rework rate. | The task is unrelated to software delivery performance. |
 
 ### Reliability and delivery rules
 

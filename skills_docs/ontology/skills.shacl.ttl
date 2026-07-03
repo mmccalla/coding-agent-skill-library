@@ -65,6 +65,12 @@ skills:SkillShape a sh:NodeShape ;
 skills:SkillVersionShape a sh:NodeShape ;
     sh:targetClass skills:SkillVersion ;
     sh:property [
+        sh:path skills:standardsReference ;
+        sh:datatype xsd:anyURI ;
+        sh:minCount 0 ;
+        sh:nodeKind sh:Literal ;
+    ] ;
+    sh:property [
         sh:path skills:versionIdentifier ;
         sh:datatype xsd:string ;
         sh:minCount 1 ;
