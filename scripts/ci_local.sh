@@ -13,6 +13,9 @@ python3 scripts/validate_skills.py
 echo "==> validate_skills_graph.py"
 python3 scripts/validate_skills_graph.py
 
+echo "==> validate_eval_corpus.py"
+python3 scripts/validate_eval_corpus.py --check-skill-sync
+
 echo "==> ci_ingest_gate.py"
 python3 scripts/ci_ingest_gate.py
 

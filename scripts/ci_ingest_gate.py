@@ -17,6 +17,7 @@ from scripts import (
     evaluate_skill_retrieval,
     load_skills_neo4j,
     skills_trust_metrics,
+    validate_eval_corpus,
     validate_skill_trust,
     validate_skills_graph,
     validate_skills_ontology,
@@ -155,10 +156,24 @@ def run_ingest_gate(
     if not ontology_result.valid:
         return IngestGateReport(passed=False, steps=tuple(steps))
 
+    corpus_result = validate_eval_corpus.validate_all(skills_root=skills_root)
+    steps.append(
+        GateStepResult(
+            name="validate_eval_corpus",
+            passed=corpus_result.valid,
+            detail="tiered evaluation corpora valid"
+            if corpus_result.valid
+            else f"errors={len(corpus_result.errors)}",
+        )
+    )
+    if not corpus_result.valid:
+        return IngestGateReport(passed=False, steps=tuple(steps))
+
     evaluation = evaluate_skill_retrieval.evaluate_offline(
         promoted_smoke_dataset,
         limit=retrieval_limit,
         skills_root=skills_root,
+        source_threshold=0.5,
     )
     steps.append(
         GateStepResult(

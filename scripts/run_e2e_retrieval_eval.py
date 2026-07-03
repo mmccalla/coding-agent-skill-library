@@ -117,7 +117,7 @@ def run_realistic_e2e(
             limit=3,
             recall_threshold=0.0,
             mrr_threshold=0.0,
-            source_threshold=0.0,
+            source_threshold=0.5,
             uncertainty_threshold=0.0,
             case_filter="all",
             skills_root=skills_root,

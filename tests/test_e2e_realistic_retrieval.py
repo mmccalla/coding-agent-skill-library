@@ -9,6 +9,8 @@ from scripts.evaluate_skill_retrieval import evaluate_offline, load_cases
 from scripts.run_e2e_retrieval_eval import REALISTIC_DATASET, run_realistic_e2e
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+COVERAGE_DATASET = REPO_ROOT / "tests/fixtures/retrieval_evaluation/coverage_queries.json"
+ABSTENTION_DATASET = REPO_ROOT / "tests/fixtures/retrieval_evaluation/abstention_probes.json"
 GOLDEN_DATASET = REPO_ROOT / "tests/fixtures/retrieval_evaluation/golden_queries.json"
 
 # Honest realistic thresholds: precision@1 is the primary gate. Exclusion of related
@@ -28,7 +30,7 @@ class RealisticE2eRetrievalTests(unittest.TestCase):
             limit=3,
             recall_threshold=0.0,
             mrr_threshold=0.0,
-            source_threshold=0.0,
+            source_threshold=0.5,
             uncertainty_threshold=0.0,
             skills_root=REPO_ROOT / "skills",
         )
@@ -44,9 +46,22 @@ class RealisticE2eRetrievalTests(unittest.TestCase):
         ]
         self.assertEqual([], rank_failures, [item.failures for item in rank_failures])
 
-    def test_release_arm_meets_honest_thresholds(self) -> None:
+    def test_abstention_probes_pass(self) -> None:
         report = evaluate_offline(
-            GOLDEN_DATASET,
+            ABSTENTION_DATASET,
+            limit=3,
+            recall_threshold=0.0,
+            mrr_threshold=0.0,
+            source_threshold=0.0,
+            uncertainty_threshold=0.0,
+            skills_root=REPO_ROOT / "skills",
+        )
+        self.assertGreaterEqual(report.cases, 10)
+        self.assertGreaterEqual(report.uncertainty_accuracy, 0.9)
+
+    def test_coverage_arm_meets_honest_thresholds(self) -> None:
+        report = evaluate_offline(
+            COVERAGE_DATASET,
             limit=3,
             recall_threshold=0.0,
             mrr_threshold=0.0,
@@ -55,16 +70,16 @@ class RealisticE2eRetrievalTests(unittest.TestCase):
             case_filter="promoted_eligible",
             skills_root=REPO_ROOT / "skills",
         )
-        self.assertGreaterEqual(report.cases, 550)
+        self.assertGreaterEqual(report.cases, 180)
         self.assertGreaterEqual(report.precision_at_1, RELEASE_PRECISION_AT_1)
         self.assertGreaterEqual(report.recall_at_k, RELEASE_RECALL_AT_K)
         self.assertGreaterEqual(report.citation_coverage, RELEASE_CITATION_COVERAGE)
 
-    def test_golden_cases_tagged_with_promotion_tier(self) -> None:
+    def test_golden_union_tagged_with_promotion_tier(self) -> None:
         cases = load_cases(GOLDEN_DATASET)
         tiers = {case.promotion_tier for case in cases}
         self.assertIn("release", tiers)
-        self.assertGreaterEqual(sum(1 for case in cases if case.promotion_tier == "release"), 550)
+        self.assertGreaterEqual(sum(1 for case in cases if case.promotion_tier == "release"), 200)
 
     def test_e2e_runner_reports_all_arms(self) -> None:
         payload = run_realistic_e2e(skills_root=REPO_ROOT / "skills", golden_dataset=GOLDEN_DATASET)

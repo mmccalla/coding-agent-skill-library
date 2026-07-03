@@ -60,16 +60,61 @@ export interface ReadyResponse {
   errors?: string[];
 }
 
+export interface TrustLayerResult {
+  layer: string;
+  status: string;
+  passed: boolean;
+  details: Record<string, unknown>;
+}
+
+export interface SkillTrustReport {
+  passed: boolean;
+  layers: Record<string, TrustLayerResult>;
+}
+
 export interface UploadPreview {
-  status: "ok" | "warning";
+  status: "ok" | "warning" | "rejected";
   filename: string;
   name: string;
   description: string;
   line_count: number;
   word_count: number;
   warnings: string[];
+  trust?: SkillTrustReport;
   persisted: boolean;
   message: string;
+}
+
+export interface AdminIngestConfig {
+  adminKey: string;
+}
+
+export interface AdminIngestResult {
+  outcome: string;
+  skill_name: string;
+  skill_id: string;
+  promotion_status: string;
+  trust_hash: string;
+  trust: SkillTrustReport;
+  written_path: string;
+  persisted: boolean;
+  message: string;
+  actor: string;
+}
+
+export interface AdminIngestAuditEntry {
+  timestamp?: string;
+  actor: string;
+  skill_name: string;
+  outcome: string;
+  trust_hash: string;
+  written_path?: string;
+  promotion_status?: string;
+}
+
+export interface AdminIngestsListResponse {
+  status: "ok";
+  ingests: AdminIngestAuditEntry[];
 }
 
 export interface GraphQueryRequest {

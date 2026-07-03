@@ -1,0 +1,41 @@
+name: Nightly evaluation coverage
+
+on:
+  schedule:
+    - cron: "0 2 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  coverage-eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630cea73d8afb0186dc0d8ca0 # v4.2.2
+
+      - name: Set up Python
+        uses: actions/setup-python@8d9ed9acfe707f195d7998e90d1a2fb01bfe5ab8 # v5.3.0
+        with:
+          python-version: "3.12"
+
+      - name: Install project dependencies
+        run: python -m pip install -e ".[dev]"
+
+      - name: Validate evaluation corpora
+        run: python3 scripts/validate_eval_corpus.py --check-skill-sync --emit-matrix
+
+      - name: Run coverage and realistic evaluation arms
+        run: |
+          python3 -m pytest \
+            tests/test_e2e_realistic_retrieval.py::RealisticE2eRetrievalTests::test_coverage_arm_meets_honest_thresholds \
+            tests/test_e2e_realistic_retrieval.py::RealisticE2eRetrievalTests::test_realistic_confuser_dataset_passes \
+            tests/test_e2e_realistic_retrieval.py::RealisticE2eRetrievalTests::test_abstention_probes_pass \
+            -q
+
+      - name: Upload coverage matrix artefact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: coverage-matrix
+          path: tests/fixtures/retrieval_evaluation/coverage_matrix.json
+          if-no-files-found: error
