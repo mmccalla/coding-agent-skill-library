@@ -16,6 +16,7 @@ Release-level changes to the portable skills library and Skills KG service.
 ### Documentation
 
 - Documentation consolidation started: `GETTING_STARTED.md`, `krag/STATUS.md`, updated doc hubs (Waves A–D).
+- Waves A–D: consolidated `krag/` docs, archived planning/backlog, added `validate_docs.py` CI gate.
 
 ## Earlier
 

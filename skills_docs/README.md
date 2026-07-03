@@ -38,7 +38,7 @@ Documentation for agents and humans. Pick one path — you do not need every fil
 
 - `templates/` — optional epic and story templates
 - `overlays/` — product-specific guidance overlays
-- `security/OWASP_ASI_CROSSWALK.md` — agentic security control map
+- `security/OWASP_ASI_CROSSWALK.md` — agentic security control map (see also root `SECURE_AGENTIC_DEVELOPMENT.md`, `SECURITY_HARDENING.md` for Docker)
 
 ## Principle
 
