@@ -13,10 +13,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  quality:
-    name: Quality
+  validators:
+    name: Validators
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -46,6 +46,23 @@ jobs:
       - name: Mypy
         run: python3 -m mypy
 
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install project dependencies
+        run: python -m pip install -e ".[dev]"
+
       - name: Unit and integration tests
         run: |
           python3 -m pytest --cov=scripts --cov-report=term-missing \
@@ -70,7 +87,7 @@ jobs:
     name: Ingest gate
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    needs: quality
+    needs: validators
     steps:
       - uses: actions/checkout@v4
         with:
@@ -95,7 +112,6 @@ jobs:
     name: PR retrieval eval
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    needs: quality
     steps:
       - uses: actions/checkout@v4
 
@@ -116,7 +132,6 @@ jobs:
     name: Skills UI
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    needs: quality
     steps:
       - uses: actions/checkout@v4
 
@@ -138,7 +153,6 @@ jobs:
     name: Neo4j integration
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: quality
     services:
       neo4j:
         image: neo4j:5.26-community
