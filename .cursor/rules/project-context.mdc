@@ -1,9 +1,11 @@
 ---
-description: Dual-mode project purpose — portable skills library plus Skills KG MCP
+description: Dual-mode project purpose — portable skills library plus Skills KG MCP (this repo only)
 alwaysApply: true
 ---
 
 # Project context
+
+**Scope:** This is a **project rule** committed under `.cursor/rules/`. It applies only when this repository is open in Cursor. It is **not** a global User Rule and **not** a skill under **Settings → Rules, Skills, Subagents**. Do not copy it to `~/.cursor/skills/` or Cursor User Rules unless you intentionally want that text everywhere.
 
 This repository serves **two complementary roles**. Do not treat one as a replacement for the other.
 
