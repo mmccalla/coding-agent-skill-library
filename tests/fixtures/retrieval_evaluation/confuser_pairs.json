@@ -25,11 +25,6 @@
     "confuser_skill_id": "skill:krag-retrieval-answering"
   },
   {
-    "id": "rag_vs_krag_retrieval",
-    "preferred_skill_id": "skill:knowledge-retrieval-rag",
-    "confuser_skill_id": "skill:krag-retrieval-answering"
-  },
-  {
     "id": "tdd_vs_reflection",
     "preferred_skill_id": "skill:tdd-practice",
     "confuser_skill_id": "skill:reflection-and-verification"
@@ -73,5 +68,90 @@
     "id": "mcp_vs_a2a",
     "preferred_skill_id": "skill:mcp-server-design",
     "confuser_skill_id": "skill:inter-agent-communication-a2a"
+  },
+  {
+    "id": "threat_vs_guardrails",
+    "preferred_skill_id": "skill:threat-modeling",
+    "confuser_skill_id": "skill:guardrails-safety-patterns"
+  },
+  {
+    "id": "guardrails_vs_threat",
+    "preferred_skill_id": "skill:guardrails-safety-patterns",
+    "confuser_skill_id": "skill:threat-modeling"
+  },
+  {
+    "id": "secure_sdlc_vs_cicd",
+    "preferred_skill_id": "skill:secure-sdlc-and-supply-chain",
+    "confuser_skill_id": "skill:ci-cd-and-automation"
+  },
+  {
+    "id": "api_vs_data_contract",
+    "preferred_skill_id": "skill:api-design-and-lifecycle",
+    "confuser_skill_id": "skill:data-contract-design"
+  },
+  {
+    "id": "data_contract_vs_api",
+    "preferred_skill_id": "skill:data-contract-design",
+    "confuser_skill_id": "skill:api-design-and-lifecycle"
+  },
+  {
+    "id": "ai_model_gov_vs_eval",
+    "preferred_skill_id": "skill:ai-model-governance",
+    "confuser_skill_id": "skill:evaluation-and-monitoring"
+  },
+  {
+    "id": "eval_vs_ai_model_gov",
+    "preferred_skill_id": "skill:evaluation-and-monitoring",
+    "confuser_skill_id": "skill:ai-model-governance"
+  },
+  {
+    "id": "solution_arch_vs_spec",
+    "preferred_skill_id": "skill:solution-architecture",
+    "confuser_skill_id": "skill:spec-driven-development"
+  },
+  {
+    "id": "test_strategy_vs_tdd",
+    "preferred_skill_id": "skill:test-strategy",
+    "confuser_skill_id": "skill:tdd-practice"
+  },
+  {
+    "id": "tdd_vs_test_strategy",
+    "preferred_skill_id": "skill:tdd-practice",
+    "confuser_skill_id": "skill:test-strategy"
+  },
+  {
+    "id": "risk_vs_prioritization",
+    "preferred_skill_id": "skill:risk-management",
+    "confuser_skill_id": "skill:prioritization"
+  },
+  {
+    "id": "finops_vs_resource_aware",
+    "preferred_skill_id": "skill:finops-practice",
+    "confuser_skill_id": "skill:resource-aware-optimization"
+  },
+  {
+    "id": "resource_aware_vs_finops",
+    "preferred_skill_id": "skill:resource-aware-optimization",
+    "confuser_skill_id": "skill:finops-practice"
+  },
+  {
+    "id": "cloud_platform_vs_solution",
+    "preferred_skill_id": "skill:cloud-platform-architecture",
+    "confuser_skill_id": "skill:solution-architecture"
+  },
+  {
+    "id": "perf_vs_slo",
+    "preferred_skill_id": "skill:performance-engineering",
+    "confuser_skill_id": "skill:slo-error-budget-management"
+  },
+  {
+    "id": "iac_vs_cicd",
+    "preferred_skill_id": "skill:infrastructure-as-code",
+    "confuser_skill_id": "skill:ci-cd-and-automation"
+  },
+  {
+    "id": "tech_debt_vs_prioritization",
+    "preferred_skill_id": "skill:technical-debt-management",
+    "confuser_skill_id": "skill:prioritization"
   }
 ]

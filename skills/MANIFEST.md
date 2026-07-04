@@ -8,7 +8,7 @@ Use this command to list installed skills:
 find skills -name "SKILL.md" | sort
 ```
 
-After the agentic, control, engineering, user-experience, reliability-and-delivery, event-driven, enterprise-integration-patterns, business-architecture, data-architecture and KRAG systems skills are installed, the library should contain 99 skills (including mandatory `apply-laws-of-ai`).
+After the agentic, control, engineering, user-experience, reliability-and-delivery, event-driven, enterprise-integration-patterns, business-architecture, solution-and-platform-architecture, data-architecture and KRAG systems skills are installed, the library should contain 111 skills (including mandatory `apply-laws-of-ai`).
 
 ## Workflow spine skills
 
@@ -29,12 +29,13 @@ Adjacent needs remain covered by existing agentic, control, engineering and arch
 |---|---|---|
 | `agentic-patterns` | Core agent workflow and session/spec/implementation spine. | Fully populated. |
 | `agent-control-patterns` | Safety, guardrails, recovery, RAG, evaluation and prioritisation. | Fully populated. |
-| `engineering-practices` | KISS, SOLID, DRY, TDD, BDD, DDD, code review and Git workflow skills. | Fully populated. |
+| `engineering-practices` | KISS, SOLID, DRY, TDD, BDD, DDD, test strategy and technical debt skills. | Fully populated. |
 | `user-experience` | UX, accessibility, UI component, frontend-state, dashboard, design-system, usability-testing and agentic-UX skills. | Fully populated. |
-| `reliability-and-delivery` | SRE, SLO/error-budget, incident, observability, browser verification, CI/CD, deprecation, documentation, launch, toil-reduction, progressive-delivery and DORA delivery-metrics skills. | Fully populated. |
+| `reliability-and-delivery` | SRE, SLO/error-budget, incident, observability, browser verification, CI/CD, secure SDLC, FinOps, performance, IaC, deprecation, documentation, launch, toil-reduction, progressive-delivery and DORA delivery-metrics skills. | Fully populated. |
 | `event-driven-and-real-time-data` | Event-driven architecture, event modelling, streaming platform, schema contract, CDC, stream processing, event governance and real-time operability skills. | Fully populated. |
-| `enterprise-integration-patterns` | Message-based integration design, channels, construction, routing, transformation, endpoints, system management and EIP validation skills. | Fully populated. |
+| `enterprise-integration-patterns` | Message-based integration design, channels, construction, routing, transformation, endpoints, system management, EIP validation and API lifecycle skills. | Fully populated. |
 | `business-architecture` | Capability, value-stream, process, operating-model, strategy traceability, maturity, business concept and organisation design skills. | Fully populated. |
+| `solution-and-platform-architecture` | Solution options/NFRs and cloud platform/landing-zone architecture skills. | Fully populated. |
 | `data-architecture` | DAMA-DMBOK2-aligned and CDMC-aware data modelling, products, contracts, metadata, governance, quality, security, lifecycle, integration, lakehouse, MDM/RDM, ontology and lineage skills. | Fully populated. |
 | `krag-systems` | KRAG system design, ingestion/graph construction, retrieval/answering and evaluation/governance skills. | Fully populated. |
 
@@ -80,6 +81,9 @@ These skills belong to the semantic `agent-control-patterns` grouping in the fla
 | `guardrails-safety-patterns` | Inputs, outputs, tools, policies or security controls need safeguards. | The work is low-risk and already validated. |
 | `evaluation-and-monitoring` | Metrics, baselines, regression checks, observability or drift detection are needed. | The code is not operationally monitored and has no ongoing behaviour. |
 | `prioritization` | Tasks, risks, bugs, alerts or actions need ranking. | There is only one viable next action. |
+| `threat-modeling` | Security-sensitive design needs assets, trust boundaries, threats and mitigations. | Only runtime guardrails are required. |
+| `ai-model-governance` | Models need inventory, risk tier, approval, monitoring or retirement. | Session safety laws or one-off metrics suffice. |
+| `risk-management` | Material risks need a register, treatment and owners. | Only backlog ordering is required. |
 
 ## Engineering practices
 
@@ -93,6 +97,8 @@ These skills are fully included in this package and grouped under `engineering-p
 | `tdd-practice` | Behaviour can be specified with executable tests before implementation. | The test harness is absent and creating one is disproportionate to the change; create a minimal check instead. |
 | `bdd-practice` | Business-readable acceptance criteria or user-facing behaviour need clarification. | The change is purely internal and has no observable business behaviour. |
 | `ddd-practice` | The domain is complex enough to require explicit language, boundaries and invariants. | CRUD or simple scripting is sufficient. |
+| `test-strategy` | Risk-based test levels, pyramid mix and exit criteria must be planned. | Only a single TDD or BDD loop is needed. |
+| `technical-debt-management` | Debt needs inventory, interest and paydown tracking. | Only ranking today's tasks is required. |
 
 ## User experience and interface design
 
@@ -139,6 +145,10 @@ DORA means **DevOps Research and Assessment** in this library, not financial-ser
 | `toil-reduction-and-automation` | Reducing repetitive manual operational work through safe, tested and auditable automation. | Automation would increase risk, hide judgement or remove necessary human approval. |
 | `release-engineering-and-progressive-delivery` | Improving deployment safety through rollback, canary, blue/green, feature flags, release gates or staged rollout. | The task has no deployment or release impact. |
 | `dora-four-keys` | Improving deployment frequency, lead time for changes, change failure rate, failed deployment recovery time or deployment rework rate. | The task is unrelated to software delivery performance. |
+| `secure-sdlc-and-supply-chain` | Pipelines, dependencies, SBOM or agent supply chain need secure delivery controls. | Only runtime guardrails are required. |
+| `finops-practice` | Platform cloud spend, allocation, unit economics or cost anomalies need FinOps practice. | Only an agent-run token/model budget is in scope. |
+| `performance-engineering` | Latency, throughput or capacity must be measured and improved. | Only SLO policy or agent session budgets apply. |
+| `infrastructure-as-code` | Infrastructure must change through declarative plan/apply workflows. | Only application CI is changing. |
 
 ### Reliability and delivery rules
 
@@ -188,6 +198,7 @@ Pattern names and taxonomy are derived from Enterprise Integration Patterns by G
 | `message-endpoint-design` | Building producers, consumers, gateways, transactional clients or idempotent receivers. | No messaging endpoint is being implemented. |
 | `messaging-system-management` | Adding monitoring, wire taps, message stores, test messages, replay or operational runbooks. | The integration is non-production and disposable. |
 | `eip-integration-validation` | Reviewing an integration design or implementation against EIP and operability criteria. | No design artefact exists yet to review. |
+| `api-design-and-lifecycle` | HTTP/RPC APIs need OpenAPI contracts, versioning and deprecation. | Dataset or event contracts are the focus. |
 
 ### Enterprise integration rules
 
@@ -221,6 +232,21 @@ These skills are fully included in the flat library and grouped under `business-
 - Value streams describe how value flows from trigger to outcome.
 - Processes describe how work is performed.
 - Maintain traceability from strategy to capability, value stream, process, data, technology and metrics.
+
+## Solution and Platform Architecture
+
+These skills are fully included in the flat library and grouped under `solution-and-platform-architecture`.
+
+| Skill | Use when | Avoid when |
+|---|---|---|
+| `solution-architecture` | Choosing system structure with NFRs, options, views and architecture governance. | Only a small change spec or ADR text is needed. |
+| `cloud-platform-architecture` | Designing landing zones, tenancy, shared services and platform guardrails. | The work is a single product solution without shared platform scope. |
+
+### Solution and platform architecture rules
+
+- Separate product solution options from shared platform foundations.
+- Record NFRs, alternatives and fitness functions or exceptions for material decisions.
+- Require ownership, isolation and allocation tags on shared platform services.
 
 ## Data Architecture
 

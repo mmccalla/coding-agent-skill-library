@@ -26,13 +26,14 @@ Then continue with the steps below. See `LIBRARY_CONTRACT.md` for portable consi
 | If the task is mainly about... | Start with category group |
 |---|---|
 | Session setup, planning, specs, implementation flow, source grounding | `agentic-patterns` |
-| Safety baseline, approval, recovery, RAG, evaluation, prioritization | `agent-control-patterns` (`apply-laws-of-ai` first) |
-| Code quality, testing, refactoring, domain modelling, review | `engineering-practices` |
+| Safety baseline, approval, recovery, RAG, evaluation, prioritization, threat modelling, model governance, risk | `agent-control-patterns` (`apply-laws-of-ai` first) |
+| Code quality, testing strategy, technical debt, refactoring, domain modelling, review | `engineering-practices` |
 | UI, accessibility, dashboards, interaction states, agent supervision | `user-experience` |
-| Reliability, incidents, observability, CI/CD, release, launch | `reliability-and-delivery` |
+| Reliability, incidents, observability, CI/CD, secure SDLC, FinOps, performance, IaC, release, launch | `reliability-and-delivery` |
 | Events, CDC, stream processing, real-time operations | `event-driven-and-real-time-data` |
-| Message-based enterprise integration, channels, routing, endpoints | `enterprise-integration-patterns` |
+| Message-based enterprise integration, channels, routing, endpoints, API lifecycle | `enterprise-integration-patterns` |
 | Capabilities, value streams, processes, operating model, traceability | `business-architecture` |
+| Solution options/NFRs, cloud landing zones and shared platforms | `solution-and-platform-architecture` |
 | Data models, products, contracts, governance, lineage, knowledge graphs | `data-architecture` |
 | End-to-end KRAG system design, graph construction, retrieval or KRAG evaluation | `krag-systems` |
 
@@ -46,6 +47,17 @@ Then continue with the steps below. See `LIBRARY_CONTRACT.md` for portable consi
 | Generic document-grounded RAG | `knowledge-retrieval-rag` |
 | GraphRAG or Neo4j-native KG-backed RAG | `knowledge-graph-rag`, plus `knowledge-retrieval-rag` |
 | Message-based enterprise integration / EIP | `message-based-integration-design`, then the smallest EIP skill; use `eip-integration-validation` after design |
+| HTTP/RPC API design | `api-design-and-lifecycle` |
+| Threat modelling / attack surface | `threat-modeling` |
+| Secure pipeline and supply chain | `secure-sdlc-and-supply-chain` |
+| Model inventory and approval | `ai-model-governance` |
+| Solution options and NFRs | `solution-architecture` |
+| Cloud landing zone / shared platform | `cloud-platform-architecture` |
+| Platform cloud cost / FinOps | `finops-practice` (not `resource-aware-optimization`) |
+| Agent-run token/model budget | `resource-aware-optimization` (not `finops-practice`) |
+| Risk register and treatments | `risk-management` |
+| Test approach / pyramid | `test-strategy` |
+| Technical debt inventory | `technical-debt-management` |
 | End-to-end KRAG system delivery | `krag-system-design`, then the smallest relevant KRAG systems skill |
 | Knowledge graph design | `ontology-and-knowledge-graph-modeling` |
 | Business-facing behaviour change | `bdd-practice`, then `tdd-practice` |

@@ -52,6 +52,13 @@ Log estimates and actuals so future routing decisions improve.
 - Do not sacrifice correctness where safety, security or data integrity is at stake.
 - Do not exceed user-defined budgets without approval.
 - Prefer graceful degradation over total failure when the user can still receive value.
+- For platform cloud spend, allocation, unit economics or FinOps reviews, use `finops-practice` instead of this skill.
+
+## Related skills
+
+- `finops-practice` — platform and cloud financial operations
+- `performance-engineering` — application/platform latency and capacity
+- `evaluation-and-monitoring` — cost as an operational metric
 
 ## Verification
 - [ ] Resource budgets are explicit.
