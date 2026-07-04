@@ -33,9 +33,10 @@ echo ".env" >> .gitignore
 
 ### 3. **Enhanced Security Headers**
 
-- ✅ Secure cookies enabled: `GF_SECURITY_COOKIE_SECURE=true`
 - ✅ HTTP-only cookies: `GF_SECURITY_COOKIE_HTTPONLY=true`
-- ✅ SameSite enforcement: `GF_SECURITY_COOKIE_SAMESITE=Strict`
+- ✅ SameSite cookies: `GF_SECURITY_COOKIE_SAMESITE=Lax` (local HTTP stack)
+- ✅ Secure cookies disabled for local HTTP (`GF_SECURITY_COOKIE_SECURE=false`); enable only behind HTTPS
+- ✅ Initial admin password-change wall disabled for local defaults (`GF_SECURITY_DISABLE_INITIAL_ADMIN_PASSWORD_CHANGE=true`)
 - ✅ No new privileges flag: `security_opt: no-new-privileges:true`
 
 ### 4. **Resource Limits**

@@ -15,6 +15,7 @@
       },
       "fieldConfig": {
         "defaults": {
+          "noValue": "0",
           "unit": "short"
         },
         "overrides": []
@@ -39,7 +40,7 @@
       },
       "targets": [
         {
-          "expr": "topk(10, sum by (skill_id) (rate(skills_usage_hits_total[7d])))",
+          "expr": "topk(10, sum by (skill_id) (increase(skills_usage_hits_total[$__range])))",
           "legendFormat": "{{skill_id}}",
           "refId": "A"
         }
@@ -78,7 +79,7 @@
       },
       "targets": [
         {
-          "expr": "sum by (tool) (rate(skills_usage_hits_total[5m]))",
+          "expr": "sum by (tool) (increase(skills_usage_hits_total[$__range]))",
           "legendFormat": "{{tool}}",
           "refId": "A"
         }
@@ -117,7 +118,7 @@
       },
       "targets": [
         {
-          "expr": "sum(rate(skills_usage_abstention_total[5m])) / clamp_min(sum(rate(skills_usage_hits_total[5m])) + sum(rate(skills_usage_abstention_total[5m])), 0.001)",
+          "expr": "(sum(increase(skills_usage_abstention_total[$__range])) or on() vector(0)) / clamp_min((sum(increase(skills_usage_hits_total[$__range])) + sum(increase(skills_usage_abstention_total[$__range]))), 1)",
           "legendFormat": "abstention ratio",
           "refId": "A"
         }
@@ -156,7 +157,7 @@
       },
       "targets": [
         {
-          "expr": "sum(rate(skills_usage_execution_guide_total[5m])) / clamp_min(sum(rate(skills_usage_hits_total[5m])), 0.001)",
+          "expr": "(sum(increase(skills_usage_execution_guide_total[$__range])) or on() vector(0)) / clamp_min(sum(increase(skills_usage_hits_total[$__range])), 1)",
           "legendFormat": "execution-guide conversion",
           "refId": "A"
         }
@@ -171,6 +172,7 @@
       },
       "fieldConfig": {
         "defaults": {
+          "noValue": "0",
           "unit": "short"
         },
         "overrides": []
@@ -196,7 +198,7 @@
       },
       "targets": [
         {
-          "expr": "sum(skills_trust_rejected_total)",
+          "expr": "sum(skills_trust_rejected_total) or on() vector(0)",
           "legendFormat": "trust rejected",
           "refId": "A"
         }
@@ -211,6 +213,7 @@
       },
       "fieldConfig": {
         "defaults": {
+          "noValue": "0",
           "unit": "short"
         },
         "overrides": []
@@ -236,7 +239,7 @@
       },
       "targets": [
         {
-          "expr": "sum(skills_quarantined_total)",
+          "expr": "sum(skills_quarantined_total) or on() vector(0)",
           "legendFormat": "quarantined",
           "refId": "A"
         }
@@ -308,7 +311,7 @@
     "list": []
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {},
