@@ -236,10 +236,91 @@ def build_smoke_cases(
     return cases
 
 
+# Distinctive query fragments for confuser-pair realistic cases (preferred skill keywords).
+_CONFUSER_QUERY_HINTS: dict[str, str] = {
+    "skill:threat-modeling": "STRIDE trust boundaries threat model mitigations",
+    "skill:guardrails-safety-patterns": "runtime input validation tool allow-lists output filtering",
+    "skill:secure-sdlc-and-supply-chain": "NIST SSDF SBOM dependency pinning supply chain",
+    "skill:ci-cd-and-automation": "build pipeline jobs deployment automation gates",
+    "skill:api-design-and-lifecycle": "OpenAPI HTTP versioning authZ deprecation",
+    "skill:data-contract-design": "data product schema quality freshness producer consumer",
+    "skill:ai-model-governance": "model inventory risk tier approval kill-switch retirement",
+    "skill:evaluation-and-monitoring": "quality metrics baselines regression drift dashboards",
+    "skill:solution-architecture": "NFRs options context container views fitness functions",
+    "skill:spec-driven-development": "write specification acceptance criteria before coding",
+    "skill:test-strategy": "risk-based test pyramid levels automation exit criteria",
+    "skill:tdd-practice": "failing test first red green refactor smallest change",
+    "skill:risk-management": "risk register likelihood impact treatment residual risk",
+    "skill:prioritization": "rank backlog items by urgency and impact only",
+    "skill:finops-practice": "FinOps allocation tags unit economics showback spend anomalies",
+    "skill:resource-aware-optimization": "agent session token budget model tier context window",
+    "skill:cloud-platform-architecture": "landing zone tenancy shared services identity boundaries",
+    "skill:performance-engineering": "profile latency throughput load test capacity",
+    "skill:slo-error-budget-management": "SLO error budget burn rate release policy",
+    "skill:infrastructure-as-code": "declarative plan apply drift secrets infrastructure",
+    "skill:technical-debt-management": "debt inventory interest paydown owners remediation",
+    "skill:human-in-the-loop": "human approval decision packet before high-risk action",
+    "skill:knowledge-retrieval-rag": "document chunk retrieval citations hybrid search",
+    "skill:krag-retrieval-answering": "graph traversal hybrid ranking grounded KRAG answer",
+    "skill:reflection-and-verification": "critique repair verification loop after draft",
+    "skill:krag-system-design": "KRAG architecture graph role retrieval slices",
+    "skill:knowledge-graph-rag": "Neo4j GraphRAG text-to-Cypher provenance",
+    "skill:ontology-and-knowledge-graph-modeling": "OWL SHACL ontology competency questions",
+    "skill:incremental-implementation": "small reversible delivery slices",
+    "skill:planning-and-task-decomposition": "ordered executable plan for complex goal",
+    "skill:sre-practice": "service reliability operability runbooks ownership",
+    "skill:observability-and-telemetry": "metrics logs traces dashboards alerts",
+    "skill:event-streaming-platform-design": "Kafka topics partitions retention platform",
+    "skill:cdc-and-source-to-stream-ingestion": "change data capture source to stream",
+    "skill:ux-design-principles": "user journeys navigation forms information architecture",
+    "skill:ui-component-design": "reusable components tables modals forms",
+    "skill:krag-ingestion-graph-construction": "evidence anchoring entity resolution graph build",
+    "skill:krag-evaluation-governance": "KRAG quality gates release criteria",
+    "skill:mcp-server-design": "MCP tools resources prompts least privilege",
+    "skill:inter-agent-communication-a2a": "agent cards tasks artefacts A2A hand-off",
+}
+
+
+def _confuser_realistic_cases(pairs: list[dict[str, object]]) -> list[dict[str, object]]:
+    """Emit realistic cases that satisfy confuser-pair validation (preferred expected, confuser excluded)."""
+    cases: list[dict[str, object]] = []
+    seen_pair_ids: set[str] = set()
+    for pair in pairs:
+        pair_id = str(pair.get("id", "")).strip()
+        preferred = str(pair.get("preferred_skill_id", "")).strip()
+        confuser = str(pair.get("confuser_skill_id", "")).strip()
+        if not pair_id or not preferred or not confuser:
+            continue
+        if pair_id in seen_pair_ids:
+            continue
+        seen_pair_ids.add(pair_id)
+        hint = _CONFUSER_QUERY_HINTS.get(
+            preferred, preferred.removeprefix("skill:").replace("-", " ")
+        )
+        cases.append(
+            {
+                "id": f"confuser_{pair_id}",
+                "query": hint,
+                "expected_skill_ids": [preferred],
+                "required_skill_ids": [preferred],
+                "excluded_skill_ids": [confuser],
+                "expect_uncertain": False,
+                "query_source": "confuser_pair",
+                "query_archetype": "confuser",
+                "naturalness": "medium",
+                "promotion_tier": "release",
+                "realistic_tier": True,
+            }
+        )
+    return cases
+
+
 def build_realistic_cases(
     catalogue: list[dict[str, object]],
     journeys_path: Path,
     promoted_ids: frozenset[str],
+    *,
+    pairs: list[dict[str, object]] | None = None,
 ) -> list[dict[str, object]]:
     cases = [
         dict(case)
@@ -282,6 +363,32 @@ def build_realistic_cases(
             }
         )
         seen_queries.add(query)
+    pair_rows = pairs if pairs is not None else load_cases(CONFUSER_PAIRS_PATH)
+    satisfied_pairs: set[tuple[str, str]] = set()
+    seen_ids = {str(case.get("id", "")) for case in cases}
+    for case in cases:
+        expected = {item for item in case.get("expected_skill_ids", []) if isinstance(item, str)}
+        excluded = {item for item in case.get("excluded_skill_ids", []) if isinstance(item, str)}
+        for preferred in expected:
+            for confuser in excluded:
+                satisfied_pairs.add((preferred, confuser))
+    for case in _confuser_realistic_cases(pair_rows):
+        case_id = str(case["id"])
+        if case_id in seen_ids:
+            continue
+        preferred = str(case["expected_skill_ids"][0])
+        confuser = str(case["excluded_skill_ids"][0])
+        if (preferred, confuser) in satisfied_pairs:
+            continue
+        query = str(case["query"])
+        if query in seen_queries:
+            case = dict(case)
+            case["query"] = f"{query} [{case_id}]"
+            query = str(case["query"])
+        cases.append(case)
+        seen_queries.add(query)
+        seen_ids.add(case_id)
+        satisfied_pairs.add((preferred, confuser))
     for case in cases:
         case.setdefault("query_source", "curated")
         case.setdefault("naturalness", "high")
@@ -383,6 +490,7 @@ def generate_tier(
             catalogue,
             REPO_ROOT / "tests" / "fixtures" / "agent_journeys.json",
             promoted_ids,
+            pairs=pairs,
         )
     if tier == "all":
         coverage = build_coverage_cases(
@@ -392,6 +500,7 @@ def generate_tier(
             catalogue,
             REPO_ROOT / "tests" / "fixtures" / "agent_journeys.json",
             promoted_ids,
+            pairs=pairs,
         )
         smoke = build_smoke_cases(catalogue, abstention, promoted_ids)
         return smoke + realistic + coverage + abstention

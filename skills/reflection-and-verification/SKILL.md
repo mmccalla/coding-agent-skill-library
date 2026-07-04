@@ -37,6 +37,10 @@ Critique and repair artefacts using deterministic checks first, then bounded rev
 - `code-review-and-quality` — human or agent review loop
 - `apply-laws-of-ai` — safety gates before claiming completion
 
+## References
+
+- Reflexion: language agents with verbal reinforcement learning: https://arxiv.org/abs/2303.11366
+
 ## Verification
 - [ ] Acceptance criteria are explicit.
 - [ ] Tests or validation checks were run.

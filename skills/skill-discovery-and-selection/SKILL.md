@@ -40,6 +40,10 @@ Select the smallest relevant skill or skill combination and explain why it was c
 - `planning-and-task-decomposition` — multi-step work decomposition
 - `requirements-elicitation` — underspecified requests
 
+## References
+
+- Anthropic — Equipping agents for the real world with Agent Skills: https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
+
 ## Verification
 
 - [ ] `apply-laws-of-ai` execution confirmed.

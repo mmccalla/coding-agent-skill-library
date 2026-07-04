@@ -41,6 +41,11 @@ Task-based usability test, cognitive walkthrough, first-click test, five-second 
 
 For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
+## References
+
+- Nielsen Norman Group — Usability Testing 101: https://www.nngroup.com/articles/usability-testing-101/
+- ISO 9241-11 usability: https://www.iso.org/standard/63500.html
+
 ## Verification
 
 - [ ] User roles and scenarios considered stated.

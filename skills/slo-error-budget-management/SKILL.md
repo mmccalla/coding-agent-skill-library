@@ -91,7 +91,7 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 
 ## References
 
-- Google SRE Workbook — Alerting on SLOs (multi-window, multi-burn-rate): https://sre.google/workbook/alerting-on-slos/
+- Google SRE Workbook — Alerting on SLOs: https://sre.google/workbook/alerting-on-slos/
 - Google SRE Book — Service Level Objectives: https://sre.google/sre-book/service-level-objectives/
 
 ## Verification

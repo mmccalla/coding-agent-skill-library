@@ -47,7 +47,10 @@ Use these skills when the task shape matches:
 - `skill-discovery-and-selection`, `requirements-elicitation`, `idea-refinement`, `spec-driven-development`, `incremental-implementation`, `context-engineering`, `source-driven-development` and `uncertainty-driven-development` for the workflow spine from session start through spec and implementation.
 - **`apply-laws-of-ai` first at every session** — mandatory immutable baseline before any other skill.
 - Agentic workflow and control skills when building or modifying agents, tools, MCP servers, A2A integrations, RAG systems, guardrails, memory, evaluation, recovery or monitoring.
-- Architecture skills when working on capabilities, value streams, processes, operating models, data models, data products, data contracts, metadata, governance, quality, lineage, event-driven architecture, CDC, streams, real-time data or message-based enterprise integration (EIP).
+- Architecture skills when working on capabilities, value streams, processes, operating models, solution/platform architecture, data models, data products, data contracts, metadata, governance, quality, lineage, event-driven architecture, CDC, streams, real-time data or message-based enterprise integration (EIP).
+- `threat-modeling`, `secure-sdlc-and-supply-chain`, `ai-model-governance` and `risk-management` for security design, supply chain, model governance and risk registers.
+- `api-design-and-lifecycle`, `solution-architecture` and `cloud-platform-architecture` for APIs, solution options/NFRs and landing zones.
+- `test-strategy`, `technical-debt-management`, `finops-practice`, `performance-engineering` and `infrastructure-as-code` for test approach, debt, platform cost, performance and IaC.
 - `krag-system-design`, `krag-ingestion-graph-construction`, `krag-retrieval-answering` and `krag-evaluation-governance` for end-to-end KRAG system development and delivery.
 - `browser-testing-with-devtools`, `code-review-and-quality`, `git-workflow-and-versioning`, `ci-cd-and-automation`, `documentation-and-adrs`, `deprecation-and-migration` and `shipping-and-launch` for browser evidence, review, delivery automation, durable documentation and release readiness.
 
@@ -63,7 +66,9 @@ For data architecture, apply DAMA-DMBOK2-style discipline across governance, arc
 
 Use event-driven and real-time data skills to define business events, event schemas, streaming platforms, CDC, stream processing, event governance, lineage and real-time operability.
 
-Use enterprise-integration-patterns skills for message-based integration style, channels, message construction, routing, transformation, endpoints, messaging operations and EIP validation.
+Use enterprise-integration-patterns skills for message-based integration style, channels, message construction, routing, transformation, endpoints, messaging operations, EIP validation and API lifecycle (OpenAPI).
+
+Use solution-and-platform-architecture skills for solution options/NFRs and shared cloud platform/landing-zone design.
 
 When the task is specifically about building, delivering or governing a KRAG system, also load the smallest relevant KRAG skill from the flat `skills/` directory using the KRAG grouping in `skills/PACK_METADATA.json` and `skills/MANIFEST.md`.
 
@@ -114,6 +119,7 @@ Use the smallest relevant set of skills:
 - `toil-reduction-and-automation` for safe operational automation.
 - `release-engineering-and-progressive-delivery` for safe deployment, canaries, rollback and feature flags.
 - `dora-four-keys` for DevOps Research and Assessment delivery metrics (classic Four Keys plus rework rate).
+- `secure-sdlc-and-supply-chain`, `finops-practice`, `performance-engineering` and `infrastructure-as-code` for secure delivery, platform cost, performance and IaC.
 
 Before changing reliability-sensitive code, identify user impact, service objective, telemetry evidence, rollback path, tests, operational owner and residual risk.
 

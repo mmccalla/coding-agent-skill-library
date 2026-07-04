@@ -55,6 +55,10 @@ During repository work, prioritise in this order unless instructed otherwise:
 - Do not let an LLM invent priorities without explicit criteria.
 - Escalate conflicts between business value, safety and user instructions.
 
+## References
+
+- RICE prioritisation (Intercom): https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/
+
 ## Verification
 - [ ] Candidate actions are listed.
 - [ ] Criteria and weights are explicit.

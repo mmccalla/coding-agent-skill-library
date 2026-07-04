@@ -64,6 +64,106 @@
     "promotion_tier": "release"
   },
   {
+    "id": "coverage_ai_model_governance_task",
+    "query": "When should I use model-governance for governs ai models through inventory, purpose, risk tier, approval, monitoring, drift, kill-switch and retirement?",
+    "expected_skill_ids": [
+      "skill:ai-model-governance"
+    ],
+    "required_skill_ids": [
+      "skill:ai-model-governance"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_ai_model_governance_alias",
+    "query": "When should I use model-governance for this kind of work?",
+    "expected_skill_ids": [
+      "skill:ai-model-governance"
+    ],
+    "required_skill_ids": [
+      "skill:ai-model-governance"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_ai_model_governance_confuser",
+    "query": "Choose ai model governance (not a related substitute) for: governs ai models through inventory, purpose, risk tier, approval, monitoring, drift, kill-switch and retirement",
+    "expected_skill_ids": [
+      "skill:ai-model-governance"
+    ],
+    "required_skill_ids": [
+      "skill:ai-model-governance"
+    ],
+    "excluded_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_api_design_and_lifecycle_task",
+    "query": "When should I use openapi-design for designs http/service apis with openapi, resource models, authz, versioning, deprecation and contract tests?",
+    "expected_skill_ids": [
+      "skill:api-design-and-lifecycle"
+    ],
+    "required_skill_ids": [
+      "skill:api-design-and-lifecycle"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_api_design_and_lifecycle_alias",
+    "query": "When should I use openapi-design for this kind of work?",
+    "expected_skill_ids": [
+      "skill:api-design-and-lifecycle"
+    ],
+    "required_skill_ids": [
+      "skill:api-design-and-lifecycle"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_api_design_and_lifecycle_confuser",
+    "query": "Choose api design and lifecycle (not a related substitute) for: designs http/service apis with openapi, resource models, authz, versioning, deprecation and contract tests",
+    "expected_skill_ids": [
+      "skill:api-design-and-lifecycle"
+    ],
+    "required_skill_ids": [
+      "skill:api-design-and-lifecycle"
+    ],
+    "excluded_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
     "id": "coverage_apply_laws_of_ai_task",
     "query": "When should I use ai-safety-laws for mandatory immutable baseline applying an asimov-inspired hierarchy of ai safety laws?",
     "expected_skill_ids": [
@@ -320,6 +420,56 @@
     "promotion_tier": "release"
   },
   {
+    "id": "coverage_cloud_platform_architecture_task",
+    "query": "When should I use landing-zone-design for designs cloud landing zones, tenancy, shared services and network or identity boundaries?",
+    "expected_skill_ids": [
+      "skill:cloud-platform-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:cloud-platform-architecture"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_cloud_platform_architecture_alias",
+    "query": "When should I use landing-zone-design for this kind of work?",
+    "expected_skill_ids": [
+      "skill:cloud-platform-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:cloud-platform-architecture"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_cloud_platform_architecture_confuser",
+    "query": "Choose cloud platform architecture (not a related substitute) for: designs cloud landing zones, tenancy, shared services and network or identity boundaries",
+    "expected_skill_ids": [
+      "skill:cloud-platform-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:cloud-platform-architecture"
+    ],
+    "excluded_skill_ids": [
+      "skill:solution-architecture"
+    ],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
     "id": "coverage_code_review_and_quality_task",
     "query": "When should I follow the code-review-and-quality practice for use when reviewing code before merge to assess correctness, tests, maintainability, security and user impact?",
     "expected_skill_ids": [
@@ -444,6 +594,24 @@
     "expect_uncertain": false,
     "query_source": "archetype",
     "query_archetype": "direct",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_data_contract_design_confuser",
+    "query": "Choose data contract design (not a related substitute) for: defines producer-consumer contracts for schema, semantics, quality, compatibility and operations",
+    "expected_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "excluded_skill_ids": [
+      "skill:api-design-and-lifecycle"
+    ],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "confuser",
     "naturalness": "medium",
     "promotion_tier": "release"
   },
@@ -928,6 +1096,24 @@
     "promotion_tier": "release"
   },
   {
+    "id": "coverage_evaluation_and_monitoring_confuser",
+    "query": "Choose evaluation and monitoring (not a related substitute) for: use when measuring coding-agent quality, regression risk, latency, cost, reliability, safety, drift, or production performance",
+    "expected_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "required_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "excluded_skill_ids": [
+      "skill:ai-model-governance"
+    ],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
     "id": "coverage_event_driven_architecture_task",
     "query": "When should I follow the event-driven-architecture practice for designs event-driven systems with asynchronous flows, brokers, producers, consumers and contracts?",
     "expected_skill_ids": [
@@ -1102,6 +1288,56 @@
     "expect_uncertain": false,
     "query_source": "archetype",
     "query_archetype": "direct",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_finops_practice_task",
+    "query": "When should I use finops for applies finops inform, optimise and operate practices for cloud and agent platform cost?",
+    "expected_skill_ids": [
+      "skill:finops-practice"
+    ],
+    "required_skill_ids": [
+      "skill:finops-practice"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_finops_practice_alias",
+    "query": "When should I use finops for this kind of work?",
+    "expected_skill_ids": [
+      "skill:finops-practice"
+    ],
+    "required_skill_ids": [
+      "skill:finops-practice"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_finops_practice_confuser",
+    "query": "Choose finops practice (not a related substitute) for: applies finops inform, optimise and operate practices for cloud and agent platform cost",
+    "expected_skill_ids": [
+      "skill:finops-practice"
+    ],
+    "required_skill_ids": [
+      "skill:finops-practice"
+    ],
+    "excluded_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "confuser",
     "naturalness": "medium",
     "promotion_tier": "release"
   },
@@ -1394,6 +1630,56 @@
     "expect_uncertain": false,
     "query_source": "archetype",
     "query_archetype": "direct",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_infrastructure_as_code_task",
+    "query": "When should I use iac for manages declarative infrastructure with plan/apply workflows, drift control, secrets hygiene and review?",
+    "expected_skill_ids": [
+      "skill:infrastructure-as-code"
+    ],
+    "required_skill_ids": [
+      "skill:infrastructure-as-code"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_infrastructure_as_code_alias",
+    "query": "When should I use iac for this kind of work?",
+    "expected_skill_ids": [
+      "skill:infrastructure-as-code"
+    ],
+    "required_skill_ids": [
+      "skill:infrastructure-as-code"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_infrastructure_as_code_confuser",
+    "query": "Choose infrastructure as code (not a related substitute) for: manages declarative infrastructure with plan/apply workflows, drift control, secrets hygiene and review",
+    "expected_skill_ids": [
+      "skill:infrastructure-as-code"
+    ],
+    "required_skill_ids": [
+      "skill:infrastructure-as-code"
+    ],
+    "excluded_skill_ids": [
+      "skill:ci-cd-and-automation"
+    ],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "confuser",
     "naturalness": "medium",
     "promotion_tier": "release"
   },
@@ -2384,6 +2670,56 @@
     "promotion_tier": "release"
   },
   {
+    "id": "coverage_performance_engineering_task",
+    "query": "When should I use performance-testing for improves system latency and throughput using slis, profiling, load tests and capacity planning?",
+    "expected_skill_ids": [
+      "skill:performance-engineering"
+    ],
+    "required_skill_ids": [
+      "skill:performance-engineering"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_performance_engineering_alias",
+    "query": "When should I use performance-testing for this kind of work?",
+    "expected_skill_ids": [
+      "skill:performance-engineering"
+    ],
+    "required_skill_ids": [
+      "skill:performance-engineering"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_performance_engineering_confuser",
+    "query": "Choose performance engineering (not a related substitute) for: improves system latency and throughput using slis, profiling, load tests and capacity planning",
+    "expected_skill_ids": [
+      "skill:performance-engineering"
+    ],
+    "required_skill_ids": [
+      "skill:performance-engineering"
+    ],
+    "excluded_skill_ids": [
+      "skill:slo-error-budget-management"
+    ],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
     "id": "coverage_planning_and_task_decomposition_task",
     "query": "When should I follow the planning-and-task-decomposition practice for use when a coding request is too complex for a single edit or command and must be decomposed into ordered, dependency-aware implementation steps?",
     "expected_skill_ids": [
@@ -2690,6 +3026,74 @@
     "promotion_tier": "release"
   },
   {
+    "id": "coverage_resource_aware_optimization_confuser",
+    "query": "Choose resource aware optimization (not a related substitute) for: use when an agent must balance quality, cost, latency, compute, memory, model choice, bandwidth, context budget, or service availability",
+    "expected_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "required_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "excluded_skill_ids": [
+      "skill:finops-practice"
+    ],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_risk_management_task",
+    "query": "When should I use risk-register for identifies risks, scores likelihood and impact, selects treatment, assigns owners and review cadence?",
+    "expected_skill_ids": [
+      "skill:risk-management"
+    ],
+    "required_skill_ids": [
+      "skill:risk-management"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_risk_management_alias",
+    "query": "When should I use risk-register for this kind of work?",
+    "expected_skill_ids": [
+      "skill:risk-management"
+    ],
+    "required_skill_ids": [
+      "skill:risk-management"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_risk_management_confuser",
+    "query": "Choose risk management (not a related substitute) for: identifies risks, scores likelihood and impact, selects treatment, assigns owners and review cadence",
+    "expected_skill_ids": [
+      "skill:risk-management"
+    ],
+    "required_skill_ids": [
+      "skill:risk-management"
+    ],
+    "excluded_skill_ids": [
+      "skill:prioritization"
+    ],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
     "id": "coverage_routing_task",
     "query": "When should I follow the routing practice for use when implementing conditional control flow in an agent or coding workflow, including intent classification, tool selection, sub-agent selection, escalation, or language/framework-specific dispatch?",
     "expected_skill_ids": [
@@ -2750,6 +3154,56 @@
     "expect_uncertain": false,
     "query_source": "archetype",
     "query_archetype": "direct",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_secure_sdlc_and_supply_chain_task",
+    "query": "When should I use secure-sdlc for applies nist ssdf (sp 800-218) secure development and supply-chain controls including sbom, pinning, secrets, sast and mcp/a2a integrity?",
+    "expected_skill_ids": [
+      "skill:secure-sdlc-and-supply-chain"
+    ],
+    "required_skill_ids": [
+      "skill:secure-sdlc-and-supply-chain"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_secure_sdlc_and_supply_chain_alias",
+    "query": "When should I use secure-sdlc for this kind of work?",
+    "expected_skill_ids": [
+      "skill:secure-sdlc-and-supply-chain"
+    ],
+    "required_skill_ids": [
+      "skill:secure-sdlc-and-supply-chain"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_secure_sdlc_and_supply_chain_confuser",
+    "query": "Choose secure sdlc and supply chain (not a related substitute) for: applies nist ssdf (sp 800-218) secure development and supply-chain controls including sbom, pinning, secrets, sast and mcp/a2a integrity",
+    "expected_skill_ids": [
+      "skill:secure-sdlc-and-supply-chain"
+    ],
+    "required_skill_ids": [
+      "skill:secure-sdlc-and-supply-chain"
+    ],
+    "excluded_skill_ids": [
+      "skill:ci-cd-and-automation"
+    ],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "confuser",
     "naturalness": "medium",
     "promotion_tier": "release"
   },
@@ -2878,6 +3332,56 @@
     "expect_uncertain": false,
     "query_source": "archetype",
     "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_solution_architecture_task",
+    "query": "When should I use solution-design for shapes solution architecture with context, nfrs, options, decisions, c4-style views, risks and fitness functions?",
+    "expected_skill_ids": [
+      "skill:solution-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:solution-architecture"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_solution_architecture_alias",
+    "query": "When should I use solution-design for this kind of work?",
+    "expected_skill_ids": [
+      "skill:solution-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:solution-architecture"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_solution_architecture_confuser",
+    "query": "Choose solution architecture (not a related substitute) for: shapes solution architecture with context, nfrs, options, decisions, c4-style views, risks and fitness functions",
+    "expected_skill_ids": [
+      "skill:solution-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:solution-architecture"
+    ],
+    "excluded_skill_ids": [
+      "skill:spec-driven-development"
+    ],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "confuser",
     "naturalness": "medium",
     "promotion_tier": "release"
   },
@@ -3152,6 +3656,156 @@
     ],
     "excluded_skill_ids": [
       "skill:reflection-and-verification"
+    ],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_technical_debt_management_task",
+    "query": "When should I use tech-debt for inventories technical debt, estimates interest, prioritises paydown and tracks remediation?",
+    "expected_skill_ids": [
+      "skill:technical-debt-management"
+    ],
+    "required_skill_ids": [
+      "skill:technical-debt-management"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_technical_debt_management_alias",
+    "query": "When should I use tech-debt for this kind of work?",
+    "expected_skill_ids": [
+      "skill:technical-debt-management"
+    ],
+    "required_skill_ids": [
+      "skill:technical-debt-management"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_technical_debt_management_confuser",
+    "query": "Choose technical debt management (not a related substitute) for: inventories technical debt, estimates interest, prioritises paydown and tracks remediation",
+    "expected_skill_ids": [
+      "skill:technical-debt-management"
+    ],
+    "required_skill_ids": [
+      "skill:technical-debt-management"
+    ],
+    "excluded_skill_ids": [
+      "skill:prioritization"
+    ],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_test_strategy_task",
+    "query": "When should I use testing-strategy for defines risk-based test strategy, test pyramid, levels, automation versus manual balance and exit criteria?",
+    "expected_skill_ids": [
+      "skill:test-strategy"
+    ],
+    "required_skill_ids": [
+      "skill:test-strategy"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_test_strategy_alias",
+    "query": "When should I use testing-strategy for this kind of work?",
+    "expected_skill_ids": [
+      "skill:test-strategy"
+    ],
+    "required_skill_ids": [
+      "skill:test-strategy"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_test_strategy_confuser",
+    "query": "Choose test strategy (not a related substitute) for: defines risk-based test strategy, test pyramid, levels, automation versus manual balance and exit criteria",
+    "expected_skill_ids": [
+      "skill:test-strategy"
+    ],
+    "required_skill_ids": [
+      "skill:test-strategy"
+    ],
+    "excluded_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_threat_modeling_task",
+    "query": "When should I use threat-modelling for identifies assets, trust boundaries, threats and mitigations for systems and agents?",
+    "expected_skill_ids": [
+      "skill:threat-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:threat-modeling"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_threat_modeling_alias",
+    "query": "When should I use threat-modelling for this kind of work?",
+    "expected_skill_ids": [
+      "skill:threat-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:threat-modeling"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_threat_modeling_confuser",
+    "query": "Choose threat modeling (not a related substitute) for: identifies assets, trust boundaries, threats and mitigations for systems and agents",
+    "expected_skill_ids": [
+      "skill:threat-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:threat-modeling"
+    ],
+    "excluded_skill_ids": [
+      "skill:guardrails-safety-patterns"
     ],
     "expect_uncertain": false,
     "query_source": "archetype",

@@ -46,6 +46,10 @@ Residual uncertainty: <what remains unknown>
 
 Keep the log short. Its purpose is to expose decision quality, not to create process theatre.
 
+## References
+
+- ISO 31000 risk management: https://www.iso.org/iso-31000-risk-management.html
+
 ## Verification
 
 - [ ] Doubts, assumptions and failure modes logged.

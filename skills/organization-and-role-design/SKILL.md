@@ -48,8 +48,8 @@ For a shared streaming platform, assign one accountable platform owner, domain e
 
 ## References
 
-- Business Architecture Guild BIZBOK (capabilities, value streams, organisation, information): https://www.businessarchitectureguild.org/
-- The Open Group TOGAF Standard (business architecture domain): https://www.opengroup.org/togaf
+- Business Architecture Guild — BIZBOK (organisation mapping): https://www.businessarchitectureguild.org/
+- The Open Group TOGAF — Organization Map: https://www.opengroup.org/togaf
 
 ## Verification
 

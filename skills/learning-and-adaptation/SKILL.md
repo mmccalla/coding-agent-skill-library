@@ -36,6 +36,10 @@ Improve agent behaviour through measured, versioned, reversible changes rather t
 - Require deterministic tests for self-edited code.
 - Record cost, latency and failure rate, not only success rate.
 
+## References
+
+- NIST AI RMF (Govern / Measure / Manage continuous improvement): https://www.nist.gov/itl/ai-risk-management-framework
+
 ## Verification
 - [ ] Metric and benchmark are defined.
 - [ ] Improvement data is captured with provenance.

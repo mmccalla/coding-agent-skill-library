@@ -38,6 +38,10 @@ Turn complex objectives into ordered, dependency-aware steps with explicit valid
 - `spec-driven-development` — decision-complete spec before coding
 - `skill-discovery-and-selection` — select supporting skills per step
 
+## References
+
+- ReAct: Synergizing Reasoning and Acting in Language Models: https://arxiv.org/abs/2210.03629
+
 ## Verification
 - [ ] Objective and acceptance criteria are clear.
 - [ ] Plan steps are executable and ordered.

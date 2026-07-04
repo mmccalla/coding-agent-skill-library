@@ -33,6 +33,10 @@ Deliver the simplest maintainable solution that satisfies the current requiremen
 - Prefer readable duplication over premature abstraction when the duplication is small and likely to evolve differently.
 - Preserve existing public behaviour unless the requested change explicitly requires otherwise.
 
+## References
+
+- IEEE SWEBOK (software design principles): https://www.computer.org/education/bodies-of-knowledge/software-engineering
+
 ## Verification
 
 - [ ] Simplification described with rationale.

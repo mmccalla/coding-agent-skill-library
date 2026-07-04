@@ -50,6 +50,11 @@ Create a maintainable domain model that reflects the business language, protects
 - `spec-driven-development` — bounded context in specs
 - `conceptual-data-modeling` — link domain concepts to data models
 
+## References
+
+- Domain-Driven Design Reference (domainlanguage.com): https://www.domainlanguage.com/ddd/reference/
+- Martin Fowler — Domain-Driven Design: https://martinfowler.com/bliki/DomainDrivenDesign.html
+
 ## Verification
 
 - [ ] Bounded context and key domain terms stated.

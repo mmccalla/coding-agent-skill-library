@@ -117,6 +117,18 @@ SKILL_PRIMARY_INTENTS: dict[str, str] = {
     "message-endpoint-design": "feature-implementation",
     "messaging-system-management": "post-artefact-review",
     "eip-integration-validation": "post-artefact-review",
+    "threat-modeling": "security-hardening",
+    "secure-sdlc-and-supply-chain": "security-hardening",
+    "api-design-and-lifecycle": "spec-before-build",
+    "ai-model-governance": "post-artefact-review",
+    "solution-architecture": "plan-before-build",
+    "test-strategy": "plan-before-build",
+    "risk-management": "plan-before-build",
+    "finops-practice": "plan-before-build",
+    "cloud-platform-architecture": "plan-before-build",
+    "performance-engineering": "post-artefact-review",
+    "infrastructure-as-code": "ci-pipeline-change",
+    "technical-debt-management": "plan-before-build",
 }
 
 GOVERNED_CONSTRAINT_IDS: frozenset[str] = frozenset(

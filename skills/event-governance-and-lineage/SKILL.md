@@ -44,6 +44,12 @@ Do not rely on tribal knowledge for event meaning.
 
 For each shared event, capture owner, business definition, source capability, producer, consumers, schema version, classification, retention, quality checks, lineage links and support contact. A catalogue entry is not complete until consumers can understand meaning, sensitivity, replay constraints and who approves breaking changes.
 
+## References
+
+- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
+- EDM Council CDMC (Cloud Data Management Capabilities): https://edmcouncil.org/frameworks/cdmc/
+- CloudEvents specification: https://cloudevents.io/
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

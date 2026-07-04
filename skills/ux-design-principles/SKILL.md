@@ -41,6 +41,10 @@ Create user-facing workflows that help users complete meaningful tasks with mini
 
 For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
+## References
+
+- Nielsen Norman Group — 10 Usability Heuristics: https://www.nngroup.com/articles/ten-usability-heuristics/
+
 ## Verification
 
 - [ ] User role and primary task stated.

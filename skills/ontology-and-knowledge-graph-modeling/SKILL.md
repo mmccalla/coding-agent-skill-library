@@ -81,6 +81,14 @@ Pass only if:
 - Using generic relationships where a domain predicate is needed.
 - Ignoring negative tests, adversarial prompts, stale sources or contradictory evidence.
 
+## References
+
+- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
+- W3C RDF: https://www.w3.org/RDF/
+- W3C OWL 2: https://www.w3.org/TR/owl2-overview/
+- W3C SHACL: https://www.w3.org/TR/shacl/
+- W3C SPARQL 1.1: https://www.w3.org/TR/sparql11-query/
+
 ## Verification
 
 - [ ] Ontology or graph artefacts produced with key decisions documented.

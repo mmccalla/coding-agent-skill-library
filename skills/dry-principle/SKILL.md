@@ -32,6 +32,10 @@ Remove duplication of knowledge and behaviour where it creates maintenance risk,
 - Prefer explicit duplication over a misleading abstraction.
 - Centralise business rules, validation rules, schemas and security policies when they must remain consistent.
 
+## References
+
+- C2 Wiki — Don't Repeat Yourself: https://wiki.c2.com/?DontRepeatYourself
+
 ## Verification
 
 - [ ] Duplication removed or deliberately retained with reason.

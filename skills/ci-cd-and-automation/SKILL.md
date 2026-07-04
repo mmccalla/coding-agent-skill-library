@@ -32,6 +32,11 @@ Keep automation safe, observable and least-privilege while still reducing manual
 
 When adding a validation workflow, keep read permissions by default, pin or justify third-party actions, separate test and deploy jobs, and make failures actionable. A safe automation change should show what runs, what credentials it receives, how it reports failure and how maintainers can rerun or roll back the change.
 
+## References
+
+- Continuous Delivery (continuousdelivery.com): https://continuousdelivery.com/
+- GitHub Actions — Security hardening: https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
+
 ## Verification
 
 - [ ] Pipeline or automation change scope stated.

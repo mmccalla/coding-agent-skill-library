@@ -27,12 +27,20 @@ STANDARDS_GROUNDING: dict[str, tuple[str, ...]] = {
         r"WCAG\s*2\.2",
         r"https?://www\.w3\.org/TR/WCAG22",
     ),
+    "ai-model-governance": (r"AI RMF|NIST", r"inventory|risk tier", r"https?://"),
+    "api-design-and-lifecycle": (r"OpenAPI", r"https?://"),
     "business-capability-modeling": (r"BIZBOK", r"https?://"),
     "business-information-concept-modeling": (r"BIZBOK", r"https?://"),
     "capability-maturity-assessment": (r"BIZBOK", r"https?://"),
+    "cloud-platform-architecture": (r"landing zone|tenancy", r"https?://"),
     "data-contract-design": (
         r"ODCS|Open Data Contract Standard",
         r"https?://bitol-io\.github\.io/open-data-contract-standard|https?://github\.com/bitol-io/open-data-contract-standard",
+    ),
+    "data-security-and-privacy-architecture": (
+        r"DPIA",
+        r"data subject|DSAR|erasure",
+        r"https?://",
     ),
     "dora-four-keys": (
         r"rework rate",
@@ -47,10 +55,18 @@ STANDARDS_GROUNDING: dict[str, tuple[str, ...]] = {
     ),
     "event-modeling": (r"CloudEvents|AsyncAPI|BIZBOK|event", r"https?://"),
     "event-streaming-platform-design": (r"CloudEvents|AsyncAPI", r"https?://"),
+    "finops-practice": (
+        r"FinOps",
+        r"Inform",
+        r"Optimise|Optimize",
+        r"unit economics|allocation|showback|chargeback",
+        r"https?://www\.finops\.org|https?://",
+    ),
     "human-in-the-loop": (
         r"outside the (?:model|LLM)|architectural enforcement|policy engine|dispatcher",
         r"https?://|OWASP",
     ),
+    "infrastructure-as-code": (r"declarative|plan/apply|IaC", r"https?://"),
     "integration-message-construction": (
         r"CloudEvents|EIP|Enterprise Integration Patterns",
         r"https?://",
@@ -58,20 +74,28 @@ STANDARDS_GROUNDING: dict[str, tuple[str, ...]] = {
     "inter-agent-communication-a2a": (
         r"https?://a2a-protocol\.org|https?://github\.com/a2aproject/A2A",
     ),
+    "logical-data-modeling": (r"physical", r"index|partition", r"https?://"),
     "operating-model-design": (r"BIZBOK", r"https?://"),
     "organization-and-role-design": (r"BIZBOK|RACI", r"https?://"),
+    "performance-engineering": (r"latency|throughput", r"profil", r"https?://"),
     "process-modeling": (r"BPMN|BIZBOK", r"https?://"),
+    "risk-management": (r"risk register|treatment", r"https?://"),
     "schema-registry-and-contracts": (
         r"CloudEvents",
         r"AsyncAPI",
         r"https?://",
     ),
+    "secure-sdlc-and-supply-chain": (r"SSDF|800-218", r"SBOM", r"https?://"),
     "slo-error-budget-management": (
         r"multi-window|multi window",
         r"burn rate",
         r"https?://sre\.google",
     ),
+    "solution-architecture": (r"NFR|non-functional", r"option", r"https?://"),
     "strategy-to-execution-traceability": (r"BIZBOK", r"https?://"),
+    "technical-debt-management": (r"debt", r"paydown|pay-down|interest", r"https?://"),
+    "test-strategy": (r"test pyramid|risk-based", r"https?://"),
+    "threat-modeling": (r"STRIDE|threat model", r"trust boundary", r"OWASP", r"https?://"),
     "value-stream-modeling": (r"BIZBOK", r"https?://"),
 }
 

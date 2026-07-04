@@ -30,6 +30,11 @@ Verify user-facing behaviour with DevTools evidence so frontend or browser issue
 - Do not skip console or network checks when a browser bug is involved.
 - Do not use performance traces without first reproducing the user-visible problem.
 
+## References
+
+- Chrome DevTools documentation: https://developer.chrome.com/docs/devtools/
+- W3C WebDriver: https://www.w3.org/TR/webdriver2/
+
 ## Verification
 
 - [ ] Browser flows exercised listed.

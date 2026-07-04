@@ -41,6 +41,12 @@ Apply DAMA-DMBOK2-style separation of data governance, architecture, modelling, 
 ## Avoid
 Do not call a dataset a product without ownership, consumers and operating expectations.
 
+## References
+
+- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
+- EDM Council CDMC (Cloud Data Management Capabilities): https://edmcouncil.org/frameworks/cdmc/
+- Data Mesh principles (Martin Fowler / Dehghani): https://martinfowler.com/articles/data-mesh-principles.html
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

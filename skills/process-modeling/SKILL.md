@@ -49,8 +49,8 @@ For invoice exception handling, map the start event, supplier operations swimlan
 
 ## References
 
-- Business Architecture Guild BIZBOK: https://www.businessarchitectureguild.org/
 - OMG BPMN 2.0: https://www.omg.org/spec/BPMN/
+- Business Architecture Guild — BIZBOK (process linkage): https://www.businessarchitectureguild.org/
 
 ## Verification
 

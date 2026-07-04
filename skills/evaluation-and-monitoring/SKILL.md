@@ -43,6 +43,11 @@ For coding agents, treat tests as first-class evaluations. Add targeted regressi
 - Do not optimise a single metric if it harms safety or reliability.
 - Alert on drift, unusual tool behaviour and repeated recovery failures.
 
+## References
+
+- NIST AI RMF — Measure function: https://www.nist.gov/itl/ai-risk-management-framework
+- Google SRE Book — Monitoring Distributed Systems: https://sre.google/sre-book/monitoring-distributed-systems/
+
 ## Verification
 - [ ] Baseline exists.
 - [ ] Metrics are tied to objectives.

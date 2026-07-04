@@ -48,8 +48,8 @@ For a retail returns programme, model `Manage Returns` as the capability and dec
 
 ## References
 
-- Business Architecture Guild BIZBOK (capabilities, value streams, organisation, information): https://www.businessarchitectureguild.org/
-- The Open Group TOGAF Standard (business architecture domain): https://www.opengroup.org/togaf
+- Business Architecture Guild — BIZBOK (capabilities): https://www.businessarchitectureguild.org/
+- The Open Group TOGAF — Business Architecture: https://www.opengroup.org/togaf
 
 ## Verification
 
