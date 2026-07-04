@@ -8,6 +8,7 @@ Portable **111-skill** library for coding agents, plus an optional local **Neo4j
 | --- | --- |
 | Use skills in my agent | `AGENTS.md` → `skills/apply-laws-of-ai/SKILL.md` → `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` |
 | Get running locally (Docker, MCP) | [`skills_docs/GETTING_STARTED.md`](skills_docs/GETTING_STARTED.md) |
+| Configure Cursor (MCP vs filesystem) | [`skills_docs/CURSOR_IDE_SETUP.md`](skills_docs/CURSOR_IDE_SETUP.md) |
 | Copy skills into another repo | `skills_docs/DROP_IN_BOOTSTRAP.md` |
 | Operate or troubleshoot the KG | [`skills_docs/SKILLS_KG_MCP_RUNBOOK.md`](skills_docs/SKILLS_KG_MCP_RUNBOOK.md) |
 | See KRAG status and roadmap | [`skills_docs/krag/STATUS.md`](skills_docs/krag/STATUS.md) |
