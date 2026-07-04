@@ -9,6 +9,7 @@ aliases:
 # Shipping and Launch
 
 ## When to use
+
 Use this skill when a change is ready to leave the repository, reach users or be published as part of a release or rollout.
 
 ## Objective
@@ -37,7 +38,7 @@ Before publishing a skill-library release, confirm the branch is merged, CI pass
 
 ## References
 
-- Google SRE Book — Release Engineering: https://sre.google/sre-book/release-engineering/
+- [Google SRE Book — Release Engineering](https://sre.google/sre-book/release-engineering/)
 
 ## Verification
 

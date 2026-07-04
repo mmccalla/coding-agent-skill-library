@@ -79,8 +79,8 @@ Maintain a visible technical-debt inventory with estimated interest, explicit pr
 
 ## References
 
-- Martin Fowler — TechnicalDebt: https://martinfowler.com/bliki/TechnicalDebt.html
-- Martin Fowler — TechnicalDebtQuadrant: https://martinfowler.com/bliki/TechnicalDebtQuadrant.html
+- [Martin Fowler — TechnicalDebt](https://martinfowler.com/bliki/TechnicalDebt.html)
+- [Martin Fowler — TechnicalDebtQuadrant](https://martinfowler.com/bliki/TechnicalDebtQuadrant.html)
 
 ## Verification
 

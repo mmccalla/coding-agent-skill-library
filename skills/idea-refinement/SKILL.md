@@ -9,6 +9,7 @@ aliases:
 # Idea Refine
 
 ## When to use
+
 Use this skill when the user has an early-stage concept, a loose feature idea, or a partial proposal that needs structured clarification before build work begins.
 
 ## Objective
@@ -34,7 +35,7 @@ Turn a vague idea into a focused proposal with a clear problem statement, option
 
 ## References
 
-- IDEO Design Thinking: https://designthinking.ideo.com/
+- [IDEO Design Thinking](https://designthinking.ideo.com/)
 
 ## Verification
 

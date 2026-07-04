@@ -39,9 +39,10 @@ Coordinate specialised agents with explicit roles, schemas, orchestration, and t
 
 ## References
 
-- Agent2Agent (A2A) Protocol: https://a2a-protocol.org/v1.0.0/
+- [Agent2Agent (A2A) Protocol](https://a2a-protocol.org/v1.0.0/)
 
 ## Verification
+
 - [ ] Roles and responsibilities are non-overlapping.
 - [ ] Communication schema is explicit.
 - [ ] Orchestration pattern is documented.

@@ -6,6 +6,7 @@ description: Use when designing or changing build, test or deployment automation
 # CI/CD and Automation
 
 ## When to use
+
 Use this skill when modifying pipelines, build automation, release jobs, deployment gates or other automation that can change delivery behaviour.
 
 ## Objective
@@ -34,8 +35,8 @@ When adding a validation workflow, keep read permissions by default, pin or just
 
 ## References
 
-- Continuous Delivery (continuousdelivery.com): https://continuousdelivery.com/
-- GitHub Actions — Security hardening: https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions
+- [Continuous Delivery (continuousdelivery.com)](https://continuousdelivery.com/)
+- [GitHub Actions — Security hardening](https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions)
 
 ## Verification
 
@@ -43,4 +44,3 @@ When adding a validation workflow, keep read permissions by default, pin or just
 - [ ] Permissions and safety controls preserved.
 - [ ] Tests or checks run reported.
 - [ ] Rollback path and residual delivery risk noted.
-

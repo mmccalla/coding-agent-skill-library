@@ -87,8 +87,8 @@ Establish measurable latency and throughput SLIs, find bottlenecks through profi
 
 ## References
 
-- Microsoft Azure Well-Architected — Performance testing: https://learn.microsoft.com/en-us/azure/architecture/framework/scalability/performance-test
-- Brendan Gregg — Systems Performance Methodologies: https://www.brendangregg.com/methodology.html
+- [Microsoft Azure Well-Architected — Performance testing](https://learn.microsoft.com/en-us/azure/architecture/framework/scalability/performance-test)
+- [Brendan Gregg — Systems Performance Methodologies](https://www.brendangregg.com/methodology.html)
 
 ## Verification
 

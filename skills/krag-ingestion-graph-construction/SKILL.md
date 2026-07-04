@@ -78,8 +78,8 @@ Return ingestion design, graph schema changes, validation rules, idempotency str
 
 ## References
 
-- Neo4j documentation — data import and modeling: https://neo4j.com/docs/
-- W3C PROV-O (provenance): https://www.w3.org/TR/prov-o/
+- [Neo4j documentation — data import and modeling](https://neo4j.com/docs/)
+- [W3C PROV-O (provenance)](https://www.w3.org/TR/prov-o/)
 
 ## Verification
 

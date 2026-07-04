@@ -9,6 +9,7 @@ aliases:
 # SOLID Principles
 
 ## When to use
+
 Use this skill when designing or refactoring classes, modules, services, interfaces, dependency boundaries, plug-ins, tools, agents, MCP servers or A2A components.
 
 ## Objective
@@ -36,8 +37,8 @@ Improve maintainability and testability by ensuring code has clear responsibilit
 
 ## References
 
-- Clean Coder — SOLID relevance: https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html
-- Martin Fowler — Inversion of Control: https://martinfowler.com/bliki/InversionOfControl.html
+- [Clean Coder — SOLID relevance](https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html)
+- [Martin Fowler — Inversion of Control](https://martinfowler.com/bliki/InversionOfControl.html)
 
 ## Verification
 

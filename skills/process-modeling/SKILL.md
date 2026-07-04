@@ -9,12 +9,15 @@ aliases:
 # Process Modelling
 
 ## When to use
+
 Use when clarifying how work is performed.
 
 ## Objective
+
 Produce a practical, concise, traceable architecture artefact that a coding agent can use to guide implementation or review.
 
 ## Procedure
+
 1. Define start/end.
 2. Identify actors/swimlanes.
 3. Capture steps and decisions.
@@ -25,6 +28,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 8. Define process metrics.
 
 ## Required outputs
+
 - Process steps
 - Decisions
 - Hand-offs
@@ -33,14 +37,17 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Automation candidates
 
 ## Best-practice alignment
+
 Align with **BIZBOK** business architecture practice: keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution. Use **BPMN** (or an equivalent notation) for operational process diagrams when swimlanes, gateways and exceptions matter.
 
 ## Quality checks
+
 - Exceptions are shown.
 - Controls are not hidden.
 - Automation candidates distinguish rules from judgement.
 
 ## Avoid
+
 Do not use process modelling when capability modelling is needed.
 
 ## Mini example
@@ -49,8 +56,8 @@ For invoice exception handling, map the start event, supplier operations swimlan
 
 ## References
 
-- OMG BPMN 2.0: https://www.omg.org/spec/BPMN/
-- Business Architecture Guild — BIZBOK (process linkage): https://www.businessarchitectureguild.org/
+- [OMG BPMN 2.0](https://www.omg.org/spec/BPMN/)
+- [Business Architecture Guild — BIZBOK (process linkage)](https://www.businessarchitectureguild.org/)
 
 ## Verification
 

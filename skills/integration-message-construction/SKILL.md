@@ -85,13 +85,12 @@ Define well-formed integration messages with clear intent, stable contracts and 
 
 ## References
 
-- EIP — Message: https://www.enterpriseintegrationpatterns.com/patterns/messaging/Message.html
-- EIP — Command Message: https://www.enterpriseintegrationpatterns.com/patterns/messaging/CommandMessage.html
-- EIP — Document Message: https://www.enterpriseintegrationpatterns.com/patterns/messaging/DocumentMessage.html
-- EIP — Event Message: https://www.enterpriseintegrationpatterns.com/patterns/messaging/EventMessage.html
-- EIP — Request-Reply: https://www.enterpriseintegrationpatterns.com/patterns/messaging/RequestReply.html
-- EIP — Return Address: https://www.enterpriseintegrationpatterns.com/patterns/messaging/ReturnAddress.html
-- EIP — Correlation Identifier: https://www.enterpriseintegrationpatterns.com/patterns/messaging/CorrelationIdentifier.html
-- EIP — Message Expiration: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageExpiration.html
-- EIP — Format Indicator: https://www.enterpriseintegrationpatterns.com/patterns/messaging/FormatIndicator.html
-
+- [EIP — Message](https://www.enterpriseintegrationpatterns.com/patterns/messaging/Message.html)
+- [EIP — Command Message](https://www.enterpriseintegrationpatterns.com/patterns/messaging/CommandMessage.html)
+- [EIP — Document Message](https://www.enterpriseintegrationpatterns.com/patterns/messaging/DocumentMessage.html)
+- [EIP — Event Message](https://www.enterpriseintegrationpatterns.com/patterns/messaging/EventMessage.html)
+- [EIP — Request-Reply](https://www.enterpriseintegrationpatterns.com/patterns/messaging/RequestReply.html)
+- [EIP — Return Address](https://www.enterpriseintegrationpatterns.com/patterns/messaging/ReturnAddress.html)
+- [EIP — Correlation Identifier](https://www.enterpriseintegrationpatterns.com/patterns/messaging/CorrelationIdentifier.html)
+- [EIP — Message Expiration](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageExpiration.html)
+- [EIP — Format Indicator](https://www.enterpriseintegrationpatterns.com/patterns/messaging/FormatIndicator.html)

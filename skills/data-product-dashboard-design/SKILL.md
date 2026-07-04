@@ -6,6 +6,7 @@ description: Designs actionable data product dashboards for quality, lineage, va
 # Data Product Dashboard Design
 
 ## When to use
+
 Use this skill when building dashboards or analytical screens for data quality, schema discovery, metadata, profiling, rule generation, validation, cleansing, quarantine, refined datasets, lineage, audit or operations.
 
 ## Objective
@@ -44,8 +45,8 @@ Source overview, schema discovery, profiling, rule management, validation, clean
 
 ## References
 
-- Nielsen Norman Group — Dashboard Design: https://www.nngroup.com/articles/dashboards-enhance-details/
-- W3C WCAG 2.2 (dashboard accessibility): https://www.w3.org/TR/WCAG22/
+- [Nielsen Norman Group — Dashboard Design](https://www.nngroup.com/articles/dashboards-enhance-details/)
+- [W3C WCAG 2.2 (dashboard accessibility)](https://www.w3.org/TR/WCAG22/)
 
 ## Verification
 
@@ -53,4 +54,3 @@ Source overview, schema discovery, profiling, rule management, validation, clean
 - [ ] Metrics, filters and drill-downs documented.
 - [ ] Evidence links and accessibility considerations noted.
 - [ ] Residual dashboard risks stated.
-

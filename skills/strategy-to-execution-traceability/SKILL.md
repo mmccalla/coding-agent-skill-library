@@ -9,12 +9,15 @@ aliases:
 # Strategy-to-Execution Traceability
 
 ## When to use
+
 Use when ensuring delivery work supports strategy.
 
 ## Objective
+
 Produce a practical, concise, traceable architecture artefact that a coding agent can use to guide implementation or review.
 
 ## Procedure
+
 1. Capture objectives.
 2. Define measurable outcomes.
 3. Map to capabilities/value streams.
@@ -25,6 +28,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 8. Produce traceability matrix.
 
 ## Required outputs
+
 - Objective/outcome map
 - Capability/value-stream links
 - Initiative mapping
@@ -32,14 +36,17 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Gaps and duplicates
 
 ## Best-practice alignment
+
 Align with **BIZBOK** business architecture practice: keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
 
 ## Quality checks
+
 - Objectives have measurable outcomes.
 - Initiatives trace to outcomes.
 - Weak traceability is visible.
 
 ## Avoid
+
 Do not treat a list of projects as strategy.
 
 ## Mini example
@@ -48,8 +55,8 @@ If the objective is reduce onboarding abandonment by 15%, trace it to the `Onboa
 
 ## References
 
-- Business Architecture Guild — BIZBOK (strategy traceability): https://www.businessarchitectureguild.org/
-- The Open Group TOGAF — Architecture Development Method: https://www.opengroup.org/togaf
+- [Business Architecture Guild — BIZBOK (strategy traceability)](https://www.businessarchitectureguild.org/)
+- [The Open Group TOGAF — Architecture Development Method](https://www.opengroup.org/togaf)
 
 ## Verification
 

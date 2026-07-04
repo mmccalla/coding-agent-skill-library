@@ -6,6 +6,7 @@ description: Defines SLIs, SLOs, error budgets, burn rates and release gates. Us
 # SLO and Error Budget Management
 
 ## When to use
+
 Use this skill when defining or changing SLIs, SLOs, error budgets, burn-rate alerts, reliability targets, release gates, service-level dashboards, reliability acceptance criteria or production readiness checks.
 
 ## Objective
@@ -91,8 +92,8 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 
 ## References
 
-- Google SRE Workbook — Alerting on SLOs: https://sre.google/workbook/alerting-on-slos/
-- Google SRE Book — Service Level Objectives: https://sre.google/sre-book/service-level-objectives/
+- [Google SRE Workbook — Alerting on SLOs](https://sre.google/workbook/alerting-on-slos/)
+- [Google SRE Book — Service Level Objectives](https://sre.google/sre-book/service-level-objectives/)
 
 ## Verification
 
@@ -100,4 +101,3 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 - [ ] Error budget policy and burn-rate alerting defined.
 - [ ] Telemetry source and release impact noted.
 - [ ] Residual measurement risk stated.
-

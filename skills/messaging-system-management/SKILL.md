@@ -70,12 +70,11 @@ Design operational controls for message-based integrations so they can be observ
 
 ## References
 
-- EIP — Control Bus: https://www.enterpriseintegrationpatterns.com/patterns/messaging/ControlBus.html
-- EIP — Detour: https://www.enterpriseintegrationpatterns.com/patterns/messaging/Detour.html
-- EIP — Wire Tap: https://www.enterpriseintegrationpatterns.com/patterns/messaging/WireTap.html
-- EIP — Message History: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageHistory.html
-- EIP — Message Store: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageStore.html
-- EIP — Smart Proxy: https://www.enterpriseintegrationpatterns.com/patterns/messaging/SmartProxy.html
-- EIP — Test Message: https://www.enterpriseintegrationpatterns.com/patterns/messaging/TestMessage.html
-- EIP — Channel Purger: https://www.enterpriseintegrationpatterns.com/patterns/messaging/ChannelPurger.html
-
+- [EIP — Control Bus](https://www.enterpriseintegrationpatterns.com/patterns/messaging/ControlBus.html)
+- [EIP — Detour](https://www.enterpriseintegrationpatterns.com/patterns/messaging/Detour.html)
+- [EIP — Wire Tap](https://www.enterpriseintegrationpatterns.com/patterns/messaging/WireTap.html)
+- [EIP — Message History](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageHistory.html)
+- [EIP — Message Store](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageStore.html)
+- [EIP — Smart Proxy](https://www.enterpriseintegrationpatterns.com/patterns/messaging/SmartProxy.html)
+- [EIP — Test Message](https://www.enterpriseintegrationpatterns.com/patterns/messaging/TestMessage.html)
+- [EIP — Channel Purger](https://www.enterpriseintegrationpatterns.com/patterns/messaging/ChannelPurger.html)

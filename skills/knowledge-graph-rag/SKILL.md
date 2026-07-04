@@ -59,9 +59,9 @@ Keep responsibilities separated: configuration, domain models, ingestion, graph 
 
 ## References
 
-- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
-- Neo4j documentation: https://neo4j.com/docs/
-- W3C RDF: https://www.w3.org/RDF/
+- [DAMA-DMBOK (DAMA International)](https://www.dama.org/cpages/body-of-knowledge)
+- [Neo4j documentation](https://neo4j.com/docs/)
+- [W3C RDF](https://www.w3.org/RDF/)
 
 ## Verification
 

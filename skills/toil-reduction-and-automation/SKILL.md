@@ -6,6 +6,7 @@ description: Reduces repetitive operational work through safe, tested, observabl
 # Toil Reduction and Automation
 
 ## When to use
+
 Use this skill for repetitive manual operations, support tasks, deployments, data-quality remediation, report generation, repeated incident actions, operational scripts, runbook automation and workflow automation.
 
 ## Objective
@@ -60,7 +61,7 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 
 ## References
 
-- Google SRE Book — Eliminating Toil: https://sre.google/sre-book/eliminating-toil/
+- [Google SRE Book — Eliminating Toil](https://sre.google/sre-book/eliminating-toil/)
 
 ## Verification
 
@@ -68,4 +69,3 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 - [ ] Safeguards, dry-run or rollback path documented.
 - [ ] Tests or checks run reported.
 - [ ] Audit or telemetry added; residual automation risk stated.
-

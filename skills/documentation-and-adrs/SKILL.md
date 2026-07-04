@@ -9,6 +9,7 @@ aliases:
 # Documentation and ADRs
 
 ## When to use
+
 Use this skill when a decision needs to be captured for future maintainers, or when the change alters repository conventions, usage guidance or release behaviour.
 
 ## Objective
@@ -37,8 +38,8 @@ For a validator rule change, document why the rule exists, which files it affect
 
 ## References
 
-- Documenting Architecture Decisions (Michael Nygard): https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions
-- Diátaxis documentation framework: https://diataxis.fr/
+- [Documenting Architecture Decisions (Michael Nygard)](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
+- [Diátaxis documentation framework](https://diataxis.fr/)
 
 ## Verification
 

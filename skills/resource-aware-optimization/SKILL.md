@@ -62,9 +62,10 @@ Log estimates and actuals so future routing decisions improve.
 
 ## References
 
-- Anthropic — Building effective agents (model and workflow cost trade-offs): https://www.anthropic.com/research/building-effective-agents
+- [Anthropic — Building effective agents (model and workflow cost trade-offs)](https://www.anthropic.com/research/building-effective-agents)
 
 ## Verification
+
 - [ ] Resource budgets are explicit.
 - [ ] Complexity estimate is captured.
 - [ ] Model/tool routing is justified.

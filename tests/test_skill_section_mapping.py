@@ -83,8 +83,9 @@ class SkillSectionMappingTests(unittest.TestCase):
 
         spec = by_intent["spec-before-build"]
         self.assertIn("specification before code", spec.matched_phrase)
-        self.assertEqual(spec.evidence.line_start, 4)
-        self.assertEqual(spec.evidence.line_end, 4)
+        # Fixture has a blank line after "## When to use" (markdownlint MD022).
+        self.assertEqual(spec.evidence.line_start, 5)
+        self.assertEqual(spec.evidence.line_end, 5)
 
     def test_when_not_to_use_maps_constraints_with_evidence(self) -> None:
         markdown = (

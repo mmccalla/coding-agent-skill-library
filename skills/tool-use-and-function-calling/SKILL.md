@@ -49,8 +49,8 @@ Use `skills_docs/security/OWASP_ASI_CROSSWALK.md` for the shared risk map.
 
 ## References
 
-- OpenAI — Function calling guide: https://platform.openai.com/docs/guides/function-calling
-- OWASP AI Agent Security Cheat Sheet (tool misuse): https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html
+- [OpenAI — Function calling guide](https://platform.openai.com/docs/guides/function-calling)
+- [OWASP AI Agent Security Cheat Sheet (tool misuse)](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html)
 
 ## Verification
 

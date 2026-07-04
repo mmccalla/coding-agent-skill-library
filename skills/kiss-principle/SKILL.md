@@ -9,6 +9,7 @@ aliases:
 # KISS Principle
 
 ## When to use
+
 Use this skill when simplifying code, reviewing design complexity, reducing cognitive load, choosing between alternative implementations, or preventing over-engineering.
 
 ## Objective
@@ -35,7 +36,7 @@ Deliver the simplest maintainable solution that satisfies the current requiremen
 
 ## References
 
-- IEEE SWEBOK (software design principles): https://www.computer.org/education/bodies-of-knowledge/software-engineering
+- [IEEE SWEBOK (software design principles)](https://www.computer.org/education/bodies-of-knowledge/software-engineering)
 
 ## Verification
 

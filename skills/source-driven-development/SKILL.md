@@ -6,6 +6,7 @@ description: Use when a decision must be grounded in authoritative source materi
 # Source-Driven Development
 
 ## When to use
+
 Use this skill when the work depends on framework docs, repository conventions, upstream behavior or other source material that should be verified rather than remembered.
 
 ## Objective
@@ -33,7 +34,7 @@ When updating a pytest convention, check the repository tests and the current py
 
 ## References
 
-- Diátaxis documentation framework: https://diataxis.fr/
+- [Diátaxis documentation framework](https://diataxis.fr/)
 
 ## Verification
 
@@ -41,4 +42,3 @@ When updating a pytest convention, check the repository tests and the current py
 - [ ] Claims mapped to source evidence.
 - [ ] Gaps where sources are silent or conflicting stated.
 - [ ] Implementation or documentation aligned to sources.
-

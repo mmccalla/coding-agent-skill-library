@@ -9,12 +9,15 @@ aliases:
 # Business Information Concept Modelling
 
 ## When to use
+
 Use when translating business architecture into conceptual data, ontology or semantic models.
 
 ## Objective
+
 Produce a practical, concise, traceable architecture artefact that a coding agent can use to guide implementation or review.
 
 ## Procedure
+
 1. Review business artefacts.
 2. Extract nouns, events, roles and artefacts.
 3. Normalise synonyms.
@@ -25,6 +28,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 8. Hand off to conceptual data modelling.
 
 ## Required outputs
+
 - Concept list
 - Definitions
 - Relationships
@@ -33,14 +37,17 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Exclusions
 
 ## Best-practice alignment
+
 Align with **BIZBOK** business architecture practice: keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
 
 ## Quality checks
+
 - Concepts have definitions.
 - Relationships use business semantics.
 - Traceability exists.
 
 ## Avoid
+
 Do not convert every noun into an entity.
 
 ## Mini example
@@ -49,8 +56,8 @@ From an onboarding value stream, extract concepts such as `Customer`, `Applicati
 
 ## References
 
-- Business Architecture Guild — BIZBOK (information concepts): https://www.businessarchitectureguild.org/
-- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
+- [Business Architecture Guild — BIZBOK (information concepts)](https://www.businessarchitectureguild.org/)
+- [DAMA-DMBOK (DAMA International)](https://www.dama.org/cpages/body-of-knowledge)
 
 ## Verification
 

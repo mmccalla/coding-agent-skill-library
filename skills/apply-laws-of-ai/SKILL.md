@@ -118,8 +118,8 @@ Never optimise a lower-priority objective at the expense of a higher-priority la
 
 ## References
 
-- NIST AI Risk Management Framework: https://www.nist.gov/itl/ai-risk-management-framework
-- OWASP Top 10 for Agentic Applications: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+- [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework)
+- [OWASP Top 10 for Agentic Applications](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/)
 
 ## Verification
 

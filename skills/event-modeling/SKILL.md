@@ -9,12 +9,15 @@ aliases:
 # Event Modelling
 
 ## When to use
+
 Use when identifying event semantics before schema or topic design.
 
 ## Objective
+
 Produce a practical, concise, traceable architecture artefact that a coding agent can use to guide implementation or review.
 
 ## Procedure
+
 1. Identify process/value stream.
 2. Map trigger-to-outcome timeline.
 3. Identify commands, events, decisions and read models.
@@ -24,6 +27,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 7. Validate language with business stakeholders.
 
 ## Required outputs
+
 - Event timeline
 - Command/event list
 - Event definitions
@@ -32,14 +36,17 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Open questions
 
 ## Best-practice alignment
+
 Apply event-driven best practice: business event semantics, producer/consumer ownership, schema contracts, compatibility, ordering, partitioning, idempotency, replay, retention, lineage, observability and operational SLOs. After semantics are agreed, map payloads to **CloudEvents** envelopes and **AsyncAPI** (or schema-registry) contracts where interoperability matters.
 
 ## Quality checks
+
 - Events are past-tense facts.
 - Commands are not modelled as events.
 - Names match business language.
 
 ## Avoid
+
 Do not name events after database operations.
 
 ## Decision aid
@@ -48,8 +55,8 @@ Start with sticky-note style discovery: commands in imperative form, events in p
 
 ## References
 
-- Event Modeling (eventmodeling.org): https://eventmodeling.org/
-- CloudEvents specification: https://cloudevents.io/
+- [Event Modeling (eventmodeling.org)](https://eventmodeling.org/)
+- [CloudEvents specification](https://cloudevents.io/)
 
 ## Verification
 

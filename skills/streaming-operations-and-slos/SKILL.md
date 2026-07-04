@@ -9,12 +9,15 @@ aliases:
 # Real-Time Operability
 
 ## When to use
+
 Use when operating real-time pipelines or event streams.
 
 ## Objective
+
 Produce a practical, concise, traceable architecture artefact that a coding agent can use to guide implementation or review.
 
 ## Procedure
+
 1. Define user impact.
 2. Define SLIs for lag, freshness, throughput and error rate.
 3. Define alerts and runbooks.
@@ -25,6 +28,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 8. Test operational scenarios.
 
 ## Required outputs
+
 - SLIs/SLOs
 - Dashboards/alerts
 - Replay plan
@@ -33,15 +37,18 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Runbook
 
 ## Best-practice alignment
+
 Apply event-driven best practice: business event semantics, producer/consumer ownership, schema contracts, compatibility, ordering, partitioning, idempotency, replay, retention, lineage, observability and operational SLOs.
 
 ## Quality checks
+
 - Alerts are actionable.
 - Replay is safe.
 - Lag/freshness are visible.
 - Capacity assumptions are explicit.
 
 ## Avoid
+
 Do not equate broker health with pipeline health.
 
 ## Decision aid
@@ -50,8 +57,8 @@ Define operability from user impact first: freshness for decisions, lag for cons
 
 ## References
 
-- Apache Kafka — Operations: https://kafka.apache.org/documentation/#operations
-- Google SRE Book — Service Level Objectives: https://sre.google/sre-book/service-level-objectives/
+- [Apache Kafka — Operations](https://kafka.apache.org/documentation/#operations)
+- [Google SRE Book — Service Level Objectives](https://sre.google/sre-book/service-level-objectives/)
 
 ## Verification
 

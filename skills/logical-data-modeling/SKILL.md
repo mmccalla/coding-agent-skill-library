@@ -9,12 +9,15 @@ aliases:
 # Logical Data Modelling
 
 ## When to use
+
 Use when moving from conceptual model to implementable logical structure.
 
 ## Objective
+
 Produce a practical, concise, traceable architecture artefact that a coding agent can use to guide implementation or review.
 
 ## Procedure
+
 1. Start from approved concepts.
 2. Define entities and attributes.
 3. Define identifiers, keys and relationships.
@@ -25,15 +28,18 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 8. Validate against use cases and contracts.
 
 ## Required outputs
+
 - Entity/attribute catalogue
 - Identifiers and relationships
 - Constraints and reference data
 - Open modelling issues
 
 ## Best-practice alignment
+
 Apply DAMA-DMBOK2-style separation of data governance, architecture, modelling, security, integration/interoperability, master/reference data, metadata and quality. For cloud/shared data, apply CDMC-style expectations: ownership, classification, entitlement/access evidence, lineage/provenance, lifecycle/retention, quality controls and auditable evidence.
 
 ## Quality checks
+
 - Every entity traces to a business concept.
 - Keys and lifecycle are explicit.
 - Constraints are testable.
@@ -51,6 +57,7 @@ When implementation requires storage decisions, extend the logical model deliber
 6. Keep logical meaning authoritative; physical optimisations must not silently change semantics.
 
 ## Avoid
+
 Do not conflate logical model with API payloads or physical storage without an explicit hand-off.
 Do not introduce physical-platform assumptions into the logical model itself.
 
@@ -62,8 +69,8 @@ Do not introduce physical-platform assumptions into the logical model itself.
 
 ## References
 
-- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
-- EDM Council CDMC (Cloud Data Management Capabilities): https://edmcouncil.org/frameworks/cdmc/
+- [DAMA-DMBOK (DAMA International)](https://www.dama.org/cpages/body-of-knowledge)
+- [EDM Council CDMC (Cloud Data Management Capabilities)](https://edmcouncil.org/frameworks/cdmc/)
 
 ## Verification
 

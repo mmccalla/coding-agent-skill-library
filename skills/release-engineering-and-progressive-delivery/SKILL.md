@@ -6,6 +6,7 @@ description: Improves deployment safety with canary, blue/green, feature flags a
 # Release Engineering and Progressive Delivery
 
 ## When to use
+
 Use this skill for deployment pipelines, release gates, rollback, canary releases, blue/green deployments, feature flags, schema or migration releases, production promotion, deployment safety and blast-radius reduction.
 
 ## Objective
@@ -69,8 +70,8 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 
 ## References
 
-- CNCF — Progressive Delivery whitepaper: https://tag-app-delivery.cncf.io/whitepapers/progressive-delivery/
-- Google SRE Book — Release Engineering: https://sre.google/sre-book/release-engineering/
+- [CNCF — Progressive Delivery whitepaper](https://tag-app-delivery.cncf.io/whitepapers/progressive-delivery/)
+- [Google SRE Book — Release Engineering](https://sre.google/sre-book/release-engineering/)
 
 ## Verification
 
@@ -78,4 +79,3 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 - [ ] Pre-release checks and rollback path documented.
 - [ ] Health signals and tests or checks run reported.
 - [ ] Residual release risk stated.
-

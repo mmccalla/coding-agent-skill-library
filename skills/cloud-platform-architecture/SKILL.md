@@ -83,9 +83,9 @@ Define a clear, operable cloud platform architecture: landing zone structure, te
 
 ## References
 
-- Azure Cloud Adoption Framework — Landing zones: https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/
-- Google Cloud — Landing zone design: https://cloud.google.com/architecture/landing-zones
-- AWS Control Tower / landing zone guidance: https://docs.aws.amazon.com/controltower/latest/userguide/what-is-control-tower.html
+- [Azure Cloud Adoption Framework — Landing zones](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/)
+- [Google Cloud — Landing zone design](https://cloud.google.com/architecture/landing-zones)
+- [AWS Control Tower / landing zone guidance](https://docs.aws.amazon.com/controltower/latest/userguide/what-is-control-tower.html)
 
 ## Verification
 

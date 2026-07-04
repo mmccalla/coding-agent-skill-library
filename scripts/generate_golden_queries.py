@@ -367,8 +367,12 @@ def build_realistic_cases(
     satisfied_pairs: set[tuple[str, str]] = set()
     seen_ids = {str(case.get("id", "")) for case in cases}
     for case in cases:
-        expected = {item for item in case.get("expected_skill_ids", []) if isinstance(item, str)}
-        excluded = {item for item in case.get("excluded_skill_ids", []) if isinstance(item, str)}
+        expected_raw = case.get("expected_skill_ids", [])
+        excluded_raw = case.get("excluded_skill_ids", [])
+        expected_list = expected_raw if isinstance(expected_raw, list) else []
+        excluded_list = excluded_raw if isinstance(excluded_raw, list) else []
+        expected = {item for item in expected_list if isinstance(item, str)}
+        excluded = {item for item in excluded_list if isinstance(item, str)}
         for preferred in expected:
             for confuser in excluded:
                 satisfied_pairs.add((preferred, confuser))
@@ -376,8 +380,14 @@ def build_realistic_cases(
         case_id = str(case["id"])
         if case_id in seen_ids:
             continue
-        preferred = str(case["expected_skill_ids"][0])
-        confuser = str(case["excluded_skill_ids"][0])
+        expected_ids = case["expected_skill_ids"]
+        excluded_ids = case["excluded_skill_ids"]
+        if not isinstance(expected_ids, list) or not isinstance(excluded_ids, list):
+            continue
+        if not expected_ids or not excluded_ids:
+            continue
+        preferred = str(expected_ids[0])
+        confuser = str(excluded_ids[0])
         if (preferred, confuser) in satisfied_pairs:
             continue
         query = str(case["query"])

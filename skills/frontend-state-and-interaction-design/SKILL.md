@@ -6,6 +6,7 @@ description: Designs predictable states for loading, empty, error, partial, long
 # Frontend State and Interaction Design
 
 ## When to use
+
 Use this skill when implementing async flows, long-running jobs, background workflows, forms, dashboards, approval flows, optimistic updates, error recovery, retry actions, partial success states or agent task execution.
 
 ## Objective
@@ -44,7 +45,7 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 
 ## References
 
-- Nielsen Norman Group — Response Times: The 3 Important Limits: https://www.nngroup.com/articles/response-times-3-important-limits/
+- [Nielsen Norman Group — Response Times: The 3 Important Limits](https://www.nngroup.com/articles/response-times-3-important-limits/)
 
 ## Verification
 
@@ -52,4 +53,3 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 - [ ] Recovery options and high-risk controls documented.
 - [ ] Tests or manual checks performed.
 - [ ] Residual interaction risks stated.
-

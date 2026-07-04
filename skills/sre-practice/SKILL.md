@@ -9,6 +9,7 @@ aliases:
 # SRE Practice
 
 ## When to use
+
 Use this skill when working on production service design, operational readiness, reliability reviews, service ownership, resilience improvements, availability, latency, durability, on-call readiness, runbooks, safe automation, incident prevention or operational risk reduction.
 
 ## Objective
@@ -60,8 +61,8 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 
 ## References
 
-- Google SRE Book: https://sre.google/sre-book/table-of-contents/
-- Google SRE Workbook: https://sre.google/workbook/table-of-contents/
+- [Google SRE Book](https://sre.google/sre-book/table-of-contents/)
+- [Google SRE Workbook](https://sre.google/workbook/table-of-contents/)
 
 ## Verification
 

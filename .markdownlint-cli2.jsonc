@@ -1,0 +1,22 @@
+{
+  "config": {
+    // Skill and architecture docs routinely exceed 80 columns (URLs, tables, procedures).
+    "MD013": false,
+    // Tables in MANIFEST and skills use mixed alignment; style is not load-bearing.
+    "MD060": false,
+    // Skills intentionally reuse section titles such as Procedure / Verification.
+    "MD024": false
+  },
+  "globs": [
+    "**/*.md"
+  ],
+  "ignores": [
+    "node_modules/**",
+    ".git/**",
+    ".venv/**",
+    "venv/**",
+    "data/**",
+    "skills-ui/node_modules/**",
+    "skills_docs/archive/**"
+  ]
+}

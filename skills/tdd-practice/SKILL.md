@@ -52,8 +52,9 @@ Source: [pytest — Good Integration Practices](https://docs.pytest.org/en/lates
 
 ## References
 
-- pytest — Good Integration Practices: https://docs.pytest.org/en/latest/explanation/goodpractices.html
-- Kent Beck — Test-Driven Development (overview): https://martinfowler.com/bliki/TestDrivenDevelopment.html
+- [pytest — Good Integration Practices](https://docs.pytest.org/en/latest/explanation/goodpractices.html)
+- [Kent Beck — Test-Driven Development (overview)](https://martinfowler.com/bliki/TestDrivenDevelopment.html)
+
 ## Verification
 
 - [ ] Failing test added before production change.

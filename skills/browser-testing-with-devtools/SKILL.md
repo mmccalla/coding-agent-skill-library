@@ -9,6 +9,7 @@ aliases:
 # Browser Testing With DevTools
 
 ## When to use
+
 Use this skill when a change affects a browser-rendered interface and you need runtime evidence from the browser rather than static code inspection alone.
 
 ## Objective
@@ -32,8 +33,8 @@ Verify user-facing behaviour with DevTools evidence so frontend or browser issue
 
 ## References
 
-- Chrome DevTools documentation: https://developer.chrome.com/docs/devtools/
-- W3C WebDriver: https://www.w3.org/TR/webdriver2/
+- [Chrome DevTools documentation](https://developer.chrome.com/docs/devtools/)
+- [W3C WebDriver](https://www.w3.org/TR/webdriver2/)
 
 ## Verification
 

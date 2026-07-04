@@ -9,6 +9,7 @@ aliases:
 # Interview Me
 
 ## When to use
+
 Use this skill when the request is ambiguous, has multiple plausible interpretations, or is missing user, scope, constraint or acceptance details.
 
 ## Objective
@@ -37,8 +38,8 @@ If the user says `make the agent safer`, ask which risk matters most before plan
 
 ## References
 
-- IIBA BABOK Guide: https://www.iiba.org/career-resources/a-business-analysis-professionals-foundation-for-success/babok/
-- ISO/IEC/IEEE 29148 requirements engineering: https://www.iso.org/standard/72089.html
+- [IIBA BABOK Guide](https://www.iiba.org/career-resources/a-business-analysis-professionals-foundation-for-success/babok/)
+- [ISO/IEC/IEEE 29148 requirements engineering](https://www.iso.org/standard/72089.html)
 
 ## Verification
 

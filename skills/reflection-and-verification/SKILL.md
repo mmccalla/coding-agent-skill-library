@@ -39,9 +39,10 @@ Critique and repair artefacts using deterministic checks first, then bounded rev
 
 ## References
 
-- Reflexion: language agents with verbal reinforcement learning: https://arxiv.org/abs/2303.11366
+- [Reflexion: language agents with verbal reinforcement learning](https://arxiv.org/abs/2303.11366)
 
 ## Verification
+
 - [ ] Acceptance criteria are explicit.
 - [ ] Tests or validation checks were run.
 - [ ] Failures were repaired or reported.

@@ -6,12 +6,15 @@ description: Designs CDC and streaming ingestion from operational sources to eve
 # CDC and Source-to-Stream Ingestion
 
 ## When to use
+
 Use when turning database/file/API changes into streams.
 
 ## Objective
+
 Produce a practical, concise, traceable architecture artefact that a coding agent can use to guide implementation or review.
 
 ## Procedure
+
 1. Identify source and owner.
 2. Select capture method.
 3. Define snapshot and incremental flow.
@@ -22,6 +25,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 8. Define lag and reconciliation checks.
 
 ## Required outputs
+
 - Capture design
 - Keys/order handling
 - Schema evolution
@@ -30,15 +34,18 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Monitoring
 
 ## Best-practice alignment
+
 Apply event-driven best practice: business event semantics, producer/consumer ownership, schema contracts, compatibility, ordering, partitioning, idempotency, replay, retention, lineage, observability and operational SLOs.
 
 ## Quality checks
+
 - Source impact is understood.
 - Deletes and updates are handled.
 - Reconciliation exists.
 - Lineage is preserved.
 
 ## Avoid
+
 Do not treat raw CDC records as business events without translation.
 
 ## Decision template
@@ -47,8 +54,8 @@ Use this template before implementation: source system and owner; capture mode; 
 
 ## References
 
-- Debezium documentation (CDC): https://debezium.io/documentation/
-- CloudEvents specification: https://cloudevents.io/
+- [Debezium documentation (CDC)](https://debezium.io/documentation/)
+- [CloudEvents specification](https://cloudevents.io/)
 
 ## Verification
 
@@ -56,4 +63,3 @@ Use this template before implementation: source system and owner; capture mode; 
 - [ ] Decisions, assumptions and risks stated explicitly.
 - [ ] Quality checks or validation performed.
 - [ ] Files changed reported with traceability preserved.
-

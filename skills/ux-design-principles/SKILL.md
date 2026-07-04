@@ -9,6 +9,7 @@ aliases:
 # UX Design Principles
 
 ## When to use
+
 Use this skill when designing or changing user journeys, task flows, forms, navigation, information architecture, workflow screens, review and approval flows, onboarding screens, or data-quality user journeys.
 
 ## Objective
@@ -43,7 +44,7 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 
 ## References
 
-- Nielsen Norman Group — 10 Usability Heuristics: https://www.nngroup.com/articles/ten-usability-heuristics/
+- [Nielsen Norman Group — 10 Usability Heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/)
 
 ## Verification
 

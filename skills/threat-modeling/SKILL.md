@@ -57,8 +57,8 @@ Produce a concise threat model that links assets and trust boundaries to threats
 
 ## References
 
-- OWASP Threat Modeling: https://owasp.org/www-community/Threat_Modeling
-- OWASP Threat Modeling Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html
+- [OWASP Threat Modeling](https://owasp.org/www-community/Threat_Modeling)
+- [OWASP Threat Modeling Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html)
 
 ## Verification
 

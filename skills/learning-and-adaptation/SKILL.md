@@ -38,9 +38,10 @@ Improve agent behaviour through measured, versioned, reversible changes rather t
 
 ## References
 
-- NIST AI RMF (Govern / Measure / Manage continuous improvement): https://www.nist.gov/itl/ai-risk-management-framework
+- [NIST AI RMF (Govern / Measure / Manage continuous improvement)](https://www.nist.gov/itl/ai-risk-management-framework)
 
 ## Verification
+
 - [ ] Metric and benchmark are defined.
 - [ ] Improvement data is captured with provenance.
 - [ ] Changes are versioned and reversible.

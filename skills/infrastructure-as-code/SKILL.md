@@ -83,8 +83,8 @@ Keep infrastructure reproducible, reviewable and least-privilege by expressing d
 
 ## References
 
-- HashiCorp Terraform — Core workflow (plan/apply): https://developer.hashicorp.com/terraform/intro/core-workflow
-- OpenTofu documentation: https://opentofu.org/docs/
+- [HashiCorp Terraform — Core workflow (plan/apply)](https://developer.hashicorp.com/terraform/intro/core-workflow)
+- [OpenTofu documentation](https://opentofu.org/docs/)
 
 ## Verification
 

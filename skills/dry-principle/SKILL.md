@@ -9,6 +9,7 @@ aliases:
 # DRY Principle
 
 ## When to use
+
 Use this skill when reviewing repeated code, configuration, schemas, prompts, tests, error handling, validation or business rules.
 
 ## Objective
@@ -34,7 +35,7 @@ Remove duplication of knowledge and behaviour where it creates maintenance risk,
 
 ## References
 
-- C2 Wiki — Don't Repeat Yourself: https://wiki.c2.com/?DontRepeatYourself
+- [C2 Wiki — Don't Repeat Yourself](https://wiki.c2.com/?DontRepeatYourself)
 
 ## Verification
 

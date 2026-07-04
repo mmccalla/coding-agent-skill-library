@@ -9,6 +9,7 @@ aliases:
 # Ontology, Knowledge Graph and KRAG
 
 ## When to use
+
 Use for ontology design, semantic modelling, RDF/OWL/SHACL/SKOS, property-graph schemas, knowledge-graph population, graph validation, entity resolution, provenance, inference, semantic search, KG-RAG/KRAG or GraphRAG.
 
 When the task moves from graph design into Neo4j-native retrieval, text-to-Cypher, ingestion safety, or GraphRAG implementation guidance, also load `skills/knowledge-graph-rag/SKILL.md`.
@@ -16,9 +17,11 @@ When the task moves from graph design into Neo4j-native retrieval, text-to-Cyphe
 Do not use for ordinary diagrams, generic vector-only RAG, or simple entity extraction unless semantic governance or graph retrieval is required.
 
 ## Objective
+
 Produce a small, implementable semantic design that answers defined competency questions, validates graph data, preserves provenance, and supports explainable retrieval for LLM grounding.
 
 ## Operating rules
+
 - Start from the user goal, decisions to support, and competency questions.
 - Model only what is needed now; extend only from evidence or failed competency questions.
 - Separate meaning from validation: ontology defines semantics; shapes/rules define data-quality constraints.
@@ -31,6 +34,7 @@ Produce a small, implementable semantic design that answers defined competency q
 - Treat the LLM as an extractor, mapper, summariser or query assistant, not as an authority of record.
 
 ## Procedure
+
 1. **Scope**: define domain boundary, users, use cases, competency questions, in/out scope and non-goals.
 2. **Representation**: choose RDF/OWL/SHACL/SKOS when standards, inference and interoperability matter; choose property graph when traversal/application delivery is primary; document trade-offs.
 3. **Core model**: define classes/concepts, predicates, properties, cardinalities, controlled terms, identifiers and provenance fields.
@@ -43,7 +47,9 @@ Produce a small, implementable semantic design that answers defined competency q
 10. **Evolution**: version ontology, shapes, mappings and graph data; document breaking changes, migration rules and deprecation policy.
 
 ## KRAG patterns
+
 Use the simplest pattern that answers the question:
+
 - **Entity-first retrieval**: resolve entities, then retrieve adjacent facts and evidence.
 - **Path retrieval**: retrieve meaningful paths between entities with bounded depth and allowed predicates.
 - **Subgraph retrieval**: retrieve a compact neighbourhood around relevant entities or documents.
@@ -53,6 +59,7 @@ Use the simplest pattern that answers the question:
 - **Graph-to-query**: generate SPARQL/Cypher only against the approved schema; validate before execution.
 
 ## Required outputs
+
 - Purpose, scope and competency questions.
 - Classes/concepts with labels, definitions and examples.
 - Predicates/relationships with direction, domain, range and meaning.
@@ -64,7 +71,9 @@ Use the simplest pattern that answers the question:
 - Quality gates, risks, assumptions and open decisions.
 
 ## Quality gates
+
 Pass only if:
+
 - Each model element supports a use case or competency question.
 - Relationship names are meaningful and directionally clear.
 - External reuse is justified by definitional alignment.
@@ -74,6 +83,7 @@ Pass only if:
 - Security, privacy, access control and retention constraints are explicit where relevant.
 
 ## Avoid
+
 - Ontology bloat, speculative classes, and premature upper-ontology work.
 - Treating embeddings as a substitute for identifiers, semantics or provenance.
 - Writing LLM-generated facts into the trusted graph without review or evidence.
@@ -83,11 +93,11 @@ Pass only if:
 
 ## References
 
-- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
-- W3C RDF: https://www.w3.org/RDF/
-- W3C OWL 2: https://www.w3.org/TR/owl2-overview/
-- W3C SHACL: https://www.w3.org/TR/shacl/
-- W3C SPARQL 1.1: https://www.w3.org/TR/sparql11-query/
+- [DAMA-DMBOK (DAMA International)](https://www.dama.org/cpages/body-of-knowledge)
+- [W3C RDF](https://www.w3.org/RDF/)
+- [W3C OWL 2](https://www.w3.org/TR/owl2-overview/)
+- [W3C SHACL](https://www.w3.org/TR/shacl/)
+- [W3C SPARQL 1.1](https://www.w3.org/TR/sparql11-query/)
 
 ## Verification
 

@@ -6,6 +6,7 @@ description: Use when a feature or significant change needs a decision-complete 
 # Spec-Driven Development
 
 ## When to use
+
 Use this skill when starting a new feature, changing externally visible behaviour, or making a non-trivial change that needs a clear specification before code or skill edits are made.
 
 ## Objective
@@ -39,8 +40,8 @@ Optional templates: `skills_docs/templates/agile-epic-template.md` and `skills_d
 
 ## References
 
-- OpenAPI Specification: https://spec.openapis.org/oas/latest.html
-- Cucumber — Behaviour-Driven Development: https://cucumber.io/docs/bdd/
+- [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Cucumber — Behaviour-Driven Development](https://cucumber.io/docs/bdd/)
 
 ## Verification
 

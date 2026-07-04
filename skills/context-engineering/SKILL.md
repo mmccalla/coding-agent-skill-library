@@ -9,6 +9,7 @@ aliases:
 # Context Engineering
 
 ## When to use
+
 Use this skill when starting a session, switching tasks, or preparing context for a workflow that depends on the right local files and guidance.
 
 ## Objective
@@ -36,7 +37,7 @@ For a validator change, load the validator, its tests, the library contract and 
 
 ## References
 
-- Anthropic — Equipping agents with skills (progressive disclosure / context): https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
+- [Anthropic — Equipping agents with skills (progressive disclosure / context)](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
 
 ## Verification
 

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Install repository git hooks (pre-commit lint/test/security gate).
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+
+chmod +x scripts/pre_commit_check.sh .githooks/pre-commit
+git config core.hooksPath .githooks
+
+echo "Installed git hooks from .githooks/ (core.hooksPath)."
+echo "Pre-commit runs: secret scan, markdownlint, validators, ruff, mypy, pytest (as needed)."
+echo "Emergency bypass: SKIP_PRECOMMIT=1 git commit ..."

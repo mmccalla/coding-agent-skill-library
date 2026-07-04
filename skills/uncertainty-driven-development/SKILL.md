@@ -9,6 +9,7 @@ aliases:
 # Doubt-Driven Development
 
 ## When to use
+
 Use this skill when the first answer feels too easy, the codebase is unfamiliar, or the cost of a wrong assumption is high enough to justify adversarial checking.
 
 ## Objective
@@ -48,7 +49,7 @@ Keep the log short. Its purpose is to expose decision quality, not to create pro
 
 ## References
 
-- ISO 31000 risk management: https://www.iso.org/iso-31000-risk-management.html
+- [ISO 31000 risk management](https://www.iso.org/iso-31000-risk-management.html)
 
 ## Verification
 
