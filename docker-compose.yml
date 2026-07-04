@@ -191,7 +191,9 @@ services:
       - "--storage.tsdb.retention.time=24h"
       - "--storage.tsdb.max-block-duration=2h"
       - "--storage.tsdb.min-block-duration=2h"
-      - "--web.listen-address=127.0.0.1:9090"
+      # Listen on all interfaces inside the container so Grafana can reach
+      # prometheus:9090 on the Docker network. Host publish stays 127.0.0.1 only.
+      - "--web.listen-address=0.0.0.0:9090"
     restart: unless-stopped
     # Security: Resource limits
     deploy:
@@ -227,9 +229,13 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
       # Security: Additional hardening
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
-      GF_SECURITY_COOKIE_SECURE: "true"
+      # Local stack is HTTP-only (127.0.0.1:3000). Secure cookies are never stored
+      # on http://, so password-change/Skip return Unauthorized and bounce to login.
+      GF_SECURITY_COOKIE_SECURE: "false"
       GF_SECURITY_COOKIE_HTTPONLY: "true"
-      GF_SECURITY_COOKIE_SAMESITE: "Strict"
+      GF_SECURITY_COOKIE_SAMESITE: "Lax"
+      # Avoid the first-login password wall when using the local default admin password.
+      GF_SECURITY_DISABLE_INITIAL_ADMIN_PASSWORD_CHANGE: "true"
       GF_SERVER_ROOT_URL: "http://localhost:3000"
       GF_AUTH_BASIC_ENABLED: "true"
       GF_USERS_ALLOW_SIGN_UP: "false"

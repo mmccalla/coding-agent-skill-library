@@ -9,6 +9,7 @@ Documentation for agents and humans. Pick one path — you do not need every fil
 | **Use skills in an agent** | `HOW_TO_FIND_THE_RIGHT_SKILL.md` (after `apply-laws-of-ai`) |
 | **Copy the library to another repo** | `GETTING_STARTED.md` → `DROP_IN_BOOTSTRAP.md` |
 | **Run MCP / Docker / Neo4j locally** | `GETTING_STARTED.md` → `SKILLS_KG_MCP_RUNBOOK.md` |
+| **Configure Cursor IDE (MCP vs filesystem)** | `CURSOR_IDE_SETUP.md` |
 | **Write or change skills** | `SKILL_AUTHORING_GUIDE.md` |
 | **Domain gap-close backlog** | `GAP_CLOSE_BACKLOG.md` |
 | **KRAG roadmap and status** | `krag/STATUS.md` |
