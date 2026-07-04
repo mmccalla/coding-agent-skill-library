@@ -14,7 +14,7 @@ from typing import NamedTuple
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts import skills_inventory
+from scripts import skills_inventory, skills_mcp_perf
 from scripts.skill_section_mapping import (
     ConstraintMapping,
     SkillDependencyMapping,
@@ -635,7 +635,9 @@ def extract_skills_graph_records(
     pack_hash_inputs: list[str] = []
 
     for path in skill_paths:
-        text = path.read_text(encoding="utf-8")
+        with skills_mcp_perf.disk_io() as io:
+            text = path.read_text(encoding="utf-8")
+            io.add(len(text.encode("utf-8")))
         source_path = _relative_source_path(path, resolved_root)
         pack_hash_inputs.append(f"{source_path}\n{text}")
         name = _frontmatter_value(text, "name", source_path) or path.parent.name
@@ -745,7 +747,9 @@ def extract_skills_graph_records(
 
     skill_pack: dict[str, object] | None = None
     if isinstance(pack_metadata, dict):
-        metadata_text = pack_metadata_path.read_text(encoding="utf-8")
+        with skills_mcp_perf.disk_io() as io:
+            metadata_text = pack_metadata_path.read_text(encoding="utf-8")
+            io.add(len(metadata_text.encode("utf-8")))
         pack_content_hash = _sha256("\n".join((metadata_text, *sorted(pack_hash_inputs))))
         category_ids: list[str] = []
         categories_raw = pack_metadata.get("categories", [])

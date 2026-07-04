@@ -110,6 +110,10 @@ Follow this tool sequence for natural-language skill questions:
 
 Retain `selection_trace` alongside tool results before acting. Do not expose raw user query text in metrics labels; use `query_intent`, `tool`, `skill_id`, `rank` and `outcome` only.
 
+## Cursor IDE setup
+
+Cursor configuration for **MCP-only** and **filesystem-only** modes: [`CURSOR_IDE_SETUP.md`](CURSOR_IDE_SETUP.md). This repository defaults to MCP-only (`.vscode/settings.json`, `.cursor/rules/skills-kg-mcp-only.mdc`).
+
 ## FastAPI Usage
 
 The FastAPI app factory lives in `scripts/skills_api.py`. It exposes read-only endpoints:
