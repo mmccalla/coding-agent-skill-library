@@ -50,8 +50,7 @@ Choose event-driven architecture when producers and consumers can evolve indepen
 ## References
 
 - CloudEvents specification: https://cloudevents.io/
-- AsyncAPI specification: https://www.asyncapi.com/
-- AsyncAPI and CloudEvents comparison: https://www.asyncapi.com/blog/asyncapi-cloud-events
+- AsyncAPI specification: https://www.asyncapi.com/docs/reference/specification/latest
 
 ## Verification
 

@@ -67,6 +67,11 @@ evidence recorded
 
 For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
+## References
+
+- CNCF — Progressive Delivery whitepaper: https://tag-app-delivery.cncf.io/whitepapers/progressive-delivery/
+- Google SRE Book — Release Engineering: https://sre.google/sre-book/release-engineering/
+
 ## Verification
 
 - [ ] Release risk classification and rollout strategy stated.

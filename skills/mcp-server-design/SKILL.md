@@ -69,6 +69,10 @@ Use `skills_docs/security/OWASP_ASI_CROSSWALK.md` for the shared risk map.
 - `guardrails-safety-patterns` — auth, validation and least privilege
 - `knowledge-retrieval-rag` — document grounding alongside tools
 
+## References
+
+- Model Context Protocol — Build a server: https://modelcontextprotocol.io/docs/develop/build-server
+- Model Context Protocol specification: https://modelcontextprotocol.io/specification/2025-11-25
 ## Verification
 
 - [ ] Tool/resource/prompt boundaries are clear.

@@ -41,6 +41,12 @@ Apply DAMA-DMBOK2-style separation of data governance, architecture, modelling, 
 ## Avoid
 Do not collect metadata with no use case or owner.
 
+## References
+
+- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
+- EDM Council CDMC (Cloud Data Management Capabilities): https://edmcouncil.org/frameworks/cdmc/
+- W3C DCAT 3: https://www.w3.org/TR/vocab-dcat-3/
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

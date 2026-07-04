@@ -58,6 +58,11 @@ Prefer bounded retries with timeouts, circuit breakers, idempotent operations, m
 
 For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
+## References
+
+- Google SRE Book: https://sre.google/sre-book/table-of-contents/
+- Google SRE Workbook: https://sre.google/workbook/table-of-contents/
+
 ## Verification
 
 - [ ] User impact and SLI/SLO or operational signal addressed.

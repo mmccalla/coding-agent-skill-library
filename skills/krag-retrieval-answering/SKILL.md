@@ -89,6 +89,11 @@ Return retrieval plan, queries/pseudocode, evidence set, answer, citations, unce
 - `krag-system-design` — architecture and retrieval role design
 - `krag-evaluation-governance` — retrieval and answer quality gates
 
+## References
+
+- Neo4j documentation — querying and GraphRAG patterns: https://neo4j.com/docs/
+- Retrieval-Augmented Generation (Lewis et al.): https://ai.meta.com/research/publications/retrieval-augmented-generation-for-knowledge-intensive-nlp-tasks/
+
 ## Verification
 
 - [ ] Retrieval strategy selection is explicit and bounded.

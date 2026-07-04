@@ -45,8 +45,8 @@ For `Manage Supplier Risk`, use a five-level maturity scale with evidence for po
 
 ## References
 
-- Business Architecture Guild BIZBOK (capabilities, value streams, organisation, information): https://www.businessarchitectureguild.org/
-- The Open Group TOGAF Standard (business architecture domain): https://www.opengroup.org/togaf
+- Business Architecture Guild — BIZBOK (capability maturity): https://www.businessarchitectureguild.org/
+- CMMI Institute overview: https://cmmiinstitute.com/
 
 ## Verification
 

@@ -10,6 +10,7 @@ Documentation for agents and humans. Pick one path — you do not need every fil
 | **Copy the library to another repo** | `GETTING_STARTED.md` → `DROP_IN_BOOTSTRAP.md` |
 | **Run MCP / Docker / Neo4j locally** | `GETTING_STARTED.md` → `SKILLS_KG_MCP_RUNBOOK.md` |
 | **Write or change skills** | `SKILL_AUTHORING_GUIDE.md` |
+| **Domain gap-close backlog** | `GAP_CLOSE_BACKLOG.md` |
 | **KRAG roadmap and status** | `krag/STATUS.md` |
 | **Measured retrieval quality** | `krag/EVALUATION.md` |
 

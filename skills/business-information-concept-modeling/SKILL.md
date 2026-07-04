@@ -49,8 +49,8 @@ From an onboarding value stream, extract concepts such as `Customer`, `Applicati
 
 ## References
 
-- Business Architecture Guild BIZBOK (capabilities, value streams, organisation, information): https://www.businessarchitectureguild.org/
-- The Open Group TOGAF Standard (business architecture domain): https://www.opengroup.org/togaf
+- Business Architecture Guild — BIZBOK (information concepts): https://www.businessarchitectureguild.org/
+- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
 
 ## Verification
 

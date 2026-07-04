@@ -41,6 +41,10 @@ Choose the lightest reliable router:
 - Escalate or ask for clarification when route confidence is low.
 - Keep routing separate from execution so routes are testable.
 
+## References
+
+- LangGraph — branching / conditional routing: https://langchain-ai.github.io/langgraph/how-tos/branching/
+
 ## Verification
 - [ ] Route enum exists.
 - [ ] Fallback/clarification route exists.

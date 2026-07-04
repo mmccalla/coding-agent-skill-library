@@ -35,6 +35,11 @@ Extract enough intent to make the next implementation decision complete and low 
 
 If the user says `make the agent safer`, ask which risk matters most before planning: tool permissions, prompt injection, data leakage, approval gates or audit evidence. Offer concrete options and recommend the lowest-risk default when enough context exists. Stop interviewing once the next action and acceptance evidence are clear.
 
+## References
+
+- IIBA BABOK Guide: https://www.iiba.org/career-resources/a-business-analysis-professionals-foundation-for-success/babok/
+- ISO/IEC/IEEE 29148 requirements engineering: https://www.iso.org/standard/72089.html
+
 ## Verification
 
 - [ ] Clarifying questions asked or assumptions stated explicitly.

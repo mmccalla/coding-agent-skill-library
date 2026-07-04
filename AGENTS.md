@@ -105,6 +105,9 @@ For KRAG work, do not treat a manually curated routing overlay as sufficient evi
 - Use `exception-handling-and-recovery` for error detection, retries, fallbacks, rollback, graceful degradation and escalation.
 - Use `human-in-the-loop` for human approval, review, judgement or escalation.
 - Use `guardrails-safety-patterns` for input validation, output checks, tool restrictions, safety policies and secure defaults.
+- Use `threat-modeling` for assets, trust boundaries, threats and mitigations before security-sensitive design.
+- Use `ai-model-governance` for model inventory, risk tier, approval, monitoring, drift and retirement.
+- Use `risk-management` for risk registers, treatments, owners and residual risk tracking.
 - Use `evaluation-and-monitoring` for metrics, baselines, regression tests, observability, drift detection and operational monitoring.
 - Use `browser-testing-with-devtools`, `ci-cd-and-automation`, `deprecation-and-migration`, `documentation-and-adrs`, `shipping-and-launch`, `code-review-and-quality` and `git-workflow-and-versioning` when browser evidence, release discipline, durable documentation or source-control hygiene are part of the task.
 
@@ -123,6 +126,8 @@ For KRAG work, do not treat a manually curated routing overlay as sufficient evi
 - Use `tdd-practice` to add or change behaviour through a failing test, smallest passing implementation and refactor loop.
 - Use `bdd-practice` to express business-readable behaviour, acceptance criteria and user-facing scenarios.
 - Use `ddd-practice` to model complex domains using bounded contexts, ubiquitous language, aggregates, value objects, domain events and protected invariants.
+- Use `test-strategy` for risk-based test levels, pyramid mix and exit criteria.
+- Use `technical-debt-management` for debt inventory, interest and paydown plans.
 
 ### Business, data and event-driven architecture
 
@@ -130,6 +135,8 @@ For architecture work, load the smallest relevant skill from the flat `skills/` 
 
 Use business architecture skills to clarify capabilities, value streams, processes, operating models, maturity, organisation design and strategy-to-execution traceability:
 
+- Use `solution-architecture` for end-to-end options, NFRs, views and architecture fitness functions or exceptions.
+- Use `cloud-platform-architecture` for landing zones, tenancy, shared services and platform guardrails.
 - Use `business-capability-modeling` for stable business abilities, capability maps, decomposition, ownership and heatmaps.
 - Use `value-stream-modeling` for trigger-to-outcome value flow across stakeholders, capabilities, data and systems.
 - Use `process-modeling` for operational steps, decisions, hand-offs, controls, exceptions and automation opportunities.
@@ -177,6 +184,7 @@ Use enterprise-integration-patterns skills for message-based integration design 
 - Use `message-endpoint-design` for producers, consumers, gateways and idempotent receivers.
 - Use `messaging-system-management` for observability, replay, control and operational safety.
 - Use `eip-integration-validation` after design or implementation to review against EIP criteria.
+- Use `api-design-and-lifecycle` for HTTP/RPC OpenAPI contracts, versioning and API deprecation.
 
 For architecture work, preserve traceability:
 
@@ -217,6 +225,10 @@ For AI or agent-mediated workflows, always show what the agent plans to do, what
 - Use `toil-reduction-and-automation` for safe reduction of repetitive operational work.
 - Use `release-engineering-and-progressive-delivery` for canary releases, rollback, blue/green deployment, feature flags and release safety.
 - Use `dora-four-keys` for DevOps Research and Assessment metrics: deployment frequency, lead time for changes, change failure rate, failed deployment recovery time and deployment rework rate (throughput and instability factors).
+- Use `secure-sdlc-and-supply-chain` for SSDF-aligned delivery, SBOM and dependency/agent supply-chain controls.
+- Use `finops-practice` for platform cloud spend, allocation, unit economics and cost anomalies (not agent-run token budgets).
+- Use `performance-engineering` for latency, throughput, profiling and capacity evidence.
+- Use `infrastructure-as-code` for declarative plan/apply infrastructure change.
 
 For production, platform, CI/CD, operational resilience or service reliability work, load the relevant reliability skill from the flat `skills/` directory using the `reliability-and-delivery` grouping in `skills/PACK_METADATA.json` and `skills/MANIFEST.md`.
 

@@ -66,6 +66,11 @@ Before adding an alert, answer what user impact it represents, who owns it, what
 - Do not mark a service healthy if dependencies required for readiness are unavailable.
 - Do not rely only on logs where metrics or traces are needed.
 
+## References
+
+- OpenTelemetry documentation: https://opentelemetry.io/docs/
+- OpenTelemetry specification: https://opentelemetry.io/docs/specs/otel/
+
 ## Verification
 
 - [ ] Telemetry added or changed listed.

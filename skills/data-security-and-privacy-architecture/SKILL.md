@@ -39,13 +39,38 @@ Apply DAMA-DMBOK2-style separation of data governance, architecture, modelling, 
 - Sensitive values are not logged.
 - Access evidence is auditable.
 
+## Privacy compliance procedure
+
+This is an operational procedure for agents, not legal advice.
+
+1. Map personal data categories, purposes and systems involved in the change.
+2. Confirm a lawful basis or organisational policy basis for processing where applicable.
+3. Trigger a DPIA (data protection impact assessment) when processing is high risk (large-scale sensitive data, systematic monitoring, automated decisions with legal effect).
+4. Define data-subject rights handling (access, rectification, erasure/DSAR paths) and response owners.
+5. Align retention, deletion and transfer controls with `data-lifecycle-and-retention-management`.
+6. Record evidence (classification, access logs, DPIA reference, retention rules).
+
 ## Avoid
 Do not rely on UI-only access controls or broad shared credentials.
+Do not treat privacy compliance as solved by encryption alone.
+
+## Related skills
+
+- `data-lifecycle-and-retention-management` — retention and deletion
+- `threat-modeling` — abuse and exfiltration threats
+- `human-in-the-loop` — approval for high-risk processing
+
+## References
+
+- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
+- EDM Council CDMC (Cloud Data Management Capabilities): https://edmcouncil.org/frameworks/cdmc/
+- ICO UK GDPR guidance: https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/
 
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.
 - [ ] Decisions, assumptions and risks stated explicitly.
 - [ ] Quality checks or validation performed.
+- [ ] Privacy compliance steps considered (DPIA trigger, data-subject rights, evidence).
 - [ ] Files changed reported with traceability preserved.
 

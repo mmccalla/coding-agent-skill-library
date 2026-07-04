@@ -53,6 +53,11 @@ Feature: <capability>
 - `tdd-practice` — executable tests from scenarios
 - `ddd-practice` — domain language in scenarios
 
+## References
+
+- Cucumber — Behaviour-Driven Development: https://cucumber.io/docs/bdd/
+- Gherkin reference: https://cucumber.io/docs/gherkin/reference/
+
 ## Verification
 
 - [ ] Scenarios added or updated in business-readable form.

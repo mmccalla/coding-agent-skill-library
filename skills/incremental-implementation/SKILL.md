@@ -34,6 +34,10 @@ Reduce risk by implementing one coherent slice at a time and verifying each slic
 - `tdd-practice` — verify each slice with tests
 - `reflection-and-verification` — quality gate per slice
 
+## References
+
+- Agile Alliance — Incremental development: https://www.agilealliance.org/glossary/incremental-development/
+
 ## Verification
 
 - [ ] Slice scope and acceptance criteria stated.

@@ -48,6 +48,11 @@ Do not equate broker health with pipeline health.
 
 Define operability from user impact first: freshness for decisions, lag for consumers, error rate for quality and recovery time for incidents. Alert on symptoms that require action, not only broker health. A replay plan must state how to avoid duplicate side effects, how far back replay is safe and who approves catch-up after data loss.
 
+## References
+
+- Apache Kafka — Operations: https://kafka.apache.org/documentation/#operations
+- Google SRE Book — Service Level Objectives: https://sre.google/sre-book/service-level-objectives/
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

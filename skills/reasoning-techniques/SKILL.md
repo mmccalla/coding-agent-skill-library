@@ -45,6 +45,11 @@ Prefer externally verifiable reasoning over persuasive explanation. For code, th
 - Do not use LLM reasoning where a compiler, linter, parser or test can decide.
 - Do not continue a failing reasoning path without new evidence.
 
+## References
+
+- ReAct: Synergizing Reasoning and Acting: https://arxiv.org/abs/2210.03629
+- Chain-of-Thought Prompting Elicits Reasoning: https://arxiv.org/abs/2201.11903
+
 ## Verification
 - [ ] Objective and constraints are clear.
 - [ ] Evidence gathering occurred before major changes.

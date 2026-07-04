@@ -58,6 +58,10 @@ human approval retained for high-risk actions
 
 For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
+## References
+
+- Google SRE Book — Eliminating Toil: https://sre.google/sre-book/eliminating-toil/
+
 ## Verification
 
 - [ ] Toil reduced and expected benefit stated.

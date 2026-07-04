@@ -76,6 +76,11 @@ Return ingestion design, graph schema changes, validation rules, idempotency str
 - `krag-system-design` — end-to-end KRAG system architecture
 - `krag-evaluation-governance` — ingestion and graph quality gates
 
+## References
+
+- Neo4j documentation — data import and modeling: https://neo4j.com/docs/
+- W3C PROV-O (provenance): https://www.w3.org/TR/prov-o/
+
 ## Verification
 
 - [ ] Source structure, evidence anchors and semantic entities remain distinct.

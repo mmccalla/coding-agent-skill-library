@@ -43,6 +43,12 @@ Apply DAMA-DMBOK2-style separation of data governance, architecture, modelling, 
 ## Avoid
 Do not claim trust without lineage/provenance evidence.
 
+## References
+
+- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
+- EDM Council CDMC (Cloud Data Management Capabilities): https://edmcouncil.org/frameworks/cdmc/
+- W3C PROV-O: https://www.w3.org/TR/prov-o/
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

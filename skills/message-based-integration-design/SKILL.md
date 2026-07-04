@@ -79,4 +79,12 @@ Produce a practical, technology-agnostic integration design that selects the rig
 
 ## References
 
-- Enterprise Integration Patterns messaging catalogue: https://www.enterpriseintegrationpatterns.com/patterns/messaging/
+- EIP — Messaging (integration style): https://www.enterpriseintegrationpatterns.com/patterns/messaging/Messaging.html
+- EIP — File Transfer: https://www.enterpriseintegrationpatterns.com/patterns/messaging/FileTransferIntegration.html
+- EIP — Shared Database: https://www.enterpriseintegrationpatterns.com/patterns/messaging/SharedDataBaseIntegration.html
+- EIP — Remote Procedure Invocation: https://www.enterpriseintegrationpatterns.com/patterns/messaging/EncapsulatedSynchronousIntegration.html
+- EIP — Message Bus: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageBus.html
+- EIP — Message Broker: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageBroker.html
+- EIP — Pipes and Filters: https://www.enterpriseintegrationpatterns.com/patterns/messaging/PipesAndFilters.html
+- EIP Table of Contents: https://www.enterpriseintegrationpatterns.com/patterns/messaging/toc.html
+

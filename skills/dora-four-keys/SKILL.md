@@ -98,7 +98,7 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 
 ## References
 
-- DORA metrics history (four keys to five, throughput and instability): https://dora.dev/insights/dora-metrics-history/
+- DORA metrics history (throughput and instability): https://dora.dev/insights/dora-metrics-history/
 - DORA research home: https://dora.dev/
 
 ## Verification

@@ -42,6 +42,11 @@ Source overview, schema discovery, profiling, rule management, validation, clean
 - Do not show stale data without a timestamp.
 - Do not make users jump across multiple screens to understand a single failure.
 
+## References
+
+- Nielsen Norman Group — Dashboard Design: https://www.nngroup.com/articles/dashboards-enhance-details/
+- W3C WCAG 2.2 (dashboard accessibility): https://www.w3.org/TR/WCAG22/
+
 ## Verification
 
 - [ ] Dashboard user and decision stated.

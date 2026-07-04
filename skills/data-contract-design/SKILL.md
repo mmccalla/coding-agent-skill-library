@@ -47,7 +47,8 @@ Do not treat contracts as documentation-only; enforce them with tests and pipeli
 ## References
 
 - Open Data Contract Standard (ODCS): https://bitol-io.github.io/open-data-contract-standard
-- ODCS source and schema: https://github.com/bitol-io/open-data-contract-standard
+- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
+- EDM Council CDMC (Cloud Data Management Capabilities): https://edmcouncil.org/frameworks/cdmc/
 
 ## Verification
 

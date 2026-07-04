@@ -46,6 +46,11 @@ Agent plan preview, tool-call preview, evidence panel, confidence and uncertaint
 
 For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
+## References
+
+- Nielsen Norman Group — Explainable AI: https://www.nngroup.com/articles/explainable-ai/
+- OWASP Top 10 for Agentic Applications (ASI09 trust): https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+
 ## Verification
 
 - [ ] Agent action and risk level stated.

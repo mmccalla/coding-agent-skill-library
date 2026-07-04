@@ -41,6 +41,11 @@ Apply DAMA-DMBOK2-style separation of data governance, architecture, modelling, 
 ## Avoid
 Do not create golden records without stewardship and survivorship rules.
 
+## References
+
+- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
+- EDM Council CDMC (Cloud Data Management Capabilities): https://edmcouncil.org/frameworks/cdmc/
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.
