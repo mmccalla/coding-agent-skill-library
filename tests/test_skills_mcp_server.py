@@ -55,6 +55,24 @@ class SkillsMcpServerTests(unittest.TestCase):
             self.assertIn("inputSchema", tool)
             self.assertEqual("object", tool["inputSchema"]["type"])
 
+    def test_tool_parameters_include_descriptions(self) -> None:
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+
+        for tool in server.list_tools():
+            properties = tool["inputSchema"]["properties"]
+            self.assertIsInstance(properties, dict)
+            for param_name, param_schema in properties.items():
+                self.assertIn(
+                    "description",
+                    param_schema,
+                    msg=f"{tool['name']}.{param_name} missing description",
+                )
+                self.assertTrue(
+                    str(param_schema["description"]).strip(),
+                    msg=f"{tool['name']}.{param_name} has empty description",
+                )
+
     def test_recommend_skills_returns_bounded_grounded_context(self) -> None:
         mcp = load_module()
         server = mcp.SkillsMcpServer.for_test_fixture()
@@ -285,6 +303,14 @@ class SkillsMcpServerTests(unittest.TestCase):
                     tool_names = {tool.name for tool in tools.tools}
                     self.assertIn("recommend_skills", tool_names)
                     self.assertIn("route_skill_query", tool_names)
+
+                    recommend_tool = next(
+                        tool for tool in tools.tools if tool.name == "recommend_skills"
+                    )
+                    properties = recommend_tool.inputSchema.get("properties", {})
+                    for param_name in ("query", "limit", "max_depth", "token_budget"):
+                        self.assertIn("description", properties[param_name])
+                        self.assertTrue(str(properties[param_name]["description"]).strip())
 
                     result = await session.call_tool(
                         "recommend_skills",

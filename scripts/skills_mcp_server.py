@@ -12,9 +12,10 @@ import sys
 from argparse import ArgumentParser
 from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import NamedTuple
+from typing import Annotated, NamedTuple
 
 from mcp.server.fastmcp import FastMCP
+from pydantic import Field
 
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -54,6 +55,34 @@ def _schema(properties: Mapping[str, object], required: Sequence[str]) -> dict[s
         "required": list(required),
         "additionalProperties": False,
     }
+
+
+def _property(schema: Mapping[str, object], description: str) -> dict[str, object]:
+    return {**dict(schema), "description": description}
+
+
+_QUERY_TEXT = "Natural-language task or question to match against promoted skills in the library."
+_SKILL_ID = (
+    "Canonical Skills KG id (for example skill:knowledge-graph-rag) or bare slug "
+    "(for example knowledge-graph-rag)."
+)
+_SEARCH_LIMIT = "Maximum number of keyword search hits to return."
+_RECOMMEND_LIMIT = "Maximum number of recommended skills to return."
+_CONTEXT_LIMIT = "Maximum number of related skills to return."
+_RETRIEVAL_UNIT_LIMIT = (
+    "Maximum number of bounded retrieval units (section snippets) to include per skill."
+)
+_MAX_DEPTH = (
+    "Maximum graph hop depth when expanding related skills for evidence paths "
+    "(0 disables expansion)."
+)
+_TOKEN_BUDGET = "Approximate token budget for evidence snippets included in recommendations."
+_ROUTE_QUERY = "Natural-language skill question to classify before choosing a follow-up MCP tool."
+_RESOLVE_NAME = (
+    "Human-readable skill name, slug, alias or canonical id to resolve "
+    "(for example accessibility-wcag)."
+)
+_RELATED_LIMIT = "Maximum number of related skills to include in the execution guide."
 
 
 def _bounded_int(value: object, default: int, minimum: int, maximum: int) -> int:
@@ -172,12 +201,15 @@ class SkillsMcpServer:
                 description="Search skills by keyword over skill names and retrieval-unit text.",
                 inputSchema=_schema(
                     {
-                        "query": {"type": "string", "minLength": 1},
-                        "limit": {
-                            "type": "integer",
-                            "minimum": 1,
-                            "maximum": mcp_limits.search_limit_max,
-                        },
+                        "query": _property({"type": "string", "minLength": 1}, _QUERY_TEXT),
+                        "limit": _property(
+                            {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": mcp_limits.search_limit_max,
+                            },
+                            _SEARCH_LIMIT,
+                        ),
                     },
                     ("query",),
                 ),
@@ -187,12 +219,15 @@ class SkillsMcpServer:
                 description="Return one skill's bounded metadata and retrieval units.",
                 inputSchema=_schema(
                     {
-                        "skill_id": {"type": "string", "minLength": 1},
-                        "retrieval_unit_limit": {
-                            "type": "integer",
-                            "minimum": 1,
-                            "maximum": mcp_limits.retrieval_unit_limit_max,
-                        },
+                        "skill_id": _property({"type": "string", "minLength": 1}, _SKILL_ID),
+                        "retrieval_unit_limit": _property(
+                            {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": mcp_limits.retrieval_unit_limit_max,
+                            },
+                            _RETRIEVAL_UNIT_LIMIT,
+                        ),
                     },
                     ("skill_id",),
                 ),
@@ -202,22 +237,31 @@ class SkillsMcpServer:
                 description="Recommend connected skills for a task query with evidence.",
                 inputSchema=_schema(
                     {
-                        "query": {"type": "string", "minLength": 1},
-                        "limit": {
-                            "type": "integer",
-                            "minimum": 1,
-                            "maximum": mcp_limits.recommend_limit_max,
-                        },
-                        "max_depth": {
-                            "type": "integer",
-                            "minimum": 0,
-                            "maximum": self._settings.retrieval.max_depth,
-                        },
-                        "token_budget": {
-                            "type": "integer",
-                            "minimum": mcp_limits.token_budget_min,
-                            "maximum": mcp_limits.token_budget_max,
-                        },
+                        "query": _property({"type": "string", "minLength": 1}, _QUERY_TEXT),
+                        "limit": _property(
+                            {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": mcp_limits.recommend_limit_max,
+                            },
+                            _RECOMMEND_LIMIT,
+                        ),
+                        "max_depth": _property(
+                            {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": self._settings.retrieval.max_depth,
+                            },
+                            _MAX_DEPTH,
+                        ),
+                        "token_budget": _property(
+                            {
+                                "type": "integer",
+                                "minimum": mcp_limits.token_budget_min,
+                                "maximum": mcp_limits.token_budget_max,
+                            },
+                            _TOKEN_BUDGET,
+                        ),
                     },
                     ("query",),
                 ),
@@ -227,12 +271,15 @@ class SkillsMcpServer:
                 description="Return connected neighbouring skills and evidence paths.",
                 inputSchema=_schema(
                     {
-                        "skill_id": {"type": "string", "minLength": 1},
-                        "limit": {
-                            "type": "integer",
-                            "minimum": 1,
-                            "maximum": mcp_limits.context_limit_max,
-                        },
+                        "skill_id": _property({"type": "string", "minLength": 1}, _SKILL_ID),
+                        "limit": _property(
+                            {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": mcp_limits.context_limit_max,
+                            },
+                            _CONTEXT_LIMIT,
+                        ),
                     },
                     ("skill_id",),
                 ),
@@ -245,7 +292,7 @@ class SkillsMcpServer:
                 ),
                 inputSchema=_schema(
                     {
-                        "query": {"type": "string", "minLength": 1},
+                        "query": _property({"type": "string", "minLength": 1}, _ROUTE_QUERY),
                     },
                     ("query",),
                 ),
@@ -255,7 +302,7 @@ class SkillsMcpServer:
                 description="Resolve a human skill name or canonical id to a Skills KG skill id.",
                 inputSchema=_schema(
                     {
-                        "name": {"type": "string", "minLength": 1},
+                        "name": _property({"type": "string", "minLength": 1}, _RESOLVE_NAME),
                     },
                     ("name",),
                 ),
@@ -268,12 +315,15 @@ class SkillsMcpServer:
                 ),
                 inputSchema=_schema(
                     {
-                        "skill_id": {"type": "string", "minLength": 1},
-                        "related_limit": {
-                            "type": "integer",
-                            "minimum": 1,
-                            "maximum": mcp_limits.context_limit_max,
-                        },
+                        "skill_id": _property({"type": "string", "minLength": 1}, _SKILL_ID),
+                        "related_limit": _property(
+                            {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": mcp_limits.context_limit_max,
+                            },
+                            _RELATED_LIMIT,
+                        ),
                     },
                     ("skill_id",),
                 ),
@@ -821,7 +871,10 @@ def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
         description="Search skills by keyword over skill names and retrieval-unit text.",
         structured_output=True,
     )
-    def search_skills(query: str, limit: int = 5) -> dict[str, object]:
+    def search_skills(
+        query: Annotated[str, Field(description=_QUERY_TEXT, min_length=1)],
+        limit: Annotated[int, Field(description=_SEARCH_LIMIT, ge=1)] = 5,
+    ) -> dict[str, object]:
         return server.call_tool("search_skills", {"query": query, "limit": limit})
 
     @fastmcp.tool(
@@ -829,7 +882,13 @@ def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
         description="Return one skill's bounded metadata and retrieval units.",
         structured_output=True,
     )
-    def get_skill(skill_id: str, retrieval_unit_limit: int = 3) -> dict[str, object]:
+    def get_skill(
+        skill_id: Annotated[str, Field(description=_SKILL_ID, min_length=1)],
+        retrieval_unit_limit: Annotated[
+            int,
+            Field(description=_RETRIEVAL_UNIT_LIMIT, ge=1),
+        ] = 3,
+    ) -> dict[str, object]:
         return server.call_tool(
             "get_skill",
             {"skill_id": skill_id, "retrieval_unit_limit": retrieval_unit_limit},
@@ -841,10 +900,10 @@ def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
         structured_output=True,
     )
     def recommend_skills(
-        query: str,
-        limit: int = 5,
-        max_depth: int = 2,
-        token_budget: int = 600,
+        query: Annotated[str, Field(description=_QUERY_TEXT, min_length=1)],
+        limit: Annotated[int, Field(description=_RECOMMEND_LIMIT, ge=1)] = 5,
+        max_depth: Annotated[int, Field(description=_MAX_DEPTH, ge=0)] = 2,
+        token_budget: Annotated[int, Field(description=_TOKEN_BUDGET, ge=1)] = 600,
     ) -> dict[str, object]:
         return server.call_tool(
             "recommend_skills",
@@ -861,7 +920,10 @@ def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
         description="Return connected neighbouring skills and evidence paths.",
         structured_output=True,
     )
-    def get_skill_context(skill_id: str, limit: int = 10) -> dict[str, object]:
+    def get_skill_context(
+        skill_id: Annotated[str, Field(description=_SKILL_ID, min_length=1)],
+        limit: Annotated[int, Field(description=_CONTEXT_LIMIT, ge=1)] = 10,
+    ) -> dict[str, object]:
         return server.call_tool("get_skill_context", {"skill_id": skill_id, "limit": limit})
 
     @fastmcp.tool(
@@ -871,7 +933,9 @@ def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
         ),
         structured_output=True,
     )
-    def route_skill_query(query: str) -> dict[str, object]:
+    def route_skill_query(
+        query: Annotated[str, Field(description=_ROUTE_QUERY, min_length=1)],
+    ) -> dict[str, object]:
         return server.call_tool("route_skill_query", {"query": query})
 
     @fastmcp.tool(
@@ -879,7 +943,9 @@ def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
         description="Resolve a human skill name or canonical id to a Skills KG skill id.",
         structured_output=True,
     )
-    def resolve_skill(name: str) -> dict[str, object]:
+    def resolve_skill(
+        name: Annotated[str, Field(description=_RESOLVE_NAME, min_length=1)],
+    ) -> dict[str, object]:
         return server.call_tool("resolve_skill", {"name": name})
 
     @fastmcp.tool(
@@ -889,7 +955,10 @@ def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
         ),
         structured_output=True,
     )
-    def get_skill_execution_guide(skill_id: str, related_limit: int = 10) -> dict[str, object]:
+    def get_skill_execution_guide(
+        skill_id: Annotated[str, Field(description=_SKILL_ID, min_length=1)],
+        related_limit: Annotated[int, Field(description=_RELATED_LIMIT, ge=1)] = 10,
+    ) -> dict[str, object]:
         return server.call_tool(
             "get_skill_execution_guide",
             {"skill_id": skill_id, "related_limit": related_limit},

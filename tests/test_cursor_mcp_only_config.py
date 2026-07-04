@@ -46,6 +46,16 @@ class CursorMcpOnlyConfigTests(unittest.TestCase):
 
         self.assertIn("CURSOR_IDE_SETUP.md", text)
 
+    def test_project_context_is_project_rule_not_user_rule(self) -> None:
+        rule = REPO_ROOT / ".cursor" / "rules" / "project-context.mdc"
+        text = rule.read_text(encoding="utf-8")
+
+        self.assertIn("project rule", text.lower())
+        self.assertIn("not", text.lower())
+        setup = CURSOR_SETUP.read_text(encoding="utf-8")
+        self.assertIn("project-context.mdc", setup)
+        self.assertIn("Project rules vs user-level", setup)
+
     def test_cursor_setup_documents_both_modes(self) -> None:
         text = CURSOR_SETUP.read_text(encoding="utf-8")
 
