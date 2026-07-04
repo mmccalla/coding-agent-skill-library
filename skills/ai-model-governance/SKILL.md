@@ -96,9 +96,8 @@ Maintain accountable control over models in use: known inventory, stated purpose
 
 ## References
 
-- NIST AI Risk Management Framework (AI RMF 1.0): https://www.nist.gov/itl/ai-risk-management-framework
-- NIST AI RMF playbook: https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook
-- NIST AI RMF resources: https://www.nist.gov/artificial-intelligence
+- NIST AI Risk Management Framework: https://www.nist.gov/itl/ai-risk-management-framework
+- NIST AI RMF Playbook: https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook
 
 ## Verification
 

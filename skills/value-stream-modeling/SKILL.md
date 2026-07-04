@@ -49,8 +49,8 @@ For loan approval, start with the trigger `customer submits application` and out
 
 ## References
 
-- Business Architecture Guild BIZBOK (capabilities, value streams, organisation, information): https://www.businessarchitectureguild.org/
-- The Open Group TOGAF Standard (business architecture domain): https://www.opengroup.org/togaf
+- Business Architecture Guild — BIZBOK (value streams): https://www.businessarchitectureguild.org/
+- The Open Group TOGAF — value stream concepts: https://www.opengroup.org/togaf
 
 ## Verification
 

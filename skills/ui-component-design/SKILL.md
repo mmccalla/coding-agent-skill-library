@@ -38,6 +38,10 @@ Build components that are reusable, accessible, predictable, composable, visuall
 
 Layout, feedback, input, data display, workflow, evidence and agentic UI components.
 
+## References
+
+- W3C ARIA Authoring Practices Guide: https://www.w3.org/WAI/ARIA/apg/
+
 ## Verification
 
 - [ ] Component purpose and interface changes stated.

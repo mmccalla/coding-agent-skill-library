@@ -34,6 +34,10 @@ Load enough context to work accurately while avoiding irrelevant material that d
 
 For a validator change, load the validator, its tests, the library contract and only the skill files affected by the new rule. Do not load unrelated UX or reliability skills unless the failing evidence points there. If a later test reveals more affected files, refresh context and record why the scope expanded.
 
+## References
+
+- Anthropic — Equipping agents with skills (progressive disclosure / context): https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
+
 ## Verification
 
 - [ ] Context sources selected and justified.

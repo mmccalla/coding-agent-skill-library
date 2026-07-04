@@ -52,6 +52,10 @@ Never hide failures. Convert raw exceptions into actionable diagnostics and incl
 - Never proceed after failed validation without documenting the risk.
 - Prefer controlled failure over silent corruption.
 
+## References
+
+- Google SRE Book — Addressing Cascading Failures: https://sre.google/sre-book/addressing-cascading-failures/
+
 ## Verification
 - [ ] Failure modes are identified.
 - [ ] Retry and fallback limits are explicit.

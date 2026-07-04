@@ -85,8 +85,8 @@ Include agent platform line items (inference, embeddings, vector DB, egress) whe
 
 ## References
 
-- FinOps Foundation Framework: https://www.finops.org
-- FinOps Framework overview (Inform, Optimize, Operate): https://www.finops.org/framework/
+- FinOps Foundation Framework: https://www.finops.org/framework/
+- FinOps Foundation: https://www.finops.org/
 
 ## Verification
 

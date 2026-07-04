@@ -43,8 +43,9 @@ Do not treat syntactic compatibility as sufficient.
 
 ## References
 
+- Confluent Schema Registry documentation: https://docs.confluent.io/platform/current/schema-registry/index.html
 - CloudEvents specification: https://cloudevents.io/
-- AsyncAPI specification: https://www.asyncapi.com/
+- AsyncAPI specification: https://www.asyncapi.com/docs/reference/specification/latest
 
 ## Decision template
 

@@ -87,9 +87,8 @@ Establish measurable latency and throughput SLIs, find bottlenecks through profi
 
 ## References
 
-- Google SRE Book — Addressing Cascading Failures (load and capacity context): https://sre.google/sre-book/addressing-cascading-failures/
-- Microsoft performance testing guidance: https://learn.microsoft.com/en-us/azure/architecture/framework/scalability/performance-test
-- CNCF performance and scalability considerations: https://www.cncf.io/
+- Microsoft Azure Well-Architected — Performance testing: https://learn.microsoft.com/en-us/azure/architecture/framework/scalability/performance-test
+- Brendan Gregg — Systems Performance Methodologies: https://www.brendangregg.com/methodology.html
 
 ## Verification
 

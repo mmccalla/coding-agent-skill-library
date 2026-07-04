@@ -31,6 +31,10 @@ Base the implementation or guidance on the most authoritative available source a
 
 When updating a pytest convention, check the repository tests and the current pytest documentation before editing. Use the local files for project-specific behaviour and upstream docs for framework semantics. If sources disagree, follow the repository convention and record the upstream difference as a risk or follow-up.
 
+## References
+
+- Diátaxis documentation framework: https://diataxis.fr/
+
 ## Verification
 
 - [ ] Authoritative sources cited.

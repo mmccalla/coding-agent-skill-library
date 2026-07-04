@@ -47,6 +47,11 @@ Use `skills_docs/security/OWASP_ASI_CROSSWALK.md` for the shared risk map.
 | ASI03 Identity and Privilege Abuse | Bind tool execution to the caller, tenant and task scope before using credentials. |
 | ASI05 Unexpected Code Execution | Do not execute generated code, commands or queries without deterministic validation and approval gates. |
 
+## References
+
+- OpenAI — Function calling guide: https://platform.openai.com/docs/guides/function-calling
+- OWASP AI Agent Security Cheat Sheet (tool misuse): https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html
+
 ## Verification
 
 - [ ] Tool schema is strict and typed.

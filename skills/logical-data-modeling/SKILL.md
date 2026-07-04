@@ -62,8 +62,8 @@ Do not introduce physical-platform assumptions into the logical model itself.
 
 ## References
 
-- DAMA International (DMBOK overview): https://www.dama.org/
-- Database design physical considerations (PostgreSQL docs as example): https://www.postgresql.org/docs/current/ddl.html
+- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
+- EDM Council CDMC (Cloud Data Management Capabilities): https://edmcouncil.org/frameworks/cdmc/
 
 ## Verification
 

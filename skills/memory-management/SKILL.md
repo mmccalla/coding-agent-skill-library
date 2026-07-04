@@ -54,6 +54,10 @@ Use `skills_docs/security/OWASP_ASI_CROSSWALK.md` for the shared risk map.
 | ASI08 Cascading Failures | Prevent poisoned shared memory from propagating by scoping retrieval and re-validating before hand-off. |
 | ASI10 Rogue Agents | Monitor unexpected memory writes, reads and preference changes as behavioural drift signals. |
 
+## References
+
+- OWASP AI Agent Security Cheat Sheet (memory and context poisoning): https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html
+
 ## Verification
 
 - [ ] Short-term and long-term memory are separated.

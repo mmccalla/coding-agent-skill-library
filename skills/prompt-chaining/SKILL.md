@@ -32,6 +32,10 @@ Decompose overloaded prompts into validated, single-purpose stages with testable
 - Fail fast on malformed intermediate outputs.
 - Include unit tests for every stage and an integration test for the whole chain.
 
+## References
+
+- Anthropic — Building effective agents (prompt chaining pattern): https://www.anthropic.com/research/building-effective-agents
+
 ## Verification
 - [ ] Pipeline stages are named and documented.
 - [ ] Each stage has a clear input/output contract.

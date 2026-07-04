@@ -57,6 +57,11 @@ Add retrieval tests with known questions and expected source files. Measure reca
 - `context-engineering` — assemble retrieval context efficiently
 - `guardrails-safety-patterns` — validate retrieved and generated content
 
+## References
+
+- Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks (Lewis et al.): https://ai.meta.com/research/publications/retrieval-augmented-generation-for-knowledge-intensive-nlp-tasks/
+- OWASP Top 10 for LLM Applications: https://genai.owasp.org/llm-top-10/
+
 ## Verification
 - [ ] Sources are parsed into clean text.
 - [ ] Chunking preserves useful context.

@@ -37,6 +37,11 @@ Optional templates: `skills_docs/templates/agile-epic-template.md` and `skills_d
 - `incremental-implementation` — implement spec in verifiable slices
 - `planning-and-task-decomposition` — break large specs into ordered work
 
+## References
+
+- OpenAPI Specification: https://spec.openapis.org/oas/latest.html
+- Cucumber — Behaviour-Driven Development: https://cucumber.io/docs/bdd/
+
 ## Verification
 
 - [ ] Final behaviour and acceptance criteria captured.

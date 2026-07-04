@@ -35,6 +35,11 @@ Capture the reason for the change, the options considered and the consequences s
 
 For a validator rule change, document why the rule exists, which files it affects, what alternatives were considered and how maintainers validate compliance. Avoid repeating the implementation details from the script; focus on the decision, consequences and how future contributors should apply the rule.
 
+## References
+
+- Documenting Architecture Decisions (Michael Nygard): https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions
+- Diátaxis documentation framework: https://diataxis.fr/
+
 ## Verification
 
 - [ ] Documentation or ADR artefacts produced listed.

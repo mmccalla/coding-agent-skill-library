@@ -41,6 +41,12 @@ Apply DAMA-DMBOK2-style separation of data governance, architecture, modelling, 
 ## Avoid
 Do not keep data indefinitely because deletion is inconvenient.
 
+## References
+
+- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
+- EDM Council CDMC (Cloud Data Management Capabilities): https://edmcouncil.org/frameworks/cdmc/
+- ICO — storage limitation / retention: https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/lawful-basis/a-guide-to-lawful-basis/
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

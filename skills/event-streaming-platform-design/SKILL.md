@@ -47,8 +47,8 @@ For each topic family, define naming convention, environment strategy, tenant, o
 
 ## References
 
-- CloudEvents specification: https://cloudevents.io/
-- AsyncAPI specification: https://www.asyncapi.com/
+- Apache Kafka documentation: https://kafka.apache.org/documentation/
+- AsyncAPI specification: https://www.asyncapi.com/docs/reference/specification/latest
 
 ## Verification
 

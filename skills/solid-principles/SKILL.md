@@ -34,6 +34,11 @@ Improve maintainability and testability by ensuring code has clear responsibilit
 - Keep contracts explicit with types, schemas, protocols or tests.
 - Preserve public behaviour unless explicitly asked to change it.
 
+## References
+
+- Clean Coder — SOLID relevance: https://blog.cleancoder.com/uncle-bob/2020/10/18/Solid-Relevance.html
+- Martin Fowler — Inversion of Control: https://martinfowler.com/bliki/InversionOfControl.html
+
 ## Verification
 
 - [ ] SOLID issue addressed identified.

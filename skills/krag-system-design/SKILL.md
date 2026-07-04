@@ -74,6 +74,12 @@ Return:
 - `krag-retrieval-answering` — retrieval planning, ranking and answer synthesis
 - `krag-evaluation-governance` — KRAG-specific evaluation and governance
 
+## References
+
+- Neo4j documentation: https://neo4j.com/docs/
+- W3C RDF: https://www.w3.org/RDF/
+- NIST AI RMF: https://www.nist.gov/itl/ai-risk-management-framework
+
 ## Verification
 
 - [ ] Architecture, graph role and retrieval strategy are explicit.

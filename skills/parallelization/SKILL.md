@@ -35,6 +35,10 @@ Run only independent work concurrently and merge results deterministically with 
 - Use bounded concurrency to avoid rate-limit or resource exhaustion.
 - Record per-branch timings and errors.
 
+## References
+
+- LangGraph — map-reduce / fan-out parallelism: https://langchain-ai.github.io/langgraph/how-tos/map-reduce/
+
 ## Verification
 - [ ] Independence assumptions are documented.
 - [ ] Bounded concurrency is used.

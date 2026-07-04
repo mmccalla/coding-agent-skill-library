@@ -35,6 +35,10 @@ Launch changes with a clear preflight check, a safe rollout path, post-launch mo
 
 Before publishing a skill-library release, confirm the branch is merged, CI passed, release notes describe behaviour changes, and rollback is possible by reverting the merge. For externally consumed packages, define the first signal to monitor, who owns launch follow-up and what condition pauses the rollout.
 
+## References
+
+- Google SRE Book — Release Engineering: https://sre.google/sre-book/release-engineering/
+
 ## Verification
 
 - [ ] Launch scope and rollout plan stated.

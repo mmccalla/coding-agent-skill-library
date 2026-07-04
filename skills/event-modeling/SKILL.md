@@ -48,8 +48,8 @@ Start with sticky-note style discovery: commands in imperative form, events in p
 
 ## References
 
+- Event Modeling (eventmodeling.org): https://eventmodeling.org/
 - CloudEvents specification: https://cloudevents.io/
-- AsyncAPI specification: https://www.asyncapi.com/
 
 ## Verification
 

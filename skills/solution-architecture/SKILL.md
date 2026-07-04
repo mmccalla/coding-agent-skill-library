@@ -92,8 +92,8 @@ Produce a practical solution architecture artefact that ties business context to
 ## References
 
 - C4 model: https://c4model.com/
+- C4 model — diagram types: https://c4model.com/diagrams
 - The Open Group TOGAF: https://www.opengroup.org/togaf
-- C4 model notation overview: https://c4model.com/diagrams
 
 ## Verification
 

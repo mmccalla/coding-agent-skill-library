@@ -40,6 +40,11 @@ Apply DAMA-DMBOK2-style separation of data governance, architecture, modelling, 
 ## Avoid
 Do not choose streaming where batch is simpler and sufficient.
 
+## References
+
+- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
+- EDM Council CDMC (Cloud Data Management Capabilities): https://edmcouncil.org/frameworks/cdmc/
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

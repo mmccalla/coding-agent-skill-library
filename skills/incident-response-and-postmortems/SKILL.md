@@ -91,6 +91,11 @@ Owner, due date, priority and validation method.
 
 For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
+## References
+
+- Google SRE Book — Postmortem Culture: https://sre.google/sre-book/postmortem-culture/
+- PagerDuty Incident Response Guide: https://response.pagerduty.com/
+
 ## Verification
 
 - [ ] Incident type and user impact stated.
