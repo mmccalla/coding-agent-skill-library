@@ -618,5 +618,328 @@
     "query_archetype": "task",
     "naturalness": "high",
     "promotion_tier": "release"
+  },
+  {
+    "id": "confuser_threat_vs_guardrails",
+    "query": "STRIDE trust boundaries threat model mitigations",
+    "expected_skill_ids": [
+      "skill:threat-modeling"
+    ],
+    "required_skill_ids": [
+      "skill:threat-modeling"
+    ],
+    "excluded_skill_ids": [
+      "skill:guardrails-safety-patterns"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_guardrails_vs_threat",
+    "query": "runtime input validation tool allow-lists output filtering",
+    "expected_skill_ids": [
+      "skill:guardrails-safety-patterns"
+    ],
+    "required_skill_ids": [
+      "skill:guardrails-safety-patterns"
+    ],
+    "excluded_skill_ids": [
+      "skill:threat-modeling"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_secure_sdlc_vs_cicd",
+    "query": "NIST SSDF SBOM dependency pinning supply chain",
+    "expected_skill_ids": [
+      "skill:secure-sdlc-and-supply-chain"
+    ],
+    "required_skill_ids": [
+      "skill:secure-sdlc-and-supply-chain"
+    ],
+    "excluded_skill_ids": [
+      "skill:ci-cd-and-automation"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_api_vs_data_contract",
+    "query": "OpenAPI HTTP versioning authZ deprecation",
+    "expected_skill_ids": [
+      "skill:api-design-and-lifecycle"
+    ],
+    "required_skill_ids": [
+      "skill:api-design-and-lifecycle"
+    ],
+    "excluded_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_data_contract_vs_api",
+    "query": "data product schema quality freshness producer consumer",
+    "expected_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "required_skill_ids": [
+      "skill:data-contract-design"
+    ],
+    "excluded_skill_ids": [
+      "skill:api-design-and-lifecycle"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_ai_model_gov_vs_eval",
+    "query": "model inventory risk tier approval kill-switch retirement",
+    "expected_skill_ids": [
+      "skill:ai-model-governance"
+    ],
+    "required_skill_ids": [
+      "skill:ai-model-governance"
+    ],
+    "excluded_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_eval_vs_ai_model_gov",
+    "query": "quality metrics baselines regression drift dashboards",
+    "expected_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "required_skill_ids": [
+      "skill:evaluation-and-monitoring"
+    ],
+    "excluded_skill_ids": [
+      "skill:ai-model-governance"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_solution_arch_vs_spec",
+    "query": "NFRs options context container views fitness functions",
+    "expected_skill_ids": [
+      "skill:solution-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:solution-architecture"
+    ],
+    "excluded_skill_ids": [
+      "skill:spec-driven-development"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_test_strategy_vs_tdd",
+    "query": "risk-based test pyramid levels automation exit criteria",
+    "expected_skill_ids": [
+      "skill:test-strategy"
+    ],
+    "required_skill_ids": [
+      "skill:test-strategy"
+    ],
+    "excluded_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_tdd_vs_test_strategy",
+    "query": "failing test first red green refactor smallest change",
+    "expected_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "required_skill_ids": [
+      "skill:tdd-practice"
+    ],
+    "excluded_skill_ids": [
+      "skill:test-strategy"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_risk_vs_prioritization",
+    "query": "risk register likelihood impact treatment residual risk",
+    "expected_skill_ids": [
+      "skill:risk-management"
+    ],
+    "required_skill_ids": [
+      "skill:risk-management"
+    ],
+    "excluded_skill_ids": [
+      "skill:prioritization"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_finops_vs_resource_aware",
+    "query": "FinOps allocation tags unit economics showback spend anomalies",
+    "expected_skill_ids": [
+      "skill:finops-practice"
+    ],
+    "required_skill_ids": [
+      "skill:finops-practice"
+    ],
+    "excluded_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_resource_aware_vs_finops",
+    "query": "agent session token budget model tier context window",
+    "expected_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "required_skill_ids": [
+      "skill:resource-aware-optimization"
+    ],
+    "excluded_skill_ids": [
+      "skill:finops-practice"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_cloud_platform_vs_solution",
+    "query": "landing zone tenancy shared services identity boundaries",
+    "expected_skill_ids": [
+      "skill:cloud-platform-architecture"
+    ],
+    "required_skill_ids": [
+      "skill:cloud-platform-architecture"
+    ],
+    "excluded_skill_ids": [
+      "skill:solution-architecture"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_perf_vs_slo",
+    "query": "profile latency throughput load test capacity",
+    "expected_skill_ids": [
+      "skill:performance-engineering"
+    ],
+    "required_skill_ids": [
+      "skill:performance-engineering"
+    ],
+    "excluded_skill_ids": [
+      "skill:slo-error-budget-management"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_iac_vs_cicd",
+    "query": "declarative plan apply drift secrets infrastructure",
+    "expected_skill_ids": [
+      "skill:infrastructure-as-code"
+    ],
+    "required_skill_ids": [
+      "skill:infrastructure-as-code"
+    ],
+    "excluded_skill_ids": [
+      "skill:ci-cd-and-automation"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_tech_debt_vs_prioritization",
+    "query": "debt inventory interest paydown owners remediation",
+    "expected_skill_ids": [
+      "skill:technical-debt-management"
+    ],
+    "required_skill_ids": [
+      "skill:technical-debt-management"
+    ],
+    "excluded_skill_ids": [
+      "skill:prioritization"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "medium",
+    "promotion_tier": "release",
+    "realistic_tier": true
   }
 ]

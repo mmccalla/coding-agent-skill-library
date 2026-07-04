@@ -46,7 +46,10 @@
         "reasoning-techniques",
         "guardrails-safety-patterns",
         "evaluation-and-monitoring",
-        "prioritization"
+        "prioritization",
+        "threat-modeling",
+        "ai-model-governance",
+        "risk-management"
       ]
     },
     {
@@ -59,7 +62,9 @@
         "dry-principle",
         "tdd-practice",
         "bdd-practice",
-        "ddd-practice"
+        "ddd-practice",
+        "test-strategy",
+        "technical-debt-management"
       ]
     },
     {
@@ -95,7 +100,11 @@
         "git-workflow-and-versioning",
         "toil-reduction-and-automation",
         "release-engineering-and-progressive-delivery",
-        "dora-four-keys"
+        "dora-four-keys",
+        "secure-sdlc-and-supply-chain",
+        "finops-practice",
+        "performance-engineering",
+        "infrastructure-as-code"
       ]
     },
     {
@@ -125,7 +134,8 @@
         "message-transformation-design",
         "message-endpoint-design",
         "messaging-system-management",
-        "eip-integration-validation"
+        "eip-integration-validation",
+        "api-design-and-lifecycle"
       ]
     },
     {
@@ -162,6 +172,15 @@
         "ontology-and-knowledge-graph-modeling",
         "knowledge-graph-rag",
         "data-lineage-and-provenance"
+      ]
+    },
+    {
+      "id": "solution-and-platform-architecture",
+      "title": "Solution And Platform Architecture",
+      "description": "Solution options, NFRs, cloud platform and landing-zone architecture skills.",
+      "skills": [
+        "solution-architecture",
+        "cloud-platform-architecture"
       ]
     },
     {

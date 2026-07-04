@@ -38,6 +38,56 @@
         }
       ]
     },
+    "skill:ai-model-governance": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_ai_model_governance_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_ai_model_governance_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_ai_model_governance_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:api-design-and-lifecycle": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_api_design_and_lifecycle_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_api_design_and_lifecycle_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_api_design_and_lifecycle_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
     "skill:apply-laws-of-ai": {
       "case_count": 2,
       "archetypes": [
@@ -190,6 +240,31 @@
         }
       ]
     },
+    "skill:cloud-platform-architecture": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_cloud_platform_architecture_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_cloud_platform_architecture_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_cloud_platform_architecture_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
     "skill:code-review-and-quality": {
       "case_count": 2,
       "archetypes": [
@@ -248,8 +323,9 @@
       ]
     },
     "skill:data-contract-design": {
-      "case_count": 2,
+      "case_count": 3,
       "archetypes": [
+        "confuser",
         "direct",
         "task"
       ],
@@ -262,6 +338,11 @@
         {
           "case_id": "coverage_data_contract_design_direct",
           "query_archetype": "direct",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_data_contract_design_confuser",
+          "query_archetype": "confuser",
           "query_source": "archetype"
         }
       ]
@@ -533,8 +614,9 @@
       ]
     },
     "skill:evaluation-and-monitoring": {
-      "case_count": 2,
+      "case_count": 3,
       "archetypes": [
+        "confuser",
         "direct",
         "task"
       ],
@@ -547,6 +629,11 @@
         {
           "case_id": "coverage_evaluation_and_monitoring_direct",
           "query_archetype": "direct",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_evaluation_and_monitoring_confuser",
+          "query_archetype": "confuser",
           "query_source": "archetype"
         }
       ]
@@ -648,6 +735,31 @@
         {
           "case_id": "coverage_exception_handling_and_recovery_direct",
           "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:finops-practice": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_finops_practice_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_finops_practice_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_finops_practice_confuser",
+          "query_archetype": "confuser",
           "query_source": "archetype"
         }
       ]
@@ -812,6 +924,31 @@
         {
           "case_id": "coverage_incremental_implementation_direct",
           "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:infrastructure-as-code": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_infrastructure_as_code_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_infrastructure_as_code_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_infrastructure_as_code_confuser",
+          "query_archetype": "confuser",
           "query_source": "archetype"
         }
       ]
@@ -1378,6 +1515,31 @@
         }
       ]
     },
+    "skill:performance-engineering": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_performance_engineering_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_performance_engineering_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_performance_engineering_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
     "skill:planning-and-task-decomposition": {
       "case_count": 3,
       "archetypes": [
@@ -1537,9 +1699,10 @@
       ]
     },
     "skill:resource-aware-optimization": {
-      "case_count": 2,
+      "case_count": 3,
       "archetypes": [
         "alias",
+        "confuser",
         "task"
       ],
       "cases": [
@@ -1551,6 +1714,36 @@
         {
           "case_id": "coverage_resource_aware_optimization_alias",
           "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_resource_aware_optimization_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:risk-management": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_risk_management_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_risk_management_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_risk_management_confuser",
+          "query_archetype": "confuser",
           "query_source": "archetype"
         }
       ]
@@ -1589,6 +1782,31 @@
         {
           "case_id": "coverage_schema_registry_and_contracts_direct",
           "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:secure-sdlc-and-supply-chain": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_secure_sdlc_and_supply_chain_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_secure_sdlc_and_supply_chain_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_secure_sdlc_and_supply_chain_confuser",
+          "query_archetype": "confuser",
           "query_source": "archetype"
         }
       ]
@@ -1665,6 +1883,31 @@
         {
           "case_id": "coverage_solid_principles_alias",
           "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:solution-architecture": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_solution_architecture_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_solution_architecture_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_solution_architecture_confuser",
+          "query_archetype": "confuser",
           "query_source": "archetype"
         }
       ]
@@ -1815,6 +2058,81 @@
         },
         {
           "case_id": "coverage_tdd_practice_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:technical-debt-management": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_technical_debt_management_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_technical_debt_management_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_technical_debt_management_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:test-strategy": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_test_strategy_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_test_strategy_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_test_strategy_confuser",
+          "query_archetype": "confuser",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:threat-modeling": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_threat_modeling_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_threat_modeling_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_threat_modeling_confuser",
           "query_archetype": "confuser",
           "query_source": "archetype"
         }
