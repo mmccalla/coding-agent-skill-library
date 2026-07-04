@@ -4,12 +4,31 @@ This guide explains how to configure Cursor for **skills-kg MCP only** or **file
 
 The repository **defaults to MCP-only** (see committed workspace artefacts below). Switch modes deliberately — mixing both without understanding the layers causes duplicate or conflicting skill guidance.
 
-## How Cursor loads skills (three layers)
+## Project rules vs user-level Cursor settings
+
+| Kind | Location | Scope |
+| --- | --- | --- |
+| **Project rules** | `.cursor/rules/*.mdc` (committed in this repo) | This workspace only — travels with the clone |
+| **User Rules** | **Cursor → Settings → Rules** (or `Cursor Settings` user rules) | All projects on your machine |
+| **Cursor Skills** | **Settings → Plugins → Rules, Skills, Subagents → Skills** (`~/.cursor/skills/`) | User-level; invoked when relevant or via `/` in chat |
+| **MCP servers** | `~/.cursor/mcp.json` + **Tools & MCPs** | User-level server wiring (paths are local) |
+| **Workspace settings** | `.vscode/settings.json` (gitignored here — set locally) | This workspace only |
+
+Committed project rules for this repository:
+
+| File | Purpose |
+| --- | --- |
+| `project-context.mdc` | Dual-mode purpose — portable library **and** Skills KG; do not delete portable artefacts |
+| `skills-kg-mcp-only.mdc` | MCP-first skill discovery for Cursor sessions in this workspace |
+
+Do **not** treat `project-context.mdc` or `skills-kg-mcp-only.mdc` as general user rules. Other repositories keep their own `.cursor/rules/` or none at all.
+
+## How Cursor loads skills (three consumption layers)
 
 | Layer | Where configured | What it does |
 | --- | --- | --- |
 | **1. Agent Skills locations** | `.vscode/settings.json` → `chat.agentSkillsLocations` | Injects `SKILL.md` files from configured folders into agent context |
-| **2. Rules, Skills, Subagents** | **Cursor → Settings → Plugins → Rules, Skills, Subagents** | Global or user-level skills from `~/.cursor/skills/`; invoked when relevant or via `/` in chat |
+| **2. Rules, Skills, Subagents** | **Cursor → Settings → Plugins → Rules, Skills, Subagents** | **User-level** skills from `~/.cursor/skills/` — separate from committed `.cursor/rules/` project rules |
 | **3. MCP servers** | **Cursor → Settings → Plugins → Tools & MCPs** and `~/.cursor/mcp.json` | Exposes tools (`route_skill_query`, `get_skill`, …) from the read-only **skills-kg** server |
 
 Safety baselines (`AGENTIC_CODING_GLOBAL_SAFETY.md`, `SECURE_AGENTIC_DEVELOPMENT.md`) are **repository files**, not skills. Agents should read them from the repo root in either mode.
@@ -24,8 +43,9 @@ Use this when you want bounded retrieval, routing traces, usage metrics and a si
 
 | File | Purpose |
 | --- | --- |
-| `.vscode/settings.json` | Repo `skills/` path disabled in `chat.agentSkillsLocations` |
-| `.cursor/rules/skills-kg-mcp-only.mdc` | MCP-only agent workflow; overrides filesystem-first text in `AGENTS.md` / `CLAUDE.md` |
+| `.vscode/settings.json` | Repo `skills/` path disabled in `chat.agentSkillsLocations` (local; gitignored) |
+| `.cursor/rules/project-context.mdc` | Project-only dual-mode context; not a user rule |
+| `.cursor/rules/skills-kg-mcp-only.mdc` | MCP-only agent workflow; overrides filesystem-first text in `AGENTS.md` / `CLAUDE.md` in this workspace |
 
 ### Step 1 — Enable skills-kg MCP
 
