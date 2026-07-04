@@ -6,6 +6,7 @@ description: Maintains consistent, accessible design systems using tokens, compo
 # Design System Practice
 
 ## When to use
+
 Use this skill when creating or modifying design tokens, component libraries, shared UI patterns, typography, spacing, colour usage, component variants, interaction standards, layout systems or frontend conventions.
 
 ## Objective
@@ -34,8 +35,8 @@ Create a coherent design system that reduces UI inconsistency, improves accessib
 
 ## References
 
-- Design Systems resources: https://www.designsystems.com/
-- W3C ARIA Authoring Practices Guide: https://www.w3.org/WAI/ARIA/apg/
+- [Design Systems resources](https://www.designsystems.com/)
+- [W3C ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/)
 
 ## Verification
 
@@ -43,4 +44,3 @@ Create a coherent design system that reduces UI inconsistency, improves accessib
 - [ ] Tokens or components added or updated with rationale.
 - [ ] Accessibility notes and examples or tests updated.
 - [ ] Residual consistency risks stated.
-

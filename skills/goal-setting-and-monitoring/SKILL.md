@@ -48,12 +48,12 @@ For coding agents, update the goal record after each tool action. Store what cha
 
 ## References
 
-- Google SRE Book — Service Level Objectives: https://sre.google/sre-book/service-level-objectives/
+- [Google SRE Book — Service Level Objectives](https://sre.google/sre-book/service-level-objectives/)
 
 ## Verification
+
 - [ ] Goal and non-goals are explicit.
 - [ ] Success criteria are measurable.
 - [ ] Progress evidence is captured.
 - [ ] Stop condition is explicit.
 - [ ] Final answer reports completed, skipped and unresolved items.
-

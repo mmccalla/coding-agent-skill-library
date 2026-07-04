@@ -6,12 +6,15 @@ description: Designs event-driven systems with asynchronous flows, brokers, prod
 # Event-Driven Architecture
 
 ## When to use
+
 Use when designing asynchronous integration or event-first systems.
 
 ## Objective
+
 Produce a practical, concise, traceable architecture artefact that a coding agent can use to guide implementation or review.
 
 ## Procedure
+
 1. Identify triggers and outcomes.
 2. Separate events, commands and queries.
 3. Identify producers/consumers.
@@ -22,6 +25,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 8. Define observability.
 
 ## Required outputs
+
 - Event flow
 - Producers/consumers
 - Topic/stream design
@@ -30,17 +34,20 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Operational controls
 
 ## Best-practice alignment
+
 Apply event-driven best practice: business event semantics, producer/consumer ownership, schema contracts, compatibility, ordering, partitioning, idempotency, replay, retention, lineage, observability and operational SLOs.
 
 Use open standards where they fit: **CloudEvents** for a common event envelope and metadata (`id`, `source`, `type`, `time`, `dataschema`), and **AsyncAPI** for application-level channel, operation and message contracts. CloudEvents and AsyncAPI are complementary (envelope vs interface).
 
 ## Quality checks
+
 - Events have business meaning.
 - Ownership is clear.
 - Duplicate/replay behaviour is handled.
 - Observability exists.
 
 ## Avoid
+
 Do not use events to disguise tight coupling.
 
 ## Decision aid
@@ -49,8 +56,8 @@ Choose event-driven architecture when producers and consumers can evolve indepen
 
 ## References
 
-- CloudEvents specification: https://cloudevents.io/
-- AsyncAPI specification: https://www.asyncapi.com/docs/reference/specification/latest
+- [CloudEvents specification](https://cloudevents.io/)
+- [AsyncAPI specification](https://www.asyncapi.com/docs/reference/specification/latest)
 
 ## Verification
 
@@ -58,4 +65,3 @@ Choose event-driven architecture when producers and consumers can evolve indepen
 - [ ] Decisions, assumptions and risks stated explicitly.
 - [ ] Quality checks or validation performed.
 - [ ] Files changed reported with traceability preserved.
-

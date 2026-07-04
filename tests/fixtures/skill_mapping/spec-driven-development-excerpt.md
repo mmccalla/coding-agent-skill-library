@@ -1,6 +1,7 @@
 # Spec-Driven Development
 
 ## When to use
+
 Use this skill when starting a new feature, changing externally visible behaviour, or making a non-trivial change that needs a clear specification before code or skill edits are made.
 
 ## Related skills

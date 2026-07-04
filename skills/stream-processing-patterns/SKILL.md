@@ -6,12 +6,15 @@ description: Designs stream filtering, enrichment, joins, windows and stateful p
 # Stream Processing Patterns
 
 ## When to use
+
 Use for real-time transformations or analytics.
 
 ## Objective
+
 Produce a practical, concise, traceable architecture artefact that a coding agent can use to guide implementation or review.
 
 ## Procedure
+
 1. Define input/output streams.
 2. Define processing semantics.
 3. Choose event time or processing time.
@@ -22,6 +25,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 8. Test event sequences.
 
 ## Required outputs
+
 - Processing design
 - State/window policy
 - Late/duplicate handling
@@ -30,14 +34,17 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Metrics
 
 ## Best-practice alignment
+
 Apply event-driven best practice: business event semantics, producer/consumer ownership, schema contracts, compatibility, ordering, partitioning, idempotency, replay, retention, lineage, observability and operational SLOs.
 
 ## Quality checks
+
 - Event time choices are explicit.
 - State recovery is designed.
 - Poison events are handled.
 
 ## Avoid
+
 Do not assume events arrive in order unless guaranteed.
 
 ## Decision aid
@@ -46,7 +53,7 @@ Pick processing-time logic only when late arrival does not change the answer. Us
 
 ## References
 
-- Apache Kafka Streams documentation: https://kafka.apache.org/documentation/streams/
+- [Apache Kafka Streams documentation](https://kafka.apache.org/documentation/streams/)
 
 ## Verification
 
@@ -54,4 +61,3 @@ Pick processing-time logic only when late arrival does not change the answer. Us
 - [ ] Decisions, assumptions and risks stated explicitly.
 - [ ] Quality checks or validation performed.
 - [ ] Files changed reported with traceability preserved.
-

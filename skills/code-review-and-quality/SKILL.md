@@ -6,6 +6,7 @@ description: Use when reviewing code before merge to assess correctness, tests, 
 # Code Review and Quality
 
 ## When to use
+
 Use this skill when reviewing a diff written by yourself, another agent or a human, or when deciding whether a change is ready to merge.
 
 ## Objective
@@ -36,7 +37,7 @@ Identify correctness risks, test gaps, maintainability problems, hidden regressi
 
 ## References
 
-- Google Engineering Practices — Code Review Developer Guide: https://google.github.io/eng-practices/review/
+- [Google Engineering Practices — Code Review Developer Guide](https://google.github.io/eng-practices/review/)
 
 ## Verification
 

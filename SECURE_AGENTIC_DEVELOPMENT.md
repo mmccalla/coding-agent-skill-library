@@ -319,9 +319,9 @@ Every agent action should be least-privilege, validated, observable, reversible 
 
 ## References
 
-1. OWASP Foundation. OWASP Top 10. https://owasp.org/www-project-top-ten/
-2. OWASP Foundation. OWASP Top 10 for Large Language Model Applications. https://owasp.org/www-project-top-10-for-large-language-model-applications/
-3. OWASP Foundation. OWASP Top 10 CI/CD Security Risks. https://owasp.org/www-project-top-10-ci-cd-security-risks/
-4. OWASP Foundation. OWASP Cheat Sheet Series: CI/CD Security. https://cheatsheetseries.owasp.org/cheatsheets/CI_CD_Security_Cheat_Sheet.html
-5. National Institute of Standards and Technology. NIST AI Risk Management Framework 1.0. https://www.nist.gov/itl/ai-risk-management-framework
-6. National Institute of Standards and Technology. NIST SP 800-218: Secure Software Development Framework Version 1.1. https://csrc.nist.gov/pubs/sp/800/218/final
+1. OWASP Foundation. OWASP Top 10. <https://owasp.org/www-project-top-ten/>
+2. OWASP Foundation. OWASP Top 10 for Large Language Model Applications. <https://owasp.org/www-project-top-10-for-large-language-model-applications/>
+3. OWASP Foundation. OWASP Top 10 CI/CD Security Risks. <https://owasp.org/www-project-top-10-ci-cd-security-risks/>
+4. OWASP Foundation. OWASP Cheat Sheet Series: CI/CD Security. <https://cheatsheetseries.owasp.org/cheatsheets/CI_CD_Security_Cheat_Sheet.html>
+5. National Institute of Standards and Technology. NIST AI Risk Management Framework 1.0. <https://www.nist.gov/itl/ai-risk-management-framework>
+6. National Institute of Standards and Technology. NIST SP 800-218: Secure Software Development Framework Version 1.1. <https://csrc.nist.gov/pubs/sp/800/218/final>

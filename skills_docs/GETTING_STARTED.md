@@ -25,10 +25,10 @@ Service URLs:
 
 | Service | URL |
 | --- | --- |
-| UI | http://localhost:5173 |
-| API + OpenAPI | http://localhost:8000/docs |
-| Neo4j Browser | http://localhost:7474 |
-| Grafana | http://localhost:3000 |
+| UI | <http://localhost:5173> |
+| API + OpenAPI | <http://localhost:8000/docs> |
+| Neo4j Browser | <http://localhost:7474> |
+| Grafana | <http://localhost:3000> |
 
 Health checks:
 
@@ -95,11 +95,14 @@ Full operator workflow: `SKILLS_KG_MCP_RUNBOOK.md`.
 ## Write or change a skill
 
 1. Read `SKILL_AUTHORING_GUIDE.md` and `LIBRARY_CONTRACT.md`.
-2. Edit `skills/<skill-name>/SKILL.md`.
-3. Run `python3 scripts/validate_skills.py`.
-4. For material changes, run `./scripts/ci_local.sh`.
+2. Install git hooks once: `./scripts/install_git_hooks.sh`.
+3. Edit `skills/<skill-name>/SKILL.md` (and inventory/docs as needed).
+4. Commit — pre-commit runs secret scan, markdownlint, skill validators, ruff, mypy and quality pytest for relevant staged paths.
+5. For a full local CI mirror, run `./scripts/ci_local.sh`.
 
-Skill changes pass the ingest gate (`scripts/ci_ingest_gate.py`) inside `ci_local.sh`: L2 security, graph connectivity, SHACL, promoted smoke retrieval and dry-run Neo4j load.
+Pre-commit entrypoint: `scripts/pre_commit_check.sh` (via `.githooks/pre-commit`). Bypass only in emergencies with `SKIP_PRECOMMIT=1`.
+
+Skill changes also pass the ingest gate (`scripts/ci_ingest_gate.py`) inside `ci_local.sh`: L2 security, graph connectivity, SHACL, promoted smoke retrieval and dry-run Neo4j load.
 
 ## Maintain KRAG (ontology, eval, roadmap)
 

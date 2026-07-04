@@ -4,7 +4,7 @@ A compact, tool-agnostic skills pack for coding agents designing, reviewing and 
 
 Source basis: Enterprise Integration Patterns by Gregor Hohpe and Bobby Woolf, especially the Messaging Patterns catalogue.
 
-Attribution: Pattern names, problem/solution concepts and pattern taxonomy are derived from Enterprise Integration Patterns, https://www.enterpriseintegrationpatterns.com/patterns/messaging/.
+Attribution: Pattern names, problem/solution concepts and pattern taxonomy are derived from Enterprise Integration Patterns, <https://www.enterpriseintegrationpatterns.com/patterns/messaging/>.
 
 ## Skills
 

@@ -186,7 +186,7 @@ These skills are fully included in the flat library and grouped under `event-dri
 
 These skills are fully included in the flat library and grouped under `enterprise-integration-patterns`.
 
-Pattern names and taxonomy are derived from Enterprise Integration Patterns by Gregor Hohpe and Bobby Woolf: https://www.enterpriseintegrationpatterns.com/patterns/messaging/.
+[Pattern names and taxonomy are derived from Enterprise Integration Patterns by Gregor Hohpe and Bobby Woolf](https://www.enterpriseintegrationpatterns.com/patterns/messaging/)
 
 | Skill | Use when | Avoid when |
 |---|---|---|

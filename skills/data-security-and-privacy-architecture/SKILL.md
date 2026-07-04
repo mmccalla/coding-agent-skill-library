@@ -6,12 +6,15 @@ description: Designs classification, access, masking, privacy, entitlement and s
 # Data Security and Privacy Architecture
 
 ## When to use
+
 Use when data contains sensitive, personal, confidential, regulated or high-value information.
 
 ## Objective
+
 Produce a practical, concise, traceable architecture artefact that a coding agent can use to guide implementation or review.
 
 ## Procedure
+
 1. Classify data by sensitivity and purpose.
 2. Identify users, roles and access needs.
 3. Define entitlement model and approval flow.
@@ -22,6 +25,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 8. Test denial and misuse cases.
 
 ## Required outputs
+
 - Classification model
 - Access matrix
 - Entitlement workflow
@@ -30,9 +34,11 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Negative tests
 
 ## Best-practice alignment
+
 Apply DAMA-DMBOK2-style separation of data governance, architecture, modelling, security, integration/interoperability, master/reference data, metadata and quality. For cloud/shared data, apply CDMC-style expectations: ownership, classification, entitlement/access evidence, lineage/provenance, lifecycle/retention, quality controls and auditable evidence.
 
 ## Quality checks
+
 - Access is least privilege.
 - Sensitive fields are identified.
 - Denial paths are tested.
@@ -51,6 +57,7 @@ This is an operational procedure for agents, not legal advice.
 6. Record evidence (classification, access logs, DPIA reference, retention rules).
 
 ## Avoid
+
 Do not rely on UI-only access controls or broad shared credentials.
 Do not treat privacy compliance as solved by encryption alone.
 
@@ -62,9 +69,9 @@ Do not treat privacy compliance as solved by encryption alone.
 
 ## References
 
-- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
-- EDM Council CDMC (Cloud Data Management Capabilities): https://edmcouncil.org/frameworks/cdmc/
-- ICO UK GDPR guidance: https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/
+- [DAMA-DMBOK (DAMA International)](https://www.dama.org/cpages/body-of-knowledge)
+- [EDM Council CDMC (Cloud Data Management Capabilities)](https://edmcouncil.org/frameworks/cdmc/)
+- [ICO UK GDPR guidance](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/)
 
 ## Verification
 
@@ -73,4 +80,3 @@ Do not treat privacy compliance as solved by encryption alone.
 - [ ] Quality checks or validation performed.
 - [ ] Privacy compliance steps considered (DPIA trigger, data-subject rights, evidence).
 - [ ] Files changed reported with traceability preserved.
-

@@ -6,6 +6,7 @@ description: Designs actionable logs, metrics, traces, dashboards and alerts for
 # Observability and Telemetry
 
 ## When to use
+
 Use this skill when adding or reviewing logs, metrics, traces, dashboards, alerts, telemetry standards, OpenTelemetry instrumentation, service health checks, operational evidence or workflow monitoring.
 
 ## Objective
@@ -68,8 +69,8 @@ Before adding an alert, answer what user impact it represents, who owns it, what
 
 ## References
 
-- OpenTelemetry documentation: https://opentelemetry.io/docs/
-- OpenTelemetry specification: https://opentelemetry.io/docs/specs/otel/
+- [OpenTelemetry documentation](https://opentelemetry.io/docs/)
+- [OpenTelemetry specification](https://opentelemetry.io/docs/specs/otel/)
 
 ## Verification
 
@@ -77,4 +78,3 @@ Before adding an alert, answer what user impact it represents, who owns it, what
 - [ ] User journey or SLO coverage stated.
 - [ ] Sensitive-data handling considered.
 - [ ] Validation performed and observability gaps noted.
-

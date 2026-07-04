@@ -1,6 +1,6 @@
 # Coding Agent Skills KG
 
-Portable **91-skill** library for coding agents, plus an optional local **Neo4j GraphRAG** service (MCP, API, UI).
+Portable **111-skill** library for coding agents, plus an optional local **Neo4j GraphRAG** service (MCP, API, UI).
 
 ## Start here
 
@@ -32,16 +32,19 @@ cp .env.example .env
 docker compose up --build -d
 ```
 
-- UI: http://localhost:5173  
-- API: http://localhost:8000/docs  
-- Neo4j: http://localhost:7474  
+- [UI](http://localhost:5173)
+- [API](http://localhost:8000/docs)
+- [Neo4j](http://localhost:7474)
 
 ## Validation
 
 ```bash
 python3 -m pip install -e ".[dev]"
+./scripts/install_git_hooks.sh   # pre-commit: secrets, markdownlint, validators, ruff, mypy, pytest
 ./scripts/ci_local.sh
 ```
+
+Pre-commit runs automatically on `git commit` after hooks are installed. It selects checks from staged paths (skills, Python, docs, UI). Emergency bypass: `SKIP_PRECOMMIT=1 git commit ...` (use only when necessary).
 
 ## Portable copy set
 

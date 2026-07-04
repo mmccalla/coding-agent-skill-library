@@ -9,6 +9,7 @@ aliases:
 # Domain-Driven Design (DDD)
 
 ## When to use
+
 Use this skill when modelling complex business behaviour, designing service boundaries, refactoring an anemic domain model, defining aggregates, separating subdomains, aligning code with business language, or implementing domain rules that should not leak into infrastructure code.
 
 ## Objective
@@ -52,8 +53,8 @@ Create a maintainable domain model that reflects the business language, protects
 
 ## References
 
-- Domain-Driven Design Reference (domainlanguage.com): https://www.domainlanguage.com/ddd/reference/
-- Martin Fowler — Domain-Driven Design: https://martinfowler.com/bliki/DomainDrivenDesign.html
+- [Domain-Driven Design Reference (domainlanguage.com)](https://www.domainlanguage.com/ddd/reference/)
+- [Martin Fowler — Domain-Driven Design](https://martinfowler.com/bliki/DomainDrivenDesign.html)
 
 ## Verification
 

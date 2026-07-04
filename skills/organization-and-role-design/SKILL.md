@@ -9,12 +9,15 @@ aliases:
 # Organisation and Role Design
 
 ## When to use
+
 Use when clarifying who owns outcomes, decisions, data, services or capabilities.
 
 ## Objective
+
 Produce a practical, concise, traceable architecture artefact that a coding agent can use to guide implementation or review.
 
 ## Procedure
+
 1. Identify outcomes and decisions.
 2. Define accountable roles.
 3. Define consulted/informed roles.
@@ -25,6 +28,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 8. Validate with stakeholders.
 
 ## Required outputs
+
 - Role/accountability map
 - Decision rights
 - Escalation paths
@@ -32,14 +36,17 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Gaps/risks
 
 ## Best-practice alignment
+
 Align with **BIZBOK** business architecture practice: keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
 
 ## Quality checks
+
 - Accountability is not assigned to a committee.
 - Decision rights are clear.
 - Role overload is visible.
 
 ## Avoid
+
 Do not confuse consultation with accountability.
 
 ## Mini example
@@ -48,8 +55,8 @@ For a shared streaming platform, assign one accountable platform owner, domain e
 
 ## References
 
-- Business Architecture Guild — BIZBOK (organisation mapping): https://www.businessarchitectureguild.org/
-- The Open Group TOGAF — Organization Map: https://www.opengroup.org/togaf
+- [Business Architecture Guild — BIZBOK (organisation mapping)](https://www.businessarchitectureguild.org/)
+- [The Open Group TOGAF — Organization Map](https://www.opengroup.org/togaf)
 
 ## Verification
 

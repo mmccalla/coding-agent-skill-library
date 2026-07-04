@@ -96,12 +96,11 @@ Review integration designs and implementations against EIP, distributed-systems 
 
 ## References
 
-- EIP Table of Contents: https://www.enterpriseintegrationpatterns.com/patterns/messaging/toc.html
-- EIP — Messaging Systems introduction: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessagingComponentsIntro.html
-- EIP — Messaging Channels introduction: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessagingChannelsIntro.html
-- EIP — Message Construction introduction: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageConstructionIntro.html
-- EIP — Message Routing introduction: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageRoutingIntro.html
-- EIP — Message Transformation introduction: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageTransformationIntro.html
-- EIP — Messaging Endpoints introduction: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessagingEndpointsIntro.html
-- EIP — System Management introduction: https://www.enterpriseintegrationpatterns.com/patterns/messaging/SystemManagementIntro.html
-
+- [EIP Table of Contents](https://www.enterpriseintegrationpatterns.com/patterns/messaging/toc.html)
+- [EIP — Messaging Systems introduction](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessagingComponentsIntro.html)
+- [EIP — Messaging Channels introduction](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessagingChannelsIntro.html)
+- [EIP — Message Construction introduction](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageConstructionIntro.html)
+- [EIP — Message Routing introduction](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageRoutingIntro.html)
+- [EIP — Message Transformation introduction](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageTransformationIntro.html)
+- [EIP — Messaging Endpoints introduction](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessagingEndpointsIntro.html)
+- [EIP — System Management introduction](https://www.enterpriseintegrationpatterns.com/patterns/messaging/SystemManagementIntro.html)

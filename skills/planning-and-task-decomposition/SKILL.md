@@ -40,9 +40,10 @@ Turn complex objectives into ordered, dependency-aware steps with explicit valid
 
 ## References
 
-- ReAct: Synergizing Reasoning and Acting in Language Models: https://arxiv.org/abs/2210.03629
+- [ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629)
 
 ## Verification
+
 - [ ] Objective and acceptance criteria are clear.
 - [ ] Plan steps are executable and ordered.
 - [ ] Unknowns and assumptions are explicit.

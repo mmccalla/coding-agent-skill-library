@@ -73,14 +73,13 @@ Design and implement reliable message-producing and message-consuming endpoints 
 
 ## References
 
-- EIP — Message Endpoint: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageEndpoint.html
-- EIP — Messaging Gateway: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessagingGateway.html
-- EIP — Messaging Mapper: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessagingMapper.html
-- EIP — Transactional Client: https://www.enterpriseintegrationpatterns.com/patterns/messaging/TransactionalClient.html
-- EIP — Polling Consumer: https://www.enterpriseintegrationpatterns.com/patterns/messaging/PollingConsumer.html
-- EIP — Event-Driven Consumer: https://www.enterpriseintegrationpatterns.com/patterns/messaging/EventDrivenConsumer.html
-- EIP — Competing Consumers: https://www.enterpriseintegrationpatterns.com/patterns/messaging/CompetingConsumers.html
-- EIP — Idempotent Receiver: https://www.enterpriseintegrationpatterns.com/patterns/messaging/IdempotentReceiver.html
-- EIP — Service Activator: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessagingAdapter.html
-- EIP — Durable Subscriber: https://www.enterpriseintegrationpatterns.com/patterns/messaging/DurableSubscription.html
-
+- [EIP — Message Endpoint](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageEndpoint.html)
+- [EIP — Messaging Gateway](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessagingGateway.html)
+- [EIP — Messaging Mapper](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessagingMapper.html)
+- [EIP — Transactional Client](https://www.enterpriseintegrationpatterns.com/patterns/messaging/TransactionalClient.html)
+- [EIP — Polling Consumer](https://www.enterpriseintegrationpatterns.com/patterns/messaging/PollingConsumer.html)
+- [EIP — Event-Driven Consumer](https://www.enterpriseintegrationpatterns.com/patterns/messaging/EventDrivenConsumer.html)
+- [EIP — Competing Consumers](https://www.enterpriseintegrationpatterns.com/patterns/messaging/CompetingConsumers.html)
+- [EIP — Idempotent Receiver](https://www.enterpriseintegrationpatterns.com/patterns/messaging/IdempotentReceiver.html)
+- [EIP — Service Activator](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessagingAdapter.html)
+- [EIP — Durable Subscriber](https://www.enterpriseintegrationpatterns.com/patterns/messaging/DurableSubscription.html)

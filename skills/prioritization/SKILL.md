@@ -57,9 +57,10 @@ During repository work, prioritise in this order unless instructed otherwise:
 
 ## References
 
-- RICE prioritisation (Intercom): https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/
+- [RICE prioritisation (Intercom)](https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/)
 
 ## Verification
+
 - [ ] Candidate actions are listed.
 - [ ] Criteria and weights are explicit.
 - [ ] Dependencies are considered.

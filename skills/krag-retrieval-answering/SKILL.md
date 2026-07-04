@@ -91,8 +91,8 @@ Return retrieval plan, queries/pseudocode, evidence set, answer, citations, unce
 
 ## References
 
-- Neo4j documentation — querying and GraphRAG patterns: https://neo4j.com/docs/
-- Retrieval-Augmented Generation (Lewis et al.): https://ai.meta.com/research/publications/retrieval-augmented-generation-for-knowledge-intensive-nlp-tasks/
+- [Neo4j documentation — querying and GraphRAG patterns](https://neo4j.com/docs/)
+- [Retrieval-Augmented Generation (Lewis et al.)](https://ai.meta.com/research/publications/retrieval-augmented-generation-for-knowledge-intensive-nlp-tasks/)
 
 ## Verification
 

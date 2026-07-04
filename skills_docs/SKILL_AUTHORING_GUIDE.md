@@ -84,12 +84,14 @@ python3 scripts/validate_skill_practice.py --all
 
 Before proposing a skill change:
 
+- install hooks with `./scripts/install_git_hooks.sh` (pre-commit runs lint, validators, security scan and tests on commit);
 - run `python3 scripts/validate_skills.py`;
 - run `python3 scripts/validate_skill_practice.py --all`;
+- run `npx markdownlint-cli2` when editing markdown;
 - run `./scripts/ci_local.sh` for material changes;
 - check that descriptions remain discoverable;
 - verify related skill links use installed folder names;
-- record source links when vendor or standards guidance is embedded.
+- record source links when vendor or standards guidance is embedded (markdown links, not bare URLs).
 
 ## Sources
 

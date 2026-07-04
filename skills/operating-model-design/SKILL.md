@@ -6,12 +6,15 @@ description: Designs how people, process, technology, data, governance and deliv
 # Operating Model Design
 
 ## When to use
+
 Use for target operating models, platform/product models, governance or service ownership.
 
 ## Objective
+
 Produce a practical, concise, traceable architecture artefact that a coding agent can use to guide implementation or review.
 
 ## Procedure
+
 1. Define outcomes.
 2. Identify required capabilities.
 3. Define roles/teams.
@@ -22,6 +25,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 8. Define metrics and transition path.
 
 ## Required outputs
+
 - Operating-model components
 - Roles and decision rights
 - Governance cadence
@@ -29,14 +33,17 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Transition roadmap
 
 ## Best-practice alignment
+
 Align with **BIZBOK** business architecture practice: keep capabilities, value streams, processes, organisation, information concepts, initiatives and metrics separate, then link them from strategy to execution.
 
 ## Quality checks
+
 - Decisions have accountable owners.
 - Governance has cadence.
 - Model links to outcomes.
 
 ## Avoid
+
 Do not produce only an organisation chart.
 
 ## Mini example
@@ -45,8 +52,8 @@ For a data-product operating model, define who owns product outcomes, who approv
 
 ## References
 
-- Business Architecture Guild — BIZBOK (operating model): https://www.businessarchitectureguild.org/
-- The Open Group TOGAF: https://www.opengroup.org/togaf
+- [Business Architecture Guild — BIZBOK (operating model)](https://www.businessarchitectureguild.org/)
+- [The Open Group TOGAF](https://www.opengroup.org/togaf)
 
 ## Verification
 
@@ -54,4 +61,3 @@ For a data-product operating model, define who owns product outcomes, who approv
 - [ ] Decisions, assumptions and risks stated explicitly.
 - [ ] Quality checks or validation performed.
 - [ ] Files changed reported with traceability preserved.
-

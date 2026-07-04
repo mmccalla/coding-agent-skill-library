@@ -9,6 +9,7 @@ aliases:
 # Agentic UX Patterns
 
 ## When to use
+
 Use this skill when designing interfaces for agent recommendations, generated metadata, generated data-quality rules, approval workflows, tool-call previews, workflow plans, autonomous or semi-autonomous actions, evidence review, exception triage or human-in-the-loop decisions.
 
 ## Objective
@@ -48,8 +49,8 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 
 ## References
 
-- Nielsen Norman Group — Explainable AI: https://www.nngroup.com/articles/explainable-ai/
-- OWASP Top 10 for Agentic Applications (ASI09 trust): https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+- [Nielsen Norman Group — Explainable AI](https://www.nngroup.com/articles/explainable-ai/)
+- [OWASP Top 10 for Agentic Applications (ASI09 trust)](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/)
 
 ## Verification
 

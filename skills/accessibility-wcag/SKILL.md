@@ -49,8 +49,8 @@ Source: [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/).
 
 ## References
 
-- W3C WCAG 2.2: https://www.w3.org/TR/WCAG22/
-- W3C — What's New in WCAG 2.2: https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/
+- [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/)
+- [W3C — What's New in WCAG 2.2](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/)
 
 ## Rules
 

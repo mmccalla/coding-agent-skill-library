@@ -56,7 +56,7 @@ Use `skills_docs/security/OWASP_ASI_CROSSWALK.md` for the shared risk map.
 
 ## References
 
-- OWASP AI Agent Security Cheat Sheet (memory and context poisoning): https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html
+- [OWASP AI Agent Security Cheat Sheet (memory and context poisoning)](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html)
 
 ## Verification
 

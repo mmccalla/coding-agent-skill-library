@@ -71,14 +71,13 @@ Design message channels that transport messages safely, predictably and operably
 
 ## References
 
-- EIP — Message Channel: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageChannel.html
-- EIP — Point-to-Point Channel: https://www.enterpriseintegrationpatterns.com/patterns/messaging/PointToPointChannel.html
-- EIP — Publish-Subscribe Channel: https://www.enterpriseintegrationpatterns.com/patterns/messaging/PublishSubscribeChannel.html
-- EIP — Datatype Channel: https://www.enterpriseintegrationpatterns.com/patterns/messaging/DatatypeChannel.html
-- EIP — Invalid Message Channel: https://www.enterpriseintegrationpatterns.com/patterns/messaging/InvalidMessageChannel.html
-- EIP — Dead Letter Channel: https://www.enterpriseintegrationpatterns.com/patterns/messaging/DeadLetterChannel.html
-- EIP — Guaranteed Delivery: https://www.enterpriseintegrationpatterns.com/patterns/messaging/GuaranteedMessaging.html
-- EIP — Channel Adapter: https://www.enterpriseintegrationpatterns.com/patterns/messaging/ChannelAdapter.html
-- EIP — Messaging Bridge: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessagingBridge.html
-- EIP — Message Bus: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageBus.html
-
+- [EIP — Message Channel](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageChannel.html)
+- [EIP — Point-to-Point Channel](https://www.enterpriseintegrationpatterns.com/patterns/messaging/PointToPointChannel.html)
+- [EIP — Publish-Subscribe Channel](https://www.enterpriseintegrationpatterns.com/patterns/messaging/PublishSubscribeChannel.html)
+- [EIP — Datatype Channel](https://www.enterpriseintegrationpatterns.com/patterns/messaging/DatatypeChannel.html)
+- [EIP — Invalid Message Channel](https://www.enterpriseintegrationpatterns.com/patterns/messaging/InvalidMessageChannel.html)
+- [EIP — Dead Letter Channel](https://www.enterpriseintegrationpatterns.com/patterns/messaging/DeadLetterChannel.html)
+- [EIP — Guaranteed Delivery](https://www.enterpriseintegrationpatterns.com/patterns/messaging/GuaranteedMessaging.html)
+- [EIP — Channel Adapter](https://www.enterpriseintegrationpatterns.com/patterns/messaging/ChannelAdapter.html)
+- [EIP — Messaging Bridge](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessagingBridge.html)
+- [EIP — Message Bus](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageBus.html)

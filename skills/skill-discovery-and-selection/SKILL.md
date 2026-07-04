@@ -9,6 +9,7 @@ aliases:
 # Using Agent Skills
 
 ## When to use
+
 Use this skill when starting a new task, resuming context, or choosing among overlapping local skills in this repository — **after** executing `apply-laws-of-ai`.
 
 ## Objective
@@ -42,7 +43,7 @@ Select the smallest relevant skill or skill combination and explain why it was c
 
 ## References
 
-- Anthropic — Equipping agents for the real world with Agent Skills: https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
+- [Anthropic — Equipping agents for the real world with Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
 
 ## Verification
 

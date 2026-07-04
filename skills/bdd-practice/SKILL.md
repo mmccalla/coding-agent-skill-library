@@ -9,6 +9,7 @@ aliases:
 # Behaviour-Driven Development (BDD)
 
 ## When to use
+
 Use this skill when the task involves user journeys, acceptance criteria, cross-role collaboration, product behaviour, APIs, workflows, domain rules, or tests that must be understandable by business and technical stakeholders.
 
 ## Objective
@@ -55,8 +56,8 @@ Feature: <capability>
 
 ## References
 
-- Cucumber — Behaviour-Driven Development: https://cucumber.io/docs/bdd/
-- Gherkin reference: https://cucumber.io/docs/gherkin/reference/
+- [Cucumber — Behaviour-Driven Development](https://cucumber.io/docs/bdd/)
+- [Gherkin reference](https://cucumber.io/docs/gherkin/reference/)
 
 ## Verification
 

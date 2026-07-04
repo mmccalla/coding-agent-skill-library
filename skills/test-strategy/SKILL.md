@@ -84,8 +84,8 @@ Produce a risk-based test strategy that places the right checks at the right lev
 
 ## References
 
-- Martin Fowler — The Practical Test Pyramid: https://martinfowler.com/articles/practical-test-pyramid.html
-- ISTQB: https://www.istqb.org/
+- [Martin Fowler — The Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html)
+- [ISTQB](https://www.istqb.org/)
 
 ## Verification
 

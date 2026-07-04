@@ -43,9 +43,10 @@ Choose the lightest reliable router:
 
 ## References
 
-- LangGraph — branching / conditional routing: https://langchain-ai.github.io/langgraph/how-tos/branching/
+- [LangGraph — branching / conditional routing](https://langchain-ai.github.io/langgraph/how-tos/branching/)
 
 ## Verification
+
 - [ ] Route enum exists.
 - [ ] Fallback/clarification route exists.
 - [ ] Route confidence threshold is explicit.

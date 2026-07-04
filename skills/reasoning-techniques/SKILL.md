@@ -47,10 +47,11 @@ Prefer externally verifiable reasoning over persuasive explanation. For code, th
 
 ## References
 
-- ReAct: Synergizing Reasoning and Acting: https://arxiv.org/abs/2210.03629
-- Chain-of-Thought Prompting Elicits Reasoning: https://arxiv.org/abs/2201.11903
+- [ReAct: Synergizing Reasoning and Acting](https://arxiv.org/abs/2210.03629)
+- [Chain-of-Thought Prompting Elicits Reasoning](https://arxiv.org/abs/2201.11903)
 
 ## Verification
+
 - [ ] Objective and constraints are clear.
 - [ ] Evidence gathering occurred before major changes.
 - [ ] Reasoning method matches task complexity.

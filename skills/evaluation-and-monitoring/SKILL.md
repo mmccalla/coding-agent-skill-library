@@ -45,13 +45,13 @@ For coding agents, treat tests as first-class evaluations. Add targeted regressi
 
 ## References
 
-- NIST AI RMF — Measure function: https://www.nist.gov/itl/ai-risk-management-framework
-- Google SRE Book — Monitoring Distributed Systems: https://sre.google/sre-book/monitoring-distributed-systems/
+- [NIST AI RMF — Measure function](https://www.nist.gov/itl/ai-risk-management-framework)
+- [Google SRE Book — Monitoring Distributed Systems](https://sre.google/sre-book/monitoring-distributed-systems/)
 
 ## Verification
+
 - [ ] Baseline exists.
 - [ ] Metrics are tied to objectives.
 - [ ] Evaluation set covers edge cases.
 - [ ] Monitoring captures latency, cost and failures.
 - [ ] Findings drive concrete action.
-

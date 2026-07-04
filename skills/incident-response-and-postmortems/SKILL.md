@@ -6,6 +6,7 @@ description: Handles incidents, recovery, postmortems and corrective actions wit
 # Incident Response and Postmortems
 
 ## When to use
+
 Use this skill for incidents, outages, degraded service, failed deployments, failed workflows, data-quality pipeline failures, operational recovery, postmortems, corrective actions and incident runbooks.
 
 ## Objective
@@ -93,8 +94,8 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 
 ## References
 
-- Google SRE Book — Postmortem Culture: https://sre.google/sre-book/postmortem-culture/
-- PagerDuty Incident Response Guide: https://response.pagerduty.com/
+- [Google SRE Book — Postmortem Culture](https://sre.google/sre-book/postmortem-culture/)
+- [PagerDuty Incident Response Guide](https://response.pagerduty.com/)
 
 ## Verification
 
@@ -102,4 +103,3 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 - [ ] Mitigation or recovery actions documented.
 - [ ] Evidence preserved and postmortem or runbook updates noted.
 - [ ] Corrective actions and follow-up stated.
-

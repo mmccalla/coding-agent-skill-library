@@ -10,6 +10,7 @@ aliases:
 # DORA Delivery Metrics
 
 ## When to use
+
 Use this skill when improving or analysing deployment frequency, lead time for changes, change failure rate, failed deployment recovery time, deployment rework rate, CI/CD flow, release process, delivery bottlenecks, deployment safety or engineering productivity evidence.
 
 ## Objective
@@ -98,8 +99,8 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 
 ## References
 
-- DORA metrics history (throughput and instability): https://dora.dev/insights/dora-metrics-history/
-- DORA research home: https://dora.dev/
+- [DORA metrics history (throughput and instability)](https://dora.dev/insights/dora-metrics-history/)
+- [DORA research home](https://dora.dev/)
 
 ## Verification
 

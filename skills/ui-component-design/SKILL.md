@@ -6,6 +6,7 @@ description: Designs reusable, accessible UI components with clear props, states
 # UI Component Design
 
 ## When to use
+
 Use this skill when creating or modifying reusable components, forms, tables, cards, modals, drawers, navigation, badges, alerts, charts, approval panels, data-quality result components or quarantine triage components.
 
 ## Objective
@@ -40,7 +41,7 @@ Layout, feedback, input, data display, workflow, evidence and agentic UI compone
 
 ## References
 
-- W3C ARIA Authoring Practices Guide: https://www.w3.org/WAI/ARIA/apg/
+- [W3C ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/)
 
 ## Verification
 
@@ -48,4 +49,3 @@ Layout, feedback, input, data display, workflow, evidence and agentic UI compone
 - [ ] States and variants handled documented.
 - [ ] Accessibility checks performed.
 - [ ] Tests added or updated; residual risks stated.
-

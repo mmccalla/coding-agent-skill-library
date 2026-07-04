@@ -85,8 +85,8 @@ Produce a clear, implementable API design and lifecycle plan: resources, operati
 
 ## References
 
-- OpenAPI Specification: https://spec.openapis.org/oas/latest.html
-- OpenAPI Initiative: https://www.openapis.org/
+- [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [OpenAPI Initiative](https://www.openapis.org/)
 
 ## Verification
 

@@ -71,8 +71,9 @@ Use `skills_docs/security/OWASP_ASI_CROSSWALK.md` for the shared risk map.
 
 ## References
 
-- Model Context Protocol — Build a server: https://modelcontextprotocol.io/docs/develop/build-server
-- Model Context Protocol specification: https://modelcontextprotocol.io/specification/2025-11-25
+- [Model Context Protocol — Build a server](https://modelcontextprotocol.io/docs/develop/build-server)
+- [Model Context Protocol specification](https://modelcontextprotocol.io/specification/2025-11-25)
+
 ## Verification
 
 - [ ] Tool/resource/prompt boundaries are clear.

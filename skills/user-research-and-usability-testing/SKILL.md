@@ -6,6 +6,7 @@ description: Plans lightweight research and usability testing for workflows and 
 # User Research and Usability Testing
 
 ## When to use
+
 Use this skill when validating journeys, forms, dashboards, onboarding flows, approval flows, quarantine triage, data-quality investigations, metadata review, agent recommendations or high-risk workflows.
 
 ## Objective
@@ -43,8 +44,8 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 
 ## References
 
-- Nielsen Norman Group — Usability Testing 101: https://www.nngroup.com/articles/usability-testing-101/
-- ISO 9241-11 usability: https://www.iso.org/standard/63500.html
+- [Nielsen Norman Group — Usability Testing 101](https://www.nngroup.com/articles/usability-testing-101/)
+- [ISO 9241-11 usability](https://www.iso.org/standard/63500.html)
 
 ## Verification
 
@@ -52,4 +53,3 @@ For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataop
 - [ ] Success criteria and findings or expected findings captured.
 - [ ] Design changes made listed.
 - [ ] Residual research gaps noted.
-

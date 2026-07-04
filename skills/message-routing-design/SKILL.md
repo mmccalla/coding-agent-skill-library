@@ -73,15 +73,14 @@ Design routing logic that directs messages to the correct receivers while preser
 
 ## References
 
-- EIP — Message Router: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageRouter.html
-- EIP — Content-Based Router: https://www.enterpriseintegrationpatterns.com/patterns/messaging/ContentBasedRouter.html
-- EIP — Message Filter: https://www.enterpriseintegrationpatterns.com/patterns/messaging/Filter.html
-- EIP — Dynamic Router: https://www.enterpriseintegrationpatterns.com/patterns/messaging/DynamicRouter.html
-- EIP — Recipient List: https://www.enterpriseintegrationpatterns.com/patterns/messaging/RecipientList.html
-- EIP — Splitter: https://www.enterpriseintegrationpatterns.com/patterns/messaging/Sequencer.html
-- EIP — Aggregator: https://www.enterpriseintegrationpatterns.com/patterns/messaging/Aggregator.html
-- EIP — Scatter-Gather: https://www.enterpriseintegrationpatterns.com/patterns/messaging/BroadcastAggregate.html
-- EIP — Routing Slip: https://www.enterpriseintegrationpatterns.com/patterns/messaging/RoutingTable.html
-- EIP — Process Manager: https://www.enterpriseintegrationpatterns.com/patterns/messaging/ProcessManager.html
-- EIP — Message Broker: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageBroker.html
-
+- [EIP — Message Router](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageRouter.html)
+- [EIP — Content-Based Router](https://www.enterpriseintegrationpatterns.com/patterns/messaging/ContentBasedRouter.html)
+- [EIP — Message Filter](https://www.enterpriseintegrationpatterns.com/patterns/messaging/Filter.html)
+- [EIP — Dynamic Router](https://www.enterpriseintegrationpatterns.com/patterns/messaging/DynamicRouter.html)
+- [EIP — Recipient List](https://www.enterpriseintegrationpatterns.com/patterns/messaging/RecipientList.html)
+- [EIP — Splitter](https://www.enterpriseintegrationpatterns.com/patterns/messaging/Sequencer.html)
+- [EIP — Aggregator](https://www.enterpriseintegrationpatterns.com/patterns/messaging/Aggregator.html)
+- [EIP — Scatter-Gather](https://www.enterpriseintegrationpatterns.com/patterns/messaging/BroadcastAggregate.html)
+- [EIP — Routing Slip](https://www.enterpriseintegrationpatterns.com/patterns/messaging/RoutingTable.html)
+- [EIP — Process Manager](https://www.enterpriseintegrationpatterns.com/patterns/messaging/ProcessManager.html)
+- [EIP — Message Broker](https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageBroker.html)

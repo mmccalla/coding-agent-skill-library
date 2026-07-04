@@ -3,11 +3,13 @@
 System: Evaluate whether the draft answer is fully supported by the provided evidence.
 
 Inputs:
+
 - question
 - evidence_items
 - draft_answer
 
 Return structured JSON:
+
 - verdict: approve | revise | insufficient_evidence
 - issues: list[str]
 - required_fixes: list[str]
@@ -15,6 +17,7 @@ Return structured JSON:
 - missing_evidence: list[str]
 
 Rules:
+
 1. Approve only if every material claim is supported by evidence.
 2. Do not reward plausible but unsupported statements.
 3. If evidence is absent, choose insufficient_evidence.

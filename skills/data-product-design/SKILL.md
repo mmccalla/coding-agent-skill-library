@@ -6,12 +6,15 @@ description: Designs governed, domain-owned, discoverable and reusable data prod
 # Data Product Design
 
 ## When to use
+
 Use for reusable datasets, APIs, event streams, analytical products or source-to-refined outputs.
 
 ## Objective
+
 Produce a practical, concise, traceable architecture artefact that a coding agent can use to guide implementation or review.
 
 ## Procedure
+
 1. Identify consumers and decisions.
 2. Define purpose, scope and non-goals.
 3. Assign owner and steward.
@@ -22,6 +25,7 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 8. Define adoption/value metrics.
 
 ## Required outputs
+
 - Purpose and consumers
 - Owner/steward
 - Interface and contract
@@ -30,22 +34,25 @@ Produce a practical, concise, traceable architecture artefact that a coding agen
 - Lineage and support model
 
 ## Best-practice alignment
+
 Apply DAMA-DMBOK2-style separation of data governance, architecture, modelling, security, integration/interoperability, master/reference data, metadata and quality. For cloud/shared data, apply CDMC-style expectations: ownership, classification, entitlement/access evidence, lineage/provenance, lifecycle/retention, quality controls and auditable evidence.
 
 ## Quality checks
+
 - Accountable owner exists.
 - Consumers/use are clear.
 - Quality and metadata are defined.
 - Access and lineage controls exist.
 
 ## Avoid
+
 Do not call a dataset a product without ownership, consumers and operating expectations.
 
 ## References
 
-- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
-- EDM Council CDMC (Cloud Data Management Capabilities): https://edmcouncil.org/frameworks/cdmc/
-- Data Mesh principles (Martin Fowler / Dehghani): https://martinfowler.com/articles/data-mesh-principles.html
+- [DAMA-DMBOK (DAMA International)](https://www.dama.org/cpages/body-of-knowledge)
+- [EDM Council CDMC (Cloud Data Management Capabilities)](https://edmcouncil.org/frameworks/cdmc/)
+- [Data Mesh principles (Martin Fowler / Dehghani)](https://martinfowler.com/articles/data-mesh-principles.html)
 
 ## Verification
 
@@ -53,4 +60,3 @@ Do not call a dataset a product without ownership, consumers and operating expec
 - [ ] Decisions, assumptions and risks stated explicitly.
 - [ ] Quality checks or validation performed.
 - [ ] Files changed reported with traceability preserved.
-

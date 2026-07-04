@@ -6,6 +6,7 @@ description: Use when retiring an old path, replacing a legacy behaviour or movi
 # Deprecation and Migration
 
 ## When to use
+
 Use this skill when removing or replacing a skill, doc path, workflow, API surface or other user-facing behaviour that still has active dependents.
 
 ## Objective
@@ -33,8 +34,8 @@ When replacing an old skill path, add the new path first, update references, lea
 
 ## References
 
-- IETF RFC 8594 The Sunset HTTP Header Field: https://www.rfc-editor.org/rfc/rfc8594
-- Semantic Versioning 2.0.0: https://semver.org/
+- [IETF RFC 8594 The Sunset HTTP Header Field](https://www.rfc-editor.org/rfc/rfc8594)
+- [Semantic Versioning 2.0.0](https://semver.org/)
 
 ## Verification
 
@@ -42,4 +43,3 @@ When replacing an old skill path, add the new path first, update references, lea
 - [ ] Migration path and consumer communication documented.
 - [ ] Compatibility or dual-run period noted.
 - [ ] Residual migration risks stated.
-

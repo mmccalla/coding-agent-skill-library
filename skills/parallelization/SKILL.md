@@ -37,9 +37,10 @@ Run only independent work concurrently and merge results deterministically with 
 
 ## References
 
-- LangGraph — map-reduce / fan-out parallelism: https://langchain-ai.github.io/langgraph/how-tos/map-reduce/
+- [LangGraph — map-reduce / fan-out parallelism](https://langchain-ai.github.io/langgraph/how-tos/map-reduce/)
 
 ## Verification
+
 - [ ] Independence assumptions are documented.
 - [ ] Bounded concurrency is used.
 - [ ] Timeouts and partial failures are handled.

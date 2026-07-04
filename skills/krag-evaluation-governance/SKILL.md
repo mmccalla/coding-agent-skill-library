@@ -90,8 +90,8 @@ Return evaluation plan, metrics, acceptance thresholds, test cases, release gate
 
 ## References
 
-- NIST AI RMF — Measure and Manage: https://www.nist.gov/itl/ai-risk-management-framework
-- Google SRE Book — Monitoring Distributed Systems: https://sre.google/sre-book/monitoring-distributed-systems/
+- [NIST AI RMF — Measure and Manage](https://www.nist.gov/itl/ai-risk-management-framework)
+- [Google SRE Book — Monitoring Distributed Systems](https://sre.google/sre-book/monitoring-distributed-systems/)
 
 ## Verification
 
