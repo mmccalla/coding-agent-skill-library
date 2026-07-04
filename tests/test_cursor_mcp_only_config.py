@@ -1,0 +1,71 @@
+"""Tests for Cursor exclusive skills-kg MCP workspace configuration."""
+
+from __future__ import annotations
+
+import json
+import unittest
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+VSCODE_SETTINGS = REPO_ROOT / ".vscode" / "settings.json"
+CURSOR_RULE = REPO_ROOT / ".cursor" / "rules" / "skills-kg-mcp-only.mdc"
+GETTING_STARTED = REPO_ROOT / "skills_docs" / "GETTING_STARTED.md"
+CURSOR_SETUP = REPO_ROOT / "skills_docs" / "CURSOR_IDE_SETUP.md"
+RUNBOOK = REPO_ROOT / "skills_docs" / "SKILLS_KG_MCP_RUNBOOK.md"
+
+
+class CursorMcpOnlyConfigTests(unittest.TestCase):
+    def test_vscode_settings_disable_repo_filesystem_skills(self) -> None:
+        settings = json.loads(VSCODE_SETTINGS.read_text(encoding="utf-8"))
+        locations = settings.get("chat.agentSkillsLocations", {})
+
+        repo_skills_key = "~/Documents/vscode/coding-agent-skill-library/skills"
+        self.assertIn(repo_skills_key, locations)
+        self.assertFalse(locations[repo_skills_key])
+
+    def test_cursor_rule_enforces_mcp_only_workflow(self) -> None:
+        text = CURSOR_RULE.read_text(encoding="utf-8")
+
+        self.assertIn("alwaysApply: true", text)
+        for marker in (
+            "route_skill_query",
+            "resolve_skill",
+            "get_skill",
+            "recommend_skills",
+            "get_skill_context",
+            "get_skill_execution_guide",
+            "skills://contract",
+            "apply-laws-of-ai",
+            "AGENTIC_CODING_GLOBAL_SAFETY.md",
+            "SECURE_AGENTIC_DEVELOPMENT.md",
+        ):
+            self.assertIn(marker, text)
+
+    def test_getting_started_links_cursor_setup_guide(self) -> None:
+        text = GETTING_STARTED.read_text(encoding="utf-8")
+
+        self.assertIn("CURSOR_IDE_SETUP.md", text)
+
+    def test_cursor_setup_documents_both_modes(self) -> None:
+        text = CURSOR_SETUP.read_text(encoding="utf-8")
+
+        for marker in (
+            "Mode A — skills-kg MCP only",
+            "Mode B — filesystem skills only",
+            "discover-local-skills",
+            "chat.agentSkillsLocations",
+            "skills-kg-mcp-only.mdc",
+            "route_skill_query",
+            "HOW_TO_FIND_THE_RIGHT_SKILL.md",
+            "apply-laws-of-ai",
+        ):
+            self.assertIn(marker, text)
+
+    def test_runbook_links_cursor_setup_guide(self) -> None:
+        text = RUNBOOK.read_text(encoding="utf-8")
+
+        self.assertIn("CURSOR_IDE_SETUP.md", text)
+
+
+if __name__ == "__main__":
+    unittest.main()

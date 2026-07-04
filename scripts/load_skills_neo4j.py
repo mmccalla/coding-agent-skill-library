@@ -16,6 +16,7 @@ from typing import Any, NamedTuple, Protocol, cast
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from scripts import skills_mcp_perf
 from scripts.build_retrieval_projections import build_retrieval_projection_records
 from scripts.extract_skills_graph import extract_skills_graph_records
 from scripts.skills_config import Neo4jSettings, load_settings
@@ -294,36 +295,51 @@ def neo4j_graph_from_env(environ: Mapping[str, str] | None = None) -> Neo4jMerge
 def load_plan_from_neo4j(driver: Any, settings: Neo4jSettings) -> LoadPlan:
     """Read the live Neo4j graph into the existing read-only MCP load-plan contract."""
 
-    with driver.session(database=settings.database) as session:
-        node_records = session.run(
-            "MATCH (n) RETURN labels(n) AS labels, n.id AS id, properties(n) AS properties"
-        )
-        relationship_records = session.run(
-            "MATCH (source)-[r]->(target) "
-            "RETURN type(r) AS type, labels(source) AS source_labels, "
-            "source.id AS source_id, labels(target) AS target_labels, "
-            "target.id AS target_id, properties(r) AS properties"
-        )
-        nodes = tuple(
-            GraphNode(
-                label=_primary_label(record["labels"]),
-                id=str(record["id"]),
-                properties=cast(Mapping[str, object], dict(record["properties"])),
+    with skills_mcp_perf.database_io() as io:
+        with driver.session(database=settings.database) as session:
+            node_records = session.run(
+                "MATCH (n) RETURN labels(n) AS labels, n.id AS id, properties(n) AS properties"
             )
-            for record in node_records
-            if record.get("id") is not None
-        )
-        relationships = tuple(
-            GraphRelationship(
-                type=str(record["type"]),
-                source_label=_primary_label(record["source_labels"]),
-                source_id=str(record["source_id"]),
-                target_label=_primary_label(record["target_labels"]),
-                target_id=str(record["target_id"]),
-                properties=cast(Mapping[str, object], dict(record["properties"])),
+            relationship_records = session.run(
+                "MATCH (source)-[r]->(target) "
+                "RETURN type(r) AS type, labels(source) AS source_labels, "
+                "source.id AS source_id, labels(target) AS target_labels, "
+                "target.id AS target_id, properties(r) AS properties"
             )
-            for record in relationship_records
-            if record.get("source_id") is not None and record.get("target_id") is not None
+            nodes = tuple(
+                GraphNode(
+                    label=_primary_label(record["labels"]),
+                    id=str(record["id"]),
+                    properties=cast(Mapping[str, object], dict(record["properties"])),
+                )
+                for record in node_records
+                if record.get("id") is not None
+            )
+            relationships = tuple(
+                GraphRelationship(
+                    type=str(record["type"]),
+                    source_label=_primary_label(record["source_labels"]),
+                    source_id=str(record["source_id"]),
+                    target_label=_primary_label(record["target_labels"]),
+                    target_id=str(record["target_id"]),
+                    properties=cast(Mapping[str, object], dict(record["properties"])),
+                )
+                for record in relationship_records
+                if record.get("source_id") is not None and record.get("target_id") is not None
+            )
+        io.add_payload(
+            {
+                "nodes": [{"id": node.id, "properties": dict(node.properties)} for node in nodes],
+                "relationships": [
+                    {
+                        "type": relationship.type,
+                        "source_id": relationship.source_id,
+                        "target_id": relationship.target_id,
+                        "properties": dict(relationship.properties),
+                    }
+                    for relationship in relationships
+                ],
+            }
         )
     return LoadPlan(nodes=nodes, relationships=relationships)
 

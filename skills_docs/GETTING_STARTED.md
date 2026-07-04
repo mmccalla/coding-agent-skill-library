@@ -4,6 +4,8 @@ Choose the path that matches your goal. You do not need to read KRAG design docs
 
 ## Use skills in an agent
 
+This repository defaults to **skills-kg MCP** in Cursor. Full setup for MCP-only or filesystem-only modes: [`CURSOR_IDE_SETUP.md`](CURSOR_IDE_SETUP.md). For portable filesystem routing in other tools or repositories, use:
+
 1. Read `AGENTS.md` (or `CLAUDE.md` for the short mirror).
 2. Read `AGENTIC_CODING_GLOBAL_SAFETY.md` and `SECURE_AGENTIC_DEVELOPMENT.md`.
 3. Execute `skills/apply-laws-of-ai/SKILL.md` in full.
@@ -75,6 +77,8 @@ Cursor `mcpServers` entry (replace paths):
 ```
 
 MCP exposes **read-only** skill tools. Agents cannot ingest or write skills through MCP.
+
+Cursor IDE configuration (MCP-only vs filesystem-only): [`CURSOR_IDE_SETUP.md`](CURSOR_IDE_SETUP.md).
 
 ### Validate your setup
 
