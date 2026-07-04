@@ -116,6 +116,11 @@ Never optimise a lower-priority objective at the expense of a higher-priority la
 - `guardrails-safety-patterns` — layered deterministic controls
 - `human-in-the-loop` — escalation when gates constrain action
 
+## References
+
+- NIST AI Risk Management Framework: https://www.nist.gov/itl/ai-risk-management-framework
+- OWASP Top 10 for Agentic Applications: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+
 ## Verification
 
 - [ ] All six quality gates evaluated (Humanity, Human Safety, Authority, Security, Proportionality, Auditability).

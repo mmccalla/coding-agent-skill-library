@@ -57,6 +57,12 @@ Keep responsibilities separated: configuration, domain models, ingestion, graph 
 - `guardrails-safety-patterns` — validation, policy and tool-use controls.
 - `evaluation-and-monitoring` — retrieval, answer and operational quality measurement.
 
+## References
+
+- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
+- Neo4j documentation: https://neo4j.com/docs/
+- W3C RDF: https://www.w3.org/RDF/
+
 ## Verification
 
 - [ ] Relevant reference files were loaded for the task scope.

@@ -50,6 +50,10 @@ Source: [pytest — Good Integration Practices](https://docs.pytest.org/en/lates
 - `reflection-and-verification` — repair loop when checks fail
 - `bdd-practice` — acceptance scenarios for external behaviour
 
+## References
+
+- pytest — Good Integration Practices: https://docs.pytest.org/en/latest/explanation/goodpractices.html
+- Kent Beck — Test-Driven Development (overview): https://martinfowler.com/bliki/TestDrivenDevelopment.html
 ## Verification
 
 - [ ] Failing test added before production change.

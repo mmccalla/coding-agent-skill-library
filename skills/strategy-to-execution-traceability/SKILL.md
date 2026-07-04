@@ -48,8 +48,8 @@ If the objective is reduce onboarding abandonment by 15%, trace it to the `Onboa
 
 ## References
 
-- Business Architecture Guild BIZBOK (capabilities, value streams, organisation, information): https://www.businessarchitectureguild.org/
-- The Open Group TOGAF Standard (business architecture domain): https://www.opengroup.org/togaf
+- Business Architecture Guild — BIZBOK (strategy traceability): https://www.businessarchitectureguild.org/
+- The Open Group TOGAF — Architecture Development Method: https://www.opengroup.org/togaf
 
 ## Verification
 

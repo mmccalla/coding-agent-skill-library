@@ -42,6 +42,10 @@ Consider `idle`, `loading`, `validating`, `submitting`, `running`, `awaiting_app
 
 For product-specific DataOps/MCP examples, load `skills_docs/overlays/mas-dataops-mcp-overlay.md`.
 
+## References
+
+- Nielsen Norman Group — Response Times: The 3 Important Limits: https://www.nngroup.com/articles/response-times-3-important-limits/
+
 ## Verification
 
 - [ ] States and transitions implemented listed.

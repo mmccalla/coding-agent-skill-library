@@ -34,6 +34,10 @@ Identify correctness risks, test gaps, maintainability problems, hidden regressi
 - `git-workflow-and-versioning` — reviewable atomic changes
 - `guardrails-safety-patterns` — security findings in review
 
+## References
+
+- Google Engineering Practices — Code Review Developer Guide: https://google.github.io/eng-practices/review/
+
 ## Verification
 
 - [ ] Findings listed with severity and evidence.

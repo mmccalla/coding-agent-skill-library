@@ -79,7 +79,7 @@ Also produce a short summary of top risks, treatments in progress and any accept
 
 ## References
 
-- ISO 31000 risk management overview: https://www.iso.org/iso-31000-risk-management.html
+- ISO 31000 risk management: https://www.iso.org/iso-31000-risk-management.html
 - NIST Risk Management Framework (RMF): https://csrc.nist.gov/projects/risk-management/about-rmf
 
 ## Verification

@@ -88,6 +88,11 @@ Return evaluation plan, metrics, acceptance thresholds, test cases, release gate
 - `krag-ingestion-graph-construction` — graph quality and ingestion tests
 - `krag-retrieval-answering` — retrieval and answer quality tests
 
+## References
+
+- NIST AI RMF — Measure and Manage: https://www.nist.gov/itl/ai-risk-management-framework
+- Google SRE Book — Monitoring Distributed Systems: https://sre.google/sre-book/monitoring-distributed-systems/
+
 ## Verification
 
 - [ ] Retrieval, graph, answer and operational quality gates are explicit.

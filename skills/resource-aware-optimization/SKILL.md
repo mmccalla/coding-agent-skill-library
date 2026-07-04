@@ -60,6 +60,10 @@ Log estimates and actuals so future routing decisions improve.
 - `performance-engineering` — application/platform latency and capacity
 - `evaluation-and-monitoring` — cost as an operational metric
 
+## References
+
+- Anthropic — Building effective agents (model and workflow cost trade-offs): https://www.anthropic.com/research/building-effective-agents
+
 ## Verification
 - [ ] Resource budgets are explicit.
 - [ ] Complexity estimate is captured.

@@ -32,6 +32,11 @@ Create a coherent design system that reduces UI inconsistency, improves accessib
 - Prefer reusable primitives over copied UI fragments.
 - Keep design-system components domain-neutral unless deliberately building a domain component library.
 
+## References
+
+- Design Systems resources: https://www.designsystems.com/
+- W3C ARIA Authoring Practices Guide: https://www.w3.org/WAI/ARIA/apg/
+
 ## Verification
 
 - [ ] Design-system artefacts changed listed.

@@ -32,6 +32,10 @@ Turn a vague idea into a focused proposal with a clear problem statement, option
 - Do not collapse distinct options into one vague middle ground.
 - Keep the recommendation aligned with the repository's existing structure and intent.
 
+## References
+
+- IDEO Design Thinking: https://designthinking.ideo.com/
+
 ## Verification
 
 - [ ] Refined problem statement and proposed approach stated.

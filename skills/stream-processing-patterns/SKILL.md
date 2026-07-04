@@ -44,6 +44,10 @@ Do not assume events arrive in order unless guaranteed.
 
 Pick processing-time logic only when late arrival does not change the answer. Use event time for business measures such as sales per trading hour. For every window or join, define lateness tolerance, state retention, duplicate handling, poison-event route, recovery checkpoint and test sequence that proves replay produces the same result.
 
+## References
+
+- Apache Kafka Streams documentation: https://kafka.apache.org/documentation/streams/
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.

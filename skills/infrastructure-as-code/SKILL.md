@@ -83,9 +83,8 @@ Keep infrastructure reproducible, reviewable and least-privilege by expressing d
 
 ## References
 
-- HashiCorp Terraform workflow (plan and apply): https://developer.hashicorp.com/terraform/intro/core-workflow
+- HashiCorp Terraform — Core workflow (plan/apply): https://developer.hashicorp.com/terraform/intro/core-workflow
 - OpenTofu documentation: https://opentofu.org/docs/
-- CIS guidance on infrastructure as code security practices: https://www.cisecurity.org/
 
 ## Verification
 

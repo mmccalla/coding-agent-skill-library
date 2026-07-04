@@ -68,7 +68,7 @@ Use `skills_docs/security/OWASP_ASI_CROSSWALK.md` for the shared risk map.
 
 ## References
 
-- Agent2Agent (A2A) Protocol: https://a2a-protocol.org/v1.0.0/
+- Agent2Agent (A2A) Protocol specification: https://a2a-protocol.org/v1.0.0/
 - A2A project repository: https://github.com/a2aproject/A2A
 
 ## Verification

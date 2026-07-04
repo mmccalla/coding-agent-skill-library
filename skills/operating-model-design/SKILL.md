@@ -45,8 +45,8 @@ For a data-product operating model, define who owns product outcomes, who approv
 
 ## References
 
-- Business Architecture Guild BIZBOK (capabilities, value streams, organisation, information): https://www.businessarchitectureguild.org/
-- The Open Group TOGAF Standard (business architecture domain): https://www.opengroup.org/togaf
+- Business Architecture Guild — BIZBOK (operating model): https://www.businessarchitectureguild.org/
+- The Open Group TOGAF: https://www.opengroup.org/togaf
 
 ## Verification
 

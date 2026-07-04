@@ -90,8 +90,7 @@ Embed NIST SSDF (SP 800-218) practices into the development and delivery path so
 
 ## References
 
-- NIST SP 800-218 Secure Software Development Framework (SSDF): https://csrc.nist.gov/pubs/sp/800/218/final
-- NIST SSDF overview: https://csrc.nist.gov/Projects/ssdf
+- NIST SP 800-218 SSDF: https://csrc.nist.gov/pubs/sp/800/218/final
 - OWASP Software Component Verification Standard: https://owasp.org/www-project-software-component-verification-standard/
 
 ## Verification

@@ -69,4 +69,11 @@ Design message transformations that translate, enrich, filter and normalise mess
 
 ## References
 
-- Enterprise Integration Patterns, Message Transformation patterns: https://www.enterpriseintegrationpatterns.com/patterns/messaging/
+- EIP — Message Translator: https://www.enterpriseintegrationpatterns.com/patterns/messaging/MessageTranslator.html
+- EIP — Envelope Wrapper: https://www.enterpriseintegrationpatterns.com/patterns/messaging/EnvelopeWrapper.html
+- EIP — Content Enricher: https://www.enterpriseintegrationpatterns.com/patterns/messaging/DataEnricher.html
+- EIP — Content Filter: https://www.enterpriseintegrationpatterns.com/patterns/messaging/ContentFilter.html
+- EIP — Claim Check: https://www.enterpriseintegrationpatterns.com/patterns/messaging/StoreInLibrary.html
+- EIP — Normalizer: https://www.enterpriseintegrationpatterns.com/patterns/messaging/Normalizer.html
+- EIP — Canonical Data Model: https://www.enterpriseintegrationpatterns.com/patterns/messaging/CanonicalDataModel.html
+

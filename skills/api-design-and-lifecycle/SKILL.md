@@ -87,7 +87,6 @@ Produce a clear, implementable API design and lifecycle plan: resources, operati
 
 - OpenAPI Specification: https://spec.openapis.org/oas/latest.html
 - OpenAPI Initiative: https://www.openapis.org/
-- Swagger OpenAPI resources: https://swagger.io/specification/
 
 ## Verification
 

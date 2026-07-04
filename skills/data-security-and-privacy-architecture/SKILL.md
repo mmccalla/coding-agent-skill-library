@@ -62,8 +62,9 @@ Do not treat privacy compliance as solved by encryption alone.
 
 ## References
 
-- ICO Guide to Data Protection (UK): https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/
-- GDPR portal (EU): https://gdpr.eu/
+- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
+- EDM Council CDMC (Cloud Data Management Capabilities): https://edmcouncil.org/frameworks/cdmc/
+- ICO UK GDPR guidance: https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/
 
 ## Verification
 

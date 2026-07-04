@@ -31,6 +31,11 @@ Keep change history small, coherent and easy to understand while preserving the 
 
 For a phased refactor, branch from updated `main`, commit one phase at a time, run validation before hand-off and merge only after approval. If a hook rewrites files, review the resulting diff before committing. Prefer a clear revertable commit over a broad mixed commit that hides documentation, tests and implementation together.
 
+## References
+
+- Git documentation: https://git-scm.com/doc
+- Conventional Commits: https://www.conventionalcommits.org/
+
 ## Verification
 
 - [ ] Logical change boundaries described.

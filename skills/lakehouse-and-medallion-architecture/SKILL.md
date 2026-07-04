@@ -41,6 +41,12 @@ Apply DAMA-DMBOK2-style separation of data governance, architecture, modelling, 
 ## Avoid
 Do not overwrite raw data or mix raw and refined records without labels.
 
+## References
+
+- DAMA-DMBOK (DAMA International): https://www.dama.org/cpages/body-of-knowledge
+- EDM Council CDMC (Cloud Data Management Capabilities): https://edmcouncil.org/frameworks/cdmc/
+- Databricks — Medallion Architecture: https://www.databricks.com/glossary/medallion-architecture
+
 ## Verification
 
 - [ ] Required artefacts produced and linked to scope.
