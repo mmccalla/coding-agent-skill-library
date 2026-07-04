@@ -24,6 +24,7 @@ from scripts import (
     load_skills_neo4j,
     retrieve_skills_hybrid,
     skills_config,
+    skills_mcp_perf,
     skills_router,
     skills_usage,
 )
@@ -520,24 +521,27 @@ class SkillsMcpServer:
         )
 
     def call_tool(self, name: str, arguments: Mapping[str, object]) -> dict[str, object]:
-        if name == "search_skills":
-            return self._search_skills(arguments)
-        if name == "get_skill":
-            return self._get_skill(arguments)
-        if name == "recommend_skills":
-            return self._recommend_skills(arguments)
-        if name == "get_skill_context":
-            return self._get_skill_context(arguments)
-        if name == "route_skill_query":
-            return self._route_skill_query(arguments)
-        if name == "resolve_skill":
-            return self._resolve_skill(arguments)
-        if name == "get_skill_execution_guide":
-            return self._get_skill_execution_guide(arguments)
-        return {
-            "status": "error",
-            "message": f"Unsupported read-only Skills MCP tool: {name}",
-        }
+        with skills_mcp_perf.tool_span(name, arguments) as span:
+            if name == "search_skills":
+                result = self._search_skills(arguments)
+            elif name == "get_skill":
+                result = self._get_skill(arguments)
+            elif name == "recommend_skills":
+                result = self._recommend_skills(arguments)
+            elif name == "get_skill_context":
+                result = self._get_skill_context(arguments)
+            elif name == "route_skill_query":
+                result = self._route_skill_query(arguments)
+            elif name == "resolve_skill":
+                result = self._resolve_skill(arguments)
+            elif name == "get_skill_execution_guide":
+                result = self._get_skill_execution_guide(arguments)
+            else:
+                result = {
+                    "status": "error",
+                    "message": f"Unsupported read-only Skills MCP tool: {name}",
+                }
+            return span.finish(result)
 
     def _skills(self) -> tuple[load_skills_neo4j.GraphNode, ...]:
         return tuple(node for node in self._plan.nodes if node.label == "Skill")
@@ -570,21 +574,23 @@ class SkillsMcpServer:
                 ]
             ).lower()
             if query in haystack:
-                matches.append(
-                    {
-                        "skill_id": skill.id,
-                        "skill_name": skill_name,
-                        "aliases": list(_string_list(skill.properties.get("aliases"))),
-                        "source_paths": sorted(
-                            {
-                                _string(unit.properties.get("source_path"))
-                                for unit in retrieval_units
-                                if _string(unit.properties.get("source_path"))
-                            }
-                        ),
-                    }
-                )
-        return {"status": "ok", "results": matches[:limit]}
+                with skills_mcp_perf.payload_construction():
+                    matches.append(
+                        {
+                            "skill_id": skill.id,
+                            "skill_name": skill_name,
+                            "aliases": list(_string_list(skill.properties.get("aliases"))),
+                            "source_paths": sorted(
+                                {
+                                    _string(unit.properties.get("source_path"))
+                                    for unit in retrieval_units
+                                    if _string(unit.properties.get("source_path"))
+                                }
+                            ),
+                        }
+                    )
+        with skills_mcp_perf.payload_construction():
+            return {"status": "ok", "results": matches[:limit]}
 
     def _get_skill(self, arguments: Mapping[str, object]) -> dict[str, object]:
         skill_id = _string(arguments.get("skill_id"))
@@ -593,26 +599,28 @@ class SkillsMcpServer:
         )
         skill = self._skill_by_id(skill_id)
         if skill is None:
-            return {"status": "error", "message": f"Skill not found: {skill_id}"}
+            with skills_mcp_perf.payload_construction():
+                return {"status": "error", "message": f"Skill not found: {skill_id}"}
         retrieval_units = self._retrieval_units_for_skill(skill_id)[:retrieval_unit_limit]
-        return {
-            "status": "ok",
-            "skill_id": skill.id,
-            "skill_name": _string(skill.properties.get("name")),
-            "aliases": list(_string_list(skill.properties.get("aliases"))),
-            "retrieval_units": [
-                {
-                    "retrieval_unit_id": unit.id,
-                    "text": _string(unit.properties.get("text"))[:240],
-                    "source_path": _string(unit.properties.get("source_path")),
-                    "heading_path": _string(unit.properties.get("heading_path")),
-                    "section_id": _string(unit.properties.get("section_id")),
-                    "line_start": unit.properties.get("line_start", 0),
-                    "line_end": unit.properties.get("line_end", 0),
-                }
-                for unit in retrieval_units
-            ],
-        }
+        with skills_mcp_perf.payload_construction():
+            return {
+                "status": "ok",
+                "skill_id": skill.id,
+                "skill_name": _string(skill.properties.get("name")),
+                "aliases": list(_string_list(skill.properties.get("aliases"))),
+                "retrieval_units": [
+                    {
+                        "retrieval_unit_id": unit.id,
+                        "text": _string(unit.properties.get("text"))[:240],
+                        "source_path": _string(unit.properties.get("source_path")),
+                        "heading_path": _string(unit.properties.get("heading_path")),
+                        "section_id": _string(unit.properties.get("section_id")),
+                        "line_start": unit.properties.get("line_start", 0),
+                        "line_end": unit.properties.get("line_end", 0),
+                    }
+                    for unit in retrieval_units
+                ],
+            }
 
     def _recommend_skills(self, arguments: Mapping[str, object]) -> dict[str, object]:
         query = _string(arguments.get("query"))
@@ -635,28 +643,29 @@ class SkillsMcpServer:
             token_budget=token_budget,
             retrieval_settings=self._settings.retrieval,
         )
-        selection_trace = _enrich_recommendation_selection_trace(query, result)
-        recommendations: list[dict[str, object]] = [
-            {
-                "skill_id": item.skill_id,
-                "skill_name": item.skill_name,
-                "score": item.score,
-                "rationale": item.why,
-                "evidence_snippets": item.evidence_snippets,
-                "source_paths": item.source_paths,
-                "section_ids": item.section_ids,
-                "evidence_anchors": item.evidence_anchors,
-                "evidence_paths": item.evidence_paths,
+        with skills_mcp_perf.payload_construction():
+            selection_trace = _enrich_recommendation_selection_trace(query, result)
+            recommendations: list[dict[str, object]] = [
+                {
+                    "skill_id": item.skill_id,
+                    "skill_name": item.skill_name,
+                    "score": item.score,
+                    "rationale": item.why,
+                    "evidence_snippets": item.evidence_snippets,
+                    "source_paths": item.source_paths,
+                    "section_ids": item.section_ids,
+                    "evidence_anchors": item.evidence_anchors,
+                    "evidence_paths": item.evidence_paths,
+                }
+                for item in result.recommendations
+            ]
+            response: dict[str, object] = {
+                "status": "ok",
+                "uncertain": result.uncertain,
+                "message": result.message,
+                "selection_trace": selection_trace,
+                "recommendations": recommendations,
             }
-            for item in result.recommendations
-        ]
-        response: dict[str, object] = {
-            "status": "ok",
-            "uncertain": result.uncertain,
-            "message": result.message,
-            "selection_trace": selection_trace,
-            "recommendations": recommendations,
-        }
         selection_run_id = skills_usage.new_selection_run_id()
         for rank, recommendation in enumerate(recommendations, start=1):
             recommendation_skill_id = _string(recommendation.get("skill_id"))
@@ -682,18 +691,20 @@ class SkillsMcpServer:
                 "selection_trace": selection_trace,
             }
         )
-        return skills_usage.attach_usage_metadata(
-            response,
-            selection_run_id,
-            tool="recommend_skills",
-            uncertain=result.uncertain,
-        )
+        with skills_mcp_perf.payload_construction():
+            return skills_usage.attach_usage_metadata(
+                response,
+                selection_run_id,
+                tool="recommend_skills",
+                uncertain=result.uncertain,
+            )
 
     def _get_skill_context(self, arguments: Mapping[str, object]) -> dict[str, object]:
         skill_id = _string(arguments.get("skill_id"))
         limit = _bounded_int(arguments.get("limit"), 10, 1, self._settings.mcp.context_limit_max)
         if self._skill_by_id(skill_id) is None:
-            return {"status": "error", "message": f"Skill not found: {skill_id}"}
+            with skills_mcp_perf.payload_construction():
+                return {"status": "error", "message": f"Skill not found: {skill_id}"}
         related: list[str] = []
         evidence_paths: list[str] = []
         for relationship in self._plan.relationships:
@@ -710,12 +721,13 @@ class SkillsMcpServer:
                 if relationship.source_label == "Skill":
                     related.append(relationship.source_id)
         related_skill_ids = tuple(dict.fromkeys(related))[:limit]
-        response: dict[str, object] = {
-            "status": "ok",
-            "skill_id": skill_id,
-            "related_skill_ids": list(related_skill_ids),
-            "evidence_paths": list(evidence_paths[:limit]),
-        }
+        with skills_mcp_perf.payload_construction():
+            response: dict[str, object] = {
+                "status": "ok",
+                "skill_id": skill_id,
+                "related_skill_ids": list(related_skill_ids),
+                "evidence_paths": list(evidence_paths[:limit]),
+            }
         selection_run_id = skills_usage.new_selection_run_id()
         skills_usage.record_skill_hit(skill_id, "get_skill_context")
         skills_usage.emit_skill_selection_run(
@@ -726,11 +738,12 @@ class SkillsMcpServer:
                 "selected": [skill_id, *list(related_skill_ids)],
             }
         )
-        return skills_usage.attach_usage_metadata(
-            response,
-            selection_run_id,
-            tool="get_skill_context",
-        )
+        with skills_mcp_perf.payload_construction():
+            return skills_usage.attach_usage_metadata(
+                response,
+                selection_run_id,
+                tool="get_skill_context",
+            )
 
     def _route_skill_query(self, arguments: Mapping[str, object]) -> dict[str, object]:
         query = _string(arguments.get("query"))
@@ -752,15 +765,18 @@ class SkillsMcpServer:
                 "suggested_tool": result.get("suggested_tool"),
             }
         )
-        return skills_usage.attach_usage_metadata(
-            result,
-            selection_run_id,
-            tool="route_skill_query",
-            route=result.get("route"),
-        )
+        with skills_mcp_perf.payload_construction():
+            return skills_usage.attach_usage_metadata(
+                result,
+                selection_run_id,
+                tool="route_skill_query",
+                route=result.get("route"),
+            )
 
     def _resolve_skill(self, arguments: Mapping[str, object]) -> dict[str, object]:
         name = _string(arguments.get("name"))
+        # Router work is handler time; payload construction is measured when the
+        # response is serialised in ToolPerfSpan.finish().
         return skills_router.resolve_skill(self._plan, name)
 
     def _get_skill_execution_guide(self, arguments: Mapping[str, object]) -> dict[str, object]:
@@ -774,7 +790,8 @@ class SkillsMcpServer:
             related_limit=related_limit,
         )
         if result.get("status") != "ok":
-            return result
+            with skills_mcp_perf.payload_construction():
+                return result
         selection_run_id = skills_usage.new_selection_run_id()
         skills_usage.record_execution_guide(skill_id, "get_skill_execution_guide")
         skills_usage.record_skill_hit(skill_id, "get_skill_execution_guide")
@@ -786,11 +803,12 @@ class SkillsMcpServer:
                 "selected": [skill_id],
             }
         )
-        return skills_usage.attach_usage_metadata(
-            result,
-            selection_run_id,
-            tool="get_skill_execution_guide",
-        )
+        with skills_mcp_perf.payload_construction():
+            return skills_usage.attach_usage_metadata(
+                result,
+                selection_run_id,
+                tool="get_skill_execution_guide",
+            )
 
 
 def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:

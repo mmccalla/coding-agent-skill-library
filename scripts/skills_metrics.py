@@ -6,16 +6,17 @@ from __future__ import annotations
 from prometheus_client import CONTENT_TYPE_LATEST, CollectorRegistry, generate_latest
 
 import scripts.skills_usage as skills_usage
-from scripts import skills_trust_metrics
+from scripts import skills_mcp_perf, skills_trust_metrics
 
 
 def render_all_metrics(*, api_registry: CollectorRegistry | None = None) -> bytes:
-    """Return Prometheus exposition text for API, usage and trust counters."""
+    """Return Prometheus exposition text for API, usage, MCP perf and trust counters."""
 
     parts: list[bytes] = []
     if api_registry is not None:
         parts.append(generate_latest(api_registry))
     parts.append(generate_latest(skills_usage.METRICS_REGISTRY))
+    parts.append(generate_latest(skills_mcp_perf.METRICS_REGISTRY))
     parts.append(generate_latest(skills_trust_metrics.METRICS_REGISTRY))
     return b"".join(parts)
 

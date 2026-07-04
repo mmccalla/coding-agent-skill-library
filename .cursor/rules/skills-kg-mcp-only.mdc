@@ -1,0 +1,52 @@
+---
+description: Use skills-kg MCP exclusively for skill discovery and operational guidance
+alwaysApply: true
+---
+
+# Skills via skills-kg MCP only
+
+This repository is configured for **MCP-first skill access**. Do not read `skills/**/SKILL.md` or route via `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` for day-to-day agent work.
+
+## Mandatory safety (repo files, not skills)
+
+Before planning, tool use, or edits, read from the repository root when present:
+
+1. `AGENTIC_CODING_GLOBAL_SAFETY.md`
+2. `SECURE_AGENTIC_DEVELOPMENT.md`
+
+## Skill discovery and execution (MCP only)
+
+Use the **`skills-kg`** MCP server. Read resource `skills://contract` when tool choice is unclear.
+
+| Step | MCP tool |
+| --- | --- |
+| Classify an ambiguous task | `route_skill_query` |
+| Resolve a human-readable skill name | `resolve_skill` |
+| Direct lookup by id | `get_skill` |
+| Task-oriented recommendations | `recommend_skills` |
+| Related skills and context | `get_skill_context` |
+| Checklists and procedures | `get_skill_execution_guide` |
+| Browse or search the library | `search_skills` |
+
+Workflow:
+
+1. Call `route_skill_query` for natural-language skill questions unless the user gave an exact skill id.
+2. Load the smallest relevant skill content through MCP (`get_skill`, `get_skill_execution_guide`, or route-specific tools). Do not invent skill text.
+3. Execute **`apply-laws-of-ai`** first for every session via MCP (`get_skill` with skill id `apply-laws-of-ai` or `get_skill_execution_guide`).
+4. Treat MCP responses as bounded evidence; prefer abstention over guessing when retrieval is empty or low confidence.
+
+## Exceptions (filesystem allowed)
+
+Read or edit filesystem skill files only when the user explicitly asks to **author, refactor, validate, or maintain** skills or library docs, for example:
+
+- editing `skills/<name>/SKILL.md`
+- running ingest, graph, eval, or CI validators
+- updating `skills_docs/` inventory or routing metadata
+
+## MCP unavailable
+
+If **`skills-kg`** is disconnected, say so and ask the user to enable it in **Cursor → Settings → MCP** before proceeding with skill-guided work. Do not silently fall back to scanning `skills/` unless the user explicitly authorises filesystem fallback.
+
+## Overrides
+
+This rule takes precedence over filesystem-first instructions in `AGENTS.md` and `CLAUDE.md` for Cursor agent sessions in this workspace.

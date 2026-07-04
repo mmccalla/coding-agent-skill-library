@@ -14,7 +14,7 @@ from typing import Any, NamedTuple
 if __package__ in {None, ""}:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts import embed_skill_chunks, load_skills_neo4j, skills_config
+from scripts import embed_skill_chunks, load_skills_neo4j, skills_config, skills_mcp_perf
 from scripts.embed_skill_chunks import VectorCandidate
 
 DEFAULT_RETRIEVAL_SETTINGS = skills_config.load_settings().retrieval
@@ -635,27 +635,29 @@ class Neo4jHybridRetrievalGraph:
     def fulltext_skill_ids(self, query_text: str, limit: int) -> tuple[str, ...]:
         """Return skill IDs matched by Neo4j full-text indexes."""
 
-        with self._driver.session(database=self._settings.neo4j.database) as session:
-            records = session.run(
-                (
-                    "CALL db.index.fulltext.queryNodes($chunk_index, $query_text, {limit: $limit}) "
-                    "YIELD node, score "
-                    "RETURN node.skill_id AS skill_id "
-                    "UNION "
-                    "CALL db.index.fulltext.queryNodes($metadata_index, $query_text, {limit: $limit}) "
-                    "YIELD node, score "
-                    "RETURN node.id AS skill_id"
-                ),
-                chunk_index=self._settings.neo4j.retrieval_unit_fulltext_index,
-                metadata_index=self._settings.neo4j.metadata_fulltext_index,
-                query_text=query_text,
-                limit=limit,
-            )
-            skill_ids = [
-                str(record["skill_id"])
-                for record in records
-                if isinstance(_record_mapping(record).get("skill_id"), str)
-            ]
+        with skills_mcp_perf.database_io() as io:
+            with self._driver.session(database=self._settings.neo4j.database) as session:
+                records = session.run(
+                    (
+                        "CALL db.index.fulltext.queryNodes($chunk_index, $query_text, {limit: $limit}) "
+                        "YIELD node, score "
+                        "RETURN node.skill_id AS skill_id "
+                        "UNION "
+                        "CALL db.index.fulltext.queryNodes($metadata_index, $query_text, {limit: $limit}) "
+                        "YIELD node, score "
+                        "RETURN node.id AS skill_id"
+                    ),
+                    chunk_index=self._settings.neo4j.retrieval_unit_fulltext_index,
+                    metadata_index=self._settings.neo4j.metadata_fulltext_index,
+                    query_text=query_text,
+                    limit=limit,
+                )
+                skill_ids = [
+                    str(record["skill_id"])
+                    for record in records
+                    if isinstance(_record_mapping(record).get("skill_id"), str)
+                ]
+            io.add_payload(skill_ids)
         return tuple(dict.fromkeys(skill_ids))
 
     def vector_candidates(
@@ -667,21 +669,36 @@ class Neo4jHybridRetrievalGraph:
         """Return vector candidates from Neo4j's named vector index."""
 
         embedding = embedder.embed(query_text)
-        with self._driver.session(database=self._settings.neo4j.database) as session:
-            records = session.run(
-                (
-                    "CALL db.index.vector.queryNodes($index_name, $limit, $embedding) "
-                    "YIELD node, score "
-                    "RETURN node.id AS retrieval_unit_id, score, node.source_path AS source_path, "
-                    "node.section_id AS section_id, node.skill_id AS skill_id, "
-                    "node.text AS text, node.embeddingProvider AS embedding_provider, "
-                    "node.embeddingDimensions AS embedding_dimensions"
-                ),
-                index_name=self._settings.neo4j.vector_index,
-                limit=limit,
-                embedding=list(embedding),
+        with skills_mcp_perf.database_io() as io:
+            with self._driver.session(database=self._settings.neo4j.database) as session:
+                records = list(
+                    session.run(
+                        (
+                            "CALL db.index.vector.queryNodes($index_name, $limit, $embedding) "
+                            "YIELD node, score "
+                            "RETURN node.id AS retrieval_unit_id, score, node.source_path AS source_path, "
+                            "node.section_id AS section_id, node.skill_id AS skill_id, "
+                            "node.text AS text, node.embeddingProvider AS embedding_provider, "
+                            "node.embeddingDimensions AS embedding_dimensions"
+                        ),
+                        index_name=self._settings.neo4j.vector_index,
+                        limit=limit,
+                        embedding=list(embedding),
+                    )
+                )
+            candidates = embed_skill_chunks.vector_candidates_from_records(records)
+            io.add_payload(
+                [
+                    {
+                        "retrieval_unit_id": candidate.retrieval_unit_id,
+                        "skill_id": candidate.skill_id,
+                        "text": candidate.text,
+                        "score": candidate.score,
+                    }
+                    for candidate in candidates
+                ]
             )
-            return embed_skill_chunks.vector_candidates_from_records(records)
+        return candidates
 
     def fetch_retrieval_plan(self, skill_ids: Sequence[str]) -> load_skills_neo4j.LoadPlan:
         """Fetch a bounded candidate subgraph for ranking and evidence formatting."""
@@ -689,64 +706,66 @@ class Neo4jHybridRetrievalGraph:
         unique_skill_ids = tuple(dict.fromkeys(skill_ids))
         if not unique_skill_ids:
             return load_skills_neo4j.LoadPlan(nodes=(), relationships=())
-        with self._driver.session(database=self._settings.neo4j.database) as session:
-            skill_records = tuple(
-                _record_mapping(record)
-                for record in session.run(
-                    (
-                        "MATCH (s:Skill) "
-                        "WHERE s.id IN $skill_ids "
-                        "RETURN s.id AS id, properties(s) AS properties"
-                    ),
-                    skill_ids=list(unique_skill_ids),
+        with skills_mcp_perf.database_io() as io:
+            with self._driver.session(database=self._settings.neo4j.database) as session:
+                skill_records = tuple(
+                    _record_mapping(record)
+                    for record in session.run(
+                        (
+                            "MATCH (s:Skill) "
+                            "WHERE s.id IN $skill_ids "
+                            "RETURN s.id AS id, properties(s) AS properties"
+                        ),
+                        skill_ids=list(unique_skill_ids),
+                    )
                 )
-            )
-            chunk_records = tuple(
-                _record_mapping(record)
-                for record in session.run(
-                    (
-                        "MATCH (s:Skill)-[:HAS_SECTION]->(:SkillSection)-[:HAS_RETRIEVAL_UNIT]->"
-                        "(unit:RetrievalUnit) "
-                        "WHERE s.id IN $skill_ids "
-                        "RETURN unit.id AS id, properties(unit) AS properties"
-                    ),
-                    skill_ids=list(unique_skill_ids),
+                chunk_records = tuple(
+                    _record_mapping(record)
+                    for record in session.run(
+                        (
+                            "MATCH (s:Skill)-[:HAS_SECTION]->(:SkillSection)-[:HAS_RETRIEVAL_UNIT]->"
+                            "(unit:RetrievalUnit) "
+                            "WHERE s.id IN $skill_ids "
+                            "RETURN unit.id AS id, properties(unit) AS properties"
+                        ),
+                        skill_ids=list(unique_skill_ids),
+                    )
                 )
-            )
-            relationship_records = tuple(
-                _record_mapping(record)
-                for record in session.run(
-                    (
-                        "MATCH (source:Skill)-[r]->(target) "
-                        "WHERE source.id IN $skill_ids AND type(r) IN $relationship_types "
-                        "RETURN type(r) AS type, labels(source)[0] AS source_label, "
-                        "source.id AS source_id, labels(target)[0] AS target_label, "
-                        "target.id AS target_id, properties(r) AS properties"
-                    ),
-                    skill_ids=list(unique_skill_ids),
-                    relationship_types=sorted(CONNECTED_RELATIONSHIP_TYPES),
+                relationship_records = tuple(
+                    _record_mapping(record)
+                    for record in session.run(
+                        (
+                            "MATCH (source:Skill)-[r]->(target) "
+                            "WHERE source.id IN $skill_ids AND type(r) IN $relationship_types "
+                            "RETURN type(r) AS type, labels(source)[0] AS source_label, "
+                            "source.id AS source_id, labels(target)[0] AS target_label, "
+                            "target.id AS target_id, properties(r) AS properties"
+                        ),
+                        skill_ids=list(unique_skill_ids),
+                        relationship_types=sorted(CONNECTED_RELATIONSHIP_TYPES),
+                    )
                 )
+            nodes = [
+                load_skills_neo4j.GraphNode("Skill", str(record["id"]), _properties(record))
+                for record in skill_records
+            ]
+            nodes.extend(
+                load_skills_neo4j.GraphNode("RetrievalUnit", str(record["id"]), _properties(record))
+                for record in chunk_records
             )
-        nodes = [
-            load_skills_neo4j.GraphNode("Skill", str(record["id"]), _properties(record))
-            for record in skill_records
-        ]
-        nodes.extend(
-            load_skills_neo4j.GraphNode("RetrievalUnit", str(record["id"]), _properties(record))
-            for record in chunk_records
-        )
-        relationships = [
-            load_skills_neo4j.GraphRelationship(
-                type=str(record["type"]),
-                source_label=str(record["source_label"]),
-                source_id=str(record["source_id"]),
-                target_label=str(record["target_label"]),
-                target_id=str(record["target_id"]),
-                properties=_properties(record),
-            )
-            for record in relationship_records
-            if isinstance(record.get("target_id"), str)
-        ]
+            relationships = [
+                load_skills_neo4j.GraphRelationship(
+                    type=str(record["type"]),
+                    source_label=str(record["source_label"]),
+                    source_id=str(record["source_id"]),
+                    target_label=str(record["target_label"]),
+                    target_id=str(record["target_id"]),
+                    properties=_properties(record),
+                )
+                for record in relationship_records
+                if isinstance(record.get("target_id"), str)
+            ]
+            io.add_payload({"skills": list(unique_skill_ids), "nodes": len(nodes)})
         return load_skills_neo4j.LoadPlan(nodes=tuple(nodes), relationships=tuple(relationships))
 
 
