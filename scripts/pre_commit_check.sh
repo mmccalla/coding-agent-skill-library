@@ -193,7 +193,7 @@ fi
 if [[ "$run_ui" == true ]]; then
   echo "==> skills-ui lint/test"
   npm --prefix skills-ui run lint
-  npm --prefix skills-ui test -- --runInBand
+  npm --prefix skills-ui test -- --no-file-parallelism --maxWorkers=1
 fi
 
 echo "pre-commit checks passed."
