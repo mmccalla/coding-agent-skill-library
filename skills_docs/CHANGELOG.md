@@ -8,7 +8,7 @@ Release-level changes to the portable skills library and Skills KG service.
 
 - **Tiered evaluation corpus (Option B):** smoke 11, realistic 31, coverage 195, abstention 10; `golden_queries.json` union ~247 (down from 1,194 templates).
 - `validate_eval_corpus.py` — corpus schema, coverage matrix, confuser pairs, duplicate-query guard.
-- `generate_golden_queries.py` rewritten for tiered generation; shadow baseline in `archive/planning/CORPUS_SHRINK_BASELINE.json`.
+- `generate_golden_queries.py` rewritten for tiered generation; shadow baseline recorded for shrink comparison.
 - CI ingest gate: corpus validator + change-scoped **delta eval** on touched `SKILL.md` paths.
 - Soft exclusion threshold (0.5) for complement co-ranking at ranks 2–3.
 - Skills UI **admin ingest** after trust preview; Phase 10 complete (backend + UI).
@@ -39,7 +39,7 @@ Release-level changes to the portable skills library and Skills KG service.
 ### Documentation
 
 - Documentation consolidation started: `GETTING_STARTED.md`, `krag/STATUS.md`, updated doc hubs (Waves A–D).
-- Waves A–D: consolidated `krag/` docs, archived planning/backlog, added `validate_docs.py` CI gate.
+- Waves A–D: consolidated `krag/` docs, archived superseded backlog, added `validate_docs.py` CI gate.
 - Phase 10 admin ingest: `POST /skills/admin/ingest`, pack-metadata registration, MCP reload, abstention tuning for synthetic negative probes.
 - Closeout programme: tiered realistic golden corpus plan (`krag/CLOSEOUT_PLAN.md`); STATUS.md tracks waves 0–5.
 
