@@ -1,0 +1,55 @@
+name: Bug report
+description: Report incorrect behaviour, validation failure, or operational issue
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Do **not** include secrets, credentials, or customer data.
+        For security vulnerabilities, use [private vulnerability reporting](../../security/advisories/new) instead.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: What did you expect instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. ...
+        2. ...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - Skills library (SKILL.md / routing)
+        - MCP server (stdio / HTTP)
+        - Retrieval / Neo4j KG
+        - API / UI / Docker stack
+        - CI / validators
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: v0.1.0 or commit SHA
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs or output
+      render: shell

@@ -1,0 +1,54 @@
+name: Feature request
+description: Suggest an enhancement to skills, retrieval, MCP, or documentation
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or opportunity
+      description: What user or agent task is hard today?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Keep scope small and testable where possible.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - Skills library
+        - Skills KG / KRAG
+        - MCP tools
+        - API / UI
+        - Documentation
+        - CI / developer experience
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      options:
+        - label: Behaviour is testable (unit, integration, or eval fixture)
+          required: false
+        - label: Documentation updated if user-facing
+          required: false
+        - label: Security / trust gates considered for skill or ingest changes
+          required: false

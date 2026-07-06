@@ -61,4 +61,11 @@ Details: `skills_docs/GETTING_STARTED.md` and `skills_docs/CHANGELOG.md`.
 
 ## Licence
 
-SPDX-License-Identifier: Apache-2.0. See [LICENSE](LICENSE).
+SPDX-License-Identifier: Apache-2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+
+## Contributing and security
+
+- [CONTRIBUTING.md](CONTRIBUTING.md)
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- [SECURITY.md](SECURITY.md)
+- [CHANGELOG.md](CHANGELOG.md)
