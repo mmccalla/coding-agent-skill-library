@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import json
+import subprocess
+import sys
 import unittest
 from pathlib import Path
 
@@ -9,6 +12,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 README = REPO_ROOT / "README.md"
 GUIDE = REPO_ROOT / "skills_docs" / "SKILLS_KG_MCP_RUNBOOK.md"
 CI = REPO_ROOT / "scripts/dev_workflow/ci_local.sh"
+LEGACY_MCP_SHIM = REPO_ROOT / "scripts/skills_mcp_server.py"
 
 
 class SkillsKgMcpDocsTests(unittest.TestCase):
@@ -65,6 +69,23 @@ class SkillsKgMcpDocsTests(unittest.TestCase):
         self.assertIn("-m eval_pr", text)
         self.assertNotIn("--apply", text)
         self.assertNotIn("python3 scripts/lib/retrieval/evaluate_skill_retrieval.py", text)
+
+    def test_legacy_mcp_entrypoint_shim_lists_tools(self) -> None:
+        self.assertTrue(
+            LEGACY_MCP_SHIM.is_file(), "legacy MCP shim must exist after scripts reorganisation"
+        )
+        result = subprocess.run(
+            [sys.executable, str(LEGACY_MCP_SHIM), "--list-tools", "--fixture"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(0, result.returncode, msg=result.stderr)
+        payload = json.loads(result.stdout)
+        tool_names = {item["name"] for item in payload}
+        self.assertIn("get_skill", tool_names)
+        self.assertIn("recommend_skills", tool_names)
 
 
 if __name__ == "__main__":

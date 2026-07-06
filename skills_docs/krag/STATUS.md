@@ -18,15 +18,15 @@ For the evaluation corpus redesign, see [`EVALUATION_CORPUS_CONTRACT.md`](EVALUA
 | Portable skills library (**91** skills) | `scripts/validators/validate_skills.py`, `skills/MANIFEST.md` |
 | KRAG v2 ontology + SHACL profiles | `scripts/validators/validate_skills_ontology.py`, `skills_docs/ontology/*.ttl` |
 | Skill extract → graph → hybrid retrieval | `extract_skills_graph.py`, `retrieve_skills_hybrid.py` |
-| Read-only MCP + FastAPI | `skills_mcp_server.py`, `skills_api.py` |
+| Read-only MCP + FastAPI | `scripts/runtime/mcp/skills_mcp_server.py`, `scripts/runtime/api/skills_api.py` |
 | Trust gates L1–L4 | `validate_skill_trust.py` |
-| CI ingest gate (Phase 9 + corpus + delta eval) | `ci_ingest_gate.py`, `validate_eval_corpus.py` in `ci_local.sh` |
+| CI ingest gate (Phase 9 + corpus + delta eval) | `scripts/utils/ci/ci_ingest_gate.py`, `scripts/validators/validate_eval_corpus.py` in `ci_local.sh` |
 | Full promotion (**91/91** promoted, **0** quarantined) | 2026-07-03 authoring remediation |
 | Tiered evaluation corpus (Option B) | smoke **11**, realistic **31**, coverage **195**, abstention **10**; `golden_queries.json` union **~247** |
 | Coverage matrix + confuser registry | `coverage_matrix.json`, `confuser_pairs.json`, `validate_eval_corpus.py` |
 | Realistic confuser tier | precision@1 **1.0**; soft exclusion **≥ 0.5** |
 | Coverage tier (nightly) | precision@1 **1.0** on promoted-eligible cases |
-| Change-scoped delta eval | `ci_ingest_gate.py` + `DELTA_EVAL_BASE_REF` |
+| Change-scoped delta eval | `scripts/utils/ci/ci_ingest_gate.py` + `DELTA_EVAL_BASE_REF` |
 | Usage metrics + Grafana dashboard | `skills-kg-usage.json`, `GET /metrics` |
 | MCP agent journeys **JRN-01 … JRN-11** | `tests/fixtures/agent_journeys.json` |
 | Docker Neo4j loader | 91 Skills, 810 RetrievalUnits |
