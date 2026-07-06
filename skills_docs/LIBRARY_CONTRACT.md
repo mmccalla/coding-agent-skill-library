@@ -78,7 +78,7 @@ Folder structure helps humans navigate the library, but frontmatter is the autho
 Run structural validation after material library changes:
 
 ```bash
-python3 scripts/validate_skills.py
+python3 scripts/validators/validate_skills.py
 ```
 
 The validator checks frontmatter, canonical section headings, non-baseline minimum length, duplication risk, presence of the baseline skill, description quality (`Use when` trigger, 80–1024 characters), supported frontmatter keys, folder/name alignment, alias format, Verification checklist items, Related skills references, removal of legacy procedure/generic guidance headings, product-specific overlay isolation, and `SKILL.md` line limits.
@@ -86,7 +86,7 @@ The validator checks frontmatter, canonical section headings, non-baseline minim
 Run the same checks locally as CI:
 
 ```bash
-./scripts/ci_local.sh
+./scripts/dev_workflow/ci_local.sh
 ```
 
 For authoring standards, examples and progressive-disclosure guidance, see `skills_docs/SKILL_AUTHORING_GUIDE.md`.
@@ -98,7 +98,7 @@ If a target repository installed an earlier drop-in without `apply-laws-of-ai`:
 1. Copy `skills/apply-laws-of-ai/` from this library.
 2. Replace `AGENTS.md`, `CLAUDE.md`, and `skills_docs/` with the current versions (or merge the **Mandatory startup order** section).
 3. Update `skills/MANIFEST.md` skill counts to **111** where the full library is installed.
-4. Run `python3 scripts/validate_skills.py` and confirm PASS.
+4. Run `python3 scripts/validators/validate_skills.py` and confirm PASS.
 
 Do not skip step 1 — agents must execute the baseline skill before any other reasoning.
 

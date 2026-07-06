@@ -13,8 +13,8 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 INSTANCES_DIR = REPO_ROOT / "skills_docs" / "ontology" / "instances"
 TASK_INTENTS = INSTANCES_DIR / "task-intents.ttl"
 WORKFLOW_STAGES = INSTANCES_DIR / "workflow-stages.ttl"
-ONTOLOGY_VALIDATOR = REPO_ROOT / "scripts" / "validate_skills_ontology.py"
-MAPPING_MODULE = REPO_ROOT / "scripts" / "skill_section_mapping.py"
+ONTOLOGY_VALIDATOR = REPO_ROOT / "scripts/validators/validate_skills_ontology.py"
+MAPPING_MODULE = REPO_ROOT / "scripts/lib/routing/skill_section_mapping.py"
 
 SKILLS = Namespace("urn:coding-agent-skill-library:ontology:skills#")
 

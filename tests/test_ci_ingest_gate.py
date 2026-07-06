@@ -1,11 +1,11 @@
-"""Tests for scripts/ci_ingest_gate.py."""
+"""Tests for scripts/utils/ci/ci_ingest_gate.py."""
 
 from __future__ import annotations
 
 import unittest
 from pathlib import Path
 
-from scripts.ci_ingest_gate import run_delta_eval_step, run_ingest_gate
+from scripts.utils.ci.ci_ingest_gate import run_delta_eval_step, run_ingest_gate
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 

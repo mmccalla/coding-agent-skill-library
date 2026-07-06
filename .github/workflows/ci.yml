@@ -94,9 +94,9 @@ jobs:
 
       - name: Offline KG/MCP smoke
         run: |
-          python3 scripts/embed_skill_chunks.py --query "approval before destructive command" --limit 1 >/dev/null
-          python3 scripts/retrieve_skills_hybrid.py "graph rag ontology retrieval" --limit 1 >/dev/null
-          python3 scripts/skills_mcp_server.py --list-tools >/dev/null
+          python3 scripts/graph/build/embed_skill_chunks.py --query "approval before destructive command" --limit 1 >/dev/null
+          python3 scripts/lib/retrieval/retrieve_skills_hybrid.py "graph rag ontology retrieval" --limit 1 >/dev/null
+          python3 scripts/runtime/mcp/skills_mcp_server.py --list-tools >/dev/null
 
   pre-commit:
     name: pre-commit
@@ -136,10 +136,10 @@ jobs:
 
       - name: Library validators
         run: |
-          python3 scripts/validate_docs.py
-          python3 scripts/validate_skills.py
-          python3 scripts/validate_skills_graph.py
-          python3 scripts/validate_eval_corpus.py --check-skill-sync
+          python3 scripts/validators/validate_docs.py
+          python3 scripts/validators/validate_skills.py
+          python3 scripts/validators/validate_skills_graph.py
+          python3 scripts/validators/validate_eval_corpus.py --check-skill-sync
 
   ingest-gate:
     name: Ingest gate
@@ -163,7 +163,7 @@ jobs:
       - name: CI ingest gate
         env:
           DELTA_EVAL_BASE_REF: ${{ github.event.pull_request.base.sha || format('origin/{0}', github.event.repository.default_branch || 'main') }}
-        run: python3 scripts/ci_ingest_gate.py
+        run: python3 scripts/utils/ci/ci_ingest_gate.py
 
   eval-pr:
     name: PR retrieval eval

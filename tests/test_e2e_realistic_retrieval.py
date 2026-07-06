@@ -7,8 +7,8 @@ from pathlib import Path
 
 import pytest
 
-from scripts.evaluate_skill_retrieval import evaluate_offline, load_cases
-from scripts.run_e2e_retrieval_eval import REALISTIC_DATASET, run_realistic_e2e
+from scripts.lib.retrieval.evaluate_skill_retrieval import evaluate_offline, load_cases
+from scripts.lib.retrieval.run_e2e_retrieval_eval import REALISTIC_DATASET, run_realistic_e2e
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 COVERAGE_DATASET = REPO_ROOT / "tests/fixtures/retrieval_evaluation/coverage_queries.json"
@@ -93,7 +93,7 @@ class RealisticE2eRetrievalTests(unittest.TestCase):
         self.assertIn("release_arm", payload)
         self.assertIn("full_corpus_arm", payload)
         self.assertIn("realistic_confuser_arm", payload)
-        self.assertTrue(payload["cutover_acceptance_passed"])
+        self.assertTrue(payload["smoke_promoted_passed"])
         realistic = payload["realistic_confuser_arm"]
         self.assertGreaterEqual(realistic["precision_at_1"], REALISTIC_PRECISION_AT_1)
         self.assertEqual(0, len(realistic["rank_failures"]))

@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-VALIDATOR = REPO_ROOT / "scripts" / "validate_skill_security.py"
+VALIDATOR = REPO_ROOT / "scripts/validators/validate_skill_security.py"
 FIXTURES = REPO_ROOT / "tests" / "fixtures" / "skill_trust"
 ALLOWLIST = REPO_ROOT / "tests" / "fixtures" / "skill_security_allowlist.json"
 GUARDRAILS_SKILL = REPO_ROOT / "skills" / "guardrails-safety-patterns" / "SKILL.md"

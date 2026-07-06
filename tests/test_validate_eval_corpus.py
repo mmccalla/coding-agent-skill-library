@@ -6,17 +6,17 @@ import json
 import unittest
 from pathlib import Path
 
-from scripts import validate_eval_corpus
-from scripts.ci_ingest_gate import (
+from scripts.lib.retrieval.generate_golden_queries import generate_tier
+from scripts.lib.retrieval.generate_golden_queries import main as generate_main
+from scripts.utils.ci.ci_ingest_gate import (
     build_delta_eval_cases,
     discover_changed_skill_names,
     run_delta_eval_step,
 )
-from scripts.ci_ingest_gate import (
+from scripts.utils.ci.ci_ingest_gate import (
     main as ingest_gate_main,
 )
-from scripts.generate_golden_queries import generate_tier
-from scripts.generate_golden_queries import main as generate_main
+from scripts.validators import validate_eval_corpus
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EVAL_DIR = REPO_ROOT / "tests" / "fixtures" / "retrieval_evaluation"

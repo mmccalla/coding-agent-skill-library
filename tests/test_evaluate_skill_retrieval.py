@@ -5,13 +5,13 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-from scripts.evaluate_skill_retrieval import (
+from scripts.lib.retrieval.evaluate_skill_retrieval import (
     EvaluationCase,
     _is_alias_lookup_case,
     evaluate_offline,
     load_cases,
 )
-from scripts.validate_skills import parse_frontmatter
+from scripts.validators.validate_skills import parse_frontmatter
 
 DATASET = Path("tests/fixtures/retrieval_evaluation/golden_queries.json")
 COVERAGE_DATASET = Path("tests/fixtures/retrieval_evaluation/coverage_queries.json")

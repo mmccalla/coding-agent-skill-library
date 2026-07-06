@@ -44,7 +44,7 @@ Required CI contexts for branch protection: `markdownlint`, `ruff`, `mypy`, `pyt
 Run locally:
 
 ```bash
-./scripts/ci_local.sh
+./scripts/dev_workflow/ci_local.sh
 python3 -m pytest -q tests/test_github_repo_hygiene.py
 ```
 

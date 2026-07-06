@@ -1,4 +1,4 @@
-"""Tests for scripts/validate_skills.py."""
+"""Tests for scripts/validators/validate_skills.py."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-VALIDATOR = REPO_ROOT / "scripts" / "validate_skills.py"
+VALIDATOR = REPO_ROOT / "scripts/validators/validate_skills.py"
 
 
 def load_validator_module():

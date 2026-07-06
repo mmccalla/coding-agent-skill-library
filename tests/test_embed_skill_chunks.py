@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = REPO_ROOT / "scripts" / "embed_skill_chunks.py"
+SCRIPT = REPO_ROOT / "scripts/graph/build/embed_skill_chunks.py"
 
 
 def load_module() -> object:
@@ -32,7 +32,7 @@ class EmbedSkillChunksTests(unittest.TestCase):
         self.assertEqual("deterministic-test-embedding", embedder.provider_name)
 
     def test_resolve_embedding_provider_defaults_to_production_bge(self) -> None:
-        from scripts.skills_config import SkillsKgSettings
+        from scripts.lib.config.skills_config import SkillsKgSettings
 
         embeddings = load_module()
         settings = SkillsKgSettings()
@@ -43,7 +43,7 @@ class EmbedSkillChunksTests(unittest.TestCase):
         self.assertEqual(1024, provider.dimension)
 
     def test_resolve_embedding_provider_forces_deterministic_for_ci(self) -> None:
-        from scripts.skills_config import SkillsKgSettings
+        from scripts.lib.config.skills_config import SkillsKgSettings
 
         embeddings = load_module()
         settings = SkillsKgSettings()

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import unittest
 
-from scripts.check_neo4j_readiness import collect_readiness
-from scripts.skills_config import Neo4jSettings
+from scripts.lib.config.skills_config import Neo4jSettings
+from scripts.runtime.docker.check_neo4j_readiness import collect_readiness
 
 
 class FakeSession:

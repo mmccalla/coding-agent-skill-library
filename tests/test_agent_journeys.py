@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = REPO_ROOT / "scripts" / "skills_mcp_server.py"
+SCRIPT = REPO_ROOT / "scripts/runtime/mcp/skills_mcp_server.py"
 JOURNEYS_FIXTURE = REPO_ROOT / "tests" / "fixtures" / "agent_journeys.json"
 
 

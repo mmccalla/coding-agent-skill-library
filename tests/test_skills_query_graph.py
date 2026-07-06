@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = REPO_ROOT / "scripts" / "skills_query_graph.py"
+SCRIPT = REPO_ROOT / "scripts/lib/routing/skills_query_graph.py"
 
 
 def load_module():
@@ -43,7 +43,9 @@ class SkillsQueryGraphTests(unittest.TestCase):
 
     def test_related_skill_traversal_execution_returns_paths(self) -> None:
         module = load_module()
-        retrieval = __import__("scripts.retrieve_skills_hybrid", fromlist=["fixture_load_plan"])
+        retrieval = __import__(
+            "scripts.lib.retrieval.retrieve_skills_hybrid", fromlist=["fixture_load_plan"]
+        )
         plan = retrieval.fixture_load_plan()
         query_plan = module.plan_graph_query(
             plan,
@@ -61,7 +63,9 @@ class SkillsQueryGraphTests(unittest.TestCase):
 
     def test_constraint_verification_query_returns_citations(self) -> None:
         module = load_module()
-        retrieval = __import__("scripts.retrieve_skills_hybrid", fromlist=["fixture_load_plan"])
+        retrieval = __import__(
+            "scripts.lib.retrieval.retrieve_skills_hybrid", fromlist=["fixture_load_plan"]
+        )
         plan = retrieval.fixture_load_plan()
         query_plan = module.plan_graph_query(
             plan,
@@ -79,7 +83,9 @@ class SkillsQueryGraphTests(unittest.TestCase):
 
     def test_pack_membership_lookup_uses_skill_pack_properties(self) -> None:
         module = load_module()
-        loader = __import__("scripts.load_skills_neo4j", fromlist=["GraphNode", "LoadPlan"])
+        loader = __import__(
+            "scripts.graph.load.load_skills_neo4j", fromlist=["GraphNode", "LoadPlan"]
+        )
         plan = loader.LoadPlan(
             nodes=(
                 loader.GraphNode(
@@ -107,7 +113,9 @@ class SkillsQueryGraphTests(unittest.TestCase):
 
     def test_unknown_query_family_abstains(self) -> None:
         module = load_module()
-        retrieval = __import__("scripts.retrieve_skills_hybrid", fromlist=["fixture_load_plan"])
+        retrieval = __import__(
+            "scripts.lib.retrieval.retrieve_skills_hybrid", fromlist=["fixture_load_plan"]
+        )
         plan = retrieval.fixture_load_plan()
 
         result = module.execute_planned_query(

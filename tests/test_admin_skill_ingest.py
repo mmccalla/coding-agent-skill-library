@@ -9,10 +9,10 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-from scripts import admin_skill_ingest
-from scripts.skills_api import create_app
-from scripts.skills_mcp_server import SkillsMcpServer
-from scripts.validate_skill_trust import validate_skill_trust_file
+from scripts.graph.build import admin_skill_ingest
+from scripts.runtime.api.skills_api import create_app
+from scripts.runtime.mcp.skills_mcp_server import SkillsMcpServer
+from scripts.validators.validate_skill_trust import validate_skill_trust_file
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 TRUST_FIXTURES = REPO_ROOT / "tests" / "fixtures" / "skill_trust"

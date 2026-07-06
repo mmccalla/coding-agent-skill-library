@@ -8,10 +8,10 @@ import unittest
 from pathlib import Path
 from typing import Any
 
-from scripts import skills_usage
+from scripts.observability import skills_usage
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-MCP_SCRIPT = REPO_ROOT / "scripts" / "skills_mcp_server.py"
+MCP_SCRIPT = REPO_ROOT / "scripts/runtime/mcp/skills_mcp_server.py"
 
 
 def load_mcp_module() -> Any:

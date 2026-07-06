@@ -130,7 +130,7 @@ Promoted-only slice for hybrid retrieval, vector indexing and MCP selection.
 | `promoted` | Yes | Yes |
 | `quarantined` / `rejected` | No | No |
 
-Builder: `scripts/build_retrieval_projections.py`. Loader creates `RetrievalUnit` nodes only for promoted skills. `retrieve_skills_hybrid` rejects non-promoted candidates.
+Builder: `scripts/graph/build/build_retrieval_projections.py`. Loader creates `RetrievalUnit` nodes only for promoted skills. `retrieve_skills_hybrid` rejects non-promoted candidates.
 
 SHACL: `../ontology/retrieval-projection.shacl.ttl`.
 

@@ -1,7 +1,7 @@
 # KRAG evaluation report
 
 **Last measured:** 2026-07-03  
-**Scope:** Tiered retrieval corpora, MCP agent journeys (JRN-01 … JRN-11), CI ingest gate, cutover acceptance  
+**Scope:** Tiered retrieval corpora, MCP agent journeys (JRN-01 … JRN-11), CI ingest gate, promoted-smoke evaluation  
 **Method:** Offline deterministic evaluation (`evaluate_offline`, `limit=3`) + MCP journey fixtures + `ci_ingest_gate.py`
 
 Roadmap: [`STATUS.md`](STATUS.md). Corpus contract: [`EVALUATION_CORPUS_CONTRACT.md`](EVALUATION_CORPUS_CONTRACT.md). Release gates: [`CONTRACTS.md`](CONTRACTS.md) § Evaluation.
@@ -28,8 +28,8 @@ This report separates **ranking quality**, **exclusion behaviour**, **abstention
 Regenerate tiers:
 
 ```bash
-python3 scripts/generate_golden_queries.py --tier all --write-legacy-golden
-python3 scripts/validate_eval_corpus.py --check-skill-sync --emit-matrix
+python3 scripts/lib/retrieval/generate_golden_queries.py --tier all --write-legacy-golden
+python3 scripts/validators/validate_eval_corpus.py --check-skill-sync --emit-matrix
 ```
 
 ---
@@ -102,7 +102,7 @@ Every promoted skill has ≥2 distinct `query_archetype` rows in `coverage_matri
 Production reload is an idempotent upsert (not wipe-and-replace):
 
 ```bash
-python3 scripts/embed_skill_chunks.py --provider ollama-bge-m3 --apply
+python3 scripts/graph/build/embed_skill_chunks.py --provider ollama-bge-m3 --apply
 # or via Docker skills-loader (uses host Ollama at host.docker.internal:11434)
 docker compose up --build -d
 ```
@@ -112,7 +112,7 @@ docker compose up --build -d
 | Gate | Result | Detail |
 | --- | --- | --- |
 | **CI ingest gate** | **PASS** | L2 trust, SHACL, corpus validator, delta eval (when skills change), smoke 11/11 |
-| **KRAG cutover acceptance** | **PASS** | smoke `precision@1=1.0`; soft exclusion ≥ 0.5 |
+| **Promoted smoke evaluation** | **PASS** | smoke `precision@1=1.0`; soft exclusion ≥ 0.5 |
 | **Corpus validator** | **PASS** | `validate_eval_corpus.py --check-skill-sync` |
 | **Docker `skills-loader`** | **PASS** | 91 Skills, 810 RetrievalUnits |
 | **pytest (eval + journeys)** | **PASS** | realistic e2e + JRN-01 … JRN-11 |
@@ -180,22 +180,23 @@ docker compose up --build -d
 python3 -m pytest tests/test_e2e_realistic_retrieval.py tests/test_agent_journeys.py -q
 
 # Full ingest gate (trust, SHACL, corpus, delta, smoke)
-python3 scripts/ci_ingest_gate.py
+python3 scripts/utils/ci/ci_ingest_gate.py
 
 # Change-scoped delta eval (CI / PR)
-DELTA_EVAL_BASE_REF=origin/main python3 scripts/ci_ingest_gate.py
+DELTA_EVAL_BASE_REF=origin/main python3 scripts/utils/ci/ci_ingest_gate.py
 
 # Corpus validation + matrix
-python3 scripts/validate_eval_corpus.py --check-skill-sync --emit-matrix
+python3 scripts/validators/validate_eval_corpus.py --check-skill-sync --emit-matrix
 
 # Multi-arm audit
-python3 scripts/run_e2e_retrieval_eval.py --json
+python3 scripts/lib/retrieval/run_e2e_retrieval_eval.py --json
 
-# KRAG cutover smoke
-python3 scripts/krag_cutover_acceptance.py --limit 3
+# Promoted smoke retrieval eval
+python3 scripts/lib/retrieval/evaluate_skill_retrieval.py \
+  --dataset tests/fixtures/retrieval_evaluation/smoke_queries_promoted.json --limit 3
 
 # Production BGE reload (idempotent; requires local Ollama with bge-m3:567m)
-python3 scripts/embed_skill_chunks.py --provider ollama-bge-m3 --apply
+python3 scripts/graph/build/embed_skill_chunks.py --provider ollama-bge-m3 --apply
 ```
 
 ---
@@ -212,11 +213,11 @@ python3 scripts/embed_skill_chunks.py --provider ollama-bge-m3 --apply
 | `tests/fixtures/retrieval_evaluation/confuser_pairs.json` | Confuser pair registry |
 | `tests/fixtures/retrieval_evaluation/coverage_matrix.json` | Emitted skill×archetype map |
 | `tests/fixtures/retrieval_evaluation/golden_queries.json` | Legacy union re-export |
-| `scripts/validate_eval_corpus.py` | Corpus schema and blind-spot validator |
-| `scripts/generate_golden_queries.py` | Tiered corpus generator |
-| `scripts/ci_ingest_gate.py` | Pre-merge ingest + delta eval gate |
-| `scripts/run_e2e_retrieval_eval.py` | Multi-arm audit runner |
-| `scripts/embed_skill_chunks.py` | Production BGE embed/load (`--apply`) and CI deterministic path |
+| `scripts/validators/validate_eval_corpus.py` | Corpus schema and blind-spot validator |
+| `scripts/lib/retrieval/generate_golden_queries.py` | Tiered corpus generator |
+| `scripts/utils/ci/ci_ingest_gate.py` | Pre-merge ingest + delta eval gate |
+| `scripts/lib/retrieval/run_e2e_retrieval_eval.py` | Multi-arm audit runner |
+| `scripts/graph/build/embed_skill_chunks.py` | Production BGE embed/load (`--apply`) and CI deterministic path |
 | `tests/test_e2e_realistic_retrieval.py` | Honest tier thresholds |
 | `tests/fixtures/agent_journeys.json` | 11 MCP journey fixtures |
 

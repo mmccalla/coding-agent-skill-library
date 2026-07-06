@@ -62,7 +62,7 @@ Add to `~/.cursor/mcp.json` (replace paths):
         "run", "--no-project",
         "--directory", "/path/to/coding-agent-skill-library",
         "--with-editable", "/path/to/coding-agent-skill-library",
-        "python", "scripts/skills_mcp_server.py", "--sdk-stdio"
+        "python", "scripts/runtime/mcp/skills_mcp_server.py", "--sdk-stdio"
       ]
     }
   }
@@ -72,7 +72,7 @@ Add to `~/.cursor/mcp.json` (replace paths):
 Smoke test:
 
 ```bash
-python3 scripts/skills_mcp_server.py --list-tools
+python3 scripts/runtime/mcp/skills_mcp_server.py --list-tools
 ```
 
 ### Step 2 — Disable filesystem agent skills

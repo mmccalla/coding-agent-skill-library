@@ -12,7 +12,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 ONTOLOGY_DIR = REPO_ROOT / "skills_docs" / "ontology"
 ONTOLOGY_NARRATIVE = REPO_ROOT / "skills_docs" / "krag" / "ONTOLOGY.md"
-ONTOLOGY_VALIDATOR = REPO_ROOT / "scripts" / "validate_skills_ontology.py"
+ONTOLOGY_VALIDATOR = REPO_ROOT / "scripts/validators/validate_skills_ontology.py"
 CANONICAL_CORE_SHAPES = ONTOLOGY_DIR / "canonical-core.shacl.ttl"
 RETRIEVAL_PROJECTION_SHAPES = ONTOLOGY_DIR / "retrieval-projection.shacl.ttl"
 RUNTIME_SELECTION_SHAPES = ONTOLOGY_DIR / "runtime-selection.shacl.ttl"

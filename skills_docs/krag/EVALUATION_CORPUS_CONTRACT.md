@@ -49,7 +49,7 @@ Optional fields:
 4. Every **promoted** skill must appear in **≥2** coverage-tier cases with **different** `query_archetype` values.
 5. Confuser cases must name `excluded_skill_ids` for known near-neighbours.
 6. Every entry in `confuser_pairs.json` must have **≥1** realistic-tier case.
-7. Regenerate with `python3 scripts/generate_golden_queries.py --tier <name>`.
+7. Regenerate with `python3 scripts/lib/retrieval/generate_golden_queries.py --tier <name>`.
 
 ---
 
@@ -86,7 +86,7 @@ See [`CLOSEOUT_PLAN.md`](CLOSEOUT_PLAN.md) § Blind-spot mitigation programme fo
 
 ## Validation
 
-`scripts/validate_eval_corpus.py` (Wave 1) checks:
+`scripts/validators/validate_eval_corpus.py` (Wave 1) checks:
 
 - JSON schema and unique ids
 - Tier size bounds
