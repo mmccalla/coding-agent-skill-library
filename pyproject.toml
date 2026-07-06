@@ -34,8 +34,9 @@ dev = [
   "types-PyYAML>=6,<7",
 ]
 
-[tool.setuptools]
-packages = ["scripts"]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["scripts*"]
 
 [tool.pytest.ini_options]
 addopts = [

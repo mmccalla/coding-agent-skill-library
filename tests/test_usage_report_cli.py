@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import unittest
 
-from scripts.run_e2e_retrieval_eval import main as e2e_main
+from scripts.lib.retrieval.run_e2e_retrieval_eval import main as e2e_main
 
 
 class UsageReportCliTests(unittest.TestCase):

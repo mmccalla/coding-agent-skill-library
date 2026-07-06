@@ -59,7 +59,7 @@ services:
       SKILLS_OLLAMA_BASE_URL: ${SKILLS_OLLAMA_BASE_URL:-http://host.docker.internal:11434}
       SKILLS_OLLAMA_MODEL: ${SKILLS_OLLAMA_MODEL:-bge-m3:567m}
       SKILLS_EMBEDDING_DIMENSIONS: ${SKILLS_EMBEDDING_DIMENSIONS:-1024}
-    command: ["python", "scripts/embed_skill_chunks.py", "--apply", "--batch-size", "500"]
+    command: ["python", "scripts/graph/build/embed_skill_chunks.py", "--apply", "--batch-size", "500"]
     restart: "no"
     # Security: Resource limits
     deploy:

@@ -118,7 +118,7 @@ Shrink risk is explicit: fewer cases can miss category gaps, alias-only lookups,
 - Remove `MIN_CASES = 500` and 11-template loop
 - **Coverage:** max **3 archetypes** per skill — `task_query`, `alias_query`, optional `confuser_query` when graph lists a confuser
 - **Abstention:** single shared probe set, not `NEGATIVE_CASES_PER_SKILL = 2`
-- Add `scripts/validate_eval_corpus.py` — schema, tier minimums, skill coverage map, no template explosion
+- Add `scripts/validators/validate_eval_corpus.py` — schema, tier minimums, skill coverage map, no template explosion
 
 ### Evaluation gate changes
 
@@ -380,7 +380,7 @@ All work lands via stacked commits/PRs from `plan/golden-corpus-status-closeout`
 - [ ] Final `STATUS.md` — empty In progress / To do / Known gaps
 - [ ] `CHANGELOG.md` entry
 
-**Exit:** `./scripts/ci_local.sh` passes; STATUS.md closeout complete; nightly blind-spot monitoring live.
+**Exit:** `./scripts/dev_workflow/ci_local.sh` passes; STATUS.md closeout complete; nightly blind-spot monitoring live.
 
 ---
 
@@ -430,11 +430,11 @@ All work lands via stacked commits/PRs from `plan/golden-corpus-status-closeout`
 
 ```bash
 git checkout plan/golden-corpus-status-closeout
-python3 scripts/validate_eval_corpus.py --check-skill-sync   # after wave 1
-python3 scripts/validate_eval_corpus.py --emit-matrix      # coverage_matrix.json
-python3 scripts/generate_golden_queries.py --tier all
-python3 scripts/generate_golden_queries.py --emit-stubs     # new skills only
+python3 scripts/validators/validate_eval_corpus.py --check-skill-sync   # after wave 1
+python3 scripts/validators/validate_eval_corpus.py --emit-matrix      # coverage_matrix.json
+python3 scripts/lib/retrieval/generate_golden_queries.py --tier all
+python3 scripts/lib/retrieval/generate_golden_queries.py --emit-stubs     # new skills only
 python3 -m pytest tests/test_e2e_realistic_retrieval.py tests/test_agent_journeys.py -q
 npm --prefix skills-ui test
-./scripts/ci_local.sh
+./scripts/dev_workflow/ci_local.sh
 ```

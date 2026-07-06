@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Git pre-commit hook — runs scripts/pre_commit_check.sh on staged changes.
+# Git pre-commit hook — runs scripts/dev_workflow/pre_commit_check.sh on staged changes.
 set -euo pipefail
 ROOT="$(git rev-parse --show-toplevel)"
-exec "$ROOT/scripts/pre_commit_check.sh"
+exec "$ROOT/scripts/dev_workflow/pre_commit_check.sh"

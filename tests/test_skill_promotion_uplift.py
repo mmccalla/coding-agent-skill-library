@@ -8,8 +8,8 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-MAPPER = REPO_ROOT / "scripts" / "skill_section_mapping.py"
-EXTRACTOR = REPO_ROOT / "scripts" / "extract_skills_graph.py"
+MAPPER = REPO_ROOT / "scripts/lib/routing/skill_section_mapping.py"
+EXTRACTOR = REPO_ROOT / "scripts/graph/build/extract_skills_graph.py"
 GOLDEN = REPO_ROOT / "tests" / "fixtures" / "retrieval_evaluation" / "golden_queries.json"
 
 MIN_PROMOTED_SKILLS = 30

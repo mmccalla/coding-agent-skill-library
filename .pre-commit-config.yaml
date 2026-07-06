@@ -1,5 +1,5 @@
 # Pre-commit hooks for local development and the CI `pre-commit` job.
-# Install: pre-commit install  (or ./scripts/install_git_hooks.sh for staged-path bash hook)
+# Install: pre-commit install  (or ./scripts/dev_workflow/install_git_hooks.sh for staged-path bash hook)
 default_install_hook_types: [pre-commit]
 
 repos:
@@ -13,7 +13,7 @@ repos:
     hooks:
       - id: validate-docs
         name: validate active docs
-        entry: python3 scripts/validate_docs.py
+        entry: python3 scripts/validators/validate_docs.py
         language: system
         pass_filenames: false
         files: ^skills_docs/.*\.md$

@@ -134,12 +134,12 @@ Update this file when a PR lands, a skill is deferred, or acceptance criteria ch
 ## Gate commands
 
 ```bash
-python3 scripts/validate_skills.py
-python3 scripts/validate_skill_practice.py --all
-python3 scripts/validate_skills_graph.py
-python3 scripts/validate_skills_ontology.py
-python3 scripts/validate_eval_corpus.py --check-skill-sync
-python3 scripts/validate_docs.py
+python3 scripts/validators/validate_skills.py
+python3 scripts/validators/validate_skill_practice.py --all
+python3 scripts/validators/validate_skills_graph.py
+python3 scripts/validators/validate_skills_ontology.py
+python3 scripts/validators/validate_eval_corpus.py --check-skill-sync
+python3 scripts/validators/validate_docs.py
 PYTHONPATH=. python3 -m pytest -m "not live_neo4j and not slow and not eval_pr" -q
 ```
 

@@ -5,14 +5,14 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-from scripts.evaluate_skill_retrieval import (
+from scripts.lib.retrieval.evaluate_skill_retrieval import (
     DEFAULT_DATASET,
     evaluate_offline,
     filter_cases_by_promotion,
     load_cases,
     load_promoted_skill_ids,
 )
-from scripts.skills_usage import build_usage_report, zero_hit_promoted_skills
+from scripts.observability.skills_usage import build_usage_report, zero_hit_promoted_skills
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 

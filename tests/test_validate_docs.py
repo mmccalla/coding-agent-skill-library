@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts import validate_docs
+from scripts.validators import validate_docs
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 

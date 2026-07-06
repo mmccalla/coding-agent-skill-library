@@ -5,8 +5,9 @@ from __future__ import annotations
 import time
 import unittest
 
-from scripts import skills_mcp_perf, skills_metrics
-from scripts.skills_mcp_server import SkillsMcpServer
+from scripts.observability import skills_metrics
+from scripts.runtime.mcp import skills_mcp_perf
+from scripts.runtime.mcp.skills_mcp_server import SkillsMcpServer
 
 
 class SkillsMcpPerfTests(unittest.TestCase):
@@ -192,7 +193,7 @@ class SkillsMcpPerfTests(unittest.TestCase):
         self.assertEqual(100, response_bytes["min"])
 
     def test_tool_span_records_phase_timings(self) -> None:
-        from scripts.skills_mcp_server import SkillsMcpServer
+        from scripts.runtime.mcp.skills_mcp_server import SkillsMcpServer
 
         server = SkillsMcpServer.for_test_fixture()
         cases = (

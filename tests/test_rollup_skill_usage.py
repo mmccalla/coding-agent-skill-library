@@ -5,7 +5,7 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-from scripts.skills_usage import build_weekly_rollup
+from scripts.observability.skills_usage import build_weekly_rollup
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 

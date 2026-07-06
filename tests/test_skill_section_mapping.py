@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-MAPPER = REPO_ROOT / "scripts" / "skill_section_mapping.py"
+MAPPER = REPO_ROOT / "scripts/lib/routing/skill_section_mapping.py"
 FIXTURES = REPO_ROOT / "tests" / "fixtures" / "skill_mapping"
 
 

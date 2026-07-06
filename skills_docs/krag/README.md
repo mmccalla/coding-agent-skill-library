@@ -33,8 +33,8 @@ The graph is the primary retrieval substrate for graph-relevant questions. Vecto
 ## Quick validation
 
 ```bash
-python3 scripts/validate_skills_ontology.py
-python3 scripts/validate_eval_corpus.py --check-skill-sync
-python3 scripts/ci_ingest_gate.py
-python3 scripts/krag_cutover_acceptance.py --dataset tests/fixtures/retrieval_evaluation/smoke_queries_promoted.json --limit 3
+python3 scripts/validators/validate_skills_ontology.py
+python3 scripts/validators/validate_eval_corpus.py --check-skill-sync
+python3 scripts/utils/ci/ci_ingest_gate.py
+python3 scripts/lib/retrieval/evaluate_skill_retrieval.py --dataset tests/fixtures/retrieval_evaluation/smoke_queries_promoted.json --limit 3
 ```

@@ -6,10 +6,10 @@ import importlib.util
 import unittest
 from pathlib import Path
 
-from scripts.skills_config import RetrievalSettings
+from scripts.lib.config.skills_config import RetrievalSettings
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = REPO_ROOT / "scripts" / "retrieve_skills_hybrid.py"
+SCRIPT = REPO_ROOT / "scripts/lib/retrieval/retrieve_skills_hybrid.py"
 # Ranking-focused tests use open abstention thresholds so production calibration
 # does not mask hybrid scoring behaviour.
 OPEN_ABSTENTION = RetrievalSettings(min_confident_score=0.01, min_top1_margin=0.0)
@@ -121,7 +121,7 @@ class HybridRetrievalTests(unittest.TestCase):
         self.assertEqual({}, result.selection_trace["selected"])
 
     def test_close_top_scores_abstain_when_margin_required(self) -> None:
-        from scripts.skills_config import RetrievalSettings
+        from scripts.lib.config.skills_config import RetrievalSettings
 
         retrieval = load_module()
         plan = retrieval.fixture_load_plan()

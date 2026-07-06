@@ -8,7 +8,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_SKILL_COUNT = len(tuple((REPO_ROOT / "skills").glob("*/SKILL.md")))
-VALIDATOR = REPO_ROOT / "scripts" / "validate_skills_graph.py"
+VALIDATOR = REPO_ROOT / "scripts/validators/validate_skills_graph.py"
 CONNECTIVITY_CYPHER = REPO_ROOT / "neo4j" / "skills_connectivity_checks.cypher"
 GDS_CONNECTIVITY_CYPHER = REPO_ROOT / "neo4j" / "skills_gds_connectivity_checks.cypher"
 
@@ -356,7 +356,7 @@ class SkillsGraphConnectivityTests(unittest.TestCase):
 
     def test_missing_typed_skill_relationship_provenance_fails_validation(self) -> None:
         extractor = load_module(
-            REPO_ROOT / "scripts" / "extract_skills_graph.py", "extract_skills_graph"
+            REPO_ROOT / "scripts/graph/build/extract_skills_graph.py", "extract_skills_graph"
         )
         module = load_validator_module()
         records = extractor.extract_skills_graph_records(REPO_ROOT / "skills")
@@ -472,9 +472,9 @@ class SkillsGraphConnectivityTests(unittest.TestCase):
         self.assertTrue(result.valid, "\n".join(result.errors))
 
     def test_local_ci_runs_skills_graph_validation(self) -> None:
-        ci_text = (REPO_ROOT / "scripts" / "ci_local.sh").read_text(encoding="utf-8")
+        ci_text = (REPO_ROOT / "scripts/dev_workflow/ci_local.sh").read_text(encoding="utf-8")
 
-        self.assertIn("python3 scripts/validate_skills_graph.py", ci_text)
+        self.assertIn("python3 scripts/validators/validate_skills_graph.py", ci_text)
 
     def test_connectivity_cypher_contains_required_checks(self) -> None:
         text = CONNECTIVITY_CYPHER.read_text(encoding="utf-8")

@@ -10,7 +10,7 @@ from collections import Counter
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-EXTRACTOR = REPO_ROOT / "scripts" / "extract_skills_graph.py"
+EXTRACTOR = REPO_ROOT / "scripts/graph/build/extract_skills_graph.py"
 MAPPING_FIXTURES = REPO_ROOT / "tests" / "fixtures" / "skill_mapping"
 MALICIOUS_FIXTURE = (
     REPO_ROOT / "tests" / "fixtures" / "skill_trust" / "malicious" / "instruction-override.md"

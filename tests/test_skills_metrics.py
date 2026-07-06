@@ -6,7 +6,7 @@ import unittest
 
 from prometheus_client import CollectorRegistry, Counter
 
-from scripts import skills_metrics, skills_trust_metrics, skills_usage
+from scripts.observability import skills_metrics, skills_trust_metrics, skills_usage
 
 
 class SkillsMetricsTests(unittest.TestCase):

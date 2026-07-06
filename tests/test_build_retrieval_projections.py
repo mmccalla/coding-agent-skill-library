@@ -7,9 +7,9 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-PROJECTIONS_SCRIPT = REPO_ROOT / "scripts" / "build_retrieval_projections.py"
-LOADER_SCRIPT = REPO_ROOT / "scripts" / "load_skills_neo4j.py"
-RETRIEVAL_SCRIPT = REPO_ROOT / "scripts" / "retrieve_skills_hybrid.py"
+PROJECTIONS_SCRIPT = REPO_ROOT / "scripts/graph/build/build_retrieval_projections.py"
+LOADER_SCRIPT = REPO_ROOT / "scripts/graph/load/load_skills_neo4j.py"
+RETRIEVAL_SCRIPT = REPO_ROOT / "scripts/lib/retrieval/retrieve_skills_hybrid.py"
 
 
 def load_projections_module() -> object:
