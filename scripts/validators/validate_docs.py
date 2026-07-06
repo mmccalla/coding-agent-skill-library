@@ -23,6 +23,20 @@ STALE_PHRASES: tuple[tuple[str, str], ...] = (
     ("current recommender", "KRAG v2 is the live runtime"),
 )
 
+# Pre-reorg flat script paths (scripts reorganisation #34). Legacy shim: scripts/skills_mcp_server.py.
+STALE_SCRIPT_PATHS: tuple[tuple[str, str], ...] = (
+    ("scripts/skill_section_mapping.py", "scripts/lib/routing/skill_section_mapping.py"),
+    ("scripts/ci_local.sh", "scripts/dev_workflow/ci_local.sh"),
+    ("scripts/pre_commit_check.sh", "scripts/dev_workflow/pre_commit_check.sh"),
+    ("scripts/ci_ingest_gate.py", "scripts/utils/ci/ci_ingest_gate.py"),
+    ("scripts/load_skills_neo4j.py", "scripts/graph/load/load_skills_neo4j.py"),
+    ("scripts/extract_skills_graph.py", "scripts/graph/build/extract_skills_graph.py"),
+    ("scripts/embed_skill_chunks.py", "scripts/graph/build/embed_skill_chunks.py"),
+    ("scripts/retrieve_skills_hybrid.py", "scripts/lib/retrieval/retrieve_skills_hybrid.py"),
+    ("scripts/skills_api.py", "scripts/runtime/api/skills_api.py"),
+    ("scripts/validate_skills.py", "scripts/validators/validate_skills.py"),
+)
+
 
 @dataclass(frozen=True)
 class DocViolation:
@@ -52,6 +66,9 @@ def scan_docs(root: Path = SKILLS_DOCS) -> list[DocViolation]:
     for path in iter_active_markdown(root):
         text = path.read_text(encoding="utf-8").lower()
         for phrase, hint in STALE_PHRASES:
+            if phrase in text:
+                violations.append(DocViolation(path=path, phrase=phrase, hint=hint))
+        for phrase, hint in STALE_SCRIPT_PATHS:
             if phrase in text:
                 violations.append(DocViolation(path=path, phrase=phrase, hint=hint))
     return violations
