@@ -25,6 +25,7 @@ Set `SKILLS_EMBEDDING_PROVIDER=deterministic` for offline CI-parity work.
 3. Run `./scripts/ci_local.sh` (or the relevant subset) before opening a PR.
 4. Fill out the pull request template.
 5. Ensure required CI checks pass: `markdownlint`, `ruff`, `mypy`, `pytest`, `pre-commit`.
+6. Sign off every commit (`git commit -s`) to attest you have the right to contribute under the [Developer Certificate of Origin](https://developercertificate.org/).
 
 ## Commit hygiene
 
@@ -39,3 +40,12 @@ This project follows the [Contributor Covenant](CODE_OF_CONDUCT.md). Report unac
 ## Licence
 
 By contributing, you agree that your contributions are licensed under the [Apache License 2.0](LICENSE) (`SPDX-License-Identifier: Apache-2.0`).
+
+## Public repository readiness
+
+Before changing visibility to public, complete [`docs/PUBLIC_REPO_READINESS.md`](docs/PUBLIC_REPO_READINESS.md) and run:
+
+```bash
+./scripts/configure_github_repo_settings.sh --check-only
+./scripts/pre_public_secret_scan.py
+```
