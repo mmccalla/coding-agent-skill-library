@@ -39,7 +39,7 @@ Release-level changes to the portable skills library and Skills KG service.
 ### Documentation
 
 - Documentation consolidation started: `GETTING_STARTED.md`, `krag/STATUS.md`, updated doc hubs (Waves A–D).
-- Waves A–D: consolidated `krag/` docs, archived superseded backlog, added `validate_docs.py` CI gate.
+- Waves A–D: consolidated `krag/` docs and added `validate_docs.py` CI gate.
 - Phase 10 admin ingest: `POST /skills/admin/ingest`, pack-metadata registration, MCP reload, abstention tuning for synthetic negative probes.
 - Closeout programme: tiered realistic golden corpus plan (`krag/CLOSEOUT_PLAN.md`); STATUS.md tracks waves 0–5.
 
