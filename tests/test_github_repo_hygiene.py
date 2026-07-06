@@ -23,6 +23,12 @@ REQUIRED_PATHS = (
     ".github/dependabot.yml",
     ".github/workflows/ci.yml",
     ".github/workflows/codeql.yml",
+    "docs/README.md",
+    "docs/PUBLIC_REPO_READINESS.md",
+    "schemas/README.md",
+    "examples/README.md",
+    "scripts/configure_github_repo_settings.sh",
+    "scripts/pre_public_secret_scan.py",
 )
 
 
@@ -35,6 +41,16 @@ class GithubRepoHygieneTests(unittest.TestCase):
         ci = (REPO_ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")
         for job in ("markdownlint", "ruff", "mypy", "pytest", "pre-commit"):
             self.assertIn(f"name: {job}", ci, msg=f"CI job {job!r} not found")
+
+    def test_license_is_apache_2(self) -> None:
+        license_text = (REPO_ROOT / "LICENSE").read_text(encoding="utf-8")
+        self.assertIn("Apache License", license_text)
+        self.assertIn("SPDX-License-Identifier: Apache-2.0", license_text)
+
+    def test_contributing_documents_dco_sign_off(self) -> None:
+        contributing = (REPO_ROOT / "CONTRIBUTING.md").read_text(encoding="utf-8")
+        self.assertIn("git commit -s", contributing)
+        self.assertIn("Developer Certificate of Origin", contributing)
 
 
 if __name__ == "__main__":

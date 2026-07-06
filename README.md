@@ -19,7 +19,11 @@ Portable **111-skill** library for coding agents, plus an optional local **Neo4j
 ```text
 skills/           SKILL.md operating procedures (the portable product)
 skills_docs/      Routing, runbooks, KRAG contracts and ontology
+docs/             Public-readiness checklist and doc index
+schemas/          Pointers to ontology and Neo4j schema sources
+examples/         Quick-start paths and fixture references
 scripts/          Extract, validate, load, retrieve, MCP, API
+tests/            Unit, integration and eval fixtures
 skills-ui/        Inspection and agent-workflow UI
 docker-compose.yml Neo4j, API, UI, Prometheus, Grafana
 ```
@@ -69,3 +73,8 @@ SPDX-License-Identifier: Apache-2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE)
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 - [SECURITY.md](SECURITY.md)
 - [CHANGELOG.md](CHANGELOG.md)
+- [docs/PUBLIC_REPO_READINESS.md](docs/PUBLIC_REPO_READINESS.md)
+
+## Support
+
+Issues and pull requests are welcome. This is a reference skills library and optional Skills KG stack; there is no commercial SLA. For security-sensitive reports, use [SECURITY.md](SECURITY.md).
