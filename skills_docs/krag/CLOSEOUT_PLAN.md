@@ -189,7 +189,7 @@ Add `tests/fixtures/retrieval_evaluation/confuser_pairs.json` — canonical near
 
 ### 4. Shadow comparison arm (shrink safety net)
 
-Before Wave 2 merges, run once and archive locally in `skills_docs/archive/planning/CORPUS_SHRINK_BASELINE.json` (not published on GitHub):
+Before Wave 2 merges, run once and record shadow comparison baseline metrics for the shrink safety net:
 
 | Arm | Cases | Purpose |
 | --- | --- | --- |
@@ -341,7 +341,7 @@ All work lands via stacked commits/PRs from `plan/golden-corpus-status-closeout`
 - [ ] Emit `coverage_queries.json` (~250 cases; ≥2 archetypes per skill)
 - [ ] Expand `realistic_queries.json` from catalogue (~100; category-stratified)
 - [ ] Expand `smoke_queries_promoted.json` (~30)
-- [ ] Archive `CORPUS_SHRINK_BASELINE.json`; run shadow comparison
+- [ ] Record shadow comparison baseline; run shadow comparison
 - [ ] Add delta eval to `ci_ingest_gate.py` for touched `SKILL.md` paths
 - [ ] Deprecate or slim `golden_queries.json`
 - [ ] Update `test_evaluate_skill_retrieval.py`, `test_e2e_realistic_retrieval.py`

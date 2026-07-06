@@ -220,4 +220,4 @@ python3 scripts/embed_skill_chunks.py --provider ollama-bge-m3 --apply
 | `tests/test_e2e_realistic_retrieval.py` | Honest tier thresholds |
 | `tests/fixtures/agent_journeys.json` | 11 MCP journey fixtures |
 
-Historical pre-shrink metrics (1,194-case template corpus, 84.6% blended pass) are recorded in local-only files `skills_docs/archive/planning/E2E_EVALUATION_REPORT.md` and `CORPUS_SHRINK_BASELINE.json` (not published on GitHub).
+Historical pre-shrink metrics (1,194-case template corpus, 84.6% blended pass) predate the tiered corpus redesign documented in this report.
