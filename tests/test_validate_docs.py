@@ -30,6 +30,19 @@ class ValidateDocsTests(unittest.TestCase):
             self.assertEqual(len(violations), 1)
             self.assertEqual(violations[0].phrase, "phase 0 only")
 
+    def test_scan_docs_flags_stale_flat_script_paths(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            active = root / "krag"
+            active.mkdir(parents=True)
+            (active / "CONTRACTS.md").write_text(
+                "see scripts/skill_section_mapping.py\n",
+                encoding="utf-8",
+            )
+            violations = validate_docs.scan_docs(root)
+            self.assertEqual(len(violations), 1)
+            self.assertEqual(violations[0].phrase, "scripts/skill_section_mapping.py")
+
 
 if __name__ == "__main__":
     unittest.main()

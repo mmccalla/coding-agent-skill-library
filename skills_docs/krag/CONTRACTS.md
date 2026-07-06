@@ -145,7 +145,7 @@ TaskIntent (contract language) maps to ontology `TaskShape` instances.
 | TaskIntent | `skills:TaskShape` | `skills:task-intent-{slug}` |
 | WorkflowStage | `skills:WorkflowStage` | `skills:workflow-stage-{slug}` |
 
-Mapping slug in `scripts/skill_section_mapping.py` must match the TTL instance suffix after `task-intent-`.
+Mapping slug in `scripts/lib/routing/skill_section_mapping.py` must match the TTL instance suffix after `task-intent-`.
 
 Instance graphs: `../ontology/instances/task-intents.ttl`, `workflow-stages.ttl`.
 
