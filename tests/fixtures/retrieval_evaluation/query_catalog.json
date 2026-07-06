@@ -543,5 +543,77 @@
     "naturalness": "high",
     "promotion_tier": "release",
     "realistic_tier": true
+  },
+  {
+    "id": "avoid_cognitive_biases_plan_review",
+    "query": "review this delivery plan for confirmation bias anchoring and sunk cost before we commit",
+    "expected_skill_ids": [
+      "skill:avoid-cognitive-biases"
+    ],
+    "required_skill_ids": [
+      "skill:avoid-cognitive-biases"
+    ],
+    "excluded_skill_ids": [
+      "skill:prioritization"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "task",
+    "naturalness": "high",
+    "smoke": true,
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "avoid_cognitive_biases_retrospective",
+    "query": "check our incident retrospective recommendations for availability heuristic and hindsight bias",
+    "expected_skill_ids": [
+      "skill:avoid-cognitive-biases"
+    ],
+    "required_skill_ids": [
+      "skill:avoid-cognitive-biases"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "checklist",
+    "naturalness": "high",
+    "promotion_tier": "release",
+    "realistic_tier": false
+  },
+  {
+    "id": "avoid_fallacies_adr_review",
+    "query": "evaluate this architecture decision record for false dichotomy and appeal to authority fallacies",
+    "expected_skill_ids": [
+      "skill:avoid-fallacies"
+    ],
+    "required_skill_ids": [
+      "skill:avoid-fallacies"
+    ],
+    "excluded_skill_ids": [
+      "skill:reasoning-techniques"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "task",
+    "naturalness": "high",
+    "smoke": true,
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "avoid_fallacies_security_rationale",
+    "query": "logical fallacy check on security justification slippery slope straw man hasty generalisation",
+    "expected_skill_ids": [
+      "skill:avoid-fallacies"
+    ],
+    "required_skill_ids": [
+      "skill:avoid-fallacies"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "checklist",
+    "naturalness": "high",
+    "promotion_tier": "release",
+    "realistic_tier": false
   }
 ]

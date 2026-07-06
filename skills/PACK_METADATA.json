@@ -37,6 +37,8 @@
       "description": "Safety, governance, optimization and control skills for bounded agent behavior.",
       "skills": [
         "apply-laws-of-ai",
+        "avoid-cognitive-biases",
+        "avoid-fallacies",
         "goal-setting-and-monitoring",
         "exception-handling-and-recovery",
         "human-in-the-loop",

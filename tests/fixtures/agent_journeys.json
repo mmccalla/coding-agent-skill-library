@@ -368,5 +368,97 @@
         }
       }
     ]
+  },
+  {
+    "id": "JRN-12-bias-review",
+    "description": "Agent recommends avoid-cognitive-biases when asked to debias a plan review.",
+    "server": "embedded",
+    "tags": ["recommendation", "control"],
+    "steps": [
+      {
+        "tool": "route_skill_query",
+        "arguments": {
+          "query": "Review this rollout plan for confirmation bias and sunk cost before we merge"
+        },
+        "expect": {
+          "status": "ok",
+          "route": "recommendation",
+          "suggested_tool": "recommend_skills"
+        },
+        "expect_selection_trace": {
+          "tool": "route_skill_query",
+          "query_intent": "recommendation",
+          "requires_usage_event_id": true
+        }
+      },
+      {
+        "tool": "recommend_skills",
+        "arguments": {
+          "query": "cognitive bias review confirmation bias sunk cost in engineering plan recommendation",
+          "limit": 3,
+          "token_budget": 120
+        },
+        "expect": {
+          "status": "ok",
+          "uncertain": false,
+          "top_skill_id": "skill:avoid-cognitive-biases"
+        },
+        "expect_selection_trace": {
+          "tool": "recommend_skills",
+          "query_intent": "recommendation",
+          "requires_usage_event_id": true,
+          "requires_rank": true,
+          "requires_filter": true,
+          "requires_evidence_anchor_ids": true,
+          "requires_selected_evidence": true
+        }
+      }
+    ]
+  },
+  {
+    "id": "JRN-13-fallacy-review",
+    "description": "Agent recommends avoid-fallacies when asked to check ADR reasoning.",
+    "server": "embedded",
+    "tags": ["recommendation", "control"],
+    "steps": [
+      {
+        "tool": "route_skill_query",
+        "arguments": {
+          "query": "Check this ADR argument for logical fallacies like false dichotomy before approval"
+        },
+        "expect": {
+          "status": "ok",
+          "route": "recommendation",
+          "suggested_tool": "recommend_skills"
+        },
+        "expect_selection_trace": {
+          "tool": "route_skill_query",
+          "query_intent": "recommendation",
+          "requires_usage_event_id": true
+        }
+      },
+      {
+        "tool": "recommend_skills",
+        "arguments": {
+          "query": "logical fallacy review false dichotomy appeal to authority in architecture decision record",
+          "limit": 3,
+          "token_budget": 120
+        },
+        "expect": {
+          "status": "ok",
+          "uncertain": false,
+          "top_skill_id": "skill:avoid-fallacies"
+        },
+        "expect_selection_trace": {
+          "tool": "recommend_skills",
+          "query_intent": "recommendation",
+          "requires_usage_event_id": true,
+          "requires_rank": true,
+          "requires_filter": true,
+          "requires_evidence_anchor_ids": true,
+          "requires_selected_evidence": true
+        }
+      }
+    ]
   }
 ]

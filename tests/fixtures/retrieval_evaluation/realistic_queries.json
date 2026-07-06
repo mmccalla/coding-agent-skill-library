@@ -545,6 +545,46 @@
     "realistic_tier": true
   },
   {
+    "id": "avoid_cognitive_biases_plan_review",
+    "query": "review this delivery plan for confirmation bias anchoring and sunk cost before we commit",
+    "expected_skill_ids": [
+      "skill:avoid-cognitive-biases"
+    ],
+    "required_skill_ids": [
+      "skill:avoid-cognitive-biases"
+    ],
+    "excluded_skill_ids": [
+      "skill:prioritization"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "task",
+    "naturalness": "high",
+    "smoke": true,
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "avoid_fallacies_adr_review",
+    "query": "evaluate this architecture decision record for false dichotomy and appeal to authority fallacies",
+    "expected_skill_ids": [
+      "skill:avoid-fallacies"
+    ],
+    "required_skill_ids": [
+      "skill:avoid-fallacies"
+    ],
+    "excluded_skill_ids": [
+      "skill:reasoning-techniques"
+    ],
+    "expect_uncertain": false,
+    "query_source": "curated",
+    "query_archetype": "task",
+    "naturalness": "high",
+    "smoke": true,
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
     "id": "journey_harvest_01",
     "query": "tell me about tdd-practice",
     "expected_skill_ids": [
@@ -612,6 +652,36 @@
     ],
     "required_skill_ids": [
       "skill:apply-laws-of-ai"
+    ],
+    "expect_uncertain": false,
+    "query_source": "journey",
+    "query_archetype": "task",
+    "naturalness": "high",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "journey_harvest_10",
+    "query": "cognitive bias review confirmation bias sunk cost in engineering plan recommendation",
+    "expected_skill_ids": [
+      "skill:avoid-cognitive-biases"
+    ],
+    "required_skill_ids": [
+      "skill:avoid-cognitive-biases"
+    ],
+    "expect_uncertain": false,
+    "query_source": "journey",
+    "query_archetype": "task",
+    "naturalness": "high",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "journey_harvest_11",
+    "query": "logical fallacy review false dichotomy appeal to authority in architecture decision record",
+    "expected_skill_ids": [
+      "skill:avoid-fallacies"
+    ],
+    "required_skill_ids": [
+      "skill:avoid-fallacies"
     ],
     "expect_uncertain": false,
     "query_source": "journey",
