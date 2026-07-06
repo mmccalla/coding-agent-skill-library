@@ -4,7 +4,6 @@ __pycache__/
 *.pyc
 *.egg-info/
 skills_docs/SKILL_LIBRARY_IMPROVEMENT_PLAN.md
-tests/test_suggest_skills.py
 .coverage
 skills-ui/*.tsbuildinfo
 skills-ui/dist/
@@ -18,3 +17,7 @@ skills_docs/ontology/c5_enterprise_architecture_knowledge_graph_v5_causal_tempor
 # Local-only archive (not tracked)
 skills_docs/archive/planning/
 skills_docs/archive/backlog/
+docs/PUBLIC_REPO_READINESS.md
+skills_docs/krag/CLOSEOUT_PLAN.md
+skills_docs/krag/CLOSEOUT_PLAN.md
+docs/PUBLIC_REPO_READINESS.md

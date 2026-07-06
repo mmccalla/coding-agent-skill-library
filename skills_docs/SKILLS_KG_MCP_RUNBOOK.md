@@ -228,10 +228,15 @@ The gate runs, in order: L2 trust validation (`validate_skill_trust.py --ci-gate
 
 Weekly zero-hit promoted skills rollup:
 
-```bash
-python3 scripts/rollup_skill_usage.py --period-days 7
-python3 scripts/report_skill_usage.py --json
+```python
+from pathlib import Path
+from scripts.skills_usage import build_usage_report, build_weekly_rollup
+
+print(build_usage_report(skills_root=Path("skills")))
+print(build_weekly_rollup(skills_root=Path("skills"), period_days=7))
 ```
+
+Or scrape combined metrics from the running API/MCP process at `/metrics`.
 
 ## Integration Tests
 

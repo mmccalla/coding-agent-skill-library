@@ -1,11 +1,11 @@
-"""Tests for scripts/rollup_skill_usage.py."""
+"""Tests for weekly usage rollup helpers in skills_usage."""
 
 from __future__ import annotations
 
 import unittest
 from pathlib import Path
 
-from scripts.rollup_skill_usage import build_weekly_rollup
+from scripts.skills_usage import build_weekly_rollup
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 

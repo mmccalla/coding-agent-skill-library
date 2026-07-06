@@ -27,8 +27,6 @@ REQUIRED_PATHS = (
     "docs/PUBLIC_REPO_READINESS.md",
     "schemas/README.md",
     "examples/README.md",
-    "scripts/configure_github_repo_settings.sh",
-    "scripts/pre_public_secret_scan.py",
 )
 
 

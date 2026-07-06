@@ -8,8 +8,12 @@ import logging
 import re
 import uuid
 from collections.abc import Mapping
+from datetime import UTC, datetime, timedelta
+from pathlib import Path
 
 from prometheus_client import CONTENT_TYPE_LATEST, CollectorRegistry, Counter, generate_latest
+
+from scripts.evaluate_skill_retrieval import load_promoted_skill_ids
 
 METRICS_REGISTRY = CollectorRegistry()
 USAGE_LOGGER_NAME = "skills_usage"
@@ -165,3 +169,73 @@ def _safe_metric_label(value: object, *, default: str = "unknown") -> str:
     if isinstance(value, str) and value:
         return re.sub(r"[^a-zA-Z0-9_.:-]+", "_", value)[:80]
     return default
+
+
+_COUNTER_LINE = re.compile(
+    r"^skills_usage_hits_total\{skill_id=\"([^\"]+)\",tool=\"([^\"]+)\"\} (\d+(?:\.\d+)?)$"
+)
+
+
+def parse_skill_hit_counts(metrics_exposition: str) -> dict[str, int]:
+    """Parse skills_usage_hits_total counters from Prometheus exposition text."""
+
+    counts: dict[str, int] = {}
+    for line in metrics_exposition.splitlines():
+        match = _COUNTER_LINE.match(line.strip())
+        if not match:
+            continue
+        skill_id, _tool, value = match.group(1), match.group(2), match.group(3)
+        counts[skill_id] = counts.get(skill_id, 0) + int(float(value))
+    return counts
+
+
+def zero_hit_promoted_skills(
+    promoted_ids: frozenset[str],
+    hit_counts: dict[str, int],
+) -> tuple[str, ...]:
+    """Return promoted skill ids with no recorded usage hits."""
+
+    return tuple(sorted(skill_id for skill_id in promoted_ids if hit_counts.get(skill_id, 0) == 0))
+
+
+def build_usage_report(*, skills_root: Path | None = None) -> dict[str, object]:
+    """Build an operator snapshot from in-process usage metrics."""
+
+    metrics_exposition = usage_metrics_text()
+    hit_counts = parse_skill_hit_counts(metrics_exposition)
+    promoted_ids = load_promoted_skill_ids(skills_root)
+    zero_hits = zero_hit_promoted_skills(promoted_ids, hit_counts)
+    return {
+        "promoted_skill_count": len(promoted_ids),
+        "skills_with_hits": len(
+            [skill_id for skill_id in promoted_ids if hit_counts.get(skill_id, 0) > 0]
+        ),
+        "zero_hit_promoted_skills": list(zero_hits),
+        "hit_counts": {skill_id: hit_counts[skill_id] for skill_id in sorted(hit_counts)},
+    }
+
+
+def build_weekly_rollup(*, skills_root: Path, period_days: int = 7) -> dict[str, object]:
+    """Build a bounded weekly usage rollup for operator review."""
+
+    now = datetime.now(UTC)
+    window_start = now - timedelta(days=period_days)
+    usage = build_usage_report(skills_root=skills_root)
+    zero_hits_raw = usage.get("zero_hit_promoted_skills", [])
+    zero_hits = zero_hits_raw if isinstance(zero_hits_raw, list) else []
+    return {
+        "rollup_type": "weekly_skill_usage",
+        "period_days": period_days,
+        "window_start": window_start.isoformat(),
+        "window_end": now.isoformat(),
+        "promoted_skill_count": usage["promoted_skill_count"],
+        "skills_with_hits": usage["skills_with_hits"],
+        "zero_hit_promoted_skill_count": len(zero_hits),
+        "zero_hit_promoted_skills": zero_hits,
+        "hit_counts": usage["hit_counts"],
+        "notes": (
+            "Counters reflect in-process Prometheus state for the running API/MCP process. "
+            "For durable weekly history, scrape /metrics into Prometheus and query rate() "
+            "over the window."
+        ),
+    }

@@ -12,7 +12,7 @@ from scripts.evaluate_skill_retrieval import (
     load_cases,
     load_promoted_skill_ids,
 )
-from scripts.report_skill_usage import build_usage_report, zero_hit_promoted_skills
+from scripts.skills_usage import build_usage_report, zero_hit_promoted_skills
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 

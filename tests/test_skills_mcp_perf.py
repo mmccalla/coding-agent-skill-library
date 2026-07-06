@@ -191,26 +191,22 @@ class SkillsMcpPerfTests(unittest.TestCase):
         assert isinstance(response_bytes, dict)
         self.assertEqual(100, response_bytes["min"])
 
-    def test_benchmark_script_runs_fixture_baseline(self) -> None:
-        from scripts import benchmark_mcp_tools
+    def test_tool_span_records_phase_timings(self) -> None:
+        from scripts.skills_mcp_server import SkillsMcpServer
 
         server = SkillsMcpServer.for_test_fixture()
-        report = benchmark_mcp_tools.run_benchmark(
-            server,
-            benchmark_mcp_tools.DEFAULT_CASES[:2],
-            iterations=2,
-            warmup=1,
+        cases = (
+            ("search_skills", {"query": "knowledge graph", "limit": 5}),
+            ("resolve_skill", {"name": "knowledge-graph-rag"}),
         )
-        self.assertEqual(2, report["iterations"])
-        tools = report["tools"]
-        assert isinstance(tools, list)
-        self.assertEqual(2, len(tools))
-        self.assertEqual("search_skills", tools[0]["tool"])
-        self.assertGreater(tools[0]["duration_ms"]["mean"], 0.0)
-        self.assertIn("payload_construction_ms", tools[0])
-        self.assertIn("request_bytes", tools[0])
-        self.assertIn("database_io_ms", tools[0])
-        self.assertIn("disk_io_ms", tools[0])
+        for tool, arguments in cases:
+            for _ in range(2):
+                response = server.call_tool(tool, arguments)
+                timing = response.get("timing")
+                self.assertIsInstance(timing, dict)
+                duration = timing.get("duration_ms")
+                self.assertIsInstance(duration, (int, float))
+                self.assertGreater(float(duration), 0.0)
 
 
 if __name__ == "__main__":

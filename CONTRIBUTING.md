@@ -43,9 +43,4 @@ By contributing, you agree that your contributions are licensed under the [Apach
 
 ## Public repository readiness
 
-Before changing visibility to public, complete [`docs/PUBLIC_REPO_READINESS.md`](docs/PUBLIC_REPO_READINESS.md) and run:
-
-```bash
-./scripts/configure_github_repo_settings.sh --check-only
-./scripts/pre_public_secret_scan.py
-```
+Before changing visibility to public, complete [`docs/PUBLIC_REPO_READINESS.md`](docs/PUBLIC_REPO_READINESS.md) and run `./scripts/ci_local.sh`. Configure GitHub settings in the repository UI or with the `gh` CLI (see that doc).
