@@ -189,7 +189,7 @@ Add `tests/fixtures/retrieval_evaluation/confuser_pairs.json` — canonical near
 
 ### 4. Shadow comparison arm (shrink safety net)
 
-Before Wave 2 merges, run once and archive in `skills_docs/archive/planning/CORPUS_SHRINK_BASELINE.json`:
+Before Wave 2 merges, run once and archive locally in `skills_docs/archive/planning/CORPUS_SHRINK_BASELINE.json` (not published on GitHub):
 
 | Arm | Cases | Purpose |
 | --- | --- | --- |

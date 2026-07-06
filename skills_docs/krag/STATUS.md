@@ -4,7 +4,7 @@
 **Branch context:** `plan/golden-corpus-status-closeout` (ready to merge)  
 **Closeout programme:** [`CLOSEOUT_PLAN.md`](CLOSEOUT_PLAN.md) — **waves 0–5 complete** (optional P2/P3 expansions remain advisory)
 
-This is the **single live roadmap** for the Knowledge Graph service. Completed phase plans are archived under `skills_docs/archive/planning/`.
+This is the **single live roadmap** for the Knowledge Graph service. Completed phase plans are kept in a local-only archive under `skills_docs/archive/planning/` (not published on GitHub).
 
 For measured retrieval quality, see [`EVALUATION.md`](EVALUATION.md).  
 For the evaluation corpus redesign, see [`EVALUATION_CORPUS_CONTRACT.md`](EVALUATION_CORPUS_CONTRACT.md).
@@ -30,13 +30,13 @@ For the evaluation corpus redesign, see [`EVALUATION_CORPUS_CONTRACT.md`](EVALUA
 | Usage metrics + Grafana dashboard | `skills-kg-usage.json`, `GET /metrics` |
 | MCP agent journeys **JRN-01 … JRN-11** | `tests/fixtures/agent_journeys.json` |
 | Docker Neo4j loader | 91 Skills, 810 RetrievalUnits |
-| Documentation consolidation (Waves A–D + closeout docs) | `GETTING_STARTED.md`, `krag/*`, `archive/planning/` |
+| Documentation consolidation (Waves A–D + closeout docs) | `GETTING_STARTED.md`, `krag/*`, local `archive/planning/` |
 | Phase 10 admin ingest (backend + UI) | `admin_skill_ingest.py`, Skills UI ingest modal, tests |
 | Nightly coverage workflow | `.github/workflows/nightly-eval-coverage.yml` |
 
 ### KRAG v2 phases (complete)
 
-Phases 1–7: ontology, ingestion, retrieval projections, runtime, text-to-Cypher, evaluation, cutover — see archived `PHASED_IMPLEMENTATION_PLAN.md`.
+Phases 1–7: ontology, ingestion, retrieval projections, runtime, text-to-Cypher, evaluation, cutover — see local `PHASED_IMPLEMENTATION_PLAN.md` in `archive/planning/`.
 
 ### Semantic selection phases (complete)
 
