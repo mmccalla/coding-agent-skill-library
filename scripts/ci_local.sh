@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Local CI orchestrator — mirrors .github/workflows/validate-skills.yml job tiers.
+# Local CI orchestrator — mirrors .github/workflows/ci.yml job tiers.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

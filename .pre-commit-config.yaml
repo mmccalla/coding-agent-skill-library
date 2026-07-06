@@ -1,0 +1,19 @@
+# Pre-commit hooks for local development and the CI `pre-commit` job.
+# Install: pre-commit install  (or ./scripts/install_git_hooks.sh for staged-path bash hook)
+default_install_hook_types: [pre-commit]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: detect-private-key
+        exclude: ^tests/fixtures/skill_trust/malicious/
+
+  - repo: local
+    hooks:
+      - id: validate-docs
+        name: validate active docs
+        entry: python3 scripts/validate_docs.py
+        language: system
+        pass_filenames: false
+        files: ^skills_docs/.*\.md$
