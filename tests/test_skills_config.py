@@ -5,7 +5,7 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
-from scripts.skills_config import load_settings
+from scripts.lib.config.skills_config import load_settings
 
 
 class SkillsConfigTests(unittest.TestCase):

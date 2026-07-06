@@ -12,8 +12,8 @@ Thank you for improving the coding-agent skills library and Skills KG service.
 
 ```bash
 python3 -m pip install -e ".[dev]"
-./scripts/install_git_hooks.sh    # or: pre-commit install
-./scripts/ci_local.sh             # mirrors CI tiers locally
+./scripts/dev_workflow/install_git_hooks.sh    # or: pre-commit install
+./scripts/dev_workflow/ci_local.sh             # mirrors CI tiers locally
 ```
 
 Set `SKILLS_EMBEDDING_PROVIDER=deterministic` for offline CI-parity work.
@@ -22,7 +22,7 @@ Set `SKILLS_EMBEDDING_PROVIDER=deterministic` for offline CI-parity work.
 
 1. Branch from `main`.
 2. Keep changes small and testable.
-3. Run `./scripts/ci_local.sh` (or the relevant subset) before opening a PR.
+3. Run `./scripts/dev_workflow/ci_local.sh` (or the relevant subset) before opening a PR.
 4. Fill out the pull request template.
 5. Ensure required CI checks pass: `markdownlint`, `ruff`, `mypy`, `pytest`, `pre-commit`.
 6. Sign off every commit (`git commit -s`) to attest you have the right to contribute under the [Developer Certificate of Origin](https://developercertificate.org/).
@@ -43,4 +43,4 @@ By contributing, you agree that your contributions are licensed under the [Apach
 
 ## Public repository readiness
 
-Before changing visibility to public, complete [`docs/PUBLIC_REPO_READINESS.md`](docs/PUBLIC_REPO_READINESS.md) and run `./scripts/ci_local.sh`. Configure GitHub settings in the repository UI or with the `gh` CLI (see that doc).
+Before changing visibility to public, complete [`docs/PUBLIC_REPO_READINESS.md`](docs/PUBLIC_REPO_READINESS.md) and run `./scripts/dev_workflow/ci_local.sh`. Configure GitHub settings in the repository UI or with the `gh` CLI (see that doc).

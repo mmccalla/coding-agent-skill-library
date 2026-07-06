@@ -16,7 +16,7 @@ from mcp import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = REPO_ROOT / "scripts" / "skills_mcp_server.py"
+SCRIPT = REPO_ROOT / "scripts/runtime/mcp/skills_mcp_server.py"
 
 
 def load_module() -> Any:
@@ -109,7 +109,7 @@ class SkillsMcpServerTests(unittest.TestCase):
 
     def test_from_repository_fast_startup_schedules_production_embedding_upgrade(self) -> None:
         mcp = load_module()
-        from scripts import skills_config
+        from scripts.lib.config import skills_config
 
         base = skills_config.load_settings(environ={})
         production_settings = skills_config.SkillsKgSettings(

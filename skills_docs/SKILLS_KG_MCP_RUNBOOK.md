@@ -8,17 +8,17 @@ Install the project and run the deterministic offline gate first:
 
 ```bash
 python3 -m pip install -e ".[dev]"
-python3 scripts/extract_skills_graph.py > /tmp/skills-graph.json
-python3 scripts/validate_skills_graph.py
-python3 scripts/load_skills_neo4j.py
-python3 scripts/embed_skill_chunks.py --query "approval before destructive command" --limit 3
-python3 scripts/retrieve_skills_hybrid.py "graph rag ontology retrieval" --limit 3
-python3 scripts/skills_mcp_server.py --list-tools
-python3 scripts/evaluate_skill_retrieval.py --limit 3
-./scripts/ci_local.sh
+python3 scripts/graph/build/extract_skills_graph.py > /tmp/skills-graph.json
+python3 scripts/validators/validate_skills_graph.py
+python3 scripts/graph/load/load_skills_neo4j.py
+python3 scripts/graph/build/embed_skill_chunks.py --query "approval before destructive command" --limit 3
+python3 scripts/lib/retrieval/retrieve_skills_hybrid.py "graph rag ontology retrieval" --limit 3
+python3 scripts/runtime/mcp/skills_mcp_server.py --list-tools
+python3 scripts/lib/retrieval/evaluate_skill_retrieval.py --limit 3
+./scripts/dev_workflow/ci_local.sh
 ```
 
-The dry-run loader reports planned nodes and relationships without contacting Neo4j. The deterministic retrieval-unit embedder is used in local test mode and makes no external network call. `./scripts/ci_local.sh` runs skill validators, Ruff, mypy, pytest with coverage, offline smoke checks and the retrieval evaluation gate.
+The dry-run loader reports planned nodes and relationships without contacting Neo4j. The deterministic retrieval-unit embedder is used in local test mode and makes no external network call. `./scripts/dev_workflow/ci_local.sh` runs skill validators, Ruff, mypy, pytest with coverage, offline smoke checks and the retrieval evaluation gate.
 
 ## Production-Like Neo4j Workflow
 
@@ -36,8 +36,8 @@ export NEO4J_USER="neo4j"
 export NEO4J_PASSWORD="testpassword"
 export NEO4J_DATABASE="neo4j"
 
-python3 scripts/embed_skill_chunks.py --apply --batch-size 500
-python3 scripts/check_neo4j_readiness.py --json
+python3 scripts/graph/build/embed_skill_chunks.py --apply --batch-size 500
+python3 scripts/runtime/docker/check_neo4j_readiness.py --json
 python3 -m pytest -m live_neo4j tests/test_live_neo4j_integration.py -q
 ```
 
@@ -60,14 +60,14 @@ The MCP server exposes only read-only capabilities:
 Use the official MCP SDK stdio server for protocol-compatible clients:
 
 ```bash
-python3 scripts/skills_mcp_server.py --sdk-stdio
+python3 scripts/runtime/mcp/skills_mcp_server.py --sdk-stdio
 ```
 
 Discovery smoke checks:
 
 ```bash
-python3 scripts/skills_mcp_server.py --list-tools
-python3 scripts/skills_mcp_server.py --list-resources
+python3 scripts/runtime/mcp/skills_mcp_server.py --list-tools
+python3 scripts/runtime/mcp/skills_mcp_server.py --list-resources
 ```
 
 The server denies unsupported write or arbitrary Cypher tools. Agent-facing resources are curated and do not expose raw vectors, executable Cypher or internal graph schema metadata. Tests include a real official MCP client discovery and tool-call check.
@@ -116,7 +116,7 @@ Cursor configuration for **MCP-only** and **filesystem-only** modes: [`CURSOR_ID
 
 ## FastAPI Usage
 
-The FastAPI app factory lives in `scripts/skills_api.py`. It exposes read-only endpoints:
+The FastAPI app factory lives in `scripts/runtime/api/skills_api.py`. It exposes read-only endpoints:
 
 - `GET /health/live`
 - `GET /health/ready`
@@ -136,7 +136,7 @@ The FastAPI app factory lives in `scripts/skills_api.py`. It exposes read-only e
 For local serving:
 
 ```bash
-python3 -m uvicorn scripts.skills_api:create_app --factory --host 127.0.0.1 --port 8000
+python3 -m uvicorn scripts.runtime.api.skills_api:create_app --factory --host 127.0.0.1 --port 8000
 ```
 
 The app also mounts the official MCP streamable HTTP app at `/mcp`.
@@ -200,7 +200,7 @@ Prometheus scrapes `GET /metrics` and includes:
 
 Grafana's `Skills KG API Observability` dashboard shows API request rate, 5xx ratio, p95 latency, Ollama failures, Neo4j readiness, graph node counts and retrieval requests by route. The `Skills KG Usage` dashboard (`configs/grafana/dashboards/skills-kg-usage.json`) shows top skills, hits by tool, abstention rate, execution-guide conversion and zero-hit snapshots.
 
-MCP stdio parity: `python3 scripts/skills_mcp_server.py --metrics` prints the same combined usage and trust counters for operator scraping when HTTP is unavailable.
+MCP stdio parity: `python3 scripts/runtime/mcp/skills_mcp_server.py --metrics` prints the same combined usage and trust counters for operator scraping when HTTP is unavailable.
 
 ## Admin skill ingest
 
@@ -218,10 +218,10 @@ curl -sS -X POST http://127.0.0.1:8000/skills/admin/ingest \
 
 ## CI Ingest Gate
 
-Skill changes run the Phase 9 ingest gate from `./scripts/ci_local.sh`:
+Skill changes run the Phase 9 ingest gate from `./scripts/dev_workflow/ci_local.sh`:
 
 ```bash
-python3 scripts/ci_ingest_gate.py
+python3 scripts/utils/ci/ci_ingest_gate.py
 ```
 
 The gate runs, in order: L2 trust validation (`validate_skill_trust.py --ci-gate` semantics), graph connectivity, SHACL with governed instances, tiered corpus validation (`validate_eval_corpus.py`), change-scoped delta retrieval eval when `DELTA_EVAL_BASE_REF` is set (or `--delta-base-ref` / `--changed-skill`), promoted-release retrieval smoke (`tests/fixtures/retrieval_evaluation/smoke_queries_promoted.json`) and a Neo4j dry-run load plan. Merge is blocked on L2 security failure, corpus contract failure, delta regression on changed skills, or promoted retrieval regression.
@@ -230,7 +230,7 @@ Weekly zero-hit promoted skills rollup:
 
 ```python
 from pathlib import Path
-from scripts.skills_usage import build_usage_report, build_weekly_rollup
+from scripts.observability.skills_usage import build_usage_report, build_weekly_rollup
 
 print(build_usage_report(skills_root=Path("skills")))
 print(build_weekly_rollup(skills_root=Path("skills"), period_days=7))
@@ -247,7 +247,7 @@ Unit tests and deterministic validations run without Neo4j. Live integration tes
 - `NEO4J_PASSWORD`
 - `NEO4J_DATABASE`
 
-GitHub Actions uses a disposable `neo4j:5.26-community` service with placeholder credentials, runs `./scripts/ci_local.sh`, then emits `python scripts/check_neo4j_readiness.py --json`. Do not point the live test profile at a shared or production database.
+GitHub Actions uses a disposable `neo4j:5.26-community` service with placeholder credentials, runs `./scripts/dev_workflow/ci_local.sh`, then emits `python scripts/runtime/docker/check_neo4j_readiness.py --json`. Do not point the live test profile at a shared or production database.
 
 ## Retrieval Evaluation
 
@@ -263,9 +263,9 @@ Evaluation uses a **tiered corpus** (see `skills_docs/krag/EVALUATION_CORPUS_CON
 Validate and regenerate:
 
 ```bash
-python3 scripts/validate_eval_corpus.py --check-skill-sync
-python3 scripts/generate_golden_queries.py --tier all --write-legacy-golden
-python3 scripts/evaluate_skill_retrieval.py \
+python3 scripts/validators/validate_eval_corpus.py --check-skill-sync
+python3 scripts/lib/retrieval/generate_golden_queries.py --tier all --write-legacy-golden
+python3 scripts/lib/retrieval/evaluate_skill_retrieval.py \
   --dataset tests/fixtures/retrieval_evaluation/smoke_queries_promoted.json \
   --limit 3
 ```
@@ -279,7 +279,7 @@ Release gates (see `krag/EVALUATION.md`):
 Change-scoped delta eval on touched skills:
 
 ```bash
-DELTA_EVAL_BASE_REF=origin/main python3 scripts/ci_ingest_gate.py
+DELTA_EVAL_BASE_REF=origin/main python3 scripts/utils/ci/ci_ingest_gate.py
 ```
 
 Agent journey fixtures live in `tests/fixtures/agent_journeys.json` (**11** journeys, JRN-01 … JRN-11). Run them with:
@@ -290,7 +290,7 @@ python3 -m pytest tests/test_agent_journeys.py -q
 
 ## Connectedness Failure Runbook
 
-If `python3 scripts/validate_skills_graph.py` reports a connectedness failure:
+If `python3 scripts/validators/validate_skills_graph.py` reports a connectedness failure:
 
 1. Read the failing skill name and message, for example `missing bridge provenance`, `missing semantic bridge` or `unreachable from root`.
 2. Check the owning `SKILL.md` for missing frontmatter, missing `Related skills` evidence or weak/ambiguous skill descriptions.
@@ -299,9 +299,9 @@ If `python3 scripts/validate_skills_graph.py` reports a connectedness failure:
 5. Re-run:
 
 ```bash
-python3 scripts/extract_skills_graph.py > /tmp/skills-graph.json
-python3 scripts/validate_skills_graph.py
-./scripts/ci_local.sh
+python3 scripts/graph/build/extract_skills_graph.py > /tmp/skills-graph.json
+python3 scripts/validators/validate_skills_graph.py
+./scripts/dev_workflow/ci_local.sh
 ```
 
 Do not add generic connective terms to hide outliers. Every bridge assertion must be derivable from source-backed skill metadata or explicit related-skill evidence.

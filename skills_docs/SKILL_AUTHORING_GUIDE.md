@@ -77,18 +77,18 @@ When a skill encodes open standards, industry standards or authoritative best pr
 L3 practice validation enforces these rules for standards-sensitive skills:
 
 ```bash
-python3 scripts/validate_skill_practice.py --all
+python3 scripts/validators/validate_skill_practice.py --all
 ```
 
 ## Quality Bar
 
 Before proposing a skill change:
 
-- install hooks with `./scripts/install_git_hooks.sh` (pre-commit runs lint, validators, security scan and tests on commit);
-- run `python3 scripts/validate_skills.py`;
-- run `python3 scripts/validate_skill_practice.py --all`;
+- install hooks with `./scripts/dev_workflow/install_git_hooks.sh` (pre-commit runs lint, validators, security scan and tests on commit);
+- run `python3 scripts/validators/validate_skills.py`;
+- run `python3 scripts/validators/validate_skill_practice.py --all`;
 - run `npx markdownlint-cli2` when editing markdown;
-- run `./scripts/ci_local.sh` for material changes;
+- run `./scripts/dev_workflow/ci_local.sh` for material changes;
 - check that descriptions remain discoverable;
 - verify related skill links use installed folder names;
 - record source links when vendor or standards guidance is embedded (markdown links, not bare URLs).

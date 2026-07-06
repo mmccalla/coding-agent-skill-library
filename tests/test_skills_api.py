@@ -8,9 +8,9 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-from scripts import skills_contracts
-from scripts.skills_api import create_app
-from scripts.skills_mcp_server import SkillsMcpServer
+from scripts.lib.config import skills_contracts
+from scripts.runtime.api.skills_api import create_app
+from scripts.runtime.mcp.skills_mcp_server import SkillsMcpServer
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 TRUST_FIXTURES = REPO_ROOT / "tests" / "fixtures" / "skill_trust"
@@ -366,7 +366,7 @@ Use when validating uploads.
             _request: skills_contracts.QuerySkillsRequest,
             _recommendations: Mapping[str, object],
         ) -> Mapping[str, object]:
-            from scripts import skills_ollama
+            from scripts.runtime.api import skills_ollama
 
             raise skills_ollama.OllamaQueryError("Could not connect to local Ollama.")
 

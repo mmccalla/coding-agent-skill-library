@@ -8,7 +8,7 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-VALIDATOR = REPO_ROOT / "scripts" / "validate_skill_mapping.py"
+VALIDATOR = REPO_ROOT / "scripts/validators/validate_skill_mapping.py"
 
 
 def load_validator():

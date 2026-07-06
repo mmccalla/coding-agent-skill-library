@@ -7,7 +7,8 @@ from unittest import mock
 
 import httpx
 
-from scripts import skills_contracts, skills_ollama
+from scripts.lib.config import skills_contracts
+from scripts.runtime.api import skills_ollama
 
 
 class SkillsOllamaTests(unittest.TestCase):

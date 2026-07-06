@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = REPO_ROOT / "scripts" / "load_skills_neo4j.py"
+SCRIPT = REPO_ROOT / "scripts/graph/load/load_skills_neo4j.py"
 
 
 def load_module() -> object:
@@ -284,7 +284,7 @@ class LoadSkillsNeo4jTests(unittest.TestCase):
         loader = load_module()
         extract = importlib.util.spec_from_file_location(
             "extract_skills_graph",
-            REPO_ROOT / "scripts" / "extract_skills_graph.py",
+            REPO_ROOT / "scripts/graph/build/extract_skills_graph.py",
         )
         assert extract is not None and extract.loader is not None
         extract_module = importlib.util.module_from_spec(extract)

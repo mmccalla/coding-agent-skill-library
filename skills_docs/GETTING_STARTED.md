@@ -49,13 +49,13 @@ Read-only stdio server:
 uv run --no-project \
   --directory /path/to/coding-agent-skill-library \
   --with-editable /path/to/coding-agent-skill-library \
-  python scripts/skills_mcp_server.py --sdk-stdio
+  python scripts/runtime/mcp/skills_mcp_server.py --sdk-stdio
 ```
 
 List tools:
 
 ```bash
-python3 scripts/skills_mcp_server.py --list-tools
+python3 scripts/runtime/mcp/skills_mcp_server.py --list-tools
 ```
 
 Cursor `mcpServers` entry (replace paths):
@@ -69,7 +69,7 @@ Cursor `mcpServers` entry (replace paths):
         "run", "--no-project",
         "--directory", "/path/to/coding-agent-skill-library",
         "--with-editable", "/path/to/coding-agent-skill-library",
-        "python", "scripts/skills_mcp_server.py", "--sdk-stdio"
+        "python", "scripts/runtime/mcp/skills_mcp_server.py", "--sdk-stdio"
       ]
     }
   }
@@ -84,14 +84,14 @@ Cursor IDE configuration (MCP-only vs filesystem-only): [`CURSOR_IDE_SETUP.md`](
 
 ```bash
 python3 -m pip install -e ".[dev]"
-./scripts/ci_local.sh
+./scripts/dev_workflow/ci_local.sh
 ```
 
 Targeted smoke:
 
 ```bash
-python3 scripts/skills_mcp_server.py --list-tools
-python3 scripts/evaluate_skill_retrieval.py --limit 3
+python3 scripts/runtime/mcp/skills_mcp_server.py --list-tools
+python3 scripts/lib/retrieval/evaluate_skill_retrieval.py --limit 3
 ```
 
 Full operator workflow: `SKILLS_KG_MCP_RUNBOOK.md`.
@@ -99,14 +99,14 @@ Full operator workflow: `SKILLS_KG_MCP_RUNBOOK.md`.
 ## Write or change a skill
 
 1. Read `SKILL_AUTHORING_GUIDE.md` and `LIBRARY_CONTRACT.md`.
-2. Install git hooks once: `./scripts/install_git_hooks.sh`.
+2. Install git hooks once: `./scripts/dev_workflow/install_git_hooks.sh`.
 3. Edit `skills/<skill-name>/SKILL.md` (and inventory/docs as needed).
 4. Commit — pre-commit runs secret scan, markdownlint, skill validators, ruff, mypy and quality pytest for relevant staged paths.
-5. For a full local CI mirror, run `./scripts/ci_local.sh`.
+5. For a full local CI mirror, run `./scripts/dev_workflow/ci_local.sh`.
 
-Pre-commit entrypoint: `scripts/pre_commit_check.sh` (via `.githooks/pre-commit`). Bypass only in emergencies with `SKIP_PRECOMMIT=1`.
+Pre-commit entrypoint: `scripts/dev_workflow/pre_commit_check.sh` (via `.githooks/pre-commit`). Bypass only in emergencies with `SKIP_PRECOMMIT=1`.
 
-Skill changes also pass the ingest gate (`scripts/ci_ingest_gate.py`) inside `ci_local.sh`: L2 security, graph connectivity, SHACL, promoted smoke retrieval and dry-run Neo4j load.
+Skill changes also pass the ingest gate (`scripts/utils/ci/ci_ingest_gate.py`) inside `ci_local.sh`: L2 security, graph connectivity, SHACL, promoted smoke retrieval and dry-run Neo4j load.
 
 ## Maintain KRAG (ontology, eval, roadmap)
 

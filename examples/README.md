@@ -21,4 +21,4 @@ See [`skills_docs/GETTING_STARTED.md`](../skills_docs/GETTING_STARTED.md) and [`
 | --- | --- |
 | Agent journey fixtures | [`tests/fixtures/agent_journeys.json`](../tests/fixtures/agent_journeys.json) |
 | Smoke / realistic eval queries | [`tests/fixtures/retrieval_evaluation/`](../tests/fixtures/retrieval_evaluation/) |
-| MCP server smoke | `python3 scripts/skills_mcp_server.py --list-tools` |
+| MCP server smoke | `python3 scripts/runtime/mcp/skills_mcp_server.py --list-tools` |

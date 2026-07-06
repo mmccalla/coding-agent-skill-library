@@ -6,13 +6,11 @@ import os
 
 import pytest
 
-from scripts import (
-    check_neo4j_readiness,
-    embed_skill_chunks,
-    load_skills_neo4j,
-    retrieve_skills_hybrid,
-    skills_config,
-)
+from scripts.graph.build import embed_skill_chunks
+from scripts.graph.load import load_skills_neo4j
+from scripts.lib.config import skills_config
+from scripts.lib.retrieval import retrieve_skills_hybrid
+from scripts.runtime.docker import check_neo4j_readiness
 from tests.test_load_skills_neo4j import fixture_records
 
 pytestmark = pytest.mark.live_neo4j

@@ -34,7 +34,7 @@ jobs:
         run: python -m pip install -e ".[dev]"
 
       - name: Validate evaluation corpora
-        run: python3 scripts/validate_eval_corpus.py --check-skill-sync --emit-matrix
+        run: python3 scripts/validators/validate_eval_corpus.py --check-skill-sync --emit-matrix
 
       - name: Run nightly retrieval eval arms
         run: python3 -m pytest -m slow -q

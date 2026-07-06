@@ -45,8 +45,8 @@ docker compose up --build -d
 
 ```bash
 python3 -m pip install -e ".[dev]"
-./scripts/install_git_hooks.sh   # pre-commit: secrets, markdownlint, validators, ruff, mypy, pytest
-./scripts/ci_local.sh
+./scripts/dev_workflow/install_git_hooks.sh   # pre-commit: secrets, markdownlint, validators, ruff, mypy, pytest
+./scripts/dev_workflow/ci_local.sh
 ```
 
 Pre-commit runs automatically on `git commit` after hooks are installed. It selects checks from staged paths (skills, Python, docs, UI). Emergency bypass: `SKIP_PRECOMMIT=1 git commit ...` (use only when necessary).

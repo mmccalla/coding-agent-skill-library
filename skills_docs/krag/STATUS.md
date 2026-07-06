@@ -15,8 +15,8 @@ For the evaluation corpus redesign, see [`EVALUATION_CORPUS_CONTRACT.md`](EVALUA
 
 | Area | Evidence |
 | --- | --- |
-| Portable skills library (**91** skills) | `scripts/validate_skills.py`, `skills/MANIFEST.md` |
-| KRAG v2 ontology + SHACL profiles | `scripts/validate_skills_ontology.py`, `skills_docs/ontology/*.ttl` |
+| Portable skills library (**91** skills) | `scripts/validators/validate_skills.py`, `skills/MANIFEST.md` |
+| KRAG v2 ontology + SHACL profiles | `scripts/validators/validate_skills_ontology.py`, `skills_docs/ontology/*.ttl` |
 | Skill extract → graph → hybrid retrieval | `extract_skills_graph.py`, `retrieve_skills_hybrid.py` |
 | Read-only MCP + FastAPI | `skills_mcp_server.py`, `skills_api.py` |
 | Trust gates L1–L4 | `validate_skill_trust.py` |
@@ -76,11 +76,11 @@ Phases 1–9: vocabulary, authoring, trust, ingest, projections, MCP usage, eval
 ## Quick commands
 
 ```bash
-./scripts/ci_local.sh
-python3 scripts/ci_ingest_gate.py
-DELTA_EVAL_BASE_REF=origin/main python3 scripts/ci_ingest_gate.py
-python3 scripts/validate_eval_corpus.py --check-skill-sync --emit-matrix
-python3 scripts/generate_golden_queries.py --tier all --write-legacy-golden
-python3 scripts/run_e2e_retrieval_eval.py --json
-python3 scripts/krag_cutover_acceptance.py --limit 3
+./scripts/dev_workflow/ci_local.sh
+python3 scripts/utils/ci/ci_ingest_gate.py
+DELTA_EVAL_BASE_REF=origin/main python3 scripts/utils/ci/ci_ingest_gate.py
+python3 scripts/validators/validate_eval_corpus.py --check-skill-sync --emit-matrix
+python3 scripts/lib/retrieval/generate_golden_queries.py --tier all --write-legacy-golden
+python3 scripts/lib/retrieval/run_e2e_retrieval_eval.py --json
+python3 scripts/lib/retrieval/evaluate_skill_retrieval.py --dataset tests/fixtures/retrieval_evaluation/smoke_queries_promoted.json --limit 3
 ```
