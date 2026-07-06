@@ -9,12 +9,15 @@ from __future__ import annotations
 
 import json
 import sys
+import threading
+import time
 from argparse import ArgumentParser
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 from typing import Annotated, NamedTuple
 
 from mcp.server.fastmcp import FastMCP
+from mcp.types import Tool as MCPTool
 from pydantic import Field
 
 if __package__ in {None, ""}:
@@ -83,6 +86,84 @@ _RESOLVE_NAME = (
     "(for example accessibility-wcag)."
 )
 _RELATED_LIMIT = "Maximum number of related skills to include in the execution guide."
+
+_SUMMARY_SEARCH_SKILLS = "Search skills by keyword over skill names and retrieval-unit text."
+_SUMMARY_GET_SKILL = "Return one skill's bounded metadata and retrieval units."
+_SUMMARY_RECOMMEND_SKILLS = "Recommend connected skills for a task query with evidence."
+_SUMMARY_GET_SKILL_CONTEXT = "Return connected neighbouring skills and evidence paths."
+_SUMMARY_ROUTE_SKILL_QUERY = (
+    "Classify a skill question as direct_lookup, recommendation, context or "
+    "execution_plan before selecting retrieval evidence."
+)
+_SUMMARY_RESOLVE_SKILL = "Resolve a human skill name or canonical id to a Skills KG skill id."
+_SUMMARY_GET_SKILL_EXECUTION_GUIDE = (
+    "Return when-to-use, objective, procedure, rules, verification checklist and related skills."
+)
+
+
+def _sanitize_property_schema(value: object) -> dict[str, object]:
+    if not isinstance(value, Mapping):
+        return {}
+    return {key: item for key, item in value.items() if key != "title"}
+
+
+def _sanitize_mcp_input_schema(schema: Mapping[str, object]) -> dict[str, object]:
+    """Strip Pydantic-only schema noise so Cursor matches plain MCP servers like MCP_DOCKER."""
+
+    cleaned = dict(schema)
+    cleaned.pop("title", None)
+    cleaned.pop("$defs", None)
+    properties = cleaned.get("properties")
+    if isinstance(properties, Mapping):
+        cleaned["properties"] = {
+            key: _sanitize_property_schema(value) for key, value in properties.items()
+        }
+    cleaned.setdefault("additionalProperties", False)
+    return cleaned
+
+
+class SkillsKgFastMCP(FastMCP):
+    """FastMCP server that publishes Cursor-friendly tool schemas."""
+
+    async def list_tools(self) -> list[MCPTool]:
+        tools = self._tool_manager.list_tools()
+        return [
+            MCPTool(
+                name=info.name,
+                title=info.title,
+                description=info.description,
+                inputSchema=_sanitize_mcp_input_schema(info.parameters),
+                outputSchema=None,
+                annotations=info.annotations,
+                icons=info.icons,
+                _meta=info.meta,
+            )
+            for info in tools
+        ]
+
+
+def _log_mcp_diagnostics(message: str) -> None:
+    """Write startup diagnostics to stderr so stdio JSON-RPC on stdout stays clean."""
+
+    print(message, file=sys.stderr, flush=True)
+
+
+def _embedding_provider_from_plan(plan: load_skills_neo4j.LoadPlan) -> str | None:
+    for node in plan.nodes:
+        if node.label != "RetrievalUnit":
+            continue
+        provider = node.properties.get("embeddingProvider")
+        if isinstance(provider, str) and provider.strip():
+            return provider
+    return None
+
+
+def _build_fast_repository_plan(skills_root: Path) -> load_skills_neo4j.LoadPlan:
+    """Build an in-memory graph quickly using deterministic offline embeddings."""
+
+    plan = load_skills_neo4j.build_repository_load_plan(skills_root)
+    embedder = embed_skill_chunks.resolve_embedding_provider(force_deterministic=True)
+    return embed_skill_chunks.embed_retrieval_units(plan, embedder)
 
 
 def _bounded_int(value: object, default: int, minimum: int, maximum: int) -> int:
@@ -156,6 +237,59 @@ class SkillsMcpServer:
     ) -> None:
         self._plan = plan
         self._settings = settings or skills_config.load_settings()
+        self._embedding_upgrade_thread: threading.Thread | None = None
+
+    @classmethod
+    def from_repository(
+        cls,
+        skills_root: Path = Path("skills"),
+        *,
+        fast_startup: bool = False,
+    ) -> SkillsMcpServer:
+        """Load the skills graph from disk.
+
+        ``fast_startup`` builds deterministic offline embeddings immediately so MCP
+        stdio can complete the initialize handshake in under a second, then upgrades
+        to the configured production provider (typically Ollama BGE-M3) in a background
+        thread. Full startup blocks until production embeddings finish.
+        """
+
+        if fast_startup:
+            server = cls(_build_fast_repository_plan(skills_root))
+            server._schedule_production_embedding_upgrade(skills_root)
+            return server
+        plan = embed_skill_chunks.build_embedded_repository_load_plan(skills_root)
+        return cls(plan)
+
+    def _schedule_production_embedding_upgrade(self, skills_root: Path) -> None:
+        configured = skills_config.load_settings().neo4j.embedding_provider
+        if configured in {"deterministic", "deterministic-test-embedding"}:
+            return
+
+        def _upgrade() -> None:
+            started = time.perf_counter()
+            _log_mcp_diagnostics(
+                "skills-kg: upgrading in-memory embeddings to configured production provider"
+            )
+            try:
+                plan = embed_skill_chunks.build_embedded_repository_load_plan(skills_root)
+            except Exception as exc:  # pragma: no cover - defensive operator path
+                _log_mcp_diagnostics(f"skills-kg: production embedding upgrade failed: {exc}")
+                return
+            self.reload_plan(plan)
+            provider = _embedding_provider_from_plan(plan) or configured
+            elapsed = time.perf_counter() - started
+            _log_mcp_diagnostics(
+                f"skills-kg: production embeddings ready ({provider}, {elapsed:.1f}s)"
+            )
+
+        thread = threading.Thread(
+            target=_upgrade,
+            name="skills-kg-embedding-upgrade",
+            daemon=True,
+        )
+        thread.start()
+        self._embedding_upgrade_thread = thread
 
     @classmethod
     def for_test_fixture(cls) -> SkillsMcpServer:
@@ -178,11 +312,6 @@ class SkillsMcpServer:
         )
         return cls(retrieve_skills_hybrid.fixture_load_plan(), fixture_settings)
 
-    @classmethod
-    def from_repository(cls, skills_root: Path = Path("skills")) -> SkillsMcpServer:
-        plan = embed_skill_chunks.build_embedded_repository_load_plan(skills_root)
-        return cls(plan)
-
     def reload_plan(self, plan: load_skills_neo4j.LoadPlan) -> None:
         """Replace the in-memory graph plan after admin ingest or repository reload."""
 
@@ -198,7 +327,7 @@ class SkillsMcpServer:
         tools = (
             ToolDefinition(
                 name="search_skills",
-                description="Search skills by keyword over skill names and retrieval-unit text.",
+                description=_SUMMARY_SEARCH_SKILLS,
                 inputSchema=_schema(
                     {
                         "query": _property({"type": "string", "minLength": 1}, _QUERY_TEXT),
@@ -216,7 +345,7 @@ class SkillsMcpServer:
             ),
             ToolDefinition(
                 name="get_skill",
-                description="Return one skill's bounded metadata and retrieval units.",
+                description=_SUMMARY_GET_SKILL,
                 inputSchema=_schema(
                     {
                         "skill_id": _property({"type": "string", "minLength": 1}, _SKILL_ID),
@@ -234,7 +363,7 @@ class SkillsMcpServer:
             ),
             ToolDefinition(
                 name="recommend_skills",
-                description="Recommend connected skills for a task query with evidence.",
+                description=_SUMMARY_RECOMMEND_SKILLS,
                 inputSchema=_schema(
                     {
                         "query": _property({"type": "string", "minLength": 1}, _QUERY_TEXT),
@@ -268,7 +397,7 @@ class SkillsMcpServer:
             ),
             ToolDefinition(
                 name="get_skill_context",
-                description="Return connected neighbouring skills and evidence paths.",
+                description=_SUMMARY_GET_SKILL_CONTEXT,
                 inputSchema=_schema(
                     {
                         "skill_id": _property({"type": "string", "minLength": 1}, _SKILL_ID),
@@ -286,10 +415,7 @@ class SkillsMcpServer:
             ),
             ToolDefinition(
                 name="route_skill_query",
-                description=(
-                    "Classify a skill question as direct_lookup, recommendation, context or "
-                    "execution_plan before selecting retrieval evidence."
-                ),
+                description=_SUMMARY_ROUTE_SKILL_QUERY,
                 inputSchema=_schema(
                     {
                         "query": _property({"type": "string", "minLength": 1}, _ROUTE_QUERY),
@@ -299,7 +425,7 @@ class SkillsMcpServer:
             ),
             ToolDefinition(
                 name="resolve_skill",
-                description="Resolve a human skill name or canonical id to a Skills KG skill id.",
+                description=_SUMMARY_RESOLVE_SKILL,
                 inputSchema=_schema(
                     {
                         "name": _property({"type": "string", "minLength": 1}, _RESOLVE_NAME),
@@ -309,10 +435,7 @@ class SkillsMcpServer:
             ),
             ToolDefinition(
                 name="get_skill_execution_guide",
-                description=(
-                    "Return when-to-use, objective, procedure, rules, verification checklist "
-                    "and related skills for a resolved skill."
-                ),
+                description=_SUMMARY_GET_SKILL_EXECUTION_GUIDE,
                 inputSchema=_schema(
                     {
                         "skill_id": _property({"type": "string", "minLength": 1}, _SKILL_ID),
@@ -433,6 +556,11 @@ class SkillsMcpServer:
             "status": "ok",
             "server_name": "skills-kg",
             "read_only": True,
+            "embedding_provider": _embedding_provider_from_plan(self._plan),
+            "embedding_upgrade_in_progress": (
+                self._embedding_upgrade_thread is not None
+                and self._embedding_upgrade_thread.is_alive()
+            ),
             "tools": contract.get("tools", []),
             "resources": [resource["uri"] for resource in self.list_resources()],
             "limits": contract.get("limits", {}),
@@ -864,12 +992,12 @@ class SkillsMcpServer:
 def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
     """Build the official MCP SDK server for the Skills KG tools."""
 
-    fastmcp = FastMCP("skills-kg", json_response=True)
+    fastmcp = SkillsKgFastMCP("skills-kg", json_response=True)
 
     @fastmcp.tool(
         name="search_skills",
-        description="Search skills by keyword over skill names and retrieval-unit text.",
-        structured_output=True,
+        description=_SUMMARY_SEARCH_SKILLS,
+        structured_output=False,
     )
     def search_skills(
         query: Annotated[str, Field(description=_QUERY_TEXT, min_length=1)],
@@ -879,8 +1007,8 @@ def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
 
     @fastmcp.tool(
         name="get_skill",
-        description="Return one skill's bounded metadata and retrieval units.",
-        structured_output=True,
+        description=_SUMMARY_GET_SKILL,
+        structured_output=False,
     )
     def get_skill(
         skill_id: Annotated[str, Field(description=_SKILL_ID, min_length=1)],
@@ -896,8 +1024,8 @@ def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
 
     @fastmcp.tool(
         name="recommend_skills",
-        description="Recommend connected skills for a task query with evidence.",
-        structured_output=True,
+        description=_SUMMARY_RECOMMEND_SKILLS,
+        structured_output=False,
     )
     def recommend_skills(
         query: Annotated[str, Field(description=_QUERY_TEXT, min_length=1)],
@@ -917,8 +1045,8 @@ def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
 
     @fastmcp.tool(
         name="get_skill_context",
-        description="Return connected neighbouring skills and evidence paths.",
-        structured_output=True,
+        description=_SUMMARY_GET_SKILL_CONTEXT,
+        structured_output=False,
     )
     def get_skill_context(
         skill_id: Annotated[str, Field(description=_SKILL_ID, min_length=1)],
@@ -928,10 +1056,8 @@ def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
 
     @fastmcp.tool(
         name="route_skill_query",
-        description=(
-            "Classify a skill question as direct_lookup, recommendation, context or execution_plan."
-        ),
-        structured_output=True,
+        description=_SUMMARY_ROUTE_SKILL_QUERY,
+        structured_output=False,
     )
     def route_skill_query(
         query: Annotated[str, Field(description=_ROUTE_QUERY, min_length=1)],
@@ -940,8 +1066,8 @@ def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
 
     @fastmcp.tool(
         name="resolve_skill",
-        description="Resolve a human skill name or canonical id to a Skills KG skill id.",
-        structured_output=True,
+        description=_SUMMARY_RESOLVE_SKILL,
+        structured_output=False,
     )
     def resolve_skill(
         name: Annotated[str, Field(description=_RESOLVE_NAME, min_length=1)],
@@ -950,10 +1076,8 @@ def build_fastmcp_server(server: SkillsMcpServer) -> FastMCP:
 
     @fastmcp.tool(
         name="get_skill_execution_guide",
-        description=(
-            "Return when-to-use, objective, procedure, rules, verification checklist and related skills."
-        ),
-        structured_output=True,
+        description=_SUMMARY_GET_SKILL_EXECUTION_GUIDE,
+        structured_output=False,
     )
     def get_skill_execution_guide(
         skill_id: Annotated[str, Field(description=_SKILL_ID, min_length=1)],
@@ -1005,7 +1129,9 @@ def main(argv: Sequence[str] | None = None) -> int:  # pragma: no cover
         print(metrics_text(), end="")
         return 0
     server = (
-        SkillsMcpServer.for_test_fixture() if args.fixture else SkillsMcpServer.from_repository()
+        SkillsMcpServer.for_test_fixture()
+        if args.fixture
+        else SkillsMcpServer.from_repository(fast_startup=bool(args.sdk_stdio))
     )
     if args.list_tools:
         print(json.dumps(server.list_tools(), indent=2, sort_keys=True))
