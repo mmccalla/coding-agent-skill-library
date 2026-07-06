@@ -2,4 +2,4 @@
 
 Documentation moved to [`../../krag/`](../../krag/).
 
-Archived phase plans: [`../../archive/planning/`](../../archive/planning/).
+Archived phase plans are kept locally under [`../../archive/planning/`](../../archive/planning/) (not published on GitHub). See [`../../archive/README.md`](../../archive/README.md).

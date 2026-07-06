@@ -33,7 +33,7 @@ Documentation for agents and humans. Pick one path — you do not need every fil
 - `krag/EVALUATION.md` — measured retrieval quality
 - `ontology/` — TTL and SHACL source (`ontology/README.md`)
 - `ontology/README.md` — TTL and SHACL layout
-- `archive/planning/` — historical phase plans (read-only)
+- `archive/README.md` — note that historical phase plans are local-only (not in the public repo)
 - `SKILLS_KG_MCP_RUNBOOK.md` — operator runbook
 
 ## Other
