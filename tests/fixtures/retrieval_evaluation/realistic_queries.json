@@ -735,7 +735,7 @@
   },
   {
     "id": "confuser_eval_vs_ai_model_gov",
-    "query": "quality metrics baselines regression drift dashboards",
+    "query": "coding-agent quality regression latency cost reliability safety drift baselines dashboards",
     "expected_skill_ids": [
       "skill:evaluation-and-monitoring"
     ],

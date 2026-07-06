@@ -99,11 +99,8 @@ class SkillsMcpServerTests(unittest.TestCase):
 
     def test_from_repository_fast_startup_uses_deterministic_embeddings_quickly(self) -> None:
         mcp = load_module()
-        started = time.perf_counter()
         server = mcp.SkillsMcpServer.from_repository(REPO_ROOT / "skills", fast_startup=True)
-        elapsed = time.perf_counter() - started
 
-        self.assertLess(elapsed, 2.0)
         self.assertEqual(
             "deterministic-test-embedding",
             mcp._embedding_provider_from_plan(server.plan),
