@@ -245,7 +245,9 @@ _CONFUSER_QUERY_HINTS: dict[str, str] = {
     "skill:api-design-and-lifecycle": "OpenAPI HTTP versioning authZ deprecation",
     "skill:data-contract-design": "data product schema quality freshness producer consumer",
     "skill:ai-model-governance": "model inventory risk tier approval kill-switch retirement",
-    "skill:evaluation-and-monitoring": "quality metrics baselines regression drift dashboards",
+    "skill:evaluation-and-monitoring": (
+        "coding-agent quality regression latency cost reliability safety drift baselines dashboards"
+    ),
     "skill:solution-architecture": "NFRs options context container views fitness functions",
     "skill:spec-driven-development": "write specification acceptance criteria before coding",
     "skill:test-strategy": "risk-based test pyramid levels automation exit criteria",

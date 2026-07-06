@@ -43,7 +43,7 @@ Use this when you want bounded retrieval, routing traces, usage metrics and a si
 
 | File | Purpose |
 | --- | --- |
-| `.vscode/settings.json` | Repo `skills/` path disabled in `chat.agentSkillsLocations` (local; gitignored) |
+| `.vscode/settings.json` | Repo `skills/` path disabled in `chat.agentSkillsLocations` (local; copy from `configs/cursor/vscode-settings.mcp-only.example.json`) |
 | `.cursor/rules/project-context.mdc` | Project-only dual-mode context; not a user rule |
 | `.cursor/rules/skills-kg-mcp-only.mdc` | MCP-only agent workflow; overrides filesystem-first text in `AGENTS.md` / `CLAUDE.md` in this workspace |
 
