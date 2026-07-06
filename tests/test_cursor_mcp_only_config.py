@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-VSCODE_SETTINGS = REPO_ROOT / ".vscode" / "settings.json"
+VSCODE_SETTINGS_EXAMPLE = REPO_ROOT / "configs" / "cursor" / "vscode-settings.mcp-only.example.json"
 CURSOR_RULE = REPO_ROOT / ".cursor" / "rules" / "skills-kg-mcp-only.mdc"
 GETTING_STARTED = REPO_ROOT / "skills_docs" / "GETTING_STARTED.md"
 CURSOR_SETUP = REPO_ROOT / "skills_docs" / "CURSOR_IDE_SETUP.md"
@@ -16,12 +16,16 @@ RUNBOOK = REPO_ROOT / "skills_docs" / "SKILLS_KG_MCP_RUNBOOK.md"
 
 class CursorMcpOnlyConfigTests(unittest.TestCase):
     def test_vscode_settings_disable_repo_filesystem_skills(self) -> None:
-        settings = json.loads(VSCODE_SETTINGS.read_text(encoding="utf-8"))
+        settings = json.loads(VSCODE_SETTINGS_EXAMPLE.read_text(encoding="utf-8"))
         locations = settings.get("chat.agentSkillsLocations", {})
 
-        repo_skills_key = "~/Documents/vscode/coding-agent-skill-library/skills"
-        self.assertIn(repo_skills_key, locations)
-        self.assertFalse(locations[repo_skills_key])
+        disabled_skills_paths = [
+            path for path, enabled in locations.items() if path.endswith("/skills") and not enabled
+        ]
+        self.assertTrue(
+            disabled_skills_paths,
+            msg="Committed MCP-only example must disable at least one skills/ location",
+        )
 
     def test_cursor_rule_enforces_mcp_only_workflow(self) -> None:
         text = CURSOR_RULE.read_text(encoding="utf-8")

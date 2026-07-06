@@ -135,7 +135,7 @@ Shrink risk is explicit: fewer cases can miss category gaps, alias-only lookups,
 1. **Curated catalogue** — migrate `SEED_CASES` + `realistic_queries.json`; grow confuser/multi-skill groups
 2. **Agent journeys** — harvest `route_skill_query` / `recommend_skills` arguments from JRN-01–11
 3. **Sparse archetypes** — category-aware templates (not literal skill-id repetition)
-4. **Later:** usage harvest from `rollup_skill_usage.py` (manual review queue)
+4. **Later:** usage harvest from `skills_usage.build_weekly_rollup()` (manual review queue)
 
 ### Drop
 
@@ -205,7 +205,7 @@ Before Wave 2 merges, run once and record shadow comparison baseline metrics for
 | `validate_eval_corpus.py --check-skill-sync` | CI | Fail if `skills/PACK_METADATA.json` lists a skill with no coverage row |
 | `generate_golden_queries.py --emit-stubs` | On new skill | Emit **TODO** stub cases into `query_catalog.json` for human review |
 | `test_skill_promotion_uplift.py` | CI | Keep promoted-skills gate on smoke + coverage subsets |
-| `rollup_skill_usage.py` (advisory) | Weekly | Zero-hit promoted skills → candidate catalogue additions |
+| `skills_usage.build_weekly_rollup()` (advisory) | Weekly | Zero-hit promoted skills → candidate catalogue additions |
 
 ### 6. Archetype diversity per skill (not just count)
 
