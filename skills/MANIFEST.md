@@ -8,7 +8,7 @@ Use this command to list installed skills:
 find skills -name "SKILL.md" | sort
 ```
 
-After the agentic, control, engineering, user-experience, reliability-and-delivery, event-driven, enterprise-integration-patterns, business-architecture, solution-and-platform-architecture, data-architecture and KRAG systems skills are installed, the library should contain 111 skills (including mandatory `apply-laws-of-ai`).
+After the agentic, control, engineering, user-experience, reliability-and-delivery, event-driven, enterprise-integration-patterns, business-architecture, solution-and-platform-architecture, data-architecture and KRAG systems skills are installed, the library should contain 113 skills (including mandatory `apply-laws-of-ai`).
 
 ## Workflow spine skills
 
@@ -71,6 +71,8 @@ These skills belong to the semantic `agent-control-patterns` grouping in the fla
 | Skill | Use when | Avoid when |
 |---|---|---|
 | `apply-laws-of-ai` | **Mandatory first at every session.** Immutable baseline for all reasoning before any other skill, plan, or edit. | Never skip; no substitute or summary is acceptable. |
+| `avoid-cognitive-biases` | Reviewing plans, recommendations, prioritisation or retrospectives for systematic cognitive bias before accepting conclusions. | Purely mechanical execution with no judgement or ranking left. |
+| `avoid-fallacies` | Evaluating ADRs, reviews, security justifications or recommendations for logical fallacies in the reasoning chain. | Conclusions already fixed by executable checks alone. |
 | `goal-setting-and-monitoring` | Objectives, success criteria, stop conditions or progress tracking are needed. | The task has a simple one-shot outcome. |
 | `exception-handling-and-recovery` | Workflows need retries, fallbacks, rollback, graceful degradation or escalation. | Failure has no material impact and normal exceptions are enough. |
 | `human-in-the-loop` | Human judgement, approval, review or escalation is required. | Fully automated execution is safe, tested and reversible. |
