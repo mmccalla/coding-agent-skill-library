@@ -58,3 +58,7 @@ skills_docs/   (at minimum: LIBRARY_CONTRACT, HOW_TO_FIND, DROP_IN_BOOTSTRAP)
 ```
 
 Details: `skills_docs/GETTING_STARTED.md` and `skills_docs/CHANGELOG.md`.
+
+## Licence
+
+SPDX-License-Identifier: Apache-2.0. See [LICENSE](LICENSE).

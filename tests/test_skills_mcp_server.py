@@ -6,9 +6,11 @@ import asyncio
 import importlib.util
 import json
 import sys
+import time
 import unittest
 from pathlib import Path
 from typing import Any
+from unittest.mock import patch
 
 from mcp import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
@@ -72,6 +74,72 @@ class SkillsMcpServerTests(unittest.TestCase):
                     str(param_schema["description"]).strip(),
                     msg=f"{tool['name']}.{param_name} has empty description",
                 )
+
+    def test_stdio_tool_schema_matches_cursor_friendly_mcp_servers(self) -> None:
+        mcp = load_module()
+        sanitized = mcp._sanitize_mcp_input_schema(
+            {
+                "title": "recommend_skillsArguments",
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "title": "Query",
+                        "type": "string",
+                        "description": "Example query",
+                        "minLength": 1,
+                    }
+                },
+                "required": ["query"],
+            }
+        )
+        self.assertNotIn("title", sanitized)
+        self.assertNotIn("title", sanitized["properties"]["query"])
+        self.assertEqual("Example query", sanitized["properties"]["query"]["description"])
+        self.assertFalse(sanitized["additionalProperties"])
+
+    def test_from_repository_fast_startup_uses_deterministic_embeddings_quickly(self) -> None:
+        mcp = load_module()
+        started = time.perf_counter()
+        server = mcp.SkillsMcpServer.from_repository(REPO_ROOT / "skills", fast_startup=True)
+        elapsed = time.perf_counter() - started
+
+        self.assertLess(elapsed, 2.0)
+        self.assertEqual(
+            "deterministic-test-embedding",
+            mcp._embedding_provider_from_plan(server.plan),
+        )
+        self.assertIsNone(server._embedding_upgrade_thread)
+
+    def test_from_repository_fast_startup_schedules_production_embedding_upgrade(self) -> None:
+        mcp = load_module()
+        from scripts import skills_config
+
+        base = skills_config.load_settings(environ={})
+        production_settings = skills_config.SkillsKgSettings(
+            neo4j=base.neo4j.model_copy(update={"embedding_provider": "ollama-bge-m3"}),
+            retrieval=base.retrieval,
+            mcp=base.mcp,
+            api=base.api,
+        )
+        with patch.object(mcp.skills_config, "load_settings", return_value=production_settings):
+            server = mcp.SkillsMcpServer.from_repository(REPO_ROOT / "skills", fast_startup=True)
+        self.assertIsNotNone(server._embedding_upgrade_thread)
+
+    def test_stdio_full_repository_initializes_quickly_with_fast_startup(self) -> None:
+        async def run_client() -> None:
+            server_params = StdioServerParameters(
+                command=sys.executable,
+                args=[str(SCRIPT), "--sdk-stdio"],
+                cwd=REPO_ROOT,
+            )
+            started = time.perf_counter()
+            async with stdio_client(server_params) as (read_stream, write_stream):
+                async with ClientSession(read_stream, write_stream) as session:
+                    await session.initialize()
+                    elapsed = time.perf_counter() - started
+                    self.assertLess(elapsed, 5.0)
+
+        asyncio.run(run_client())
 
     def test_recommend_skills_returns_bounded_grounded_context(self) -> None:
         mcp = load_module()
@@ -311,6 +379,9 @@ class SkillsMcpServerTests(unittest.TestCase):
                     for param_name in ("query", "limit", "max_depth", "token_budget"):
                         self.assertIn("description", properties[param_name])
                         self.assertTrue(str(properties[param_name]["description"]).strip())
+                        self.assertNotIn("title", properties[param_name])
+                    self.assertIsNone(recommend_tool.outputSchema)
+                    self.assertNotIn("title", recommend_tool.inputSchema)
 
                     result = await session.call_tool(
                         "recommend_skills",
