@@ -1,7 +1,7 @@
 # Skills KG — status and roadmap
 
-**Last updated:** 2026-07-03  
-**Branch context:** `plan/golden-corpus-status-closeout` (ready to merge)  
+**Last updated:** 2026-07-07  
+**Branch context:** `main`  
 **Closeout programme:** [`CLOSEOUT_PLAN.md`](CLOSEOUT_PLAN.md) — **waves 0–5 complete** (optional P2/P3 expansions remain advisory)
 
 This is the **single live roadmap** for the Knowledge Graph service.
@@ -15,24 +15,27 @@ For the evaluation corpus redesign, see [`EVALUATION_CORPUS_CONTRACT.md`](EVALUA
 
 | Area | Evidence |
 | --- | --- |
-| Portable skills library (**91** skills) | `scripts/validators/validate_skills.py`, `skills/MANIFEST.md` |
+| Portable skills library (**113** skills) | `scripts/validators/validate_skills.py`, `skills/MANIFEST.md` |
 | KRAG v2 ontology + SHACL profiles | `scripts/validators/validate_skills_ontology.py`, `skills_docs/ontology/*.ttl` |
-| Skill extract → graph → hybrid retrieval | `extract_skills_graph.py`, `retrieve_skills_hybrid.py` |
+| Skill extract → graph → hybrid retrieval | `scripts/graph/build/extract_skills_graph.py`, `scripts/lib/retrieval/retrieve_skills_hybrid.py` |
 | Read-only MCP + FastAPI | `scripts/runtime/mcp/skills_mcp_server.py`, `scripts/runtime/api/skills_api.py` |
-| Trust gates L1–L4 | `validate_skill_trust.py` |
+| MCP legacy entrypoint shim | `scripts/skills_mcp_server.py` (forwards to `scripts.runtime.mcp`) |
+| Scripts package layout (`scripts/<domain>/`) | PR #34 reorganisation; `scripts/validators/validate_docs.py` stale-path guard |
+| Trust gates L1–L4 | `scripts/validators/validate_skill_trust.py` |
 | CI ingest gate (Phase 9 + corpus + delta eval) | `scripts/utils/ci/ci_ingest_gate.py`, `scripts/validators/validate_eval_corpus.py` in `ci_local.sh` |
-| Full promotion (**91/91** promoted, **0** quarantined) | 2026-07-03 authoring remediation |
-| Tiered evaluation corpus (Option B) | smoke **11**, realistic **31**, coverage **195**, abstention **10**; `golden_queries.json` union **~247** |
-| Coverage matrix + confuser registry | `coverage_matrix.json`, `confuser_pairs.json`, `validate_eval_corpus.py` |
+| Full promotion (**113/113** promoted, **0** quarantined) | 2026-07-03 authoring remediation + 2026-07-06 bias/fallacy skills |
+| Tiered evaluation corpus (Option B) | smoke **13**, realistic **55**, coverage **254**, abstention **10**; `golden_queries.json` union **332** |
+| Coverage matrix + confuser registry | `coverage_matrix.json`, `confuser_pairs.json` (**31** pairs), `validate_eval_corpus.py` |
 | Realistic confuser tier | precision@1 **1.0**; soft exclusion **≥ 0.5** |
 | Coverage tier (nightly) | precision@1 **1.0** on promoted-eligible cases |
 | Change-scoped delta eval | `scripts/utils/ci/ci_ingest_gate.py` + `DELTA_EVAL_BASE_REF` |
 | Usage metrics + Grafana dashboard | `skills-kg-usage.json`, `GET /metrics` |
-| MCP agent journeys **JRN-01 … JRN-11** | `tests/fixtures/agent_journeys.json` |
-| Docker Neo4j loader | 91 Skills, 810 RetrievalUnits |
+| MCP agent journeys **JRN-01 … JRN-13** | `tests/fixtures/agent_journeys.json` (incl. bias/fallacy review) |
+| Docker Neo4j loader | 113 Skills, **1045** RetrievalUnits (deterministic embed plan) |
 | Documentation consolidation (Waves A–D + closeout docs) | `GETTING_STARTED.md`, `krag/*` |
-| Phase 10 admin ingest (backend + UI) | `admin_skill_ingest.py`, Skills UI ingest modal, tests |
+| Phase 10 admin ingest (backend + UI) | `scripts/runtime/mcp/admin_skill_ingest.py`, Skills UI ingest modal, tests |
 | Nightly coverage workflow | `.github/workflows/nightly-eval-coverage.yml` |
+| `avoid-cognitive-biases` + `avoid-fallacies` skills | `skills/avoid-cognitive-biases/`, `skills/avoid-fallacies/`; JRN-12, JRN-13 |
 
 ### KRAG v2 phases (complete)
 
@@ -51,7 +54,7 @@ Phases 1–9: vocabulary, authoring, trust, ingest, projections, MCP usage, eval
 | 2 | Done | Tiered `generate_golden_queries.py`, shrunk corpora, shadow baseline, delta eval |
 | 3 | Done | Skills UI admin ingest after trust preview |
 | 4 | Done | JRN-08 … JRN-11, confuser catalogue, journey tests |
-| 5 | Partial | Done — nightly workflow, docs aligned, **mypy** green |
+| 5 | Done | Nightly workflow, docs aligned, **mypy** green |
 
 ---
 
@@ -59,7 +62,8 @@ Phases 1–9: vocabulary, authoring, trust, ingest, projections, MCP usage, eval
 
 | Item | Priority | Acceptance |
 | --- | --- | --- |
-| Expand realistic tier toward ~100 curated/journey cases | P2 | Category balance per `EVALUATION_CORPUS_CONTRACT.md` |
+| Expand realistic tier toward ~100 curated/journey cases | P2 | Category balance per `EVALUATION_CORPUS_CONTRACT.md` (55 today) |
+| Expand query catalogue toward ≥100 curated entries | P2 | Source of truth for smoke/realistic generation (33 today) |
 | Natural-language OOD abstention probes | P3 | Gate weather/stock-style queries when retrieval abstains reliably |
 
 ---
@@ -68,7 +72,8 @@ Phases 1–9: vocabulary, authoring, trust, ingest, projections, MCP usage, eval
 
 | Gap | Impact | Notes |
 | --- | --- | --- |
-| Realistic tier below target size (31 vs ~100) | Less journey/category diversity in PR eval | Expand catalogue over time |
+| Realistic tier below target size (55 vs ~100) | Less journey/category diversity in PR eval | Expand catalogue over time |
+| Query catalogue below target (33 vs ≥100) | Slower realistic-tier growth | Harvest from journeys and confuser reviews |
 | OOD abstention uses gibberish probes only | Natural-language off-domain not CI-gated | Documented in `EVALUATION.md` |
 
 ---

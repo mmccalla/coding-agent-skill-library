@@ -282,7 +282,7 @@ Change-scoped delta eval on touched skills:
 DELTA_EVAL_BASE_REF=origin/main python3 scripts/utils/ci/ci_ingest_gate.py
 ```
 
-Agent journey fixtures live in `tests/fixtures/agent_journeys.json` (**11** journeys, JRN-01 … JRN-11). Run them with:
+Agent journey fixtures live in `tests/fixtures/agent_journeys.json` (**13** journeys, JRN-01 … JRN-13). Run them with:
 
 ```bash
 python3 -m pytest tests/test_agent_journeys.py -q

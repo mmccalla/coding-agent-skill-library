@@ -2,9 +2,9 @@
 
 Living backlog for closing architecture, compliance, governance, engineering and FinOps gaps in the coding-agent skill library.
 
-**Status:** Implemented on `feat/gap-close-all-phases`  
+**Status:** Complete (merged to `main`, 2026-07-06)  
 **Baseline count:** 99 skills  
-**Target count:** 111 skills (12 new) + extensions to existing skills  
+**Target count:** 111 skills (12 new) + extensions — **exceeded:** **113** skills after bias/fallacy additions  
 **Owner:** repository-maintained
 
 Update this file when a PR lands, a skill is deferred, or acceptance criteria change.
@@ -93,7 +93,7 @@ Update this file when a PR lands, a skill is deferred, or acceptance criteria ch
 | C6 | `infrastructure-as-code` | New | Done |
 | C7 | `technical-debt-management` | New | Done |
 
-**Exit:** 111 skills.
+**Exit:** 113 skills (gap-close programme complete; bias/fallacy skills added post-target).
 
 ## Phase D — Hardening
 

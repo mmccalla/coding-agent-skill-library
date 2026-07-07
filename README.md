@@ -1,6 +1,6 @@
 # Coding Agent Skills KG
 
-Portable **111-skill** library for coding agents, plus an optional local **Neo4j GraphRAG** service (MCP, API, UI).
+Portable **113-skill** library for coding agents, plus an optional local **Neo4j GraphRAG** service (MCP, API, UI).
 
 ## Start here
 
@@ -22,7 +22,7 @@ skills_docs/      Routing, runbooks, KRAG contracts and ontology
 docs/             Public-readiness checklist and doc index
 schemas/          Pointers to ontology and Neo4j schema sources
 examples/         Quick-start paths and fixture references
-scripts/          Extract, validate, load, retrieve, MCP, API
+scripts/          Domain packages: graph/, runtime/, lib/, validators/ (see skills_docs)
 tests/            Unit, integration and eval fixtures
 skills-ui/        Inspection and agent-workflow UI
 docker-compose.yml Neo4j, API, UI, Prometheus, Grafana

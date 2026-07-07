@@ -250,6 +250,7 @@ After any switch, **start a new chat** — existing sessions retain prior contex
 | Agent reads `skills/*.md` in MCP mode | Filesystem locations or `discover-local-skills` still active | Mode A steps 2–3 |
 | Agent calls MCP in filesystem mode | MCP-only rule still `alwaysApply: true` | Mode B step 2 |
 | **skills-kg** disconnected | Bad path in `mcp.json` or missing `uv` | Fix paths; run `--list-tools` smoke test |
+| MCP fails: `scripts/skills_mcp_server.py` not found | Pre-#34 flat path in `mcp.json` | Use `scripts/runtime/mcp/skills_mcp_server.py`, or keep legacy shim at repo-root `scripts/skills_mcp_server.py` |
 | **skills-kg** amber/yellow dot | Cursor state **connecting** — MCP handshake not finished yet ([Cursor docs](https://cursor.com/docs/mcp), [Koder MCP server state](https://meta.koder.dev/specs/ai-ui/mcp-server-state/)) | Check **Output → MCP Logs**. Stdio startup used to block ~2 min while Ollama embedded every skill; current server uses fast deterministic startup then upgrades embeddings in the background. Toggle **skills-kg** off/on after pulling latest code |
 | Duplicate guidance | Both MCP and filesystem enabled | Pick one mode using this guide |
 | No skills at all | Both paths disabled | Re-enable MCP **or** filesystem per mode above |

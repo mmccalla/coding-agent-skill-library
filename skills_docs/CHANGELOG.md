@@ -2,6 +2,24 @@
 
 Release-level changes to the portable skills library and Skills KG service.
 
+## 2026-07-07 (documentation sync + library growth)
+
+### Skills library
+
+- **113-skill** flat library (`avoid-cognitive-biases`, `avoid-fallacies` added to `agent-control-patterns`).
+- Eval corpora refreshed: smoke **13**, realistic **55**, coverage **254**, confuser pairs **31**, legacy golden union **332**.
+- Agent journeys **JRN-12** (cognitive-bias review) and **JRN-13** (fallacy review).
+
+### Skills KG / tooling
+
+- `scripts/` reorganised into domain packages (`graph/`, `runtime/`, `lib/`, `validators/`, etc.) — PR #34.
+- MCP legacy shim at `scripts/skills_mcp_server.py` for configs still pointing at the pre-reorg path — PR #36.
+- `validate_docs.py` stale flat-script-path guard.
+
+### Documentation
+
+- `krag/STATUS.md`, `krag/EVALUATION.md`, `LIBRARY_CONTRACT.md`, runbooks aligned to current counts and layout.
+
 ## 2026-07-03 (closeout programme)
 
 ### Skills KG

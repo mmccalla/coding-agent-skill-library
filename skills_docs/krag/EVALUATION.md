@@ -1,7 +1,7 @@
 # KRAG evaluation report
 
-**Last measured:** 2026-07-03  
-**Scope:** Tiered retrieval corpora, MCP agent journeys (JRN-01 … JRN-11), CI ingest gate, promoted-smoke evaluation  
+**Last measured:** 2026-07-07  
+**Scope:** Tiered retrieval corpora, MCP agent journeys (JRN-01 … JRN-13), CI ingest gate, promoted-smoke evaluation  
 **Method:** Offline deterministic evaluation (`evaluate_offline`, `limit=3`) + MCP journey fixtures + `ci_ingest_gate.py`
 
 Roadmap: [`STATUS.md`](STATUS.md). Corpus contract: [`EVALUATION_CORPUS_CONTRACT.md`](EVALUATION_CORPUS_CONTRACT.md). Release gates: [`CONTRACTS.md`](CONTRACTS.md) § Evaluation.
@@ -14,16 +14,16 @@ This report separates **ranking quality**, **exclusion behaviour**, **abstention
 
 | Fixture | Cases | Schedule | Purpose |
 | --- | ---: | --- | --- |
-| `smoke_queries_promoted.json` | **11** | Every PR (`ci_ingest_gate.py`) | Fast promoted smoke + one abstention probe |
-| `realistic_queries.json` | **31** | PR / release (`test_e2e_realistic_retrieval.py`) | Curated confusers + journey harvest |
+| `smoke_queries_promoted.json` | **13** | Every PR (`ci_ingest_gate.py`) | Fast promoted smoke + one abstention probe |
+| `realistic_queries.json` | **55** | PR / release (`test_e2e_realistic_retrieval.py`) | Curated confusers + journey harvest |
 | `abstention_probes.json` | **10** | PR / release | Low-confidence / gibberish abstention |
-| `coverage_queries.json` | **195** | Nightly (`.github/workflows/nightly-eval-coverage.yml`) | ≤3 archetypes per promoted skill |
-| `query_catalog.json` | **26** | Source of truth (human review) | Curated catalogue for generator |
-| `confuser_pairs.json` | **15** | Validator | Near-neighbour pair registry |
-| `golden_queries.json` | **247** | Legacy union re-export | Back-compat; not the CI gate |
+| `coverage_queries.json` | **254** | Nightly (`.github/workflows/nightly-eval-coverage.yml`) | ≤3 archetypes per promoted skill |
+| `query_catalog.json` | **33** | Source of truth (human review) | Curated catalogue for generator |
+| `confuser_pairs.json` | **31** | Validator | Near-neighbour pair registry |
+| `golden_queries.json` | **332** | Legacy union re-export | Back-compat; not the CI gate |
 
-**Active PR eval:** smoke (11) + realistic (31) + abstention (10) ≈ **52 cases** (~30 s offline).  
-**Nightly:** coverage (195) + matrix artefact.
+**Active PR eval:** smoke (13) + realistic (55) + abstention (10) ≈ **78 cases** (~30 s offline).  
+**Nightly:** coverage (254) + matrix artefact.
 
 Regenerate tiers:
 
@@ -40,13 +40,13 @@ python3 scripts/validators/validate_eval_corpus.py --check-skill-sync --emit-mat
 
 | Measure | Value | Source |
 | --- | ---: | --- |
-| Skills in library | **91** | `extract_skills_graph_records` |
-| Promoted | **91** | `promotion_status=promoted` |
+| Skills in library | **113** | `extract_skills_graph_records` |
+| Promoted | **113** | `promotion_status=promoted` |
 | Quarantined / rejected | **0** | post-authoring remediation |
 | Coverage archetypes per skill | **≤ 3** | task, alias/direct, confuser |
-| Confuser pairs registered | **15** | `confuser_pairs.json` |
+| Confuser pairs registered | **31** | `confuser_pairs.json` |
 
-### Smoke tier (`smoke_queries_promoted.json`, n=11)
+### Smoke tier (`smoke_queries_promoted.json`, n=13)
 
 | Metric | Value | Gate |
 | --- | ---: | --- |
@@ -57,7 +57,7 @@ python3 scripts/validators/validate_eval_corpus.py --check-skill-sync --emit-mat
 
 Complement skills may co-rank at positions 2–3 (e.g. `krag-system-design` vs `knowledge-graph-rag`). Top-1 selection remains correct.
 
-### Realistic tier (`realistic_queries.json`, n=31)
+### Realistic tier (`realistic_queries.json`, n=55)
 
 | Metric | Value | Gate |
 | --- | ---: | --- |
@@ -75,7 +75,7 @@ Complement skills may co-rank at positions 2–3 (e.g. `krag-system-design` vs `
 
 Probes use **low-confidence gibberish** queries that the hybrid retriever correctly abstains on. Natural-language out-of-domain questions (weather, stock prices) are **not** currently gated — retrieval may still return confident matches for those.
 
-### Coverage tier (`coverage_queries.json`, n=195, promoted-eligible)
+### Coverage tier (`coverage_queries.json`, n=254, promoted-eligible)
 
 | Metric | Value | Gate (nightly) |
 | --- | ---: | --- |
@@ -111,13 +111,13 @@ docker compose up --build -d
 
 | Gate | Result | Detail |
 | --- | --- | --- |
-| **CI ingest gate** | **PASS** | L2 trust, SHACL, corpus validator, delta eval (when skills change), smoke 11/11 |
+| **CI ingest gate** | **PASS** | L2 trust, SHACL, corpus validator, delta eval (when skills change), smoke 13/13 |
 | **Promoted smoke evaluation** | **PASS** | smoke `precision@1=1.0`; soft exclusion ≥ 0.5 |
 | **Corpus validator** | **PASS** | `validate_eval_corpus.py --check-skill-sync` |
-| **Docker `skills-loader`** | **PASS** | 91 Skills, 810 RetrievalUnits |
-| **pytest (eval + journeys)** | **PASS** | realistic e2e + JRN-01 … JRN-11 |
+| **Docker `skills-loader`** | **PASS** | 113 Skills, 1045 RetrievalUnits (deterministic embed plan) |
+| **pytest (eval + journeys)** | **PASS** | realistic e2e + JRN-01 … JRN-13 |
 
-### MCP agent journeys (11 fixtures)
+### MCP agent journeys (13 fixtures)
 
 | Journey | Server | Status |
 | --- | --- | --- |
@@ -132,6 +132,8 @@ docker compose up --build -d
 | JRN-09 security / destructive approval | embedded | ✅ |
 | JRN-10 usage metrics trace | fixture | ✅ |
 | JRN-11 admin ingest resolve | fixture | ✅ |
+| JRN-12 cognitive-bias review | embedded | ✅ |
+| JRN-13 fallacy review | embedded | ✅ |
 
 ---
 
@@ -140,10 +142,10 @@ docker compose up --build -d
 | Finding | Detail |
 | --- | --- |
 | **Ranking on gated tiers** | **precision@1 = 1.0** on smoke, realistic, and coverage tiers |
-| **Corpus redesign** | Replaced 1,194-case template bulk with **~252** union cases across tiers (~79% reduction) |
+| **Corpus redesign** | Replaced 1,194-case template bulk with **~332** union cases across tiers (~72% reduction) |
 | **Primary residual gap** | Natural-language OOD abstention not CI-gated; gibberish probes pass at 100% |
 | **Secondary gap** | Exclusion at ranks 2–3 — complement co-ranking; measured with soft threshold 0.5 |
-| **Realistic tier size** | 31 cases today vs ~100 target — expand catalogue/journey harvest over time |
+| **Realistic tier size** | 55 cases today vs ~100 target — expand catalogue/journey harvest over time |
 | **Change-scoped eval** | `ci_ingest_gate.py` runs delta eval on touched `skills/*/SKILL.md` when `DELTA_EVAL_BASE_REF` is set |
 
 ---
@@ -165,11 +167,12 @@ docker compose up --build -d
 ## Residual risks
 
 1. **Natural-language OOD abstention** — not gated; only gibberish/low-confidence probes in `abstention_probes.json`.
-2. **Realistic tier below target size** — 31 vs ~100 planned; category balance still growing.
-3. **Exclusion at ranks 2–3** — graph `COMPLEMENTS` edges surface neighbours by design.
-4. **Legacy `golden_queries.json`** — union re-export for compatibility; do not regenerate 11×91 templates.
-5. **Offline harness** — `evaluate_offline` uses in-process graph plan; journeys use fixture or embedded servers.
-6. **mypy debt** — resolved 2026-07-03; `python3 -m mypy` passes on `scripts/`.
+2. **Realistic tier below target size** — 55 vs ~100 planned; category balance still growing.
+3. **Query catalogue below target** — 33 vs ≥100 curated entries planned.
+4. **Exclusion at ranks 2–3** — graph `COMPLEMENTS` edges surface neighbours by design.
+5. **Legacy `golden_queries.json`** — union re-export for compatibility; do not regenerate template bulk × skill count.
+6. **Offline harness** — `evaluate_offline` uses in-process graph plan; journeys use fixture or embedded servers.
+7. **mypy** — `python3 -m mypy` passes on `scripts/` (Wave 5 closeout).
 
 ---
 
@@ -219,6 +222,6 @@ python3 scripts/graph/build/embed_skill_chunks.py --provider ollama-bge-m3 --app
 | `scripts/lib/retrieval/run_e2e_retrieval_eval.py` | Multi-arm audit runner |
 | `scripts/graph/build/embed_skill_chunks.py` | Production BGE embed/load (`--apply`) and CI deterministic path |
 | `tests/test_e2e_realistic_retrieval.py` | Honest tier thresholds |
-| `tests/fixtures/agent_journeys.json` | 11 MCP journey fixtures |
+| `tests/fixtures/agent_journeys.json` | 13 MCP journey fixtures |
 
 Historical pre-shrink metrics (1,194-case template corpus, 84.6% blended pass) predate the tiered corpus redesign documented in this report.

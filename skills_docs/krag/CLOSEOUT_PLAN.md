@@ -1,8 +1,10 @@
 # Closeout plan — golden corpus realism and STATUS.md completion
 
-**Branch:** `plan/golden-corpus-status-closeout`  
-**Last updated:** 2026-07-03  
-**Programme status:** Waves **0–4 shipped**; Wave **5** partial (mypy debt only)  
+> **Programme complete (2026-07-07).** Waves 0–5 shipped on `main`. This document is retained as the delivery record; live status is [`STATUS.md`](STATUS.md).
+
+**Branch:** `main` (was `plan/golden-corpus-status-closeout`)  
+**Last updated:** 2026-07-07  
+**Programme status:** Waves **0–5 complete**  
 **Owner:** Skills KG / KRAG delivery  
 **Living status:** [`STATUS.md`](STATUS.md)  
 **Evaluation detail:** [`EVALUATION.md`](EVALUATION.md)
