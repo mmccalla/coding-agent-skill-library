@@ -115,7 +115,7 @@ L2 categories map to `skills_docs/security/OWASP_ASI_CROSSWALK.md` (ASI01, ASI04
 | `quarantined` | Excluded from retrieval projections |
 | `promoted` | Full MCP + graph |
 
-**Current state (2026-07-03):** 91/91 promoted. See `STATUS.md`.
+**Current state (2026-07-07):** 113/113 promoted. See `STATUS.md`.
 
 Admin ingest must record trust report hash, actor and outcome (Phase 10).
 
@@ -180,7 +180,7 @@ Canonical-name lookups, alias lookups, vague semantic questions, near-neighbour 
 ### Known gaps (not CI-gated)
 
 - Natural-language **OOD abstention** — only gibberish/low-confidence probes are gated in `abstention_probes.json`. See `EVALUATION.md`.
-- **mypy** typing debt in `scripts/` (~68 errors) — `ci_local.sh` target; tracked in `STATUS.md`.
+- **mypy** — `python3 -m mypy` passes on `scripts/`; enforced in `ci_local.sh`.
 
 ### Observability per query
 
