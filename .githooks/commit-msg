@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Git commit-msg hook — enforces DCO Signed-off-by via pre-commit framework.
+set -euo pipefail
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+exec python3 -m pre_commit run --hook-stage commit-msg --commit-msg-filename "$1"

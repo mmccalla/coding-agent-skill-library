@@ -1,0 +1,10 @@
+title = "coding-agent-skill-library gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Allowlisted paths for intentional security test fixtures"
+paths = [
+  '''tests/fixtures/skill_trust/malicious/''',
+]

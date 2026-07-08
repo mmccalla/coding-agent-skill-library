@@ -65,7 +65,7 @@ class SkillsKgMcpDocsTests(unittest.TestCase):
         self.assertIn("python3 scripts/runtime/mcp/skills_mcp_server.py --list-tools", text)
         self.assertIn("python3 scripts/graph/build/embed_skill_chunks.py --query", text)
         self.assertIn("python3 scripts/utils/ci/ci_ingest_gate.py", text)
-        self.assertIn("python3 scripts/validators/validate_skills_graph.py", text)
+        self.assertIn("run_library_validators.sh", text)
         self.assertIn("-m eval_pr", text)
         self.assertNotIn("--apply", text)
         self.assertNotIn("python3 scripts/lib/retrieval/evaluate_skill_retrieval.py", text)

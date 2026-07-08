@@ -10,21 +10,19 @@ export SKILLS_EMBEDDING_PROVIDER="${SKILLS_EMBEDDING_PROVIDER:-deterministic}"
 
 PYTEST_QUALITY_MARKER='not live_neo4j and not slow and not eval_pr'
 
-run_quality() {
-  echo "==> validate_docs.py"
-  python3 scripts/validators/validate_docs.py
+run_fast_precommit() {
+  echo "==> pre-commit (fast commit stage)"
+  python3 -m pre_commit run --all-files --hook-stage pre-commit
+}
 
-  echo "==> validate_skills.py"
-  python3 scripts/validators/validate_skills.py
+run_library_validators() {
+  echo "==> library validators"
+  ./scripts/dev_workflow/run_library_validators.sh --all
+}
 
-  echo "==> validate_skill_practice.py --all"
-  python3 scripts/validators/validate_skill_practice.py --all
-
-  echo "==> validate_skills_graph.py"
-  python3 scripts/validators/validate_skills_graph.py
-
-  echo "==> validate_eval_corpus.py"
-  python3 scripts/validators/validate_eval_corpus.py --check-skill-sync
+run_python_quality() {
+  echo "==> validate_import_cycles.py"
+  python3 scripts/validators/validate_import_cycles.py
 
   echo "==> ruff check"
   python3 -m ruff check scripts tests
@@ -35,8 +33,8 @@ run_quality() {
   echo "==> mypy"
   python3 -m mypy
 
-  echo "==> pytest (quality tier)"
-  python3 -m pytest --cov=scripts --cov-report=term-missing -m "${PYTEST_QUALITY_MARKER}"
+  echo "==> pytest (quality tier, parallel)"
+  python3 -m pytest --cov=scripts --cov-report=term-missing -n auto -m "${PYTEST_QUALITY_MARKER}"
 
   echo "==> offline KG/MCP smoke"
   python3 scripts/graph/build/embed_skill_chunks.py --query "approval before destructive command" --limit 1 >/dev/null
@@ -85,8 +83,16 @@ run_nightly_eval() {
 }
 
 case "${1:-all}" in
+  fast-precommit)
+    run_fast_precommit
+    ;;
+  library-validators)
+    run_library_validators
+    ;;
   quality)
-    run_quality
+    run_fast_precommit
+    run_library_validators
+    run_python_quality
     ;;
   ingest-gate)
     run_ingest_gate
@@ -104,14 +110,16 @@ case "${1:-all}" in
     run_nightly_eval
     ;;
   all)
-    run_quality
+    run_fast_precommit
+    run_library_validators
+    run_python_quality
     run_ingest_gate
     run_eval_pr
     run_skills_ui
     run_neo4j_integration
     ;;
   *)
-    echo "usage: $0 [quality|ingest-gate|eval-pr|skills-ui|neo4j|nightly|all]" >&2
+    echo "usage: $0 [fast-precommit|library-validators|quality|ingest-gate|eval-pr|skills-ui|neo4j|nightly|all]" >&2
     exit 1
     ;;
 esac

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Git pre-push hook — runs slower Python quality checks before push.
+set -euo pipefail
+ROOT="$(git rev-parse --show-toplevel)"
+exec "$ROOT/scripts/dev_workflow/pre_push_check.sh" "$@"

@@ -66,10 +66,10 @@ Resolve canonical skill ids, pack ids, aliases and governed concepts against fir
 
 ### Retrieval strategy
 
-1. graph-first for entities, traversals, constraints, procedures and verification  
-2. keyword-first for exact ids or names  
-3. vector-first for vague exploratory questions  
-4. hybrid when recall matters  
+1. graph-first for entities, traversals, constraints, procedures and verification
+2. keyword-first for exact ids or names
+3. vector-first for vague exploratory questions
+4. hybrid when recall matters
 
 ### Safe text-to-Cypher
 
@@ -85,9 +85,9 @@ Cite evidence for material claims; state uncertainty; abstain when evidence is m
 
 ### Anti-patterns
 
-- No raw LLM-generated Cypher execution  
-- No answers without citations  
-- No category-level bridge scores as primary ranking signal  
+- No raw LLM-generated Cypher execution
+- No answers without citations
+- No category-level bridge scores as primary ranking signal
 
 ---
 
@@ -169,13 +169,13 @@ Canonical-name lookups, alias lookups, vague semantic questions, near-neighbour 
 
 ### Release gates (ongoing)
 
-- Graph-relevant queries outperform vector-only baseline (graph lift ≥ 0)  
-- Citation-backed material claims  
-- Forbidden Cypher rejected  
-- Idempotent ingestion  
-- Near-neighbour disambiguation on `realistic_queries.json` (precision@1 = 1.0; exclusion ≥ 0.5)  
-- Tiered corpus contract (`EVALUATION_CORPUS_CONTRACT.md`) passes `validate_eval_corpus.py`  
-- Change-scoped delta eval passes for touched `skills/*/SKILL.md` when `DELTA_EVAL_BASE_REF` is set  
+- Graph-relevant queries outperform vector-only baseline (graph lift ≥ 0)
+- Citation-backed material claims
+- Forbidden Cypher rejected
+- Idempotent ingestion
+- Near-neighbour disambiguation on `realistic_queries.json` (precision@1 = 1.0; exclusion ≥ 0.5)
+- Tiered corpus contract (`EVALUATION_CORPUS_CONTRACT.md`) passes `validate_eval_corpus.py`
+- Change-scoped delta eval passes for touched `skills/*/SKILL.md` when `DELTA_EVAL_BASE_REF` is set
 
 ### Known gaps (not CI-gated)
 

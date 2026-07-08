@@ -1,7 +1,7 @@
 # KRAG evaluation report
 
-**Last measured:** 2026-07-07  
-**Scope:** Tiered retrieval corpora, MCP agent journeys (JRN-01 … JRN-13), CI ingest gate, promoted-smoke evaluation  
+**Last measured:** 2026-07-07
+**Scope:** Tiered retrieval corpora, MCP agent journeys (JRN-01 … JRN-13), CI ingest gate, promoted-smoke evaluation
 **Method:** Offline deterministic evaluation (`evaluate_offline`, `limit=3`) + MCP journey fixtures + `ci_ingest_gate.py`
 
 Roadmap: [`STATUS.md`](STATUS.md). Corpus contract: [`EVALUATION_CORPUS_CONTRACT.md`](EVALUATION_CORPUS_CONTRACT.md). Release gates: [`CONTRACTS.md`](CONTRACTS.md) § Evaluation.
@@ -22,7 +22,7 @@ This report separates **ranking quality**, **exclusion behaviour**, **abstention
 | `confuser_pairs.json` | **38** | Validator | Near-neighbour pair registry |
 | `golden_queries.json` | **332** | Legacy union re-export | Back-compat; not the CI gate |
 
-**Active PR eval:** smoke (13) + realistic (62) + abstention (10) ≈ **85 cases** (~30 s offline).  
+**Active PR eval:** smoke (13) + realistic (62) + abstention (10) ≈ **85 cases** (~30 s offline).
 **Nightly:** coverage (254) + matrix artefact.
 
 Regenerate tiers:

@@ -101,4 +101,3 @@ RETURN
   s.id AS skill_id,
   s.name AS skill_name
 ORDER BY skill_name;
-

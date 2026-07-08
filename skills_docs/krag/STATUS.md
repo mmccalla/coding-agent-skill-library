@@ -1,12 +1,12 @@
 # Skills KG — status and roadmap
 
-**Last updated:** 2026-07-07  
-**Branch context:** `main`  
+**Last updated:** 2026-07-07
+**Branch context:** `main`
 **Closeout programme:** [`CLOSEOUT_PLAN.md`](CLOSEOUT_PLAN.md) — **waves 0–5 complete** (optional P2/P3 expansions remain advisory)
 
 This is the **single live roadmap** for the Knowledge Graph service.
 
-For measured retrieval quality, see [`EVALUATION.md`](EVALUATION.md).  
+For measured retrieval quality, see [`EVALUATION.md`](EVALUATION.md).
 For the evaluation corpus redesign, see [`EVALUATION_CORPUS_CONTRACT.md`](EVALUATION_CORPUS_CONTRACT.md).
 
 ---
