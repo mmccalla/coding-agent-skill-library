@@ -24,8 +24,8 @@ For the evaluation corpus redesign, see [`EVALUATION_CORPUS_CONTRACT.md`](EVALUA
 | Trust gates L1–L4 | `scripts/validators/validate_skill_trust.py` |
 | CI ingest gate (Phase 9 + corpus + delta eval) | `scripts/utils/ci/ci_ingest_gate.py`, `scripts/validators/validate_eval_corpus.py` in `ci_local.sh` |
 | Full promotion (**113/113** promoted, **0** quarantined) | 2026-07-03 authoring remediation + 2026-07-06 bias/fallacy skills |
-| Tiered evaluation corpus (Option B) | smoke **13**, realistic **55**, coverage **254**, abstention **10**; `golden_queries.json` union **332** |
-| Coverage matrix + confuser registry | `coverage_matrix.json`, `confuser_pairs.json` (**31** pairs), `validate_eval_corpus.py` |
+| Tiered evaluation corpus (Option B) | smoke **13**, realistic **62**, coverage **256**, abstention **10**; `golden_queries.json` union regenerated |
+| Coverage matrix + confuser registry | `coverage_matrix.json`, `confuser_pairs.json` (**38** pairs), `validate_eval_corpus.py` |
 | Realistic confuser tier | precision@1 **1.0**; soft exclusion **≥ 0.5** |
 | Coverage tier (nightly) | precision@1 **1.0** on promoted-eligible cases |
 | Change-scoped delta eval | `scripts/utils/ci/ci_ingest_gate.py` + `DELTA_EVAL_BASE_REF` |
@@ -62,8 +62,8 @@ Phases 1–9: vocabulary, authoring, trust, ingest, projections, MCP usage, eval
 
 | Item | Priority | Acceptance |
 | --- | --- | --- |
-| Expand realistic tier toward ~100 curated/journey cases | P2 | Category balance per `EVALUATION_CORPUS_CONTRACT.md` (55 today) |
-| Expand query catalogue toward ≥100 curated entries | P2 | Source of truth for smoke/realistic generation (33 today) |
+| Expand realistic tier toward ~100 curated/journey cases | P2 | Category balance per `EVALUATION_CORPUS_CONTRACT.md` (62 today) |
+| Expand query catalogue toward ≥100 curated entries | P2 | Source of truth for smoke/realistic generation (40 today) |
 | Natural-language OOD abstention probes | P3 | Gate weather/stock-style queries when retrieval abstains reliably |
 
 ---
@@ -72,8 +72,8 @@ Phases 1–9: vocabulary, authoring, trust, ingest, projections, MCP usage, eval
 
 | Gap | Impact | Notes |
 | --- | --- | --- |
-| Realistic tier below target size (55 vs ~100) | Less journey/category diversity in PR eval | Expand catalogue over time |
-| Query catalogue below target (33 vs ≥100) | Slower realistic-tier growth | Harvest from journeys and confuser reviews |
+| Realistic tier below target size (62 vs ~100) | Less journey/category diversity in PR eval | Expand catalogue over time |
+| Query catalogue below target (40 vs ≥100) | Slower realistic-tier growth | Harvest from journeys and confuser reviews |
 | OOD abstention uses gibberish probes only | Natural-language off-domain not CI-gated | Documented in `EVALUATION.md` |
 
 ---

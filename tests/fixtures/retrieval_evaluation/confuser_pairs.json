@@ -183,5 +183,10 @@
     "id": "bias_vs_prioritization",
     "preferred_skill_id": "skill:cognitive-bias-review",
     "confuser_skill_id": "skill:prioritization"
+  },
+  {
+    "id": "fallacy_vs_reasoning",
+    "preferred_skill_id": "skill:logical-fallacy-review",
+    "confuser_skill_id": "skill:reasoning-techniques"
   }
 ]

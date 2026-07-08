@@ -731,5 +731,24 @@
     "naturalness": "high",
     "promotion_tier": "release",
     "realistic_tier": true
+  },
+  {
+    "id": "confuser_fallacy_vs_reasoning",
+    "query": "logical fallacy audit on threat mitigation justification post hoc ergo propter hoc slippery slope false dichotomy",
+    "expected_skill_ids": [
+      "skill:logical-fallacy-review"
+    ],
+    "required_skill_ids": [
+      "skill:logical-fallacy-review"
+    ],
+    "excluded_skill_ids": [
+      "skill:reasoning-techniques"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "high",
+    "promotion_tier": "release",
+    "realistic_tier": true
   }
 ]

@@ -1,7 +1,7 @@
 # Evaluation corpus contract
 
 **Programme:** [`CLOSEOUT_PLAN.md`](CLOSEOUT_PLAN.md)  
-**Last updated:** 2026-07-07
+**Last updated:** 2026-07-08
 
 Defines tiered retrieval evaluation corpora replacing the templated 1,194-case `golden_queries.json` bulk generator.
 
@@ -22,11 +22,11 @@ Defines tiered retrieval evaluation corpora replacing the templated 1,194-case `
 | Tier / artefact | Cases |
 | --- | ---: |
 | Smoke | 13 |
-| Realistic | 55 |
-| Coverage | 254 |
+| Realistic | 62 |
+| Coverage | 256 |
 | Abstention | 10 |
-| Catalogue | 33 |
-| Confuser pairs | 31 |
+| Catalogue | 40 |
+| Confuser pairs | 38 |
 | Legacy `golden_queries.json` union | 332 |
 
 `golden_queries.json` is **deprecated** after Wave 2; do not regenerate template bulk × per-skill archetypes (legacy was 11 × 91).
