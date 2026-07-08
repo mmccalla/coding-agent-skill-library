@@ -36,8 +36,8 @@ PROMOTION_READY_SOURCES: frozenset[str] = frozenset(
 # Curated primary intents for high-traffic eval and agent skills (Phase 2b registry).
 SKILL_PRIMARY_INTENTS: dict[str, str] = {
     "apply-laws-of-ai": "session-baseline",
-    "avoid-cognitive-biases": "post-artefact-review",
-    "avoid-fallacies": "post-artefact-review",
+    "cognitive-bias-review": "post-artefact-review",
+    "logical-fallacy-review": "post-artefact-review",
     "knowledge-graph-rag": "krag-architecture",
     "krag-system-design": "krag-architecture",
     "krag-ingestion-graph-construction": "krag-architecture",

@@ -107,44 +107,6 @@
         }
       ]
     },
-    "skill:avoid-cognitive-biases": {
-      "case_count": 2,
-      "archetypes": [
-        "alias",
-        "task"
-      ],
-      "cases": [
-        {
-          "case_id": "coverage_avoid_cognitive_biases_task",
-          "query_archetype": "task",
-          "query_source": "archetype"
-        },
-        {
-          "case_id": "coverage_avoid_cognitive_biases_alias",
-          "query_archetype": "alias",
-          "query_source": "archetype"
-        }
-      ]
-    },
-    "skill:avoid-fallacies": {
-      "case_count": 2,
-      "archetypes": [
-        "alias",
-        "task"
-      ],
-      "cases": [
-        {
-          "case_id": "coverage_avoid_fallacies_task",
-          "query_archetype": "task",
-          "query_source": "archetype"
-        },
-        {
-          "case_id": "coverage_avoid_fallacies_alias",
-          "query_archetype": "alias",
-          "query_source": "archetype"
-        }
-      ]
-    },
     "skill:bdd-practice": {
       "case_count": 2,
       "archetypes": [
@@ -318,6 +280,31 @@
         {
           "case_id": "coverage_code_review_and_quality_direct",
           "query_archetype": "direct",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:cognitive-bias-review": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_cognitive_bias_review_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_cognitive_bias_review_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_cognitive_bias_review_confuser",
+          "query_archetype": "confuser",
           "query_source": "archetype"
         }
       ]
@@ -1239,6 +1226,31 @@
         {
           "case_id": "coverage_logical_data_modeling_alias",
           "query_archetype": "alias",
+          "query_source": "archetype"
+        }
+      ]
+    },
+    "skill:logical-fallacy-review": {
+      "case_count": 3,
+      "archetypes": [
+        "alias",
+        "confuser",
+        "task"
+      ],
+      "cases": [
+        {
+          "case_id": "coverage_logical_fallacy_review_task",
+          "query_archetype": "task",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_logical_fallacy_review_alias",
+          "query_archetype": "alias",
+          "query_source": "archetype"
+        },
+        {
+          "case_id": "coverage_logical_fallacy_review_confuser",
+          "query_archetype": "confuser",
           "query_source": "archetype"
         }
       ]

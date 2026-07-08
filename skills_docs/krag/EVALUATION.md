@@ -15,14 +15,14 @@ This report separates **ranking quality**, **exclusion behaviour**, **abstention
 | Fixture | Cases | Schedule | Purpose |
 | --- | ---: | --- | --- |
 | `smoke_queries_promoted.json` | **13** | Every PR (`ci_ingest_gate.py`) | Fast promoted smoke + one abstention probe |
-| `realistic_queries.json` | **55** | PR / release (`test_e2e_realistic_retrieval.py`) | Curated confusers + journey harvest |
+| `realistic_queries.json` | **62** | PR / release (`test_e2e_realistic_retrieval.py`) | Curated confusers + journey harvest |
 | `abstention_probes.json` | **10** | PR / release | Low-confidence / gibberish abstention |
 | `coverage_queries.json` | **254** | Nightly (`.github/workflows/nightly-eval-coverage.yml`) | ≤3 archetypes per promoted skill |
-| `query_catalog.json` | **33** | Source of truth (human review) | Curated catalogue for generator |
-| `confuser_pairs.json` | **31** | Validator | Near-neighbour pair registry |
+| `query_catalog.json` | **40** | Source of truth (human review) | Curated catalogue for generator |
+| `confuser_pairs.json` | **38** | Validator | Near-neighbour pair registry |
 | `golden_queries.json` | **332** | Legacy union re-export | Back-compat; not the CI gate |
 
-**Active PR eval:** smoke (13) + realistic (55) + abstention (10) ≈ **78 cases** (~30 s offline).  
+**Active PR eval:** smoke (13) + realistic (62) + abstention (10) ≈ **85 cases** (~30 s offline).  
 **Nightly:** coverage (254) + matrix artefact.
 
 Regenerate tiers:
@@ -44,7 +44,7 @@ python3 scripts/validators/validate_eval_corpus.py --check-skill-sync --emit-mat
 | Promoted | **113** | `promotion_status=promoted` |
 | Quarantined / rejected | **0** | post-authoring remediation |
 | Coverage archetypes per skill | **≤ 3** | task, alias/direct, confuser |
-| Confuser pairs registered | **31** | `confuser_pairs.json` |
+| Confuser pairs registered | **38** | `confuser_pairs.json` |
 
 ### Smoke tier (`smoke_queries_promoted.json`, n=13)
 
@@ -57,7 +57,7 @@ python3 scripts/validators/validate_eval_corpus.py --check-skill-sync --emit-mat
 
 Complement skills may co-rank at positions 2–3 (e.g. `krag-system-design` vs `knowledge-graph-rag`). Top-1 selection remains correct.
 
-### Realistic tier (`realistic_queries.json`, n=55)
+### Realistic tier (`realistic_queries.json`, n=62)
 
 | Metric | Value | Gate |
 | --- | ---: | --- |
@@ -145,7 +145,7 @@ docker compose up --build -d
 | **Corpus redesign** | Replaced 1,194-case template bulk with **~332** union cases across tiers (~72% reduction) |
 | **Primary residual gap** | Natural-language OOD abstention not CI-gated; gibberish probes pass at 100% |
 | **Secondary gap** | Exclusion at ranks 2–3 — complement co-ranking; measured with soft threshold 0.5 |
-| **Realistic tier size** | 55 cases today vs ~100 target — expand catalogue/journey harvest over time |
+| **Realistic tier size** | 62 cases today vs ~100 target — expand catalogue/journey harvest over time |
 | **Change-scoped eval** | `ci_ingest_gate.py` runs delta eval on touched `skills/*/SKILL.md` when `DELTA_EVAL_BASE_REF` is set |
 
 ---
@@ -167,8 +167,8 @@ docker compose up --build -d
 ## Residual risks
 
 1. **Natural-language OOD abstention** — not gated; only gibberish/low-confidence probes in `abstention_probes.json`.
-2. **Realistic tier below target size** — 55 vs ~100 planned; category balance still growing.
-3. **Query catalogue below target** — 33 vs ≥100 curated entries planned.
+2. **Realistic tier below target size** — 62 vs ~100 planned; category balance still growing.
+3. **Query catalogue below target** — 40 vs ≥100 curated entries planned.
 4. **Exclusion at ranks 2–3** — graph `COMPLEMENTS` edges surface neighbours by design.
 5. **Legacy `golden_queries.json`** — union re-export for compatibility; do not regenerate template bulk × skill count.
 6. **Offline harness** — `evaluate_offline` uses in-process graph plan; journeys use fixture or embedded servers.

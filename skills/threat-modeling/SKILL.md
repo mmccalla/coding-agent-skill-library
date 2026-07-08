@@ -51,6 +51,7 @@ Produce a concise threat model that links assets and trust boundaries to threats
 ## Related skills
 
 - `guardrails-safety-patterns` — runtime controls after threats are known
+- `logical-fallacy-review` — invalid causal or authority claims in security justifications
 - `data-security-and-privacy-architecture` — data controls and privacy obligations
 - `secure-sdlc-and-supply-chain` — pipeline and dependency mitigations
 - `human-in-the-loop` — approval for residual high-impact risk

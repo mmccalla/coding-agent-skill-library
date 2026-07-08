@@ -371,7 +371,7 @@
   },
   {
     "id": "JRN-12-bias-review",
-    "description": "Agent recommends avoid-cognitive-biases when asked to debias a plan review.",
+    "description": "Agent recommends cognitive-bias-review when asked to debias a plan review.",
     "server": "embedded",
     "tags": ["recommendation", "control"],
     "steps": [
@@ -401,7 +401,7 @@
         "expect": {
           "status": "ok",
           "uncertain": false,
-          "top_skill_id": "skill:avoid-cognitive-biases"
+          "top_skill_id": "skill:cognitive-bias-review"
         },
         "expect_selection_trace": {
           "tool": "recommend_skills",
@@ -417,7 +417,7 @@
   },
   {
     "id": "JRN-13-fallacy-review",
-    "description": "Agent recommends avoid-fallacies when asked to check ADR reasoning.",
+    "description": "Agent recommends logical-fallacy-review when asked to check ADR reasoning.",
     "server": "embedded",
     "tags": ["recommendation", "control"],
     "steps": [
@@ -447,7 +447,7 @@
         "expect": {
           "status": "ok",
           "uncertain": false,
-          "top_skill_id": "skill:avoid-fallacies"
+          "top_skill_id": "skill:logical-fallacy-review"
         },
         "expect_selection_trace": {
           "tool": "recommend_skills",

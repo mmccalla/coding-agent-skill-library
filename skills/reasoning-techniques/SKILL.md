@@ -45,6 +45,12 @@ Prefer externally verifiable reasoning over persuasive explanation. For code, th
 - Do not use LLM reasoning where a compiler, linter, parser or test can decide.
 - Do not continue a failing reasoning path without new evidence.
 
+## Related skills
+
+- `logical-fallacy-review` — audit whether premises validly support conclusions in draft arguments
+- `cognitive-bias-review` — check judgement distortion in rankings and recommendations
+- `reflection-and-verification` — deterministic checks and repair loops before rhetorical critique
+
 ## References
 
 - [ReAct: Synergizing Reasoning and Acting](https://arxiv.org/abs/2210.03629)

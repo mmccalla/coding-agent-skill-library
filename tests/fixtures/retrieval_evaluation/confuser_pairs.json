@@ -153,5 +153,40 @@
     "id": "tech_debt_vs_prioritization",
     "preferred_skill_id": "skill:technical-debt-management",
     "confuser_skill_id": "skill:prioritization"
+  },
+  {
+    "id": "bias_vs_fallacy",
+    "preferred_skill_id": "skill:cognitive-bias-review",
+    "confuser_skill_id": "skill:logical-fallacy-review"
+  },
+  {
+    "id": "fallacy_vs_bias",
+    "preferred_skill_id": "skill:logical-fallacy-review",
+    "confuser_skill_id": "skill:cognitive-bias-review"
+  },
+  {
+    "id": "bias_vs_reflection",
+    "preferred_skill_id": "skill:cognitive-bias-review",
+    "confuser_skill_id": "skill:reflection-and-verification"
+  },
+  {
+    "id": "fallacy_vs_reflection",
+    "preferred_skill_id": "skill:logical-fallacy-review",
+    "confuser_skill_id": "skill:reflection-and-verification"
+  },
+  {
+    "id": "fallacy_vs_code_review",
+    "preferred_skill_id": "skill:logical-fallacy-review",
+    "confuser_skill_id": "skill:code-review-and-quality"
+  },
+  {
+    "id": "bias_vs_prioritization",
+    "preferred_skill_id": "skill:cognitive-bias-review",
+    "confuser_skill_id": "skill:prioritization"
+  },
+  {
+    "id": "fallacy_vs_reasoning",
+    "preferred_skill_id": "skill:logical-fallacy-review",
+    "confuser_skill_id": "skill:reasoning-techniques"
   }
 ]

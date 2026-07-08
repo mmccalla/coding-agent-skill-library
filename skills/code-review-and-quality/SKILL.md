@@ -32,6 +32,7 @@ Identify correctness risks, test gaps, maintainability problems, hidden regressi
 ## Related skills
 
 - `tdd-practice` — tests as review evidence
+- `logical-fallacy-review` — invalid reasoning in review comments
 - `git-workflow-and-versioning` — reviewable atomic changes
 - `guardrails-safety-patterns` — security findings in review
 
