@@ -729,12 +729,6 @@ class SkillsMcpServer:
             if node.label == "RetrievalUnit" and node.properties.get("skill_id") == skill_id
         )
 
-    def _skill_by_id(self, skill_id: str) -> load_skills_neo4j.GraphNode | None:
-        for skill in self._skills():
-            if skill.id == skill_id:
-                return skill
-        return None
-
     def _search_skills(self, arguments: Mapping[str, object]) -> dict[str, object]:
         query = _string(arguments.get("query")).lower()
         limit = _bounded_int(arguments.get("limit"), 5, 1, self._settings.mcp.search_limit_max)
@@ -773,11 +767,11 @@ class SkillsMcpServer:
         retrieval_unit_limit = _bounded_int(
             arguments.get("retrieval_unit_limit"), 3, 1, self._settings.mcp.retrieval_unit_limit_max
         )
-        skill = self._skill_by_id(skill_id)
+        skill = skills_router._skill_by_id(self._plan, skill_id)
         if skill is None:
             with skills_mcp_perf.payload_construction():
                 return {"status": "error", "message": f"Skill not found: {skill_id}"}
-        retrieval_units = self._retrieval_units_for_skill(skill_id)[:retrieval_unit_limit]
+        retrieval_units = self._retrieval_units_for_skill(skill.id)[:retrieval_unit_limit]
         with skills_mcp_perf.payload_construction():
             return {
                 "status": "ok",
@@ -878,19 +872,21 @@ class SkillsMcpServer:
     def _get_skill_context(self, arguments: Mapping[str, object]) -> dict[str, object]:
         skill_id = _string(arguments.get("skill_id"))
         limit = _bounded_int(arguments.get("limit"), 10, 1, self._settings.mcp.context_limit_max)
-        if self._skill_by_id(skill_id) is None:
+        skill = skills_router._skill_by_id(self._plan, skill_id)
+        if skill is None:
             with skills_mcp_perf.payload_construction():
                 return {"status": "error", "message": f"Skill not found: {skill_id}"}
+        canonical_id = skill.id
         related: list[str] = []
         evidence_paths: list[str] = []
         for relationship in self._plan.relationships:
-            if relationship.source_id == skill_id:
+            if relationship.source_id == canonical_id:
                 evidence_paths.append(
                     f"{relationship.source_id} -[{relationship.type}]-> {relationship.target_id}"
                 )
                 if relationship.target_label == "Skill":
                     related.append(relationship.target_id)
-            elif relationship.target_id == skill_id:
+            elif relationship.target_id == canonical_id:
                 evidence_paths.append(
                     f"{relationship.source_id} -[{relationship.type}]-> {relationship.target_id}"
                 )
@@ -900,18 +896,18 @@ class SkillsMcpServer:
         with skills_mcp_perf.payload_construction():
             response: dict[str, object] = {
                 "status": "ok",
-                "skill_id": skill_id,
+                "skill_id": canonical_id,
                 "related_skill_ids": list(related_skill_ids),
                 "evidence_paths": list(evidence_paths[:limit]),
             }
         selection_run_id = skills_usage.new_selection_run_id()
-        skills_usage.record_skill_hit(skill_id, "get_skill_context")
+        skills_usage.record_skill_hit(canonical_id, "get_skill_context")
         skills_usage.emit_skill_selection_run(
             {
                 "selection_run_id": selection_run_id,
                 "tool": "get_skill_context",
                 "query_intent": "context",
-                "selected": [skill_id, *list(related_skill_ids)],
+                "selected": [canonical_id, *list(related_skill_ids)],
             }
         )
         with skills_mcp_perf.payload_construction():

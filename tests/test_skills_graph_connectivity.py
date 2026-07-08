@@ -474,7 +474,7 @@ class SkillsGraphConnectivityTests(unittest.TestCase):
     def test_local_ci_runs_skills_graph_validation(self) -> None:
         ci_text = (REPO_ROOT / "scripts/dev_workflow/ci_local.sh").read_text(encoding="utf-8")
 
-        self.assertIn("python3 scripts/validators/validate_skills_graph.py", ci_text)
+        self.assertIn("run_library_validators.sh", ci_text)
 
     def test_connectivity_cypher_contains_required_checks(self) -> None:
         text = CONNECTIVITY_CYPHER.read_text(encoding="utf-8")

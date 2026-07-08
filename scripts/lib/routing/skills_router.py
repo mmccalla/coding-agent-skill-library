@@ -134,6 +134,21 @@ def resolve_skill(plan: load_skills_neo4j.LoadPlan, name: str) -> dict[str, obje
     return {"status": "error", "message": f"Skill not found: {clean_name}"}
 
 
+def canonical_skill_id(plan: load_skills_neo4j.LoadPlan, skill_id: str) -> str | None:
+    """Resolve a canonical Skills KG id from an exact id or bare repository slug."""
+
+    clean_id = skill_id.strip()
+    if not clean_id:
+        return None
+    if _skill_node_by_exact_id(plan, clean_id) is not None:
+        return clean_id
+    if not clean_id.startswith("skill:"):
+        prefixed = f"skill:{clean_id}"
+        if _skill_node_by_exact_id(plan, prefixed) is not None:
+            return prefixed
+    return None
+
+
 def get_skill_execution_guide(
     plan: load_skills_neo4j.LoadPlan,
     skill_id: str,
@@ -146,9 +161,10 @@ def get_skill_execution_guide(
     if skill is None:
         return {"status": "error", "message": f"Skill not found: {skill_id}"}
 
-    section_texts = _canonical_section_texts(_retrieval_units_for_skill(plan, skill_id))
-    related_skill_ids, evidence_paths = _related_skill_ids(plan, skill_id, related_limit)
-    evidence = _section_evidence(_retrieval_units_for_skill(plan, skill_id))
+    canonical_id = skill.id
+    section_texts = _canonical_section_texts(_retrieval_units_for_skill(plan, canonical_id))
+    related_skill_ids, evidence_paths = _related_skill_ids(plan, canonical_id, related_limit)
+    evidence = _section_evidence(_retrieval_units_for_skill(plan, canonical_id))
     return {
         "status": "ok",
         "skill_id": skill.id,
@@ -169,13 +185,22 @@ def _skills(plan: load_skills_neo4j.LoadPlan) -> tuple[load_skills_neo4j.GraphNo
     return tuple(node for node in plan.nodes if node.label == "Skill")
 
 
-def _skill_by_id(
+def _skill_node_by_exact_id(
     plan: load_skills_neo4j.LoadPlan, skill_id: str
 ) -> load_skills_neo4j.GraphNode | None:
     for skill in _skills(plan):
         if skill.id == skill_id:
             return skill
     return None
+
+
+def _skill_by_id(
+    plan: load_skills_neo4j.LoadPlan, skill_id: str
+) -> load_skills_neo4j.GraphNode | None:
+    canonical_id = canonical_skill_id(plan, skill_id)
+    if canonical_id is None:
+        return None
+    return _skill_node_by_exact_id(plan, canonical_id)
 
 
 def _retrieval_units_for_skill(
