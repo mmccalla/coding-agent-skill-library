@@ -2,6 +2,20 @@
 
 Release-level changes to the portable skills library and Skills KG service.
 
+## 2026-07-08 (bias/fallacy skill rename + routing)
+
+### Skills library
+
+- Canonical IDs: **`cognitive-bias-review`**, **`logical-fallacy-review`** (replace `avoid-cognitive-biases`, `avoid-fallacies`).
+- **Alias deprecation:** `avoid-*` names remain in frontmatter aliases until **v0.2.0**; MCP and filesystem routing should prefer canonical IDs in new work.
+- Sharper skill boundaries: judgement distortion vs argument validity; sunk-cost on fallacy checklist.
+- Neighbour links: `reflection-and-verification`, `reasoning-techniques`, `threat-modeling`, `code-review-and-quality`, `risk-management`.
+
+### Evaluation
+
+- Confuser pairs: bias↔fallacy, bias↔reflection, fallacy↔reflection, fallacy↔code-review, fallacy↔reasoning, bias↔prioritisation.
+- Realistic tier **62** cases; confuser registry **38** pairs.
+
 ## 2026-07-07 (documentation sync + library growth)
 
 ### Skills library

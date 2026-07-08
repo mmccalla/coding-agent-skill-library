@@ -40,7 +40,7 @@ class EvaluateSkillRetrievalTests(unittest.TestCase):
         smoke = load_cases(SMOKE_DATASET)
 
         self.assertGreaterEqual(len(golden), 200)
-        self.assertLessEqual(len(golden), 340)
+        self.assertLessEqual(len(golden), 360)
         self.assertGreaterEqual(len(coverage), 180)
         self.assertGreaterEqual(len(abstention), 10)
         self.assertGreaterEqual(len(smoke), 8)

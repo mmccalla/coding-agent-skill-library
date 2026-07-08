@@ -196,70 +196,6 @@
     "promotion_tier": "release"
   },
   {
-    "id": "coverage_avoid_cognitive_biases_task",
-    "query": "When should I use avoid-cognitive-bias for use when reviewing plans, recommendations, prioritisation, risk registers, retrospectives or agent outputs for systematic cognitive bias that could distort engineering, security or delivery decisions?",
-    "expected_skill_ids": [
-      "skill:avoid-cognitive-biases"
-    ],
-    "required_skill_ids": [
-      "skill:avoid-cognitive-biases"
-    ],
-    "excluded_skill_ids": [],
-    "expect_uncertain": false,
-    "query_source": "archetype",
-    "query_archetype": "task",
-    "naturalness": "medium",
-    "promotion_tier": "release"
-  },
-  {
-    "id": "coverage_avoid_cognitive_biases_alias",
-    "query": "When should I use avoid-cognitive-bias for this kind of work?",
-    "expected_skill_ids": [
-      "skill:avoid-cognitive-biases"
-    ],
-    "required_skill_ids": [
-      "skill:avoid-cognitive-biases"
-    ],
-    "excluded_skill_ids": [],
-    "expect_uncertain": false,
-    "query_source": "archetype",
-    "query_archetype": "alias",
-    "naturalness": "medium",
-    "promotion_tier": "release"
-  },
-  {
-    "id": "coverage_avoid_fallacies_task",
-    "query": "When should I use logical-fallacy-check for use when evaluating arguments in plans, adrs, reviews, security justifications, prioritisation rationales or agent recommendations for logical fallacies that undermine valid engineering conclusions?",
-    "expected_skill_ids": [
-      "skill:avoid-fallacies"
-    ],
-    "required_skill_ids": [
-      "skill:avoid-fallacies"
-    ],
-    "excluded_skill_ids": [],
-    "expect_uncertain": false,
-    "query_source": "archetype",
-    "query_archetype": "task",
-    "naturalness": "medium",
-    "promotion_tier": "release"
-  },
-  {
-    "id": "coverage_avoid_fallacies_alias",
-    "query": "When should I use logical-fallacy-check for this kind of work?",
-    "expected_skill_ids": [
-      "skill:avoid-fallacies"
-    ],
-    "required_skill_ids": [
-      "skill:avoid-fallacies"
-    ],
-    "excluded_skill_ids": [],
-    "expect_uncertain": false,
-    "query_source": "archetype",
-    "query_archetype": "alias",
-    "naturalness": "medium",
-    "promotion_tier": "release"
-  },
-  {
     "id": "coverage_bdd_practice_task",
     "query": "When should I use behavior-driven-development for applies behaviour-driven development with business-readable scenarios linked to executable acceptance tests?",
     "expected_skill_ids": [
@@ -562,6 +498,56 @@
     "expect_uncertain": false,
     "query_source": "archetype",
     "query_archetype": "direct",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_cognitive_bias_review_task",
+    "query": "When should I use avoid-cognitive-biases for use when reviewing plans, recommendations, prioritisation, risk registers, retrospectives or agent outputs for judgement distortion from cognitive bias \u2014 not for checking whether an argument's premises validly support its conclusion?",
+    "expected_skill_ids": [
+      "skill:cognitive-bias-review"
+    ],
+    "required_skill_ids": [
+      "skill:cognitive-bias-review"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_cognitive_bias_review_alias",
+    "query": "When should I use avoid-cognitive-biases for this kind of work?",
+    "expected_skill_ids": [
+      "skill:cognitive-bias-review"
+    ],
+    "required_skill_ids": [
+      "skill:cognitive-bias-review"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_cognitive_bias_review_confuser",
+    "query": "Choose cognitive bias review (not a related substitute) for: use when reviewing plans, recommendations, prioritisation, risk registers, retrospectives or agent outputs for judgement distortion from cognitive bias \u2014 not for checking whether an argument's premises validly support its conclusion",
+    "expected_skill_ids": [
+      "skill:cognitive-bias-review"
+    ],
+    "required_skill_ids": [
+      "skill:cognitive-bias-review"
+    ],
+    "excluded_skill_ids": [
+      "skill:logical-fallacy-review"
+    ],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "confuser",
     "naturalness": "medium",
     "promotion_tier": "release"
   },
@@ -2200,6 +2186,56 @@
     "expect_uncertain": false,
     "query_source": "archetype",
     "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_logical_fallacy_review_task",
+    "query": "When should I use avoid-fallacies for use when evaluating whether premises in plans, adrs, reviews, security justifications or agent recommendations validly support their conclusions \u2014 for logical fallacies, not judgement distortion from cognitive bias?",
+    "expected_skill_ids": [
+      "skill:logical-fallacy-review"
+    ],
+    "required_skill_ids": [
+      "skill:logical-fallacy-review"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "task",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_logical_fallacy_review_alias",
+    "query": "When should I use avoid-fallacies for this kind of work?",
+    "expected_skill_ids": [
+      "skill:logical-fallacy-review"
+    ],
+    "required_skill_ids": [
+      "skill:logical-fallacy-review"
+    ],
+    "excluded_skill_ids": [],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "alias",
+    "naturalness": "medium",
+    "promotion_tier": "release"
+  },
+  {
+    "id": "coverage_logical_fallacy_review_confuser",
+    "query": "Choose logical fallacy review (not a related substitute) for: use when evaluating whether premises in plans, adrs, reviews, security justifications or agent recommendations validly support their conclusions \u2014 for logical fallacies, not judgement distortion from cognitive bias",
+    "expected_skill_ids": [
+      "skill:logical-fallacy-review"
+    ],
+    "required_skill_ids": [
+      "skill:logical-fallacy-review"
+    ],
+    "excluded_skill_ids": [
+      "skill:cognitive-bias-review"
+    ],
+    "expect_uncertain": false,
+    "query_source": "archetype",
+    "query_archetype": "confuser",
     "naturalness": "medium",
     "promotion_tier": "release"
   },
