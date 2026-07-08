@@ -40,7 +40,7 @@ jobs:
         run: python3 -m pytest -m slow -q
 
       - name: Upload coverage matrix artefact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-matrix
           path: tests/fixtures/retrieval_evaluation/coverage_matrix.json
