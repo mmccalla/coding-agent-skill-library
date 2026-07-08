@@ -4,6 +4,13 @@ Release-level changes for the portable skills library and Skills KG service.
 
 Detailed history: [`skills_docs/CHANGELOG.md`](skills_docs/CHANGELOG.md).
 
+## v0.1.3 — 2026-07-08
+
+- Tiered local gates: fast **pre-commit** (~5s), **pre-push** validators and parallel pytest, full suite in CI
+- CI: parallel `library-validators`, `pytest -n auto` via `pytest-xdist`, slim pre-commit job
+- DCO commit-msg hook, gitleaks, import-cycle validator, shared `run_library_validators.sh`
+- MCP: canonical skill id resolution for bare slugs in `get_skill_execution_guide`
+
 ## v0.1.2 — 2026-07-08
 
 - Renamed `avoid-cognitive-biases` → **`cognitive-bias-review`** and `avoid-fallacies` → **`logical-fallacy-review`** for clearer discovery and symmetric naming

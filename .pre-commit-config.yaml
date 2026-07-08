@@ -1,19 +1,138 @@
-# Pre-commit hooks for local development and the CI `pre-commit` job.
-# Install: pre-commit install  (or ./scripts/dev_workflow/install_git_hooks.sh for staged-path bash hook)
-default_install_hook_types: [pre-commit]
+# Three-tier local gates (see CONTRIBUTING.md):
+#   commit-msg  — DCO sign-off
+#   pre-commit  — fast staged checks (target < 30s)
+#   pre-push    — library validators and skills-ui (target < 2 min)
+#
+# CI mirrors tiers: fast pre-commit job, parallel library-validators, pytest with xdist.
+# Install: ./scripts/dev_workflow/install_git_hooks.sh
+default_install_hook_types: [pre-commit, commit-msg, pre-push]
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
     hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=500]
+      - id: no-commit-to-branch
+        args: [--branch, main, --branch, master]
       - id: detect-private-key
         exclude: ^tests/fixtures/skill_trust/malicious/
 
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: 2ca41cc1372d1e939a6a879f18cdc19fc1cac1ce  # frozen: v8.30.0
+    hooks:
+      - id: gitleaks
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: 914e7df21a07ef503a81201c76d2b11c789d3fca  # frozen: v1.7.12
+    hooks:
+      - id: actionlint
+        files: ^\.github/workflows/.*\.ya?ml$
+
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: 745eface02aef23e168a8afb6b5737818efbea95  # frozen: v0.11.0.1
+    hooks:
+      - id: shellcheck
+        files: \.(sh|bash)$
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: c59bba8fb259db0fec2bbb77ad8ba51ea7341b56  # frozen: v0.15.20
+    hooks:
+      - id: ruff
+        args: [--fix]
+        files: ^(scripts|tests)/.*\.py$
+      - id: ruff-format
+        files: ^(scripts|tests)/.*\.py$
+
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: 534166213006ec869b773b7ed8c6ebeaad1165d0  # frozen: v0.23.0
+    hooks:
+      - id: markdownlint-cli2
+        files: \.md$
+
   - repo: local
     hooks:
+      - id: check-commit-dco
+        name: require DCO Signed-off-by
+        entry: python3 scripts/dev_workflow/check_commit_dco.py
+        language: system
+        stages: [commit-msg]
+        pass_filenames: true
+        always_run: true
+
+      - id: validate-skill-trust
+        name: validate staged skill trust (L2)
+        entry: python3 scripts/validators/validate_skill_trust.py --ci-gate
+        language: system
+        stages: [pre-commit]
+        pass_filenames: true
+        files: ^skills/[^/]+/SKILL\.md$
+
       - id: validate-docs
         name: validate active docs
-        entry: python3 scripts/validators/validate_docs.py
+        entry: scripts/dev_workflow/run_library_validators.sh --docs-only
         language: system
+        stages: [pre-push]
         pass_filenames: false
-        files: ^skills_docs/.*\.md$
+        files: ^(skills_docs/|skills/|AGENTS\.md|CLAUDE\.md|AGENTIC_CODING_GLOBAL_SAFETY\.md|SECURE_AGENTIC_DEVELOPMENT\.md|\.markdownlint-cli2\.jsonc)
+
+      - id: validate-skills
+        name: validate skills library
+        entry: scripts/dev_workflow/run_library_validators.sh --skills-only
+        language: system
+        stages: [pre-push]
+        pass_filenames: false
+        files: ^skills/
+
+      - id: validate-skills-graph
+        name: validate skills graph connectivity
+        entry: scripts/dev_workflow/run_library_validators.sh --graph-only
+        language: system
+        stages: [pre-push]
+        pass_filenames: false
+        files: ^skills/
+
+      - id: validate-eval-corpus
+        name: validate eval corpus sync
+        entry: scripts/dev_workflow/run_library_validators.sh --corpus-only
+        language: system
+        stages: [pre-push]
+        pass_filenames: false
+        files: ^(skills/|tests/fixtures/retrieval_evaluation/|scripts/lib/retrieval/generate_golden_queries\.py|scripts/validators/validate_eval_corpus\.py)
+
+      - id: validate-skills-ontology
+        name: validate skills ontology (SHACL)
+        entry: scripts/dev_workflow/run_library_validators.sh --ontology-only
+        language: system
+        stages: [pre-push]
+        pass_filenames: false
+        files: ^skills_docs/ontology/
+
+      - id: validate-import-cycles
+        name: validate scripts import graph
+        entry: python3 scripts/validators/validate_import_cycles.py
+        language: system
+        stages: [pre-push]
+        pass_filenames: false
+        files: ^(scripts|tests)/.*\.py$
+
+      - id: skills-ui-lint
+        name: skills-ui eslint
+        entry: bash -c 'npm --prefix skills-ui run lint'
+        language: system
+        stages: [pre-push]
+        pass_filenames: false
+        files: ^skills-ui/
+
+      - id: skills-ui-test
+        name: skills-ui vitest
+        entry: bash -c 'npm --prefix skills-ui test -- --no-file-parallelism --maxWorkers=1'
+        language: system
+        stages: [pre-push]
+        pass_filenames: false
+        files: ^skills-ui/

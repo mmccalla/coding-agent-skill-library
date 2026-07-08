@@ -178,6 +178,25 @@ class SkillsMcpServerTests(unittest.TestCase):
         self.assertIn("line_end", first)
         self.assertNotIn("chunk_id", first)
 
+    def test_get_skill_accepts_bare_repository_slug(self) -> None:
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+
+        response = server.call_tool("get_skill", {"skill_id": "knowledge-graph-rag"})
+
+        self.assertEqual("ok", response["status"])
+        self.assertEqual("skill:knowledge-graph-rag", response["skill_id"])
+        self.assertTrue(response["retrieval_units"])
+
+    def test_get_skill_rejects_aliases_without_resolve_skill(self) -> None:
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+
+        response = server.call_tool("get_skill", {"skill_id": "kg-enabled-rag"})
+
+        self.assertEqual("error", response["status"])
+        self.assertIn("Skill not found", response["message"])
+
     def test_get_skill_context_returns_related_connected_skills(self) -> None:
         mcp = load_module()
         server = mcp.SkillsMcpServer.for_test_fixture()
@@ -191,6 +210,19 @@ class SkillsMcpServerTests(unittest.TestCase):
         self.assertEqual("skill:knowledge-graph-rag", response["skill_id"])
         self.assertIn("skill:knowledge-retrieval-rag", response["related_skill_ids"])
         self.assertTrue(response["evidence_paths"])
+
+    def test_get_skill_context_accepts_bare_repository_slug(self) -> None:
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+
+        response = server.call_tool(
+            "get_skill_context",
+            {"skill_id": "knowledge-graph-rag", "limit": 5},
+        )
+
+        self.assertEqual("ok", response["status"])
+        self.assertEqual("skill:knowledge-graph-rag", response["skill_id"])
+        self.assertIn("skill:knowledge-retrieval-rag", response["related_skill_ids"])
 
     def test_route_skill_query_classifies_agent_request_shape(self) -> None:
         mcp = load_module()
@@ -318,6 +350,18 @@ class SkillsMcpServerTests(unittest.TestCase):
         self.assertTrue(response["verification_checklist"])
         self.assertIn("skill:knowledge-retrieval-rag", response["related_skill_ids"])
         self.assertTrue(response["evidence"])
+
+    def test_get_skill_execution_guide_accepts_bare_repository_slug(self) -> None:
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+
+        response = server.call_tool(
+            "get_skill_execution_guide", {"skill_id": "knowledge-graph-rag"}
+        )
+
+        self.assertEqual("ok", response["status"])
+        self.assertEqual("skill:knowledge-graph-rag", response["skill_id"])
+        self.assertTrue(response["procedure"])
 
     def test_unsupported_write_or_cypher_access_is_denied(self) -> None:
         mcp = load_module()

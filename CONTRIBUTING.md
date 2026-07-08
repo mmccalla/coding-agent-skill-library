@@ -29,8 +29,15 @@ Set `SKILLS_EMBEDDING_PROVIDER=deterministic` for offline CI-parity work.
 
 ## Commit hygiene
 
-- Pre-commit runs on `git commit` (secrets scan, validators, lint, tests for touched paths).
-- Emergency bypass only: `SKIP_PRECOMMIT=1 git commit ...`
+Three tiers keep local feedback fast while CI retains full coverage:
+
+| Tier | When | What runs | Target |
+| --- | --- | --- | --- |
+| **pre-commit** | `git commit` | Hygiene, gitleaks, ruff, markdownlint on staged files, staged skill trust (L2) | < 30s |
+| **commit-msg** | `git commit` | DCO `Signed-off-by` (`git commit -s`) | instant |
+| **pre-push** | `git push` | Library validators and skills-ui when relevant paths changed; mypy + parallel pytest when `scripts/`, `tests/`, or `pyproject.toml` changed | < 2 min typical |
+
+- Emergency bypass only: `SKIP_PRECOMMIT=1 git commit ...` or `SKIP_PREPUSH=1 git push ...`
 - Do not commit secrets, credentials, or local-only archive content under `skills_docs/archive/`.
 
 ## Code of conduct

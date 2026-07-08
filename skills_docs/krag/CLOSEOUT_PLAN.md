@@ -2,11 +2,11 @@
 
 > **Programme complete (2026-07-07).** Waves 0–5 shipped on `main`. This document is retained as the delivery record; live status is [`STATUS.md`](STATUS.md).
 
-**Branch:** `main` (was `plan/golden-corpus-status-closeout`)  
-**Last updated:** 2026-07-07  
-**Programme status:** Waves **0–5 complete**  
-**Owner:** Skills KG / KRAG delivery  
-**Living status:** [`STATUS.md`](STATUS.md)  
+**Branch:** `main` (was `plan/golden-corpus-status-closeout`)
+**Last updated:** 2026-07-07
+**Programme status:** Waves **0–5 complete**
+**Owner:** Skills KG / KRAG delivery
+**Living status:** [`STATUS.md`](STATUS.md)
 **Evaluation detail:** [`EVALUATION.md`](EVALUATION.md)
 
 This plan closes every item still open in `STATUS.md` (in progress, to do, known gaps) and replaces the templated 1,194-case golden corpus with a smaller, realistic, tiered evaluation programme.
@@ -80,8 +80,8 @@ Tier 3 — coverage (nightly)     ~250 cases    ≤3 archetypes per promoted ski
 Abstention probes (release)     ~15 cases     varied OOD, not per-skill nonces
 ```
 
-**Active CI eval:** ~125–135 cases (smoke + realistic + abstention).  
-**Nightly:** coverage tier (~250).  
+**Active CI eval:** ~125–135 cases (smoke + realistic + abstention).
+**Nightly:** coverage tier (~250).
 **Reduction:** ~70% fewer cases than today; **>90%** of release-gated queries are curated/journey-sourced.
 
 Shrink risk is explicit: fewer cases can miss category gaps, alias-only lookups, new skills, and graph-adjacent confusers. See **[Blind-spot mitigation programme](#blind-spot-mitigation-programme)** below — mandatory alongside the tier model, not optional hardening.
