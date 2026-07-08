@@ -1,6 +1,6 @@
 # Evaluation corpus contract
 
-**Programme:** [`CLOSEOUT_PLAN.md`](CLOSEOUT_PLAN.md)  
+**Programme:** [`CLOSEOUT_PLAN.md`](CLOSEOUT_PLAN.md)
 **Last updated:** 2026-07-08
 
 Defines tiered retrieval evaluation corpora replacing the templated 1,194-case `golden_queries.json` bulk generator.

@@ -2,9 +2,9 @@
 
 Living backlog for closing architecture, compliance, governance, engineering and FinOps gaps in the coding-agent skill library.
 
-**Status:** Complete (merged to `main`, 2026-07-06)  
-**Baseline count:** 99 skills  
-**Target count:** 111 skills (12 new) + extensions — **exceeded:** **113** skills after bias/fallacy additions  
+**Status:** Complete (merged to `main`, 2026-07-06)
+**Baseline count:** 99 skills
+**Target count:** 111 skills (12 new) + extensions — **exceeded:** **113** skills after bias/fallacy additions
 **Owner:** repository-maintained
 
 Update this file when a PR lands, a skill is deferred, or acceptance criteria change.

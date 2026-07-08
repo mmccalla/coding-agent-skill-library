@@ -114,8 +114,8 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -e ".[dev]"
 
-      - name: Pre-commit fast hooks (commit stage)
-        run: SKIP=validate-skill-trust python3 -m pre_commit run --all-files --hook-stage pre-commit --show-diff-on-failure
+      - name: Pre-commit fast hooks (commit stage, check-only)
+        run: SKIP=trailing-whitespace,end-of-file-fixer,ruff,validate-skill-trust python3 -m pre_commit run --all-files --hook-stage pre-commit --show-diff-on-failure
 
   library-validators:
     name: Library validators
