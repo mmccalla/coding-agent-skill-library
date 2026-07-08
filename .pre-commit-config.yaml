@@ -75,7 +75,7 @@ repos:
 
       - id: validate-docs
         name: validate active docs
-        entry: python3 scripts/dev_workflow/run_library_validators.sh --docs-only
+        entry: scripts/dev_workflow/run_library_validators.sh --docs-only
         language: system
         stages: [pre-push]
         pass_filenames: false
@@ -83,7 +83,7 @@ repos:
 
       - id: validate-skills
         name: validate skills library
-        entry: python3 scripts/dev_workflow/run_library_validators.sh --skills-only
+        entry: scripts/dev_workflow/run_library_validators.sh --skills-only
         language: system
         stages: [pre-push]
         pass_filenames: false
@@ -91,7 +91,7 @@ repos:
 
       - id: validate-skills-graph
         name: validate skills graph connectivity
-        entry: python3 scripts/dev_workflow/run_library_validators.sh --graph-only
+        entry: scripts/dev_workflow/run_library_validators.sh --graph-only
         language: system
         stages: [pre-push]
         pass_filenames: false
@@ -99,7 +99,7 @@ repos:
 
       - id: validate-eval-corpus
         name: validate eval corpus sync
-        entry: python3 scripts/dev_workflow/run_library_validators.sh --corpus-only
+        entry: scripts/dev_workflow/run_library_validators.sh --corpus-only
         language: system
         stages: [pre-push]
         pass_filenames: false
@@ -107,7 +107,7 @@ repos:
 
       - id: validate-skills-ontology
         name: validate skills ontology (SHACL)
-        entry: python3 scripts/dev_workflow/run_library_validators.sh --ontology-only
+        entry: scripts/dev_workflow/run_library_validators.sh --ontology-only
         language: system
         stages: [pre-push]
         pass_filenames: false
