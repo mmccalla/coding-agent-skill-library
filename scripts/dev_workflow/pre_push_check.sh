@@ -36,11 +36,13 @@ else
 fi
 
 needs_python=false
-for path in "${changed_paths[@]}"; do
-  case "$path" in
-    scripts/* | tests/* | pyproject.toml) needs_python=true; break ;;
-  esac
-done
+if ((${#changed_paths[@]} > 0)); then
+  for path in "${changed_paths[@]}"; do
+    case "$path" in
+      scripts/* | tests/* | pyproject.toml) needs_python=true; break ;;
+    esac
+  done
+fi
 
 pre_push_args=(--hook-stage pre-push)
 if [[ -n "$range" ]]; then
