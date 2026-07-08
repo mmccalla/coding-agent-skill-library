@@ -35,7 +35,7 @@ For the evaluation corpus redesign, see [`EVALUATION_CORPUS_CONTRACT.md`](EVALUA
 | Documentation consolidation (Waves A–D + closeout docs) | `GETTING_STARTED.md`, `krag/*` |
 | Phase 10 admin ingest (backend + UI) | `scripts/runtime/mcp/admin_skill_ingest.py`, Skills UI ingest modal, tests |
 | Nightly coverage workflow | `.github/workflows/nightly-eval-coverage.yml` |
-| `avoid-cognitive-biases` + `avoid-fallacies` skills | `skills/avoid-cognitive-biases/`, `skills/avoid-fallacies/`; JRN-12, JRN-13 |
+| `cognitive-bias-review` + `logical-fallacy-review` skills | `skills/cognitive-bias-review/`, `skills/logical-fallacy-review/`; JRN-12, JRN-13 |
 
 ### KRAG v2 phases (complete)
 

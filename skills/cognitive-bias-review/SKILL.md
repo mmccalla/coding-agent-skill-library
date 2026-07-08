@@ -1,13 +1,17 @@
 ---
-name: avoid-cognitive-biases
-description: Use when reviewing plans, recommendations, prioritisation, risk registers, retrospectives or agent outputs for systematic cognitive bias that could distort engineering, security or delivery decisions.
+name: cognitive-bias-review
+description: Use when reviewing plans, recommendations, prioritisation, risk registers, retrospectives or agent outputs for judgement distortion from cognitive bias — not for checking whether an argument's premises validly support its conclusion.
 aliases:
+  - avoid-cognitive-biases
   - avoid-cognitive-bias
   - cognitive-bias-check
   - debias-review
+  - debiasing
+  - confirmation-bias-review
+  - postmortem-bias-review
 ---
 
-# Avoid Cognitive Biases
+# Cognitive Bias Review
 
 ## When to use
 
@@ -17,7 +21,7 @@ Use it alongside deterministic verification; bias review does not replace tests,
 
 ## When not to use
 
-Do not use this skill for purely mechanical tasks with no judgement, ranking or interpretation. Do not invoke it when the only remaining work is executing an already verified checklist with no open decisions.
+Do not use this skill for purely mechanical tasks with no judgement, ranking or interpretation. Do not invoke it when the only remaining work is executing an already verified checklist with no open decisions. Do not use it to validate argument structure or logical inference — use `logical-fallacy-review`. Do not use it as the primary critique loop when tests and linters have not yet run — use `reflection-and-verification` first.
 
 ## Objective
 
@@ -37,16 +41,17 @@ Detect and mitigate common cognitive biases in engineering reasoning so decision
 - **Confirmation bias:** only citing evidence that supports the preferred option; ignoring failing tests or contradictory logs.
 - **Anchoring:** treating the first estimate, first design sketch or first error hypothesis as the anchor for all later reasoning.
 - **Availability heuristic:** overweighting recent incidents, vivid failures or memorable chat examples versus base rates.
-- **Sunk-cost fallacy:** continuing a path because effort was already invested despite new evidence that another option is better.
 - **Bandwagon / authority bias:** accepting a choice because a tool, vendor, senior person or popular pattern said so without local verification.
 - **Optimism bias:** assuming integration, migration, performance or security work will be faster or safer than evidence supports.
 - **Hindsight bias:** rewriting the narrative after the outcome as if it was obvious all along; weakening learning from surprise.
 - **Survivorship bias:** generalising from successful paths while ignoring quarantined, rolled-back or untested alternatives.
 
+For invalid inference patterns (including sunk-cost and false dichotomy), use `logical-fallacy-review`.
+
 ## Related skills
 
-- `avoid-fallacies` — invalid argument structure and rhetorical errors
-- `reflection-and-verification` — critique loops with deterministic checks
+- `logical-fallacy-review` — premises, conclusions and invalid argument structure
+- `reflection-and-verification` — deterministic checks and general critique loops first
 - `reasoning-techniques` — structured problem solving and evidence gathering
 - `prioritization` — explicit ranking criteria under constraints
 - `risk-management` — risk register, treatment and ownership

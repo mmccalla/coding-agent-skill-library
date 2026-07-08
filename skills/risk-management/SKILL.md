@@ -73,6 +73,7 @@ Also produce a short summary of top risks, treatments in progress and any accept
 ## Related skills
 
 - `prioritization`
+- `cognitive-bias-review` — bias in likelihood/impact scoring
 - `uncertainty-driven-development`
 - `incident-response-and-postmortems`
 - `human-in-the-loop`

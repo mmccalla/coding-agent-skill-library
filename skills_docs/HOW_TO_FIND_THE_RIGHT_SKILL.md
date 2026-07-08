@@ -63,6 +63,8 @@ Then continue with the steps below. See `LIBRARY_CONTRACT.md` for portable consi
 | Business-facing behaviour change | `bdd-practice`, then `tdd-practice` |
 | Complex domain logic | `ddd-practice` |
 | Code review | `code-review-and-quality` |
+| Cognitive bias in plans or retrospectives | `cognitive-bias-review` (after `reflection-and-verification` when checks matter) |
+| Logical fallacies in ADRs or arguments | `logical-fallacy-review` |
 | CI/CD or release workflow | `ci-cd-and-automation` or `shipping-and-launch` |
 | User-facing screen or workflow | `ux-design-principles`, `accessibility-wcag` |
 

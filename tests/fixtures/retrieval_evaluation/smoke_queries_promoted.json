@@ -195,15 +195,16 @@
     "realistic_tier": true
   },
   {
-    "id": "avoid_cognitive_biases_plan_review",
+    "id": "cognitive_bias_plan_review",
     "query": "review this delivery plan for confirmation bias anchoring and sunk cost before we commit",
     "expected_skill_ids": [
-      "skill:avoid-cognitive-biases"
+      "skill:cognitive-bias-review"
     ],
     "required_skill_ids": [
-      "skill:avoid-cognitive-biases"
+      "skill:cognitive-bias-review"
     ],
     "excluded_skill_ids": [
+      "skill:logical-fallacy-review",
       "skill:prioritization"
     ],
     "expect_uncertain": false,
@@ -215,15 +216,16 @@
     "realistic_tier": true
   },
   {
-    "id": "avoid_fallacies_adr_review",
+    "id": "logical_fallacy_adr_review",
     "query": "evaluate this architecture decision record for false dichotomy and appeal to authority fallacies",
     "expected_skill_ids": [
-      "skill:avoid-fallacies"
+      "skill:logical-fallacy-review"
     ],
     "required_skill_ids": [
-      "skill:avoid-fallacies"
+      "skill:logical-fallacy-review"
     ],
     "excluded_skill_ids": [
+      "skill:cognitive-bias-review",
       "skill:reasoning-techniques"
     ],
     "expect_uncertain": false,

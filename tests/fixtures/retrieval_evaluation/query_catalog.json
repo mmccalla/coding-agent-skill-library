@@ -545,15 +545,16 @@
     "realistic_tier": true
   },
   {
-    "id": "avoid_cognitive_biases_plan_review",
+    "id": "cognitive_bias_plan_review",
     "query": "review this delivery plan for confirmation bias anchoring and sunk cost before we commit",
     "expected_skill_ids": [
-      "skill:avoid-cognitive-biases"
+      "skill:cognitive-bias-review"
     ],
     "required_skill_ids": [
-      "skill:avoid-cognitive-biases"
+      "skill:cognitive-bias-review"
     ],
     "excluded_skill_ids": [
+      "skill:logical-fallacy-review",
       "skill:prioritization"
     ],
     "expect_uncertain": false,
@@ -565,13 +566,13 @@
     "realistic_tier": true
   },
   {
-    "id": "avoid_cognitive_biases_retrospective",
+    "id": "cognitive_bias_retrospective",
     "query": "check our incident retrospective recommendations for availability heuristic and hindsight bias",
     "expected_skill_ids": [
-      "skill:avoid-cognitive-biases"
+      "skill:cognitive-bias-review"
     ],
     "required_skill_ids": [
-      "skill:avoid-cognitive-biases"
+      "skill:cognitive-bias-review"
     ],
     "expect_uncertain": false,
     "query_source": "curated",
@@ -581,15 +582,16 @@
     "realistic_tier": false
   },
   {
-    "id": "avoid_fallacies_adr_review",
+    "id": "logical_fallacy_adr_review",
     "query": "evaluate this architecture decision record for false dichotomy and appeal to authority fallacies",
     "expected_skill_ids": [
-      "skill:avoid-fallacies"
+      "skill:logical-fallacy-review"
     ],
     "required_skill_ids": [
-      "skill:avoid-fallacies"
+      "skill:logical-fallacy-review"
     ],
     "excluded_skill_ids": [
+      "skill:cognitive-bias-review",
       "skill:reasoning-techniques"
     ],
     "expect_uncertain": false,
@@ -601,13 +603,13 @@
     "realistic_tier": true
   },
   {
-    "id": "avoid_fallacies_security_rationale",
+    "id": "logical_fallacy_security_rationale",
     "query": "logical fallacy check on security justification slippery slope straw man hasty generalisation",
     "expected_skill_ids": [
-      "skill:avoid-fallacies"
+      "skill:logical-fallacy-review"
     ],
     "required_skill_ids": [
-      "skill:avoid-fallacies"
+      "skill:logical-fallacy-review"
     ],
     "expect_uncertain": false,
     "query_source": "curated",
@@ -615,5 +617,119 @@
     "naturalness": "high",
     "promotion_tier": "release",
     "realistic_tier": false
+  },
+  {
+    "id": "confuser_fallacy_vs_bias",
+    "query": "check ADR argument for false dichotomy circular reasoning and straw man before approval",
+    "expected_skill_ids": [
+      "skill:logical-fallacy-review"
+    ],
+    "required_skill_ids": [
+      "skill:logical-fallacy-review"
+    ],
+    "excluded_skill_ids": [
+      "skill:cognitive-bias-review"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "high",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_bias_vs_fallacy",
+    "query": "debiasing review for confirmation bias anchoring optimism in rollout recommendation",
+    "expected_skill_ids": [
+      "skill:cognitive-bias-review"
+    ],
+    "required_skill_ids": [
+      "skill:cognitive-bias-review"
+    ],
+    "excluded_skill_ids": [
+      "skill:logical-fallacy-review"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "high",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_fallacy_vs_reflection",
+    "query": "check security justification for slippery slope post hoc fallacy invalid causal chain",
+    "expected_skill_ids": [
+      "skill:logical-fallacy-review"
+    ],
+    "required_skill_ids": [
+      "skill:logical-fallacy-review"
+    ],
+    "excluded_skill_ids": [
+      "skill:reflection-and-verification"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "high",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_bias_vs_reflection",
+    "query": "review incident retrospective for hindsight bias and availability heuristic distortion",
+    "expected_skill_ids": [
+      "skill:cognitive-bias-review"
+    ],
+    "required_skill_ids": [
+      "skill:cognitive-bias-review"
+    ],
+    "excluded_skill_ids": [
+      "skill:reflection-and-verification"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "high",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_fallacy_vs_code_review",
+    "query": "logical fallacy check on PR review comment false dichotomy hasty generalisation",
+    "expected_skill_ids": [
+      "skill:logical-fallacy-review"
+    ],
+    "required_skill_ids": [
+      "skill:logical-fallacy-review"
+    ],
+    "excluded_skill_ids": [
+      "skill:code-review-and-quality"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "high",
+    "promotion_tier": "release",
+    "realistic_tier": true
+  },
+  {
+    "id": "confuser_bias_vs_prioritization",
+    "query": "debiasing review for confirmation bias anchoring and bandwagon distortion in engineering recommendation before approval",
+    "expected_skill_ids": [
+      "skill:cognitive-bias-review"
+    ],
+    "required_skill_ids": [
+      "skill:cognitive-bias-review"
+    ],
+    "excluded_skill_ids": [
+      "skill:prioritization"
+    ],
+    "expect_uncertain": false,
+    "query_source": "confuser_pair",
+    "query_archetype": "confuser",
+    "naturalness": "high",
+    "promotion_tier": "release",
+    "realistic_tier": true
   }
 ]

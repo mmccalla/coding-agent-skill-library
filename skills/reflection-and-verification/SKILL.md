@@ -35,6 +35,8 @@ Critique and repair artefacts using deterministic checks first, then bounded rev
 
 - `tdd-practice` — executable verification first
 - `code-review-and-quality` — human or agent review loop
+- `cognitive-bias-review` — judgement distortion after checks pass
+- `logical-fallacy-review` — invalid premises-to-conclusion chains
 - `apply-laws-of-ai` — safety gates before claiming completion
 
 ## References
