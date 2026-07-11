@@ -8,20 +8,20 @@ The repository **defaults to MCP-only** (see committed workspace artefacts below
 
 | Kind | Location | Scope |
 | --- | --- | --- |
-| **Project rules** | `.cursor/rules/*.mdc` (committed in this repo) | This workspace only — travels with the clone |
+| **Project rules** | Local `.cursor/rules/*.mdc` (gitignored; copy from `configs/cursor/rules/`) | This workspace only — not committed |
 | **User Rules** | **Cursor → Settings → Rules** (or `Cursor Settings` user rules) | All projects on your machine |
 | **Cursor Skills** | **Settings → Plugins → Rules, Skills, Subagents → Skills** (`~/.cursor/skills/`) | User-level; invoked when relevant or via `/` in chat |
 | **MCP servers** | `~/.cursor/mcp.json` + **Tools & MCPs** | User-level server wiring (paths are local) |
 | **Workspace settings** | `.vscode/settings.json` (gitignored here — set locally) | This workspace only |
 
-Committed project rules for this repository:
+Committed project-rule **templates** for this repository (copy into local `.cursor/rules/`):
 
 | File | Purpose |
 | --- | --- |
-| `project-context.mdc` | Dual-mode purpose — portable library **and** Skills KG; do not delete portable artefacts |
-| `skills-kg-mcp-only.mdc` | MCP-first skill discovery for Cursor sessions in this workspace |
+| `configs/cursor/rules/project-context.mdc` | Dual-mode purpose — portable library **and** Skills KG; do not delete portable artefacts |
+| `configs/cursor/rules/skills-kg-mcp-only.mdc` | MCP-first skill discovery for Cursor sessions in this workspace |
 
-Do **not** treat `project-context.mdc` or `skills-kg-mcp-only.mdc` as general user rules. Other repositories keep their own `.cursor/rules/` or none at all.
+Do **not** treat `project-context.mdc` or `skills-kg-mcp-only.mdc` as general user rules. Other repositories keep their own `.cursor/rules/` or none at all. The live `.cursor/` directory is gitignored so IDE harness choice stays local.
 
 ## How Cursor loads skills (three consumption layers)
 
@@ -44,8 +44,14 @@ Use this when you want bounded retrieval, routing traces, usage metrics and a si
 | File | Purpose |
 | --- | --- |
 | `.vscode/settings.json` | Repo `skills/` path disabled in `chat.agentSkillsLocations` (local; copy from `configs/cursor/vscode-settings.mcp-only.example.json`) |
-| `.cursor/rules/project-context.mdc` | Project-only dual-mode context; not a user rule |
-| `.cursor/rules/skills-kg-mcp-only.mdc` | MCP-only agent workflow; overrides filesystem-first text in `AGENTS.md` / `CLAUDE.md` in this workspace |
+| `.cursor/rules/project-context.mdc` | Project-only dual-mode context; not a user rule (local; copy from `configs/cursor/rules/`) |
+| `.cursor/rules/skills-kg-mcp-only.mdc` | MCP-only agent workflow; overrides filesystem-first text in `AGENTS.md` / `CLAUDE.md` in this workspace (local; copy from `configs/cursor/rules/`) |
+
+```bash
+mkdir -p .cursor/rules
+cp configs/cursor/rules/*.mdc .cursor/rules/
+cp configs/cursor/vscode-settings.mcp-only.example.json .vscode/settings.json
+```
 
 ### Step 1 — Enable skills-kg MCP
 

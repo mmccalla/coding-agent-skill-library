@@ -112,7 +112,7 @@ Retain `selection_trace` alongside tool results before acting. Do not expose raw
 
 ## Cursor IDE setup
 
-Cursor configuration for **MCP-only** and **filesystem-only** modes: [`CURSOR_IDE_SETUP.md`](CURSOR_IDE_SETUP.md). This repository defaults to MCP-only (`.vscode/settings.json`, `.cursor/rules/skills-kg-mcp-only.mdc`).
+Cursor configuration for **MCP-only** and **filesystem-only** modes: [`CURSOR_IDE_SETUP.md`](CURSOR_IDE_SETUP.md). This repository defaults to MCP-only (local `.vscode/settings.json` and `.cursor/rules/` copied from `configs/cursor/`).
 
 ## FastAPI Usage
 
