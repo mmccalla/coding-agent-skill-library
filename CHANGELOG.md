@@ -4,6 +4,10 @@ Release-level changes for the portable skills library and Skills KG service.
 
 Detailed history: [`skills_docs/CHANGELOG.md`](skills_docs/CHANGELOG.md).
 
+## v0.1.7 — 2026-07-11
+
+- Add project-specific `.cursorignore` (secrets, Docker volumes, caches, UI build trees, large assets)
+
 ## v0.1.6 — 2026-07-11
 
 - Purged `.cursor/` from git history; ignore `/.cursor` locally
