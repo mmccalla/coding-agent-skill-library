@@ -4,6 +4,11 @@ Release-level changes for the portable skills library and Skills KG service.
 
 Detailed history: [`skills_docs/CHANGELOG.md`](skills_docs/CHANGELOG.md).
 
+## v0.1.4 — 2026-07-11
+
+- Purged `.cursor/` from git history; ignore `/.cursor` locally
+- Track compressed `hero_image_2.jpg`; ignore large `hero_image_2.png` source asset
+
 ## v0.1.3 — 2026-07-08
 
 - Tiered local gates: fast **pre-commit** (~5s), **pre-push** validators and parallel pytest, full suite in CI
