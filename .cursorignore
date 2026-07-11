@@ -1,0 +1,123 @@
+# Cursor indexing / context exclusions for coding-agent-skill-library.
+# Keeps agent context focused on source, skills, and docs — not secrets,
+# runtime volumes, or dependency trees.
+
+# ---------------------------------------------------------------------------
+# Environment variables and secrets
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+secrets/
+credentials/
+**/service-account*.json
+
+# Cloud and infrastructure credentials
+.aws/
+.azure/
+.gcp/
+.kube/
+terraform.tfstate
+terraform.tfstate.*
+*.tfvars
+!*.tfvars.example
+
+# ---------------------------------------------------------------------------
+# Production, customer, and local runtime data (this repo)
+# ---------------------------------------------------------------------------
+# Docker Compose volumes (Neo4j / Prometheus / Grafana) — large, local-only
+/data/
+data/
+datasets/
+exports/
+backups/
+dumps/
+*.sql
+*.csv
+*.parquet
+*.xlsx
+
+# Regulated or confidential material
+customer-data/
+production-data/
+personal-data/
+confidential/
+restricted/
+
+# ---------------------------------------------------------------------------
+# Logs and diagnostics
+# ---------------------------------------------------------------------------
+logs/
+**/neo4j_logs/
+*.log
+crash-dumps/
+heap-dumps/
+
+# ---------------------------------------------------------------------------
+# Build, dependency, and tool artefacts
+# ---------------------------------------------------------------------------
+node_modules/
+skills-ui/node_modules/
+skills-ui/dist/
+skills-ui/*.tsbuildinfo
+skills-ui/*.tgz
+.venv/
+venv/
+dist/
+build/
+coverage/
+.coverage
+.coverage.*
+htmlcov/
+*.egg-info/
+coding_agent_skill_library.egg-info/
+
+# Python / JS tool caches
+__pycache__/
+*.pyc
+*.pyo
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.tox/
+.nox/
+.cache/
+.parcel-cache/
+.next/
+.turbo/
+
+# ---------------------------------------------------------------------------
+# Repo-specific noise (large, generated, or local-only)
+# ---------------------------------------------------------------------------
+# Local IDE harness dirs (rules live as templates under configs/cursor/)
+.cursor/
+.vscode/
+.continue/
+
+# Local-only / archived planning docs
+skills_docs/archive/
+skills_docs/SKILL_LIBRARY_IMPROVEMENT_PLAN.md
+docs/PUBLIC_REPO_READINESS.md
+skills_docs/krag/CLOSEOUT_PLAN.md
+
+# Large ontology / binary assets not useful as agent context
+skills_docs/ontology/c5_enterprise_architecture_knowledge_graph_v5_causal_temporal.json
+hero_image_2.png
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+!skills-ui/src/**/*.svg
+
+# Lockfiles and package manager noise (keep pyproject.toml / package.json visible)
+# uv.lock is useful for dep reviews — leave indexed unless it becomes too large.
+package-lock.json
+
+# Git internals
+.git/
