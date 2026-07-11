@@ -4,11 +4,11 @@ Release-level changes for the portable skills library and Skills KG service.
 
 Detailed history: [`skills_docs/CHANGELOG.md`](skills_docs/CHANGELOG.md).
 
-## v0.1.5 — 2026-07-11
+## v0.1.6 — 2026-07-11
 
 - Purged `.cursor/` from git history; ignore `/.cursor` locally
 - Track compressed `hero_image_2.jpg`; ignore large `hero_image_2.png` source asset
-- Note: `v0.1.4` tag/release name was reserved by GitHub immutable-release rules, so this is the published successor
+- Note: `v0.1.3`–`v0.1.5` tag names are reserved by GitHub immutable-release rules, so **v0.1.6** is the published successor after the history purge
 
 ## v0.1.3 — 2026-07-08
 

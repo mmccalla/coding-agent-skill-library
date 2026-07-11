@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "coding-agent-skill-library"
-version = "0.1.5"
+version = "0.1.6"
 description = "Neo4j-backed coding-agent skills knowledge graph and MCP service."
 readme = "README.md"
 license = "Apache-2.0"
