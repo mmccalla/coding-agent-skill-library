@@ -1,0 +1,42 @@
+---
+description: Dual-mode project purpose — portable skills library plus Skills KG MCP (this repo only)
+alwaysApply: true
+---
+
+# Project context
+
+**Scope:** This is a **project rule** template for `.cursor/rules/` in this repository. It applies only when installed locally for this workspace. It is **not** a global User Rule and **not** a skill under **Settings → Rules, Skills, Subagents**. Do not copy it to `~/.cursor/skills/` or Cursor User Rules unless you intentionally want that text everywhere.
+
+This repository serves **two complementary roles**. Do not treat one as a replacement for the other.
+
+## 1. Portable skills library
+
+The primary product is a **portable 113-skill library** that can be dropped into or referenced from other projects.
+
+Keep intact and fully supported:
+
+- `skills/` (source of truth for skill content)
+- `AGENTS.md`, `CLAUDE.md`, safety baselines
+- `skills_docs/` (routing, `DROP_IN_BOOTSTRAP`, `LIBRARY_CONTRACT`, validators)
+- Ingest, validation, graph extraction, and CI tooling
+
+Target harnesses include Claude Code, Cursor (filesystem mode), Codex, Antigravity, and copy-into-repo workflows. The filesystem contract in `AGENTS.md` / `CLAUDE.md` remains authoritative for those paths.
+
+## 2. Skills KG MCP service
+
+The optional local stack (Neo4j, hybrid retrieval, MCP server, API, UI, metrics) exposes skills via **`skills-kg`** MCP tools as an alternative access path over the same corpus.
+
+## Cursor IDE in this workspace
+
+The owner evaluates **MCP KG as a replacement** for standard file-based skill discovery in Cursor. That is a **workspace harness choice**, not repo-wide deprecation of filesystem skills.
+
+- `configs/cursor/rules/skills-kg-mcp-only.mdc` — template for MCP-first Cursor sessions (copy into local `.cursor/rules/`)
+- `configs/cursor/vscode-settings.mcp-only.example.json` — disable repo `skills/` in agent skills locations when MCP-only
+
+`AGENTS.md` and `CLAUDE.md` stay in the repo for portability and non-Cursor agents. The MCP-only rule **overrides** them in Cursor sessions only; it does not authorise removing them.
+
+## Agent constraints
+
+- **Never delete or remove** portable artefacts (`AGENTS.md`, `CLAUDE.md`, `skills/`, routing docs) without **explicit user consent**.
+- Do not assume MCP-first in Cursor implies simplifying or dropping filesystem dependencies.
+- When maintaining skills, both consumption paths must remain valid: filesystem drop-in and MCP retrieval over the same source files.

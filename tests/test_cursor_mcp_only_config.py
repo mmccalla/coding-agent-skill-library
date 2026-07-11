@@ -8,10 +8,13 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 VSCODE_SETTINGS_EXAMPLE = REPO_ROOT / "configs" / "cursor" / "vscode-settings.mcp-only.example.json"
-CURSOR_RULE = REPO_ROOT / ".cursor" / "rules" / "skills-kg-mcp-only.mdc"
+CURSOR_RULES_DIR = REPO_ROOT / "configs" / "cursor" / "rules"
+CURSOR_RULE = CURSOR_RULES_DIR / "skills-kg-mcp-only.mdc"
+PROJECT_CONTEXT_RULE = CURSOR_RULES_DIR / "project-context.mdc"
 GETTING_STARTED = REPO_ROOT / "skills_docs" / "GETTING_STARTED.md"
 CURSOR_SETUP = REPO_ROOT / "skills_docs" / "CURSOR_IDE_SETUP.md"
 RUNBOOK = REPO_ROOT / "skills_docs" / "SKILLS_KG_MCP_RUNBOOK.md"
+GITIGNORE = REPO_ROOT / ".gitignore"
 
 
 class CursorMcpOnlyConfigTests(unittest.TestCase):
@@ -26,6 +29,10 @@ class CursorMcpOnlyConfigTests(unittest.TestCase):
             disabled_skills_paths,
             msg="Committed MCP-only example must disable at least one skills/ location",
         )
+
+    def test_cursor_directory_is_gitignored(self) -> None:
+        text = GITIGNORE.read_text(encoding="utf-8")
+        self.assertRegex(text, r"(?m)^/\.cursor$")
 
     def test_cursor_rule_enforces_mcp_only_workflow(self) -> None:
         text = CURSOR_RULE.read_text(encoding="utf-8")
@@ -51,8 +58,7 @@ class CursorMcpOnlyConfigTests(unittest.TestCase):
         self.assertIn("CURSOR_IDE_SETUP.md", text)
 
     def test_project_context_is_project_rule_not_user_rule(self) -> None:
-        rule = REPO_ROOT / ".cursor" / "rules" / "project-context.mdc"
-        text = rule.read_text(encoding="utf-8")
+        text = PROJECT_CONTEXT_RULE.read_text(encoding="utf-8")
 
         self.assertIn("project rule", text.lower())
         self.assertIn("not", text.lower())
@@ -72,6 +78,7 @@ class CursorMcpOnlyConfigTests(unittest.TestCase):
             "route_skill_query",
             "HOW_TO_FIND_THE_RIGHT_SKILL.md",
             "apply-laws-of-ai",
+            "configs/cursor/rules",
         ):
             self.assertIn(marker, text)
 

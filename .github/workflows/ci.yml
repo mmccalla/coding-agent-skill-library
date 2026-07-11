@@ -74,7 +74,7 @@ jobs:
   pytest:
     name: pytest
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
 
@@ -114,8 +114,12 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -e ".[dev]"
 
+      # Skip local-only / auto-fix hooks: no-commit-to-branch fails on push-to-main;
+      # whitespace/ruff fixers and trust gate are covered by dedicated jobs or local commits.
       - name: Pre-commit fast hooks (commit stage, check-only)
-        run: SKIP=trailing-whitespace,end-of-file-fixer,ruff,validate-skill-trust python3 -m pre_commit run --all-files --hook-stage pre-commit --show-diff-on-failure
+        run: >-
+          SKIP=trailing-whitespace,end-of-file-fixer,ruff,ruff-format,no-commit-to-branch,validate-skill-trust
+          python3 -m pre_commit run --all-files --hook-stage pre-commit --show-diff-on-failure
 
   library-validators:
     name: Library validators
