@@ -11,6 +11,7 @@ skills-ui/node_modules/
 /data/prometheus/data
 /data
 /.vscode
+/.cursor
 /.continue
 skills-ui/pretty-format-27.5.1.tgz
 skills_docs/ontology/c5_enterprise_architecture_knowledge_graph_v5_causal_temporal.json
