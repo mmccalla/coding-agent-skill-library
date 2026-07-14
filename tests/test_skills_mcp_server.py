@@ -256,7 +256,13 @@ class SkillsMcpServerTests(unittest.TestCase):
             self.assertTrue(str(trace["usage_event_id"]).startswith("sel-"))
             self.assertIn("filter", trace)
 
-    def test_recommend_skills_includes_audit_selection_trace(self) -> None:
+    def test_recommend_skills_omits_selection_trace_from_mcp_wire(self) -> None:
+        """Agent-facing recommend payloads must not embed the fat audit trace.
+
+        Cursor persists MCP tool JSON into the LLM conversation. Audit detail
+        belongs in structured usage logs correlated by usage.selection_run_id.
+        """
+
         mcp = load_module()
         server = mcp.SkillsMcpServer.for_test_fixture()
 
@@ -269,17 +275,47 @@ class SkillsMcpServerTests(unittest.TestCase):
             },
         )
 
-        trace = response["selection_trace"]
-        self.assertEqual("recommend_skills", trace["tool"])
-        self.assertEqual("recommendation", trace["query_intent"])
-        self.assertTrue(str(trace["usage_event_id"]).startswith("sel-"))
-        self.assertIn("filter", trace)
-        self.assertIn("rank", trace)
-        self.assertIn("evidence_anchor_ids", trace)
-        self.assertIn("selected", trace)
-        self.assertIn("request", trace)
-        self.assertIn("rejected", trace)
-        self.assertTrue(trace["selected"]["evidence_anchors"])
+        self.assertEqual("ok", response["status"])
+        self.assertNotIn(
+            "selection_trace",
+            response,
+            msg="selection_trace must stay off the MCP wire for recommend_skills",
+        )
+        self.assertNotIn("rejected", response)
+        self.assertIn("usage", response)
+        usage = response["usage"]
+        self.assertIsInstance(usage, dict)
+        self.assertTrue(str(usage.get("selection_run_id", "")).startswith("sel_"))
+        self.assertEqual("recommend_skills", usage.get("tool"))
+        # Grounding fields for selected recommendations remain on the wire.
+        if not response.get("uncertain"):
+            recommendations = response.get("recommendations")
+            self.assertIsInstance(recommendations, list)
+            self.assertTrue(recommendations)
+            first = recommendations[0]
+            self.assertIn("skill_id", first)
+            self.assertIn("evidence_anchors", first)
+            self.assertTrue(first["evidence_anchors"])
+
+    def test_recommend_skills_wire_omits_trace_when_uncertain(self) -> None:
+        """Abstention responses must also omit selection_trace (failure mode)."""
+
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+
+        response = server.call_tool(
+            "recommend_skills",
+            {
+                "query": "zzzz unrelated nonsense query with no skill overlap",
+                "limit": 2,
+                "token_budget": 40,
+            },
+        )
+
+        self.assertEqual("ok", response["status"])
+        self.assertNotIn("selection_trace", response)
+        self.assertIn("usage", response)
+        self.assertTrue(str(response["usage"].get("selection_run_id", "")).startswith("sel_"))
 
     def test_resolve_skill_maps_names_to_canonical_skill_ids(self) -> None:
         mcp = load_module()
