@@ -823,9 +823,7 @@ class SkillsMcpServer:
                     "rationale": item.why,
                     "evidence_snippets": item.evidence_snippets,
                     "source_paths": item.source_paths,
-                    "section_ids": item.section_ids,
                     "evidence_anchors": item.evidence_anchors,
-                    "evidence_paths": item.evidence_paths,
                 }
                 for item in result.recommendations
             ]
