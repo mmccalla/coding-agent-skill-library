@@ -108,7 +108,7 @@ Follow this tool sequence for natural-language skill questions:
 | `evidence_anchor_ids` | route, recommend | wire (route) / usage log (recommend) | Section or retrieval-unit ids cited in the trace |
 | `abstention_reason` | recommend | usage log | Present when `uncertain=true` and no confident match was promoted |
 
-For `recommend_skills`, retain `usage.selection_run_id` from the tool result and consult usage logs for full audit detail before acting on ambiguous retrieval outcomes. Do not expose raw user query text in metrics labels; use `query_intent`, `tool`, `skill_id`, `rank` and `outcome` only.
+For `recommend_skills`, retain `usage.selection_run_id` from the tool result and consult usage logs for full audit detail before acting on ambiguous retrieval outcomes. Agent-facing recommendation objects keep `evidence_snippets`, `source_paths` and `evidence_anchors` (with `section_id`, heading and line ranges); duplicate `section_ids` and graph `evidence_paths` arrays are audit-only. Do not expose raw user query text in metrics labels; use `query_intent`, `tool`, `skill_id`, `rank` and `outcome` only.
 
 ## Cursor IDE setup
 

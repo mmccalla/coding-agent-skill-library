@@ -156,11 +156,81 @@ class SkillsMcpServerTests(unittest.TestCase):
         first = response["recommendations"][0]
         self.assertEqual("knowledge-graph-rag", first["skill_name"])
         self.assertTrue(first["evidence_snippets"])
-        self.assertTrue(first["evidence_paths"])
         self.assertTrue(first["source_paths"])
         self.assertTrue(first["evidence_anchors"])
+        # Dedupe: section_ids and evidence_paths duplicate data already present on
+        # evidence_anchors / source_paths; they remain in the usage-log selection_trace.
+        self.assertNotIn("section_ids", first)
+        self.assertNotIn("evidence_paths", first)
+        anchor = first["evidence_anchors"][0]
+        self.assertIn("section_id", anchor)
+        self.assertIn("source_path", anchor)
+        self.assertIn("heading_path", anchor)
+        self.assertIn("line_start", anchor)
+        self.assertIn("line_end", anchor)
         self.assertNotIn("embedding", repr(response))
         self.assertNotIn("MATCH ", repr(response))
+
+    def test_recommend_skills_wire_evidence_is_deduplicated_not_rank_changed(self) -> None:
+        """Lean wire projection must not change hybrid rank order or skill ids.
+
+        Observed failure mode to prevent: dropping grounding fields that the
+        contract requires (paths + heading/line), or changing which skills win.
+        """
+
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+        args = {
+            "query": "graph rag ontology retrieval",
+            "limit": 2,
+            "token_budget": 60,
+        }
+
+        with self.assertLogs("skills_usage", level="INFO") as captured:
+            response = server.call_tool("recommend_skills", args)
+
+        recommendations = response["recommendations"]
+        self.assertTrue(recommendations)
+        wire_ids = [item["skill_id"] for item in recommendations]
+        for item in recommendations:
+            self.assertNotIn("section_ids", item)
+            self.assertNotIn("evidence_paths", item)
+            self.assertIn("evidence_anchors", item)
+            self.assertIn("evidence_snippets", item)
+            self.assertIn("source_paths", item)
+            self.assertIn("score", item)
+            self.assertIn("rationale", item)
+
+        audit_trace = None
+        for line in captured.output:
+            start = line.find("{")
+            if start < 0:
+                continue
+            try:
+                payload = json.loads(line[start:])
+            except json.JSONDecodeError:
+                continue
+            if payload.get("event") != "skill_selection_run":
+                continue
+            if payload.get("tool") != "recommend_skills":
+                continue
+            audit_trace = payload.get("selection_trace")
+            break
+
+        self.assertIsInstance(audit_trace, dict)
+        assert isinstance(audit_trace, dict)
+        selected = audit_trace.get("selected")
+        self.assertIsInstance(selected, dict)
+        assert isinstance(selected, dict)
+        self.assertEqual(wire_ids[0], selected.get("skill_id"))
+        self.assertIn("section_ids", selected)
+        self.assertIn("evidence_paths", selected)
+        self.assertTrue(selected.get("section_ids"))
+        self.assertTrue(selected.get("evidence_paths"))
+        rank = audit_trace.get("rank")
+        self.assertIsInstance(rank, list)
+        assert isinstance(rank, list)
+        self.assertEqual(wire_ids, [entry["skill_id"] for entry in rank[: len(wire_ids)]])
 
     def test_get_skill_returns_retrieval_units_not_legacy_chunks(self) -> None:
         mcp = load_module()
