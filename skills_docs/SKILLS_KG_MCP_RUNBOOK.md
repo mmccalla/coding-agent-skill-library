@@ -95,20 +95,20 @@ Follow this tool sequence for natural-language skill questions:
    - `context` → `get_skill_context`
    - `execution_plan` → `get_skill_execution_guide`
 
-`route_skill_query` and `recommend_skills` both return a `selection_trace` object for audit. Existing keys (`request`, `selected`, `rejected`) are preserved; Phase 7 adds:
+`route_skill_query` returns a `selection_trace` object on the MCP wire for routing evidence. `recommend_skills` keeps the full Phase-7 `selection_trace` (including `request`, `selected`, `rejected`) in structured `skills_usage` selection-run logs only, correlated by `usage.selection_run_id` — it is omitted from the agent-facing MCP/API JSON to reduce chat-history tokens. Phase 7 audit keys:
 
-| Field | Tool(s) | Purpose |
-| --- | --- | --- |
-| `tool` | route, recommend | MCP tool that produced the trace |
-| `query_intent` | route, recommend | Route or recommendation intent (`direct_lookup`, `recommendation`, etc.) |
-| `usage_event_id` | route, recommend | Deterministic id (`sel-…`) for correlating logs and metrics |
-| `filter` | route, recommend | Resolution or promotion filters applied (`promotion_status`, `rejected_count`, `evidence_required`) |
-| `rank` | recommend | Ordered candidates with `skill_id`, `rank` and `score` |
-| `evidence` | route | Resolved skill `source_paths` and `evidence_anchors` when available |
-| `evidence_anchor_ids` | route, recommend | Section or retrieval-unit ids cited in the trace |
-| `abstention_reason` | recommend | Present when `uncertain=true` and no confident match was promoted |
+| Field | Tool(s) | Where | Purpose |
+| --- | --- | --- | --- |
+| `tool` | route, recommend | wire (route) / usage log (recommend) | MCP tool that produced the trace |
+| `query_intent` | route, recommend | wire (route) / usage log (recommend) | Route or recommendation intent (`direct_lookup`, `recommendation`, etc.) |
+| `usage_event_id` | route, recommend | wire (route) / usage log (recommend) | Deterministic id (`sel-…`) for correlating logs and metrics |
+| `filter` | route, recommend | wire (route) / usage log (recommend) | Resolution or promotion filters applied (`promotion_status`, `rejected_count`, `evidence_required`) |
+| `rank` | recommend | usage log | Ordered candidates with `skill_id`, `rank` and `score` |
+| `evidence` | route | wire | Resolved skill `source_paths` and `evidence_anchors` when available |
+| `evidence_anchor_ids` | route, recommend | wire (route) / usage log (recommend) | Section or retrieval-unit ids cited in the trace |
+| `abstention_reason` | recommend | usage log | Present when `uncertain=true` and no confident match was promoted |
 
-Retain `selection_trace` alongside tool results before acting. Do not expose raw user query text in metrics labels; use `query_intent`, `tool`, `skill_id`, `rank` and `outcome` only.
+For `recommend_skills`, retain `usage.selection_run_id` from the tool result and consult usage logs for full audit detail before acting on ambiguous retrieval outcomes. Do not expose raw user query text in metrics labels; use `query_intent`, `tool`, `skill_id`, `rank` and `outcome` only.
 
 ## Cursor IDE setup
 

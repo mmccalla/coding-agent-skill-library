@@ -833,7 +833,6 @@ class SkillsMcpServer:
                 "status": "ok",
                 "uncertain": result.uncertain,
                 "message": result.message,
-                "selection_trace": selection_trace,
                 "recommendations": recommendations,
             }
         selection_run_id = skills_usage.new_selection_run_id()
