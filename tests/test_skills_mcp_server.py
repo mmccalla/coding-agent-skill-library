@@ -320,11 +320,65 @@ class SkillsMcpServerTests(unittest.TestCase):
         for response in (direct, recommendation, context, execution_plan):
             self.assertGreaterEqual(response["confidence"], 0.6)
             self.assertIn("rationale", response)
-            trace = response["selection_trace"]
-            self.assertEqual("route_skill_query", trace["tool"])
-            self.assertEqual(response["route"], trace["query_intent"])
-            self.assertTrue(str(trace["usage_event_id"]).startswith("sel-"))
-            self.assertIn("filter", trace)
+            self.assertIn("suggested_tool", response)
+            self.assertIn("evidence_required", response)
+            self.assertNotIn(
+                "selection_trace",
+                response,
+                msg="route_skill_query wire must omit selection_trace",
+            )
+            usage = response["usage"]
+            self.assertIsInstance(usage, dict)
+            self.assertTrue(str(usage.get("selection_run_id", "")).startswith("sel_"))
+            self.assertEqual(response["route"], usage.get("route"))
+
+    def test_route_skill_query_emits_selection_trace_to_usage_log(self) -> None:
+        """Routing classification stays on the wire; fat evidence trace goes to audit."""
+
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+
+        with self.assertLogs("skills_usage", level="INFO") as captured:
+            response = server.call_tool(
+                "route_skill_query",
+                {"query": "tell me about knowledge-graph-rag"},
+            )
+
+        self.assertEqual("direct_lookup", response["route"])
+        self.assertEqual("skill:knowledge-graph-rag", response["resolved_skill_id"])
+        self.assertEqual("get_skill", response["suggested_tool"])
+        self.assertNotIn("selection_trace", response)
+        wire_run_id = response["usage"]["selection_run_id"]
+
+        audit_payload = None
+        for line in captured.output:
+            start = line.find("{")
+            if start < 0:
+                continue
+            try:
+                payload = json.loads(line[start:])
+            except json.JSONDecodeError:
+                continue
+            if payload.get("event") != "skill_selection_run":
+                continue
+            if payload.get("tool") != "route_skill_query":
+                continue
+            audit_payload = payload
+            break
+
+        self.assertIsInstance(audit_payload, dict)
+        assert isinstance(audit_payload, dict)
+        self.assertEqual(wire_run_id, audit_payload.get("selection_run_id"))
+        self.assertEqual("direct_lookup", audit_payload.get("query_intent"))
+        self.assertIn("skill:knowledge-graph-rag", audit_payload.get("selected", []))
+        trace = audit_payload.get("selection_trace")
+        self.assertIsInstance(trace, dict)
+        assert isinstance(trace, dict)
+        self.assertEqual("route_skill_query", trace.get("tool"))
+        self.assertEqual("direct_lookup", trace.get("query_intent"))
+        self.assertIn("evidence", trace)
+        self.assertIn("evidence_anchor_ids", trace)
+        self.assertIn("filter", trace)
 
     def test_recommend_skills_omits_selection_trace_from_mcp_wire(self) -> None:
         """Agent-facing recommend payloads must not embed the fat audit trace.

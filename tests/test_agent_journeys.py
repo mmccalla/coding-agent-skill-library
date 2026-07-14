@@ -82,17 +82,17 @@ def assert_selection_trace(
         assert selected.get("source_paths")
 
 
-def assert_lean_recommend_wire(
+def assert_lean_mcp_wire(
     response: dict[str, object],
     expectations: dict[str, object],
 ) -> None:
-    """Assert recommend_skills agent-facing JSON omits audit trace but keeps correlation."""
+    """Assert agent-facing JSON omits audit selection_trace but keeps correlation."""
 
     if expectations.get("omits_selection_trace"):
-        assert "selection_trace" not in response, "recommend wire must omit selection_trace"
+        assert "selection_trace" not in response, "wire must omit selection_trace"
     if expectations.get("requires_usage_selection_run_id"):
         usage = response.get("usage")
-        assert isinstance(usage, dict), "usage metadata must be present on recommend wire"
+        assert isinstance(usage, dict), "usage metadata must be present on lean wire"
         run_id = usage.get("selection_run_id")
         assert isinstance(run_id, str) and run_id.startswith("sel_")
 
@@ -144,9 +144,9 @@ class AgentJourneyTests(unittest.TestCase):
                 wire_expectations = step.get("expect_wire")
                 if wire_expectations is not None:
                     assert isinstance(wire_expectations, dict)
-                    assert_lean_recommend_wire(response, wire_expectations)
+                    assert_lean_mcp_wire(response, wire_expectations)
 
-    def test_route_keeps_selection_trace_recommend_omits_on_wire(self) -> None:
+    def test_route_and_recommend_omit_selection_trace_on_wire(self) -> None:
         module = load_module()
         server = module.SkillsMcpServer.for_test_fixture()
 
@@ -160,12 +160,11 @@ class AgentJourneyTests(unittest.TestCase):
             },
         )
 
-        route_trace = route["selection_trace"]
-        self.assertEqual("route_skill_query", route_trace["tool"])
-        self.assertEqual("direct_lookup", route_trace["query_intent"])
-        self.assertTrue(str(route_trace["usage_event_id"]).startswith("sel-"))
-        self.assertIn("evidence", route_trace)
-        self.assertIn("evidence_anchor_ids", route_trace)
+        self.assertEqual("direct_lookup", route["route"])
+        self.assertEqual("skill:tdd-practice", route["resolved_skill_id"])
+        self.assertEqual("get_skill", route["suggested_tool"])
+        self.assertNotIn("selection_trace", route)
+        self.assertTrue(str(route["usage"].get("selection_run_id", "")).startswith("sel_"))
 
         self.assertNotIn("selection_trace", recommend)
         usage = recommend["usage"]
