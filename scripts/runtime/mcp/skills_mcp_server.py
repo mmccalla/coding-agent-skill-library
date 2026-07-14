@@ -973,11 +973,16 @@ class SkillsMcpServer:
                 "tool": "get_skill_execution_guide",
                 "query_intent": "execution_plan",
                 "selected": [skill_id],
+                "related_skill_ids": result.get("related_skill_ids"),
+                "evidence_paths": result.get("evidence_paths"),
             }
         )
+        # Agent wire keeps section text + non-empty evidence anchors; graph edge
+        # strings remain audit-only (related skills stay via related_skill_ids).
+        wire_result = {key: value for key, value in result.items() if key != "evidence_paths"}
         with skills_mcp_perf.payload_construction():
             return skills_usage.attach_usage_metadata(
-                result,
+                wire_result,
                 selection_run_id,
                 tool="get_skill_execution_guide",
             )
