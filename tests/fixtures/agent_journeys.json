@@ -19,11 +19,9 @@
           "resolved_skill_id": "skill:tdd-practice",
           "suggested_tool": "get_skill"
         },
-        "expect_selection_trace": {
-          "tool": "route_skill_query",
-          "query_intent": "direct_lookup",
-          "requires_usage_event_id": true,
-          "requires_evidence": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       },
       {
@@ -68,10 +66,9 @@
           "route": "recommendation",
           "suggested_tool": "recommend_skills"
         },
-        "expect_selection_trace": {
-          "tool": "route_skill_query",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       },
       {
@@ -114,10 +111,9 @@
           "route": "recommendation",
           "resolved_skill_id": null
         },
-        "expect_selection_trace": {
-          "tool": "route_skill_query",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       },
       {
@@ -158,11 +154,9 @@
           "resolved_skill_id": "skill:tdd-practice",
           "suggested_tool": "get_skill_execution_guide"
         },
-        "expect_selection_trace": {
-          "tool": "route_skill_query",
-          "query_intent": "execution_plan",
-          "requires_usage_event_id": true,
-          "requires_evidence": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       },
       {
@@ -289,10 +283,9 @@
           "resolved_skill_id": null,
           "suggested_tool": "recommend_skills"
         },
-        "expect_selection_trace": {
-          "tool": "route_skill_query",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       },
       {
@@ -394,11 +387,9 @@
           "resolved_skill_id": "skill:apply-laws-of-ai",
           "suggested_tool": "get_skill_execution_guide"
         },
-        "expect_selection_trace": {
-          "tool": "route_skill_query",
-          "query_intent": "execution_plan",
-          "requires_usage_event_id": true,
-          "requires_evidence": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       },
       {
@@ -432,10 +423,9 @@
           "route": "recommendation",
           "suggested_tool": "recommend_skills"
         },
-        "expect_selection_trace": {
-          "tool": "route_skill_query",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       },
       {
@@ -476,10 +466,9 @@
           "route": "recommendation",
           "suggested_tool": "recommend_skills"
         },
-        "expect_selection_trace": {
-          "tool": "route_skill_query",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       },
       {

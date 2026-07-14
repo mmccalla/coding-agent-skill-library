@@ -87,7 +87,7 @@ Before acting, agents must return or retain the selected route, resolved skill i
 
 Follow this tool sequence for natural-language skill questions:
 
-1. `route_skill_query` — classify the request and read `selection_trace.query_intent`, `suggested_tool` and `evidence_required`.
+1. `route_skill_query` — classify the request and read `route`, `suggested_tool`, `evidence_required` and `resolved_skill_id` (full routing audit lives in usage logs).
 2. `resolve_skill` — when the user names a skill in prose, resolve the canonical `skill_id` before lookup, context or execution-guide calls.
 3. Route-specific follow-up:
    - `direct_lookup` → `get_skill` (optionally `get_skill_context`)
@@ -95,7 +95,7 @@ Follow this tool sequence for natural-language skill questions:
    - `context` → `get_skill_context`
    - `execution_plan` → `get_skill_execution_guide`
 
-`route_skill_query` returns a `selection_trace` object on the MCP wire for routing evidence. `recommend_skills` keeps the full Phase-7 `selection_trace` (including `request`, `selected`, `rejected`) in structured `skills_usage` selection-run logs only, correlated by `usage.selection_run_id` — it is omitted from the agent-facing MCP/API JSON to reduce chat-history tokens. Phase 7 audit keys:
+`route_skill_query` and `recommend_skills` both keep full Phase-7 `selection_trace` objects in structured `skills_usage` selection-run logs correlated by `usage.selection_run_id`. Agent-facing MCP/API JSON for both tools omits `selection_trace` so chat history does not absorb rejected/near-miss or route evidence dumps. Classification fields for routing (`route`, `confidence`, `rationale`, `resolved_skill_id`, `suggested_tool`, `evidence_required`) remain on the `route_skill_query` wire. Phase 7 audit keys:
 
 | Field | Tool(s) | Where | Purpose |
 | --- | --- | --- | --- |

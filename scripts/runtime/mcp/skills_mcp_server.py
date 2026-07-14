@@ -924,6 +924,7 @@ class SkillsMcpServer:
         selected: list[str] = []
         if isinstance(resolved_skill_id, str) and resolved_skill_id:
             selected.append(resolved_skill_id)
+        selection_trace = result.get("selection_trace")
         skills_usage.emit_skill_selection_run(
             {
                 "selection_run_id": selection_run_id,
@@ -932,11 +933,13 @@ class SkillsMcpServer:
                 "selected": selected,
                 "confidence": result.get("confidence"),
                 "suggested_tool": result.get("suggested_tool"),
+                "selection_trace": selection_trace,
             }
         )
+        wire_result = {key: value for key, value in result.items() if key != "selection_trace"}
         with skills_mcp_perf.payload_construction():
             return skills_usage.attach_usage_metadata(
-                result,
+                wire_result,
                 selection_run_id,
                 tool="route_skill_query",
                 route=result.get("route"),
