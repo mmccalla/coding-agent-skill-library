@@ -99,16 +99,18 @@ Follow this tool sequence for natural-language skill questions:
 
 | Field | Tool(s) | Where | Purpose |
 | --- | --- | --- | --- |
-| `tool` | route, recommend | wire (route) / usage log (recommend) | MCP tool that produced the trace |
-| `query_intent` | route, recommend | wire (route) / usage log (recommend) | Route or recommendation intent (`direct_lookup`, `recommendation`, etc.) |
-| `usage_event_id` | route, recommend | wire (route) / usage log (recommend) | Deterministic id (`sel-…`) for correlating logs and metrics |
-| `filter` | route, recommend | wire (route) / usage log (recommend) | Resolution or promotion filters applied (`promotion_status`, `rejected_count`, `evidence_required`) |
+| `tool` | route, recommend | usage log | MCP tool that produced the trace |
+| `query_intent` | route, recommend | usage log | Route or recommendation intent (`direct_lookup`, `recommendation`, etc.) |
+| `usage_event_id` | route, recommend | usage log | Deterministic id (`sel-…`) for correlating logs and metrics |
+| `filter` | route, recommend | usage log | Resolution or promotion filters applied (`promotion_status`, `rejected_count`, `evidence_required`) |
 | `rank` | recommend | usage log | Ordered candidates with `skill_id`, `rank` and `score` |
-| `evidence` | route | wire | Resolved skill `source_paths` and `evidence_anchors` when available |
-| `evidence_anchor_ids` | route, recommend | wire (route) / usage log (recommend) | Section or retrieval-unit ids cited in the trace |
+| `evidence` | route | usage log | Resolved skill `source_paths` and `evidence_anchors` when available |
+| `evidence_anchor_ids` | route, recommend | usage log | Section or retrieval-unit ids cited in the trace |
 | `abstention_reason` | recommend | usage log | Present when `uncertain=true` and no confident match was promoted |
 
-For `recommend_skills`, retain `usage.selection_run_id` from the tool result and consult usage logs for full audit detail before acting on ambiguous retrieval outcomes. Agent-facing recommendation objects keep `evidence_snippets`, `source_paths` and `evidence_anchors` (with `section_id`, heading and line ranges); duplicate `section_ids` and graph `evidence_paths` arrays are audit-only. Do not expose raw user query text in metrics labels; use `query_intent`, `tool`, `skill_id`, `rank` and `outcome` only.
+For `recommend_skills`, retain `usage.selection_run_id` and consult usage logs for full audit detail. Agent-facing recommendation objects keep `evidence_snippets`, `source_paths` and `evidence_anchors`; duplicate `section_ids` and graph `evidence_paths` arrays are audit-only. Do not expose raw user query text in metrics labels; use `query_intent`, `tool`, `skill_id`, `rank` and `outcome` only.
+
+For execution guides, agent-facing payloads keep procedure/rules/checklist and non-empty `evidence` anchors (source path, heading, line range); graph `evidence_paths` are audit-only because `related_skill_ids` remains on the wire.
 
 ## Cursor IDE setup
 

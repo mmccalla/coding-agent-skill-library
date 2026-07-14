@@ -510,6 +510,37 @@ class SkillsMcpServerTests(unittest.TestCase):
         self.assertTrue(response["verification_checklist"])
         self.assertIn("skill:knowledge-retrieval-rag", response["related_skill_ids"])
         self.assertTrue(response["evidence"])
+        # Graph edge strings duplicate related_skill_ids; keep anchors for grounding.
+        self.assertNotIn("evidence_paths", response)
+        first_anchor = response["evidence"][0]
+        self.assertIn("source_path", first_anchor)
+        self.assertIn("heading_path", first_anchor)
+        self.assertIn("line_start", first_anchor)
+        self.assertIn("line_end", first_anchor)
+        self.assertIn("section_id", first_anchor)
+
+    def test_get_skill_execution_guide_keeps_non_empty_evidence_never_blank(self) -> None:
+        """Lean projection must not empty contract-required evidence anchors."""
+
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+
+        response = server.call_tool(
+            "get_skill_execution_guide",
+            {"skill_id": "skill:knowledge-graph-rag", "related_limit": 10},
+        )
+
+        self.assertEqual("ok", response["status"])
+        evidence = response["evidence"]
+        self.assertIsInstance(evidence, (list, tuple))
+        self.assertGreaterEqual(len(evidence), 1)
+        headings = {item.get("heading_path") for item in evidence}
+        self.assertTrue(
+            headings & {"When to use", "Objective", "Procedure", "Rules", "Verification"}
+        )
+        self.assertNotIn("evidence_paths", response)
+        self.assertTrue(response["related_skill_ids"])
+        self.assertTrue(response["verification_checklist"])
 
     def test_get_skill_execution_guide_accepts_bare_repository_slug(self) -> None:
         mcp = load_module()
