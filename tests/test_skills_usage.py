@@ -175,6 +175,62 @@ class SkillsUsageTests(unittest.TestCase):
         self.assertEqual(before_hits + 1.0, after_hits)
         self.assertEqual(before_rank + 1.0, after_rank)
 
+    def test_recommend_skills_emits_full_selection_trace_to_usage_log(self) -> None:
+        """Full selection_trace remains available for audit when omitted from MCP wire.
+
+        Contract: wire response has no selection_trace; the usage log for the same
+        selection_run_id retains Phase-7 audit keys including rejected candidates.
+        """
+
+        mcp = load_mcp_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+
+        with self.assertLogs(skills_usage.USAGE_LOGGER_NAME, level="INFO") as captured:
+            response = server.call_tool(
+                "recommend_skills",
+                {
+                    "query": "graph rag ontology retrieval",
+                    "limit": 2,
+                    "token_budget": 60,
+                },
+            )
+
+        self.assertEqual("ok", response["status"])
+        self.assertNotIn("selection_trace", response)
+        wire_run_id = _string(response["usage"].get("selection_run_id"))
+        self.assertTrue(wire_run_id.startswith("sel_"))
+
+        recommend_payloads = []
+        for line in captured.output:
+            try:
+                payload = parse_log_json(line)
+            except (AssertionError, json.JSONDecodeError):
+                continue
+            if payload.get("event") != "skill_selection_run":
+                continue
+            if payload.get("tool") != "recommend_skills":
+                continue
+            recommend_payloads.append(payload)
+
+        self.assertEqual(1, len(recommend_payloads), msg=captured.output)
+        payload = recommend_payloads[0]
+        self.assertEqual(wire_run_id, payload.get("selection_run_id"))
+        trace = payload.get("selection_trace")
+        self.assertIsInstance(trace, dict)
+        assert isinstance(trace, dict)
+        self.assertEqual("recommend_skills", trace.get("tool"))
+        self.assertEqual("recommendation", trace.get("query_intent"))
+        self.assertIn("filter", trace)
+        self.assertIn("rank", trace)
+        self.assertIn("evidence_anchor_ids", trace)
+        self.assertIn("selected", trace)
+        self.assertIn("rejected", trace)
+        # request.query is stripped by sanitize_selection_log; empty request objects
+        # are omitted entirely (privacy). Audit keys required for near-miss review remain.
+        self.assertNotIn("request", trace)
+        serialised = json.dumps(payload)
+        self.assertNotIn("graph rag ontology retrieval", serialised)
+
     def test_usage_counter_on_execution_guide_via_mcp_server(self) -> None:
         mcp = load_mcp_module()
         server = mcp.SkillsMcpServer.for_test_fixture()

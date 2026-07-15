@@ -87,7 +87,7 @@ Before acting, agents must return or retain the selected route, resolved skill i
 
 Follow this tool sequence for natural-language skill questions:
 
-1. `route_skill_query` — classify the request and read `selection_trace.query_intent`, `suggested_tool` and `evidence_required`.
+1. `route_skill_query` — classify the request and read `route`, `suggested_tool`, `evidence_required` and `resolved_skill_id` (full routing audit lives in usage logs).
 2. `resolve_skill` — when the user names a skill in prose, resolve the canonical `skill_id` before lookup, context or execution-guide calls.
 3. Route-specific follow-up:
    - `direct_lookup` → `get_skill` (optionally `get_skill_context`)
@@ -95,20 +95,22 @@ Follow this tool sequence for natural-language skill questions:
    - `context` → `get_skill_context`
    - `execution_plan` → `get_skill_execution_guide`
 
-`route_skill_query` and `recommend_skills` both return a `selection_trace` object for audit. Existing keys (`request`, `selected`, `rejected`) are preserved; Phase 7 adds:
+`route_skill_query` and `recommend_skills` both keep full Phase-7 `selection_trace` objects in structured `skills_usage` selection-run logs correlated by `usage.selection_run_id`. Agent-facing MCP/API JSON for both tools omits `selection_trace` so chat history does not absorb rejected/near-miss or route evidence dumps. Classification fields for routing (`route`, `confidence`, `rationale`, `resolved_skill_id`, `suggested_tool`, `evidence_required`) remain on the `route_skill_query` wire. Phase 7 audit keys:
 
-| Field | Tool(s) | Purpose |
-| --- | --- | --- |
-| `tool` | route, recommend | MCP tool that produced the trace |
-| `query_intent` | route, recommend | Route or recommendation intent (`direct_lookup`, `recommendation`, etc.) |
-| `usage_event_id` | route, recommend | Deterministic id (`sel-…`) for correlating logs and metrics |
-| `filter` | route, recommend | Resolution or promotion filters applied (`promotion_status`, `rejected_count`, `evidence_required`) |
-| `rank` | recommend | Ordered candidates with `skill_id`, `rank` and `score` |
-| `evidence` | route | Resolved skill `source_paths` and `evidence_anchors` when available |
-| `evidence_anchor_ids` | route, recommend | Section or retrieval-unit ids cited in the trace |
-| `abstention_reason` | recommend | Present when `uncertain=true` and no confident match was promoted |
+| Field | Tool(s) | Where | Purpose |
+| --- | --- | --- | --- |
+| `tool` | route, recommend | usage log | MCP tool that produced the trace |
+| `query_intent` | route, recommend | usage log | Route or recommendation intent (`direct_lookup`, `recommendation`, etc.) |
+| `usage_event_id` | route, recommend | usage log | Deterministic id (`sel-…`) for correlating logs and metrics |
+| `filter` | route, recommend | usage log | Resolution or promotion filters applied (`promotion_status`, `rejected_count`, `evidence_required`) |
+| `rank` | recommend | usage log | Ordered candidates with `skill_id`, `rank` and `score` |
+| `evidence` | route | usage log | Resolved skill `source_paths` and `evidence_anchors` when available |
+| `evidence_anchor_ids` | route, recommend | usage log | Section or retrieval-unit ids cited in the trace |
+| `abstention_reason` | recommend | usage log | Present when `uncertain=true` and no confident match was promoted |
 
-Retain `selection_trace` alongside tool results before acting. Do not expose raw user query text in metrics labels; use `query_intent`, `tool`, `skill_id`, `rank` and `outcome` only.
+For `recommend_skills`, retain `usage.selection_run_id` and consult usage logs for full audit detail. Agent-facing recommendation objects keep `evidence_snippets`, `source_paths` and `evidence_anchors`; duplicate `section_ids` and graph `evidence_paths` arrays are audit-only. Do not expose raw user query text in metrics labels; use `query_intent`, `tool`, `skill_id`, `rank` and `outcome` only.
+
+For execution guides, agent-facing payloads keep procedure/rules/checklist and non-empty `evidence` anchors (source path, heading, line range); graph `evidence_paths` are audit-only because `related_skill_ids` remains on the wire.
 
 ## Cursor IDE setup
 

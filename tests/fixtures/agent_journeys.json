@@ -3,27 +3,32 @@
     "id": "JRN-01-direct-lookup-tdd",
     "description": "Agent resolves and loads a known promoted skill by canonical id.",
     "server": "fixture",
-    "tags": ["direct_lookup", "baseline"],
+    "tags": [
+      "direct_lookup",
+      "baseline"
+    ],
     "steps": [
       {
         "tool": "route_skill_query",
-        "arguments": { "query": "tell me about tdd-practice" },
+        "arguments": {
+          "query": "tell me about tdd-practice"
+        },
         "expect": {
           "status": "ok",
           "route": "direct_lookup",
           "resolved_skill_id": "skill:tdd-practice",
           "suggested_tool": "get_skill"
         },
-        "expect_selection_trace": {
-          "tool": "route_skill_query",
-          "query_intent": "direct_lookup",
-          "requires_usage_event_id": true,
-          "requires_evidence": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       },
       {
         "tool": "resolve_skill",
-        "arguments": { "name": "tdd-practice" },
+        "arguments": {
+          "name": "tdd-practice"
+        },
         "expect": {
           "status": "ok",
           "skill_id": "skill:tdd-practice"
@@ -31,7 +36,10 @@
       },
       {
         "tool": "get_skill",
-        "arguments": { "skill_id": "skill:tdd-practice", "retrieval_unit_limit": 2 },
+        "arguments": {
+          "skill_id": "skill:tdd-practice",
+          "retrieval_unit_limit": 2
+        },
         "expect": {
           "status": "ok",
           "skill_name": "tdd-practice"
@@ -43,7 +51,10 @@
     "id": "JRN-02-recommend-defect",
     "description": "Agent recommends tdd-practice for a failing-test-first defect fix.",
     "server": "fixture",
-    "tags": ["recommendation", "near_neighbour"],
+    "tags": [
+      "recommendation",
+      "near_neighbour"
+    ],
     "steps": [
       {
         "tool": "route_skill_query",
@@ -55,10 +66,9 @@
           "route": "recommendation",
           "suggested_tool": "recommend_skills"
         },
-        "expect_selection_trace": {
-          "tool": "route_skill_query",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       },
       {
@@ -72,15 +82,13 @@
           "status": "ok",
           "uncertain": false,
           "top_skill_id": "skill:tdd-practice",
-          "excludes_skill_ids": ["skill:reflection-and-verification"]
+          "excludes_skill_ids": [
+            "skill:reflection-and-verification"
+          ]
         },
-        "expect_selection_trace": {
-          "tool": "recommend_skills",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true,
-          "requires_rank": true,
-          "requires_filter": true,
-          "requires_evidence_anchor_ids": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       }
     ]
@@ -89,35 +97,40 @@
     "id": "JRN-03-abstention",
     "description": "Agent abstains when the query is out of domain.",
     "server": "fixture",
-    "tags": ["abstention"],
+    "tags": [
+      "abstention"
+    ],
     "steps": [
       {
         "tool": "route_skill_query",
-        "arguments": { "query": "What is the weather in London tomorrow?" },
+        "arguments": {
+          "query": "What is the weather in London tomorrow?"
+        },
         "expect": {
           "status": "ok",
           "route": "recommendation",
           "resolved_skill_id": null
         },
-        "expect_selection_trace": {
-          "tool": "route_skill_query",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       },
       {
         "tool": "recommend_skills",
-        "arguments": { "query": "zzzz qqqq nonsense", "limit": 3, "token_budget": 60 },
+        "arguments": {
+          "query": "zzzz qqqq nonsense",
+          "limit": 3,
+          "token_budget": 60
+        },
         "expect": {
           "status": "ok",
           "uncertain": true,
           "recommendation_count": 0
         },
-        "expect_selection_trace": {
-          "tool": "recommend_skills",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true,
-          "requires_abstention_reason": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       }
     ]
@@ -126,27 +139,32 @@
     "id": "JRN-04-execution-plan-tdd",
     "description": "Agent routes to execution guide for a known skill checklist request.",
     "server": "fixture",
-    "tags": ["execution_plan"],
+    "tags": [
+      "execution_plan"
+    ],
     "steps": [
       {
         "tool": "route_skill_query",
-        "arguments": { "query": "How do I apply tdd-practice?" },
+        "arguments": {
+          "query": "How do I apply tdd-practice?"
+        },
         "expect": {
           "status": "ok",
           "route": "execution_plan",
           "resolved_skill_id": "skill:tdd-practice",
           "suggested_tool": "get_skill_execution_guide"
         },
-        "expect_selection_trace": {
-          "tool": "route_skill_query",
-          "query_intent": "execution_plan",
-          "requires_usage_event_id": true,
-          "requires_evidence": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       },
       {
         "tool": "get_skill_execution_guide",
-        "arguments": { "skill_id": "skill:tdd-practice", "related_limit": 5 },
+        "arguments": {
+          "skill_id": "skill:tdd-practice",
+          "related_limit": 5
+        },
         "expect": {
           "status": "ok",
           "skill_id": "skill:tdd-practice",
@@ -159,7 +177,10 @@
     "id": "JRN-05-graph-rag-recommend",
     "description": "Agent recommends graph-grounded retrieval skills for ontology work.",
     "server": "fixture",
-    "tags": ["recommendation", "graph"],
+    "tags": [
+      "recommendation",
+      "graph"
+    ],
     "steps": [
       {
         "tool": "recommend_skills",
@@ -173,12 +194,9 @@
           "uncertain": false,
           "top_skill_id": "skill:knowledge-graph-rag"
         },
-        "expect_selection_trace": {
-          "tool": "recommend_skills",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true,
-          "requires_rank": true,
-          "requires_selected_evidence": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       }
     ]
@@ -187,7 +205,11 @@
     "id": "JRN-06-human-approval-embedded",
     "description": "Embedded repository recommends human-in-the-loop for destructive approval.",
     "server": "embedded",
-    "tags": ["recommendation", "embedded", "security"],
+    "tags": [
+      "recommendation",
+      "embedded",
+      "security"
+    ],
     "steps": [
       {
         "tool": "recommend_skills",
@@ -201,11 +223,9 @@
           "uncertain": false,
           "top_skill_id": "skill:human-in-the-loop"
         },
-        "expect_selection_trace": {
-          "tool": "recommend_skills",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true,
-          "requires_rank": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       }
     ]
@@ -214,7 +234,12 @@
     "id": "JRN-07-krag-system-design-embedded",
     "description": "Embedded repository disambiguates KRAG system design from generic graph RAG.",
     "server": "embedded",
-    "tags": ["recommendation", "embedded", "krag", "confuser"],
+    "tags": [
+      "recommendation",
+      "embedded",
+      "krag",
+      "confuser"
+    ],
     "steps": [
       {
         "tool": "recommend_skills",
@@ -227,13 +252,13 @@
           "status": "ok",
           "uncertain": false,
           "top_skill_id": "skill:krag-system-design",
-          "excludes_skill_ids": ["skill:knowledge-graph-rag"]
+          "excludes_skill_ids": [
+            "skill:knowledge-graph-rag"
+          ]
         },
-        "expect_selection_trace": {
-          "tool": "recommend_skills",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true,
-          "requires_selected_evidence": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       }
     ]
@@ -242,21 +267,25 @@
     "id": "JRN-08-out-of-domain-weather",
     "description": "Agent routes an out-of-domain weather question and abstains on recommendation.",
     "server": "fixture",
-    "tags": ["abstention", "out_of_domain"],
+    "tags": [
+      "abstention",
+      "out_of_domain"
+    ],
     "steps": [
       {
         "tool": "route_skill_query",
-        "arguments": { "query": "What is the weather in London tomorrow?" },
+        "arguments": {
+          "query": "What is the weather in London tomorrow?"
+        },
         "expect": {
           "status": "ok",
           "route": "recommendation",
           "resolved_skill_id": null,
           "suggested_tool": "recommend_skills"
         },
-        "expect_selection_trace": {
-          "tool": "route_skill_query",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       },
       {
@@ -271,11 +300,9 @@
           "uncertain": true,
           "recommendation_count": 0
         },
-        "expect_selection_trace": {
-          "tool": "recommend_skills",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true,
-          "requires_abstention_reason": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       }
     ]
@@ -284,7 +311,11 @@
     "id": "JRN-09-security-destructive-approval",
     "description": "Embedded repository recommends human-in-the-loop for destructive command approval.",
     "server": "embedded",
-    "tags": ["recommendation", "embedded", "security"],
+    "tags": [
+      "recommendation",
+      "embedded",
+      "security"
+    ],
     "steps": [
       {
         "tool": "recommend_skills",
@@ -298,11 +329,9 @@
           "uncertain": false,
           "top_skill_id": "skill:human-in-the-loop"
         },
-        "expect_selection_trace": {
-          "tool": "recommend_skills",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true,
-          "requires_rank": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       }
     ]
@@ -311,7 +340,11 @@
     "id": "JRN-10-usage-metrics-trace",
     "description": "Agent recommendation emits usage_event_id in selection trace for metrics.",
     "server": "embedded",
-    "tags": ["recommendation", "embedded", "usage_metrics"],
+    "tags": [
+      "recommendation",
+      "embedded",
+      "usage_metrics"
+    ],
     "steps": [
       {
         "tool": "recommend_skills",
@@ -325,12 +358,9 @@
           "uncertain": false,
           "top_skill_id": "skill:observability-and-telemetry"
         },
-        "expect_selection_trace": {
-          "tool": "recommend_skills",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true,
-          "requires_rank": true,
-          "requires_selected_evidence": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       }
     ]
@@ -339,7 +369,12 @@
     "id": "JRN-11-session-start-baseline-resolve",
     "description": "Agent routes session-start baseline lookup and resolves apply-laws-of-ai via MCP.",
     "server": "embedded",
-    "tags": ["direct_lookup", "embedded", "session_start", "baseline"],
+    "tags": [
+      "direct_lookup",
+      "embedded",
+      "session_start",
+      "baseline"
+    ],
     "steps": [
       {
         "tool": "route_skill_query",
@@ -352,16 +387,16 @@
           "resolved_skill_id": "skill:apply-laws-of-ai",
           "suggested_tool": "get_skill_execution_guide"
         },
-        "expect_selection_trace": {
-          "tool": "route_skill_query",
-          "query_intent": "execution_plan",
-          "requires_usage_event_id": true,
-          "requires_evidence": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       },
       {
         "tool": "resolve_skill",
-        "arguments": { "name": "apply-laws-of-ai" },
+        "arguments": {
+          "name": "apply-laws-of-ai"
+        },
         "expect": {
           "status": "ok",
           "skill_id": "skill:apply-laws-of-ai"
@@ -373,7 +408,10 @@
     "id": "JRN-12-bias-review",
     "description": "Agent recommends cognitive-bias-review when asked to debias a plan review.",
     "server": "embedded",
-    "tags": ["recommendation", "control"],
+    "tags": [
+      "recommendation",
+      "control"
+    ],
     "steps": [
       {
         "tool": "route_skill_query",
@@ -385,10 +423,9 @@
           "route": "recommendation",
           "suggested_tool": "recommend_skills"
         },
-        "expect_selection_trace": {
-          "tool": "route_skill_query",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       },
       {
@@ -403,14 +440,9 @@
           "uncertain": false,
           "top_skill_id": "skill:cognitive-bias-review"
         },
-        "expect_selection_trace": {
-          "tool": "recommend_skills",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true,
-          "requires_rank": true,
-          "requires_filter": true,
-          "requires_evidence_anchor_ids": true,
-          "requires_selected_evidence": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       }
     ]
@@ -419,7 +451,10 @@
     "id": "JRN-13-fallacy-review",
     "description": "Agent recommends logical-fallacy-review when asked to check ADR reasoning.",
     "server": "embedded",
-    "tags": ["recommendation", "control"],
+    "tags": [
+      "recommendation",
+      "control"
+    ],
     "steps": [
       {
         "tool": "route_skill_query",
@@ -431,10 +466,9 @@
           "route": "recommendation",
           "suggested_tool": "recommend_skills"
         },
-        "expect_selection_trace": {
-          "tool": "route_skill_query",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       },
       {
@@ -449,14 +483,9 @@
           "uncertain": false,
           "top_skill_id": "skill:logical-fallacy-review"
         },
-        "expect_selection_trace": {
-          "tool": "recommend_skills",
-          "query_intent": "recommendation",
-          "requires_usage_event_id": true,
-          "requires_rank": true,
-          "requires_filter": true,
-          "requires_evidence_anchor_ids": true,
-          "requires_selected_evidence": true
+        "expect_wire": {
+          "omits_selection_trace": true,
+          "requires_usage_selection_run_id": true
         }
       }
     ]

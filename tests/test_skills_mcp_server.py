@@ -156,11 +156,81 @@ class SkillsMcpServerTests(unittest.TestCase):
         first = response["recommendations"][0]
         self.assertEqual("knowledge-graph-rag", first["skill_name"])
         self.assertTrue(first["evidence_snippets"])
-        self.assertTrue(first["evidence_paths"])
         self.assertTrue(first["source_paths"])
         self.assertTrue(first["evidence_anchors"])
+        # Dedupe: section_ids and evidence_paths duplicate data already present on
+        # evidence_anchors / source_paths; they remain in the usage-log selection_trace.
+        self.assertNotIn("section_ids", first)
+        self.assertNotIn("evidence_paths", first)
+        anchor = first["evidence_anchors"][0]
+        self.assertIn("section_id", anchor)
+        self.assertIn("source_path", anchor)
+        self.assertIn("heading_path", anchor)
+        self.assertIn("line_start", anchor)
+        self.assertIn("line_end", anchor)
         self.assertNotIn("embedding", repr(response))
         self.assertNotIn("MATCH ", repr(response))
+
+    def test_recommend_skills_wire_evidence_is_deduplicated_not_rank_changed(self) -> None:
+        """Lean wire projection must not change hybrid rank order or skill ids.
+
+        Observed failure mode to prevent: dropping grounding fields that the
+        contract requires (paths + heading/line), or changing which skills win.
+        """
+
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+        args = {
+            "query": "graph rag ontology retrieval",
+            "limit": 2,
+            "token_budget": 60,
+        }
+
+        with self.assertLogs("skills_usage", level="INFO") as captured:
+            response = server.call_tool("recommend_skills", args)
+
+        recommendations = response["recommendations"]
+        self.assertTrue(recommendations)
+        wire_ids = [item["skill_id"] for item in recommendations]
+        for item in recommendations:
+            self.assertNotIn("section_ids", item)
+            self.assertNotIn("evidence_paths", item)
+            self.assertIn("evidence_anchors", item)
+            self.assertIn("evidence_snippets", item)
+            self.assertIn("source_paths", item)
+            self.assertIn("score", item)
+            self.assertIn("rationale", item)
+
+        audit_trace = None
+        for line in captured.output:
+            start = line.find("{")
+            if start < 0:
+                continue
+            try:
+                payload = json.loads(line[start:])
+            except json.JSONDecodeError:
+                continue
+            if payload.get("event") != "skill_selection_run":
+                continue
+            if payload.get("tool") != "recommend_skills":
+                continue
+            audit_trace = payload.get("selection_trace")
+            break
+
+        self.assertIsInstance(audit_trace, dict)
+        assert isinstance(audit_trace, dict)
+        selected = audit_trace.get("selected")
+        self.assertIsInstance(selected, dict)
+        assert isinstance(selected, dict)
+        self.assertEqual(wire_ids[0], selected.get("skill_id"))
+        self.assertIn("section_ids", selected)
+        self.assertIn("evidence_paths", selected)
+        self.assertTrue(selected.get("section_ids"))
+        self.assertTrue(selected.get("evidence_paths"))
+        rank = audit_trace.get("rank")
+        self.assertIsInstance(rank, list)
+        assert isinstance(rank, list)
+        self.assertEqual(wire_ids, [entry["skill_id"] for entry in rank[: len(wire_ids)]])
 
     def test_get_skill_returns_retrieval_units_not_legacy_chunks(self) -> None:
         mcp = load_module()
@@ -250,13 +320,73 @@ class SkillsMcpServerTests(unittest.TestCase):
         for response in (direct, recommendation, context, execution_plan):
             self.assertGreaterEqual(response["confidence"], 0.6)
             self.assertIn("rationale", response)
-            trace = response["selection_trace"]
-            self.assertEqual("route_skill_query", trace["tool"])
-            self.assertEqual(response["route"], trace["query_intent"])
-            self.assertTrue(str(trace["usage_event_id"]).startswith("sel-"))
-            self.assertIn("filter", trace)
+            self.assertIn("suggested_tool", response)
+            self.assertIn("evidence_required", response)
+            self.assertNotIn(
+                "selection_trace",
+                response,
+                msg="route_skill_query wire must omit selection_trace",
+            )
+            usage = response["usage"]
+            self.assertIsInstance(usage, dict)
+            self.assertTrue(str(usage.get("selection_run_id", "")).startswith("sel_"))
+            self.assertEqual(response["route"], usage.get("route"))
 
-    def test_recommend_skills_includes_audit_selection_trace(self) -> None:
+    def test_route_skill_query_emits_selection_trace_to_usage_log(self) -> None:
+        """Routing classification stays on the wire; fat evidence trace goes to audit."""
+
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+
+        with self.assertLogs("skills_usage", level="INFO") as captured:
+            response = server.call_tool(
+                "route_skill_query",
+                {"query": "tell me about knowledge-graph-rag"},
+            )
+
+        self.assertEqual("direct_lookup", response["route"])
+        self.assertEqual("skill:knowledge-graph-rag", response["resolved_skill_id"])
+        self.assertEqual("get_skill", response["suggested_tool"])
+        self.assertNotIn("selection_trace", response)
+        wire_run_id = response["usage"]["selection_run_id"]
+
+        audit_payload = None
+        for line in captured.output:
+            start = line.find("{")
+            if start < 0:
+                continue
+            try:
+                payload = json.loads(line[start:])
+            except json.JSONDecodeError:
+                continue
+            if payload.get("event") != "skill_selection_run":
+                continue
+            if payload.get("tool") != "route_skill_query":
+                continue
+            audit_payload = payload
+            break
+
+        self.assertIsInstance(audit_payload, dict)
+        assert isinstance(audit_payload, dict)
+        self.assertEqual(wire_run_id, audit_payload.get("selection_run_id"))
+        self.assertEqual("direct_lookup", audit_payload.get("query_intent"))
+        self.assertIn("skill:knowledge-graph-rag", audit_payload.get("selected", []))
+        trace = audit_payload.get("selection_trace")
+        self.assertIsInstance(trace, dict)
+        assert isinstance(trace, dict)
+        self.assertEqual("route_skill_query", trace.get("tool"))
+        self.assertEqual("direct_lookup", trace.get("query_intent"))
+        self.assertIn("evidence", trace)
+        self.assertIn("evidence_anchor_ids", trace)
+        self.assertIn("filter", trace)
+
+    def test_recommend_skills_omits_selection_trace_from_mcp_wire(self) -> None:
+        """Agent-facing recommend payloads must not embed the fat audit trace.
+
+        Cursor persists MCP tool JSON into the LLM conversation. Audit detail
+        belongs in structured usage logs correlated by usage.selection_run_id.
+        """
+
         mcp = load_module()
         server = mcp.SkillsMcpServer.for_test_fixture()
 
@@ -269,17 +399,47 @@ class SkillsMcpServerTests(unittest.TestCase):
             },
         )
 
-        trace = response["selection_trace"]
-        self.assertEqual("recommend_skills", trace["tool"])
-        self.assertEqual("recommendation", trace["query_intent"])
-        self.assertTrue(str(trace["usage_event_id"]).startswith("sel-"))
-        self.assertIn("filter", trace)
-        self.assertIn("rank", trace)
-        self.assertIn("evidence_anchor_ids", trace)
-        self.assertIn("selected", trace)
-        self.assertIn("request", trace)
-        self.assertIn("rejected", trace)
-        self.assertTrue(trace["selected"]["evidence_anchors"])
+        self.assertEqual("ok", response["status"])
+        self.assertNotIn(
+            "selection_trace",
+            response,
+            msg="selection_trace must stay off the MCP wire for recommend_skills",
+        )
+        self.assertNotIn("rejected", response)
+        self.assertIn("usage", response)
+        usage = response["usage"]
+        self.assertIsInstance(usage, dict)
+        self.assertTrue(str(usage.get("selection_run_id", "")).startswith("sel_"))
+        self.assertEqual("recommend_skills", usage.get("tool"))
+        # Grounding fields for selected recommendations remain on the wire.
+        if not response.get("uncertain"):
+            recommendations = response.get("recommendations")
+            self.assertIsInstance(recommendations, list)
+            self.assertTrue(recommendations)
+            first = recommendations[0]
+            self.assertIn("skill_id", first)
+            self.assertIn("evidence_anchors", first)
+            self.assertTrue(first["evidence_anchors"])
+
+    def test_recommend_skills_wire_omits_trace_when_uncertain(self) -> None:
+        """Abstention responses must also omit selection_trace (failure mode)."""
+
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+
+        response = server.call_tool(
+            "recommend_skills",
+            {
+                "query": "zzzz unrelated nonsense query with no skill overlap",
+                "limit": 2,
+                "token_budget": 40,
+            },
+        )
+
+        self.assertEqual("ok", response["status"])
+        self.assertNotIn("selection_trace", response)
+        self.assertIn("usage", response)
+        self.assertTrue(str(response["usage"].get("selection_run_id", "")).startswith("sel_"))
 
     def test_resolve_skill_maps_names_to_canonical_skill_ids(self) -> None:
         mcp = load_module()
@@ -350,6 +510,37 @@ class SkillsMcpServerTests(unittest.TestCase):
         self.assertTrue(response["verification_checklist"])
         self.assertIn("skill:knowledge-retrieval-rag", response["related_skill_ids"])
         self.assertTrue(response["evidence"])
+        # Graph edge strings duplicate related_skill_ids; keep anchors for grounding.
+        self.assertNotIn("evidence_paths", response)
+        first_anchor = response["evidence"][0]
+        self.assertIn("source_path", first_anchor)
+        self.assertIn("heading_path", first_anchor)
+        self.assertIn("line_start", first_anchor)
+        self.assertIn("line_end", first_anchor)
+        self.assertIn("section_id", first_anchor)
+
+    def test_get_skill_execution_guide_keeps_non_empty_evidence_never_blank(self) -> None:
+        """Lean projection must not empty contract-required evidence anchors."""
+
+        mcp = load_module()
+        server = mcp.SkillsMcpServer.for_test_fixture()
+
+        response = server.call_tool(
+            "get_skill_execution_guide",
+            {"skill_id": "skill:knowledge-graph-rag", "related_limit": 10},
+        )
+
+        self.assertEqual("ok", response["status"])
+        evidence = response["evidence"]
+        self.assertIsInstance(evidence, (list, tuple))
+        self.assertGreaterEqual(len(evidence), 1)
+        headings = {item.get("heading_path") for item in evidence}
+        self.assertTrue(
+            headings & {"When to use", "Objective", "Procedure", "Rules", "Verification"}
+        )
+        self.assertNotIn("evidence_paths", response)
+        self.assertTrue(response["related_skill_ids"])
+        self.assertTrue(response["verification_checklist"])
 
     def test_get_skill_execution_guide_accepts_bare_repository_slug(self) -> None:
         mcp = load_module()

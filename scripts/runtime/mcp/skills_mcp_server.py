@@ -823,9 +823,7 @@ class SkillsMcpServer:
                     "rationale": item.why,
                     "evidence_snippets": item.evidence_snippets,
                     "source_paths": item.source_paths,
-                    "section_ids": item.section_ids,
                     "evidence_anchors": item.evidence_anchors,
-                    "evidence_paths": item.evidence_paths,
                 }
                 for item in result.recommendations
             ]
@@ -833,7 +831,6 @@ class SkillsMcpServer:
                 "status": "ok",
                 "uncertain": result.uncertain,
                 "message": result.message,
-                "selection_trace": selection_trace,
                 "recommendations": recommendations,
             }
         selection_run_id = skills_usage.new_selection_run_id()
@@ -927,6 +924,7 @@ class SkillsMcpServer:
         selected: list[str] = []
         if isinstance(resolved_skill_id, str) and resolved_skill_id:
             selected.append(resolved_skill_id)
+        selection_trace = result.get("selection_trace")
         skills_usage.emit_skill_selection_run(
             {
                 "selection_run_id": selection_run_id,
@@ -935,11 +933,13 @@ class SkillsMcpServer:
                 "selected": selected,
                 "confidence": result.get("confidence"),
                 "suggested_tool": result.get("suggested_tool"),
+                "selection_trace": selection_trace,
             }
         )
+        wire_result = {key: value for key, value in result.items() if key != "selection_trace"}
         with skills_mcp_perf.payload_construction():
             return skills_usage.attach_usage_metadata(
-                result,
+                wire_result,
                 selection_run_id,
                 tool="route_skill_query",
                 route=result.get("route"),
@@ -973,11 +973,16 @@ class SkillsMcpServer:
                 "tool": "get_skill_execution_guide",
                 "query_intent": "execution_plan",
                 "selected": [skill_id],
+                "related_skill_ids": result.get("related_skill_ids"),
+                "evidence_paths": result.get("evidence_paths"),
             }
         )
+        # Agent wire keeps section text + non-empty evidence anchors; graph edge
+        # strings remain audit-only (related skills stay via related_skill_ids).
+        wire_result = {key: value for key, value in result.items() if key != "evidence_paths"}
         with skills_mcp_perf.payload_construction():
             return skills_usage.attach_usage_metadata(
-                result,
+                wire_result,
                 selection_run_id,
                 tool="get_skill_execution_guide",
             )
