@@ -4,6 +4,13 @@ Release-level changes for the portable skills library and Skills KG service.
 
 Detailed history: [`skills_docs/CHANGELOG.md`](skills_docs/CHANGELOG.md).
 
+## v0.1.8 — 2026-07-15
+
+- Lean MCP/API wire payloads: omit fat `selection_trace` from `recommend_skills` and `route_skill_query`; keep full audit traces in `skills_usage` logs correlated by `usage.selection_run_id`
+- Dedupe `recommend_skills` evidence fields on the wire (anchors + snippets + source paths; `section_ids` / graph `evidence_paths` audit-only)
+- Omit execution-guide graph `evidence_paths` from the wire while keeping non-empty evidence anchors and `related_skill_ids`
+- Hybrid ranking and route classification unchanged (verified live Cursor MCP + e2e A/B vs main)
+
 ## v0.1.7 — 2026-07-11
 
 - Add project-specific `.cursorignore` (secrets, Docker volumes, caches, UI build trees, large assets)

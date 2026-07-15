@@ -2,6 +2,15 @@
 
 Release-level changes to the portable skills library and Skills KG service.
 
+## 2026-07-15 (v0.1.8 — lean MCP wire payloads)
+
+### Skills KG / MCP
+
+- Agent-facing MCP/API responses omit fat `selection_trace` for `recommend_skills` and `route_skill_query`; full Phase-7 traces remain in `skills_usage` selection-run logs via `usage.selection_run_id`.
+- Recommendation wire keeps anchors/snippets/source paths; duplicate `section_ids` and graph `evidence_paths` are audit-only.
+- Execution guides omit graph `evidence_paths` on the wire; non-empty evidence anchors and `related_skill_ids` remain.
+- Live Cursor MCP and e2e A/B vs `main` confirmed ranking/route accuracy unchanged.
+
 ## 2026-07-08 (bias/fallacy skill rename + routing)
 
 ### Skills library
