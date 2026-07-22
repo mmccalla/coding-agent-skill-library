@@ -43,9 +43,10 @@ class RetrievalSettings(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     # Calibrated with bge-m3:567m on abstention_probes + semantic-challenge OOD.
+    # OOD-safe promote with MV70 weights: margin 0.01 preserves ood_empty=1.0.
     min_confident_score: float = Field(default=0.35, ge=0.0, le=1.0)
     min_top1_margin: float = Field(
-        default=0.02,
+        default=0.01,
         ge=0.0,
         le=1.0,
         description="Abstain when top-1 and top-2 hybrid scores differ by less than this margin.",

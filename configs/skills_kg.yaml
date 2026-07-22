@@ -10,8 +10,8 @@ neo4j:
   retrieval_unit_fulltext_index: retrieval_unit_text_fulltext
 
 retrieval:
-  # Calibrated on abstention_probes + semantic-challenge OOD with bge-m3:567m
-  # (smoke/realistic hybrid recall guardrails >= 0.9).
+  # Calibrated on abstention_probes + semantic-challenge OOD with bge-m3:567m.
+  # OOD-safe promote: MV70 weights (metadata 0.70 / vector 0.25) + margin 0.01.
   min_confident_score: 0.35
-  min_top1_margin: 0.02
+  min_top1_margin: 0.01
   min_vector_candidate_score: 0.2

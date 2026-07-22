@@ -217,7 +217,7 @@
   },
   {
     "id": "logical_fallacy_adr_review",
-    "query": "evaluate this architecture decision record for false dichotomy and appeal to authority fallacies",
+    "query": "spot false dichotomy and appeal to authority logical fallacies in this technical argument",
     "expected_skill_ids": [
       "skill:logical-fallacy-review"
     ],

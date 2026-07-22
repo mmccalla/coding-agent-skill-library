@@ -19,7 +19,8 @@ class SkillsConfigTests(unittest.TestCase):
         self.assertEqual(10, settings.mcp.recommend_limit_max)
         self.assertEqual(1200, settings.retrieval.default_token_budget)
         self.assertEqual(0.35, settings.retrieval.min_confident_score)
-        self.assertEqual(0.02, settings.retrieval.min_top1_margin)
+        # OOD-safe promote on MV70 weights: margin 0.01 (keeps ood_empty=1.0).
+        self.assertEqual(0.01, settings.retrieval.min_top1_margin)
 
     def test_environment_overrides_connection_without_leaking_password(self) -> None:
         settings = load_settings(

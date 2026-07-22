@@ -2,6 +2,14 @@
 
 Release-level changes to the portable skills library and Skills KG service.
 
+## 2026-07-22 (v0.1.9 — OOD-safe hybrid retrieval defaults)
+
+### Skills KG / retrieval
+
+- Removed the lexical body-text hybrid channel after ranking diagnostics showed text overlap driving wrong tops.
+- Promoted evidence-backed defaults: `HybridScoreWeights(metadata=0.70, vector=0.25, graph=0.15, bridge=0.60)` and `min_top1_margin=0.01` (score floor `0.35` unchanged).
+- Hold-out BGE evidence for this promote set: soft_hit ≈ 0.833, empty ≈ 0.125, ood_empty = 1.0, ood_false_hit = 0.0 (margin 0.0 discarded for product because of OOD false hits).
+
 ## 2026-07-15 (v0.1.8 — lean MCP wire payloads)
 
 ### Skills KG / MCP
