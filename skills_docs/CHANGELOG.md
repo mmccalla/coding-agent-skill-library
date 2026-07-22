@@ -2,6 +2,14 @@
 
 Release-level changes to the portable skills library and Skills KG service.
 
+## 2026-07-22 (v0.1.10 — P1-RAG discovery metadata)
+
+### Skills / retrieval discovery
+
+- Enriched `knowledge-retrieval-rag` and `evaluation-and-monitoring` frontmatter for RAG feature / evaluation-gates queries.
+- Narrowed `krag-evaluation-governance` metadata to KRAG/GraphRAG-scoped language (removed unconstrained gates/release phrasing).
+- Experiment evidence: hold-out BGE soft_hit 0.875 (was 0.833); `multi_rag_eval` soft-hits an acceptable skill; OOD empty 1.0; clean Neo4j live probes agree. Hybrid weights/gates unchanged.
+
 ## 2026-07-22 (v0.1.9 — OOD-safe hybrid retrieval defaults)
 
 ### Skills KG / retrieval

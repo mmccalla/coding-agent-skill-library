@@ -4,6 +4,12 @@ Release-level changes for the portable skills library and Skills KG service.
 
 Detailed history: [`skills_docs/CHANGELOG.md`](skills_docs/CHANGELOG.md).
 
+## v0.1.10 — 2026-07-22
+
+- P1-RAG discovery surfaces: enrich `knowledge-retrieval-rag` and `evaluation-and-monitoring` metadata; narrow `krag-evaluation-governance` to KRAG/GraphRAG-scoped language
+- Improves natural hold-out soft_hit on `multi_rag_eval` without changing hybrid weights or abstention gates
+- Gitignore local retrieval experiment harnesses and `skills_docs/krag/experiments/` write-ups
+
 ## v0.1.9 — 2026-07-22
 
 - Remove hybrid body-text scoring channel (NOTEXT); rank with metadata, vector, graph, and bridge only
