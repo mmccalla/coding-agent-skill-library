@@ -21,5 +21,13 @@ skills_docs/archive/backlog/
 docs/PUBLIC_REPO_READINESS.md
 skills_docs/krag/CLOSEOUT_PLAN.md
 hero_image_2.png
-# Local experiment metrics/reports (not product source)
+# Experiment harness / write-ups (local only; not product source)
 /skills_docs/krag/experiments/
+/scripts/lib/retrieval/evaluate_natural_agent_baseline.py
+/scripts/lib/retrieval/diagnose_hybrid_ranking.py
+/scripts/lib/retrieval/bge_eval_runtime.py
+/scripts/lib/retrieval/evaluate_bge_natural_baseline.py
+/tests/test_natural_agent_baseline_h0.py
+/tests/test_diagnose_hybrid_ranking.py
+/tests/test_bge_eval_runtime.py
+/tests/fixtures/retrieval_evaluation/natural_agent_queries.json
