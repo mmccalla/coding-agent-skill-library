@@ -1,9 +1,12 @@
 ---
 name: knowledge-retrieval-rag
-description: Use when implementing retrieval-augmented generation, document-grounded coding agents, semantic search, citation-backed answers, or repository/document knowledge lookup.
+description: Use when implementing retrieval-augmented generation, RAG features, RAG pipelines, document-grounded coding agents, semantic search, citation-backed answers, repository/document knowledge lookup, evaluation gates, or release evaluation for RAG.
 aliases:
   - rag
   - retrieval-augmented-generation
+  - rag feature
+  - rag pipeline
+  - rag evaluation gates
 ---
 
 # Knowledge Retrieval (RAG)
