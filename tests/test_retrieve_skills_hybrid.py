@@ -209,6 +209,7 @@ class HybridRetrievalTests(unittest.TestCase):
             vector_candidates=(),
             limit=1,
             max_depth=0,
+            retrieval_settings=OPEN_ABSTENTION,
         )
         with_graph = retrieval.retrieve_hybrid_skills(
             plan,
@@ -216,6 +217,7 @@ class HybridRetrievalTests(unittest.TestCase):
             vector_candidates=(),
             limit=1,
             max_depth=1,
+            retrieval_settings=OPEN_ABSTENTION,
         )
 
         self.assertEqual((), without_graph.recommendations[0].evidence_paths)
@@ -278,6 +280,8 @@ class HybridRetrievalTests(unittest.TestCase):
             REPO_ROOT / "skills"
         )
 
+        # Open abstention: discovery-scoped text no longer inflates scores from
+        # procedure/body tokens; this test asserts ranking discrimination only.
         result = retrieval.retrieve_hybrid_skills(
             plan,
             query_text=(
@@ -290,6 +294,7 @@ class HybridRetrievalTests(unittest.TestCase):
             limit=10,
             max_depth=2,
             token_budget=1200,
+            retrieval_settings=OPEN_ABSTENTION,
         )
 
         top_skill_names = {recommendation.skill_name for recommendation in result.recommendations}
@@ -455,6 +460,41 @@ class HybridRetrievalTests(unittest.TestCase):
         self.assertIn("db.index.fulltext.queryNodes", queries)
         self.assertIn("db.index.vector.queryNodes", queries)
         self.assertEqual("neo4j", driver.database)
+
+    def test_hybrid_weights_exclude_text_channel(self) -> None:
+        retrieval = load_module()
+        weights = retrieval.DEFAULT_HYBRID_SCORE_WEIGHTS
+        self.assertEqual(
+            {"metadata", "vector", "graph", "bridge"},
+            set(weights.as_dict()),
+        )
+        # OOD-safe promote (MV70): metadata 0.70 / vector 0.25; no body-text channel.
+        self.assertAlmostEqual(0.70, weights.metadata)
+        self.assertAlmostEqual(0.25, weights.vector)
+        self.assertAlmostEqual(0.15, weights.graph)
+        self.assertAlmostEqual(0.60, weights.bridge)
+        self.assertFalse(hasattr(retrieval, "_text_scores"))
+        total = retrieval.combine_hybrid_score(
+            metadata=0.5,
+            vector=0.0,
+            graph=0.0,
+            bridge=0.0,
+        )
+        self.assertAlmostEqual(0.35, total)
+        recommendation_fields = retrieval.SkillRecommendation._fields
+        self.assertNotIn("full_text_score", recommendation_fields)
+
+    def test_fixture_defect_query_recommends_tdd_practice(self) -> None:
+        retrieval = load_module()
+        plan = retrieval.fixture_load_plan()
+        result = retrieval.retrieve_hybrid_skills(
+            plan,
+            "fixing a defect with a failing test first and executable expectations",
+            vector_candidates=(),
+            limit=3,
+        )
+        self.assertFalse(result.uncertain)
+        self.assertEqual("skill:tdd-practice", result.recommendations[0].skill_id)
 
 
 if __name__ == "__main__":

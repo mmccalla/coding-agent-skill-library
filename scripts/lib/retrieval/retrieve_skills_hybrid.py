@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Hybrid full-text, vector and graph retrieval for skills."""
+"""Hybrid metadata, vector, graph and bridge retrieval for skills."""
 
 from __future__ import annotations
 
@@ -37,6 +37,46 @@ CONNECTED_RELATIONSHIP_TYPES = frozenset(
 )
 
 
+class HybridScoreWeights(NamedTuple):
+    """Hybrid ranking component weights (metadata/vector/graph/bridge)."""
+
+    # OOD-safe promote (MV70 evidence): former text mass + vector authority.
+    # Keep graph/bridge unchanged; body-text channel remains removed.
+    metadata: float = 0.70
+    vector: float = 0.25
+    graph: float = 0.15
+    bridge: float = 0.60
+
+    def as_dict(self) -> dict[str, float]:
+        return {
+            "metadata": self.metadata,
+            "vector": self.vector,
+            "graph": self.graph,
+            "bridge": self.bridge,
+        }
+
+
+DEFAULT_HYBRID_SCORE_WEIGHTS = HybridScoreWeights()
+
+
+def combine_hybrid_score(
+    *,
+    metadata: float,
+    vector: float,
+    graph: float,
+    bridge: float,
+    weights: HybridScoreWeights = DEFAULT_HYBRID_SCORE_WEIGHTS,
+) -> float:
+    """Combine component scores with the given hybrid weights."""
+
+    return (
+        (weights.metadata * metadata)
+        + (weights.vector * vector)
+        + (weights.graph * graph)
+        + (weights.bridge * bridge)
+    )
+
+
 class SkillRecommendation(NamedTuple):
     """A ranked skill recommendation with source-backed evidence."""
 
@@ -45,7 +85,6 @@ class SkillRecommendation(NamedTuple):
     score: float
     graph_score: float
     vector_score: float
-    full_text_score: float
     evidence_snippets: tuple[str, ...]
     source_paths: tuple[str, ...]
     section_ids: tuple[str, ...]
@@ -192,25 +231,6 @@ def _policy_exclusion_reason(
     return ""
 
 
-def _text_scores(
-    plan: load_skills_neo4j.LoadPlan,
-    query_text: str,
-) -> tuple[dict[str, float], dict[str, tuple[str, ...]]]:
-    query_tokens = _tokens(query_text)
-    if not query_tokens:
-        return {}, {}
-    scores: dict[str, float] = defaultdict(float)
-    matched_units: dict[str, list[str]] = defaultdict(list)
-    for unit in _retrieval_unit_nodes(plan):
-        unit_tokens = _tokens(_string(unit.properties, "text"))
-        overlap = len(query_tokens & unit_tokens)
-        if overlap:
-            skill_id = _string(unit.properties, "skill_id")
-            scores[skill_id] = max(scores[skill_id], overlap / len(query_tokens))
-            matched_units[skill_id].append(unit.id)
-    return scores, {skill_id: tuple(unit_ids) for skill_id, unit_ids in matched_units.items()}
-
-
 def _vector_scores(
     vector_candidates: Sequence[VectorCandidate],
     min_score: float,
@@ -257,7 +277,9 @@ def _metadata_scores(
             *(" ".join(sorted(_tokens(alias))) for alias in aliases),
         }
         exact_bonus = 0.35 if normalised_query in exact_candidates else 0.0
-        scores[skill_id] = min(1.0, overlap_score + exact_bonus)
+        score = min(1.0, overlap_score + exact_bonus)
+        if score > 0.0:
+            scores[skill_id] = score
     return scores
 
 
@@ -342,6 +364,27 @@ def _bridge_scores(
     return scores, {skill_id: tuple(paths[:5]) for skill_id, paths in evidence_paths.items()}
 
 
+def _query_overlap_unit_ids(
+    plan: load_skills_neo4j.LoadPlan,
+    skill_id: str,
+    query_text: str,
+) -> tuple[str, ...]:
+    """Prefer evidence units whose body tokens overlap the query (ordering only)."""
+
+    query_tokens = _tokens(query_text)
+    if not query_tokens:
+        return ()
+    ranked: list[tuple[int, str]] = []
+    for unit in _retrieval_unit_nodes(plan):
+        if _string(unit.properties, "skill_id") != skill_id:
+            continue
+        overlap = len(query_tokens & _tokens(_string(unit.properties, "text")))
+        if overlap:
+            ranked.append((overlap, unit.id))
+    ranked.sort(key=lambda item: (-item[0], item[1]))
+    return tuple(unit_id for _overlap, unit_id in ranked)
+
+
 def _retrieval_unit_evidence(
     plan: load_skills_neo4j.LoadPlan,
     skill_id: str,
@@ -398,54 +441,57 @@ def retrieve_hybrid_skills(
     max_depth: int = 2,
     token_budget: int = DEFAULT_TOKEN_BUDGET,
     retrieval_settings: skills_config.RetrievalSettings | None = None,
+    score_weights: HybridScoreWeights | None = None,
 ) -> HybridRetrievalResult:
-    """Rank skills using text, vector and graph evidence."""
+    """Rank skills using metadata, vector, graph and bridge evidence."""
 
     settings = retrieval_settings or skills_config.load_settings().retrieval
+    weights = score_weights or DEFAULT_HYBRID_SCORE_WEIGHTS
     limit = max(1, min(limit, settings.max_limit))
     max_depth = max(0, min(max_depth, settings.max_depth))
     query_tokens = _tokens(query_text)
     specific_query_tokens = _specific_tokens(query_text)
     skills = _skill_nodes(plan)
-    text_scores, text_unit_ids = _text_scores(plan, query_text)
     metadata_scores = _metadata_scores(plan, query_text)
     vector_scores = _vector_scores(vector_candidates, settings.min_vector_candidate_score)
     vector_unit_ids = _vector_retrieval_unit_ids(
         vector_candidates, settings.min_vector_candidate_score
     )
     bridge_scores, bridge_evidence_paths = _bridge_scores(plan, query_text)
-    candidate_skill_ids = (
-        set(text_scores) | set(metadata_scores) | set(vector_scores) | set(bridge_scores)
-    )
+    candidate_skill_ids = set(metadata_scores) | set(vector_scores) | set(bridge_scores)
     graph_scores, evidence_paths = _graph_evidence(plan, candidate_skill_ids, max_depth)
-    recommendation_inputs: list[tuple[str, float, float, float, float, tuple[str, ...]]] = []
+    recommendation_inputs: list[tuple[str, float, float, float, tuple[str, ...]]] = []
 
     for skill_id in candidate_skill_ids:
         skill = skills.get(skill_id)
         if skill is None:
             continue
-        full_text_score = text_scores.get(skill_id, 0.0)
         metadata_score = metadata_scores.get(skill_id, 0.0)
         vector_score = max(0.0, vector_scores.get(skill_id, 0.0))
         graph_score = max(graph_scores.get(skill_id, 0.0), bridge_scores.get(skill_id, 0.0))
-        score = (
-            (0.45 * full_text_score)
-            + (0.40 * metadata_score)
-            + (0.10 * vector_score)
-            + (0.15 * graph_scores.get(skill_id, 0.0))
-            + (0.60 * bridge_scores.get(skill_id, 0.0))
+        score = combine_hybrid_score(
+            metadata=metadata_score,
+            vector=vector_score,
+            graph=graph_scores.get(skill_id, 0.0),
+            bridge=bridge_scores.get(skill_id, 0.0),
+            weights=weights,
         )
         preferred_unit_ids = tuple(
-            dict.fromkeys((*text_unit_ids.get(skill_id, ()), *vector_unit_ids.get(skill_id, ())))
+            dict.fromkeys(
+                (
+                    *vector_unit_ids.get(skill_id, ()),
+                    *_query_overlap_unit_ids(plan, skill_id, query_text),
+                )
+            )
         )
         recommendation_inputs.append(
-            (skill_id, score, graph_score, vector_score, full_text_score, preferred_unit_ids)
+            (skill_id, score, graph_score, vector_score, preferred_unit_ids)
         )
 
     recommendations: list[SkillRecommendation] = []
     rejected_candidates: list[dict[str, object]] = []
     remaining_budget = token_budget
-    for skill_id, score, graph_score, vector_score, full_text_score, preferred_unit_ids in sorted(
+    for skill_id, score, graph_score, vector_score, preferred_unit_ids in sorted(
         recommendation_inputs,
         key=lambda item: (-item[1], _string(skills[item[0]].properties, "name")),
     ):
@@ -485,7 +531,6 @@ def retrieve_hybrid_skills(
                 score=round(score, 6),
                 graph_score=round(graph_score, 6),
                 vector_score=round(vector_score, 6),
-                full_text_score=round(full_text_score, 6),
                 evidence_snippets=snippets,
                 source_paths=source_paths,
                 section_ids=section_ids,
@@ -499,7 +544,7 @@ def retrieve_hybrid_skills(
                     )
                 ),
                 why=(
-                    "Selected from explicit bridge assertions, skill metadata, full-text, "
+                    "Selected from explicit bridge assertions, skill metadata, "
                     "vector and graph evidence; repository-native evidence outranks isolated "
                     "vector or graph matches."
                 ),
@@ -636,21 +681,16 @@ class Neo4jHybridRetrievalGraph:
         self._settings = settings
 
     def fulltext_skill_ids(self, query_text: str, limit: int) -> tuple[str, ...]:
-        """Return skill IDs matched by Neo4j full-text indexes."""
+        """Return skill IDs matched by the Neo4j metadata full-text index."""
 
         with skills_mcp_perf.database_io() as io:
             with self._driver.session(database=self._settings.neo4j.database) as session:
                 records = session.run(
                     (
-                        "CALL db.index.fulltext.queryNodes($chunk_index, $query_text, {limit: $limit}) "
-                        "YIELD node, score "
-                        "RETURN node.skill_id AS skill_id "
-                        "UNION "
                         "CALL db.index.fulltext.queryNodes($metadata_index, $query_text, {limit: $limit}) "
                         "YIELD node, score "
                         "RETURN node.id AS skill_id"
                     ),
-                    chunk_index=self._settings.neo4j.retrieval_unit_fulltext_index,
                     metadata_index=self._settings.neo4j.metadata_fulltext_index,
                     query_text=query_text,
                     limit=limit,
@@ -786,7 +826,7 @@ def retrieve_hybrid_skills_from_neo4j(
     max_depth: int = 2,
     token_budget: int = DEFAULT_TOKEN_BUDGET,
 ) -> HybridRetrievalResult:
-    """Run production retrieval from live Neo4j full-text, vector and graph evidence."""
+    """Run production retrieval from live Neo4j metadata, vector and graph evidence."""
 
     bounded_limit = max(1, min(limit, settings.retrieval.max_limit))
     runtime_embedder = embedder or embed_skill_chunks.resolve_embedding_provider(settings)
@@ -851,6 +891,10 @@ def fixture_load_plan() -> load_skills_neo4j.LoadPlan:
                 "id": "skill:tdd-practice",
                 "name": "tdd-practice",
                 "aliases": ["test-driven-development", "tdd"],
+                "description": (
+                    "Use when adding behaviour, fixing a defect, or improving code where "
+                    "expected behaviour can be specified with executable tests."
+                ),
                 "promotion_status": "promoted",
             },
         ),

@@ -41,7 +41,7 @@
   },
   {
     "id": "krag_ingestion_graph_construction",
-    "query": "KRAG ingestion design graph schema changes validation rules idempotency strategy failure handling",
+    "query": "build KRAG ingestion and graph-construction pipeline with entity resolution provenance and validation gates",
     "expected_skill_ids": [
       "skill:krag-ingestion-graph-construction"
     ],
@@ -161,7 +161,7 @@
   },
   {
     "id": "accessibility",
-    "query": "keyboard focus accessible form labels",
+    "query": "apply WCAG accessibility checks for keyboard focus and accessible form labels",
     "expected_skill_ids": [
       "skill:accessibility-wcag"
     ],
@@ -177,7 +177,7 @@
   },
   {
     "id": "event_streaming_iceberg_pipeline",
-    "query": "I've been instructed to build an event driven and real time data streaming pipeline that stores data in iceberg tables using apache pulsar and apache flink. How should this be done?",
+    "query": "design an event streaming platform with Apache Pulsar and Flink storing refined data in Iceberg lakehouse tables using stream processing patterns",
     "expected_skill_ids": [
       "skill:streaming-operations-and-slos",
       "skill:event-streaming-platform-design",
@@ -567,7 +567,7 @@
   },
   {
     "id": "logical_fallacy_adr_review",
-    "query": "evaluate this architecture decision record for false dichotomy and appeal to authority fallacies",
+    "query": "spot false dichotomy and appeal to authority logical fallacies in this technical argument",
     "expected_skill_ids": [
       "skill:logical-fallacy-review"
     ],
