@@ -4,6 +4,12 @@ Release-level changes for the portable skills library and Skills KG service.
 
 Detailed history: [`skills_docs/CHANGELOG.md`](skills_docs/CHANGELOG.md).
 
+## v0.1.9 — 2026-07-22
+
+- Remove hybrid body-text scoring channel (NOTEXT); rank with metadata, vector, graph, and bridge only
+- Promote OOD-safe hybrid defaults from MV70 evidence: `metadata=0.70`, `vector=0.25`, `min_top1_margin=0.01` (`graph=0.15`, `bridge=0.60`, `min_confident_score=0.35` unchanged)
+- Keep BGE-M3 as the production embedding provider; deterministic remains CI-only
+
 ## v0.1.8 — 2026-07-15
 
 - Lean MCP/API wire payloads: omit fat `selection_trace` from `recommend_skills` and `route_skill_query`; keep full audit traces in `skills_usage` logs correlated by `usage.selection_run_id`
