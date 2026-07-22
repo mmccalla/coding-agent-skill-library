@@ -1,6 +1,10 @@
 ---
 name: evaluation-and-monitoring
-description: Use when measuring coding-agent quality, regression risk, latency, cost, reliability, safety, drift, or production performance.
+description: Use when measuring coding-agent quality, RAG evaluation, evaluation gates, release evaluation, regression risk, latency, cost, reliability, safety, drift, or production performance.
+aliases:
+  - rag evaluation
+  - evaluation gates
+  - release evaluation
 ---
 
 # Evaluation and Monitoring

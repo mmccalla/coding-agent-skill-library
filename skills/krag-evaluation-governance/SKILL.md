@@ -1,10 +1,10 @@
 ---
 name: krag-evaluation-governance
-description: Evaluate and govern KRAG systems. Use when defining quality gates, test design, observability, safety, compliance, drift, cost, latency, grounding, and release readiness.
+description: Evaluate and govern KRAG and GraphRAG systems only. Use when defining KRAG-scoped acceptance thresholds, test design, observability, drift, grounding evidence, and KRAG promotion blockers.
 aliases:
   - krag evaluation governance
   - graphrag evaluation
-  - krag quality gates
+  - krag acceptance thresholds
 ---
 
 # KRAG Evaluation and Governance
