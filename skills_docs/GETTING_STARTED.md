@@ -4,12 +4,16 @@ Choose the path that matches your goal. You do not need to read KRAG design docs
 
 ## Use skills in an agent
 
-This repository defaults to **skills-kg MCP** in Cursor. Full setup for MCP-only or filesystem-only modes: [`CURSOR_IDE_SETUP.md`](CURSOR_IDE_SETUP.md). For portable filesystem routing in other tools or repositories, use:
+This repository defaults to **skills-kg MCP** in Cursor. Full setup for MCP-only or filesystem-only modes: [`CURSOR_IDE_SETUP.md`](CURSOR_IDE_SETUP.md). Routing for both paths: [`HOW_TO_FIND_THE_RIGHT_SKILL.md`](HOW_TO_FIND_THE_RIGHT_SKILL.md).
+
+**Cursor / MCP (Path A):** safety files → `apply-laws-of-ai` via MCP → `route_skill_query` / `get_skill` (see HOW_TO Path A).
+
+**Portable filesystem (Path B)** in other tools or repositories:
 
 1. Read `AGENTS.md` (or `CLAUDE.md` for the short mirror).
 2. Read `AGENTIC_CODING_GLOBAL_SAFETY.md` and `SECURE_AGENTIC_DEVELOPMENT.md`.
 3. Execute `skills/apply-laws-of-ai/SKILL.md` in full.
-4. Route with `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`.
+4. Route with `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` (Path B).
 5. Load the smallest matching `skills/<name>/SKILL.md`.
 
 To copy only the portable library into another repository, see `DROP_IN_BOOTSTRAP.md`.

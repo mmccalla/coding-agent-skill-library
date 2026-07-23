@@ -2,6 +2,16 @@
 
 Release-level changes to the portable skills library and Skills KG service.
 
+## 2026-07-23 (docs — MCP and filesystem routing)
+
+### Documentation
+
+- Root `README.md`: product positioning, hero image, dual start paths (MCP vs filesystem).
+- `HOW_TO_FIND_THE_RIGHT_SKILL.md`: Path A (skills-kg MCP tools) and Path B (filesystem progressive disclosure).
+- `LIBRARY_CONTRACT.md`, `GETTING_STARTED.md`, `skills_docs/README.md`: dual-mode startup and routing pointers.
+- `krag/STATUS.md`: last-updated and v0.1.11 discovery note.
+- Ignore hygiene: local experiment write-ups under `skills_docs/krag/experiments/` only.
+
 ## 2026-07-23 (v0.1.11 — L3 discovery proxy promote)
 
 ### Skills / retrieval discovery

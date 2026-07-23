@@ -18,9 +18,6 @@
     "data/**",
     "skills-ui/node_modules/**",
     "skills_docs/archive/**",
-    "skills_docs/krag/experiments/**",
-    "skills_docs/krag/L3_*.md",
-    "skills_docs/krag/PAIR_D19_*.md",
-    "skills_docs/krag/RETROSPECTIVE_*.md"
+    "skills_docs/krag/experiments/**"
   ]
 }

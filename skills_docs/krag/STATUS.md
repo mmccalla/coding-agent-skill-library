@@ -1,7 +1,7 @@
 # Skills KG — status and roadmap
 
-**Last updated:** 2026-07-07
-**Branch context:** `main`
+**Last updated:** 2026-07-23
+**Branch context:** `main` (product through **v0.1.11**)
 **Closeout programme:** [`CLOSEOUT_PLAN.md`](CLOSEOUT_PLAN.md) — **waves 0–5 complete** (optional P2/P3 expansions remain advisory)
 
 This is the **single live roadmap** for the Knowledge Graph service.
@@ -36,6 +36,7 @@ For the evaluation corpus redesign, see [`EVALUATION_CORPUS_CONTRACT.md`](EVALUA
 | Phase 10 admin ingest (backend + UI) | `scripts/runtime/mcp/admin_skill_ingest.py`, Skills UI ingest modal, tests |
 | Nightly coverage workflow | `.github/workflows/nightly-eval-coverage.yml` |
 | `cognitive-bias-review` + `logical-fallacy-review` skills | `skills/cognitive-bias-review/`, `skills/logical-fallacy-review/`; JRN-12, JRN-13 |
+| L3 discovery proxy promote (**v0.1.11**) | Alias/description packs + vague-filler abstention; hold-out soft improved vs trunk; live Cursor Arm B still tied — **not** a Cursor-superiority claim |
 
 ### KRAG v2 phases (complete)
 
