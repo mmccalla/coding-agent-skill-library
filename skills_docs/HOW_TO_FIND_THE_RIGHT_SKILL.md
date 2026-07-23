@@ -44,7 +44,7 @@ Use the **task-shape** and **scenario** tables below to phrase better queries an
 
 ## Path B — filesystem (portable / drop-in)
 
-Optional for coding-agent drop-ins that still follow `AGENTS.md`: read safety baselines and `skills/apply-laws-of-ai/SKILL.md` when that contract applies. Not required to *browse* the library as a human.
+Optional for coding-agent drop-ins that still follow `AGENTS.md`: read repository safety baselines when the work is security-sensitive, and load `skills/apply-laws-of-ai/SKILL.md` only when the task warrants a safety-law hierarchy. Not required to *browse* the library as a human.
 
 1. Read `skills/README.md` for the flat-library structure.
 2. Classify the task by shape (tables below), not by technology buzzwords.

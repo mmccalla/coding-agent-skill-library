@@ -23,7 +23,7 @@ GOVERNED_TASK_INTENT_IDS: frozenset[str] = frozenset(
         "post-artefact-review",
         "refactor-with-tests",
         "security-hardening",
-        "session-baseline",
+        "safety-law-hierarchy",
         "spec-before-build",
         "test-harness-bootstrap",
     }
@@ -35,7 +35,7 @@ PROMOTION_READY_SOURCES: frozenset[str] = frozenset(
 
 # Curated primary intents for high-traffic eval and agent skills (Phase 2b registry).
 SKILL_PRIMARY_INTENTS: dict[str, str] = {
-    "apply-laws-of-ai": "session-baseline",
+    "apply-laws-of-ai": "safety-law-hierarchy",
     "cognitive-bias-review": "post-artefact-review",
     "logical-fallacy-review": "post-artefact-review",
     "knowledge-graph-rag": "krag-architecture",
@@ -162,8 +162,10 @@ TASK_INTENT_PHRASE_RULES: tuple[tuple[str, str], ...] = (
     ("krag-architecture", "graph-augmented retrieval"),
     ("krag-architecture", "designing the end-to-end architecture"),
     ("krag-architecture", "knowledge graph-augmented retrieval"),
-    ("session-baseline", "every session start"),
-    ("session-baseline", "session start"),
+    ("safety-law-hierarchy", "material AI risk"),
+    ("safety-law-hierarchy", "dangerous instruction"),
+    ("safety-law-hierarchy", "safety law hierarchy"),
+    ("safety-law-hierarchy", "asimov-inspired"),
     ("accessibility-audit", "wcag"),
     ("accessibility-audit", "accessible ui"),
     ("accessibility-audit", "keyboard"),

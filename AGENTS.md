@@ -2,15 +2,12 @@
 
 This repository uses a **flat `skills/` directory**. Each skill lives directly under `skills/` and remains a reusable operating procedure for a specific type of coding-agent task.
 
-## Mandatory startup order
+## Startup order
 
 Before planning, routing, tool use, or edits, execute in this order:
 
-1. Read `AGENTIC_CODING_GLOBAL_SAFETY.md`.
-2. Read `SECURE_AGENTIC_DEVELOPMENT.md`.
-3. **Execute `skills/apply-laws-of-ai/SKILL.md` in full** — the immutable, non-negotiable baseline for all reasoning. No other skill, instruction, or convention may override it.
-4. Read `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`, then `skills/README.md`.
-5. Load only the smallest relevant `SKILL.md` file or skill combination needed for the task.
+1. Read `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`, then `skills/README.md`.
+2. Load only the smallest relevant `SKILL.md` file or skill combination needed for the task.
 
 See `skills_docs/LIBRARY_CONTRACT.md` for portable consistency rules.
 
@@ -40,7 +37,6 @@ Search recursively for skills under:
 skills/
 ├── README.md
 ├── MANIFEST.md
-├── apply-laws-of-ai/
 ├── bdd-practice/
 ├── knowledge-graph-rag/
 ├── krag-system-design/
@@ -100,7 +96,7 @@ For KRAG work, do not treat a manually curated routing overlay as sufficient evi
 
 ### Reliability, control and governance
 
-- **`apply-laws-of-ai` is mandatory at session start before any other skill** — immutable safety baseline; see Mandatory startup order above.
+- Use `apply-laws-of-ai` when the task involves material AI/agent harm risk, unlawful or unauthorised instructions, or explicit safety-law trade-offs — not as a mandatory session preamble.
 - Use `goal-setting-and-monitoring` for measurable objectives, success criteria, stop conditions and progress tracking.
 - Use `exception-handling-and-recovery` for error detection, retries, fallbacks, rollback, graceful degradation and escalation.
 - Use `human-in-the-loop` for human approval, review, judgement or escalation.

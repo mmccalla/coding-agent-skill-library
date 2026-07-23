@@ -6,7 +6,7 @@ Documentation for agents and humans. Pick one path — you do not need every fil
 
 | Goal | Start here |
 | --- | --- |
-| **Use skills in an agent** | `HOW_TO_FIND_THE_RIGHT_SKILL.md` (after `apply-laws-of-ai`) — Path A MCP or Path B filesystem |
+| **Use skills in an agent** | `HOW_TO_FIND_THE_RIGHT_SKILL.md` — Path A MCP or Path B filesystem (`apply-laws-of-ai` only when relevant) |
 | **Configure Cursor (MCP vs filesystem)** | `CURSOR_IDE_SETUP.md` |
 | **Copy the library to another repo** | `GETTING_STARTED.md` → `DROP_IN_BOOTSTRAP.md` |
 | **Run MCP / Docker / Neo4j locally** | `GETTING_STARTED.md` → `SKILLS_KG_MCP_RUNBOOK.md` |

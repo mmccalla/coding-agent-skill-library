@@ -4,7 +4,7 @@ Thank you for improving the coding-agent skills library and Skills KG service.
 
 ## Before you start
 
-1. Read [`AGENTS.md`](AGENTS.md) and [`skills/apply-laws-of-ai/SKILL.md`](skills/apply-laws-of-ai/SKILL.md).
+1. Read [`AGENTS.md`](AGENTS.md) and [`skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`](skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md). Load [`skills/apply-laws-of-ai/SKILL.md`](skills/apply-laws-of-ai/SKILL.md) only when the task involves material AI/agent harm risk or safety-law trade-offs.
 2. For skills changes, read [`skills_docs/SKILL_AUTHORING_GUIDE.md`](skills_docs/SKILL_AUTHORING_GUIDE.md).
 3. For KG/MCP changes, read [`skills_docs/SKILLS_KG_MCP_RUNBOOK.md`](skills_docs/SKILLS_KG_MCP_RUNBOOK.md).
 

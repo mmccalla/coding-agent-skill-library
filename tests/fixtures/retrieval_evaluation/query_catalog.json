@@ -300,7 +300,7 @@
   },
   {
     "id": "apply_laws_baseline",
-    "query": "execute apply laws of ai mandatory immutable baseline at every session start",
+    "query": "apply laws of ai when material AI risk or dangerous instruction requires safety hierarchy",
     "expected_skill_ids": [
       "skill:apply-laws-of-ai"
     ],

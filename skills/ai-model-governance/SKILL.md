@@ -16,7 +16,7 @@ Use this skill when an organisation introduces, swaps, fine-tunes, promotes or r
 
 ## When not to use
 
-- Use `apply-laws-of-ai` for the mandatory session-start safety baseline and instruction hierarchy, not model inventory or lifecycle.
+- Use `apply-laws-of-ai` for the AI safety-law hierarchy when material AI/instruction risk or authority conflicts are present, not for model inventory or lifecycle.
 - Use `evaluation-and-monitoring` for one-shot or change-gated metrics, baselines and regression suites without full model lifecycle ownership.
 - Use `learning-and-adaptation` only for bounded, reversible improvement loops with measured outcomes.
 - Use `krag-evaluation-governance` for KRAG-specific retrieval, graph and answer release gates.
@@ -80,7 +80,7 @@ Maintain accountable control over models in use: known inventory, stated purpose
 ## Rules
 
 - Do not deploy or materially change a production model without inventory entry and risk-tiered approval.
-- Do not treat session laws (`apply-laws-of-ai`) as a substitute for model lifecycle governance.
+- Do not treat `apply-laws-of-ai` as a substitute for model lifecycle governance.
 - Do not rely on a single evaluation run as ongoing governance; define continuous monitoring and kill-switch paths.
 - Do not leave retired models reachable without an explicit exception and owner.
 - Do not hide model identity, version or owner from operators who must respond to incidents.
@@ -89,7 +89,7 @@ Maintain accountable control over models in use: known inventory, stated purpose
 ## Related skills
 
 - `evaluation-and-monitoring` — metrics, baselines and regression evaluation
-- `apply-laws-of-ai` — immutable session safety baseline
+- `apply-laws-of-ai` — safety-law hierarchy when material AI/instruction risk is present
 - `human-in-the-loop` — approval and escalation packets
 - `learning-and-adaptation` — bounded improvement with measurement
 - `krag-evaluation-governance` — KRAG release and governance gates
@@ -106,4 +106,4 @@ Maintain accountable control over models in use: known inventory, stated purpose
 - [ ] Approval evidence matches the risk tier.
 - [ ] Monitoring, drift thresholds and kill-switch / rollback are defined.
 - [ ] Retirement or deprecation path is stated when relevant.
-- [ ] Scope is lifecycle governance, not session laws or one-shot metrics alone.
+- [ ] Scope is lifecycle governance, not one-shot metrics or a substitute for safety-law hierarchy alone.

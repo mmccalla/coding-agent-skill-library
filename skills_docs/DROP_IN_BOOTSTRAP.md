@@ -7,10 +7,10 @@ Use this library as a portable default reference set for any repository that sup
 Drop the library into a repo with one clear startup path for agents:
 
 1. read repository `AGENTS.md`
-2. read safety files and **execute `skills/apply-laws-of-ai/SKILL.md`**
-3. route through `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`
-4. inspect `skills/MANIFEST.md` when category grouping context is needed
-5. load the smallest matching `SKILL.md`
+2. route through `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`
+3. inspect `skills/MANIFEST.md` when category grouping context is needed
+4. load the smallest matching `SKILL.md`
+5. load `skills/apply-laws-of-ai/SKILL.md` **only when** the task involves material AI/agent harm risk, unlawful or unauthorised instructions, or explicit safety-law trade-offs
 
 ## Minimum files to copy
 
@@ -26,7 +26,7 @@ Copy these into the target repository root:
 ## Recommended startup path for agents
 
 - `AGENTS.md` is the mandatory repository entrypoint.
-- `skills/apply-laws-of-ai/SKILL.md` is the mandatory immutable baseline — first operational skill every session.
+- `skills/apply-laws-of-ai/SKILL.md` is available when the task shape warrants a safety-law hierarchy — not a mandatory first skill every session.
 - `skills_docs/LIBRARY_CONTRACT.md` defines portable consistency rules.
 - `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` is the canonical routing guide.
 - `skills/README.md` explains how the `skills/` subtree is structured.
@@ -52,7 +52,7 @@ target-repo/
 ├── skills/
 │   ├── README.md
 │   ├── MANIFEST.md
-│   ├── apply-laws-of-ai/       # mandatory first skill
+│   ├── apply-laws-of-ai/       # control skill when task shape warrants it
 │   ├── bdd-practice/
 │   ├── knowledge-graph-rag/
 │   ├── krag-system-design/

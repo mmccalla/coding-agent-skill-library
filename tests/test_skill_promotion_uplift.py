@@ -39,11 +39,11 @@ class SkillPromotionUpliftTests(unittest.TestCase):
         intent_ids = {intent.task_intent_id for intent in ready}
         self.assertIn("krag-architecture", intent_ids)
 
-    def test_apply_laws_maps_session_baseline(self) -> None:
+    def test_apply_laws_maps_safety_law_hierarchy(self) -> None:
         text = (REPO_ROOT / "skills" / "apply-laws-of-ai" / "SKILL.md").read_text(encoding="utf-8")
         mapping = self.mapper.map_skill_sections(text, skill_name="apply-laws-of-ai")
         ready = self.mapper.promotion_ready_task_intents(mapping.task_intents)
-        self.assertTrue(any(intent.task_intent_id == "session-baseline" for intent in ready))
+        self.assertTrue(any(intent.task_intent_id == "safety-law-hierarchy" for intent in ready))
 
     def test_library_meets_promoted_skill_count_gate(self) -> None:
         records = self.extractor.extract_skills_graph_records(REPO_ROOT / "skills")

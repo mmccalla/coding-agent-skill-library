@@ -2,6 +2,14 @@
 
 Release-level changes to the portable skills library and Skills KG service.
 
+## 2026-07-24 (docs — apply-laws when-relevant only)
+
+### Policy
+
+- `apply-laws-of-ai` is **not** a mandatory session preamble for MCP or filesystem agents.
+- Load it only when the task shape involves material AI/agent harm risk, unlawful or unauthorised instructions, or explicit safety-law trade-offs.
+- Updated `AGENTS.md`, `CLAUDE.md`, skill bodies, drop-in/bootstrap docs, and Cursor setup guidance accordingly.
+
 ## 2026-07-23 (docs + retrieval — PR eval green; MCP preamble removed)
 
 ### Retrieval / routing

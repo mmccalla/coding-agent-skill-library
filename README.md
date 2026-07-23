@@ -48,7 +48,7 @@ skills-ui/        Inspection and agent-workflow UI
 docker-compose.yml Neo4j, API, UI, Prometheus, Grafana
 ```
 
-Agents: MCP Path A needs no safety/`apply-laws-of-ai` preamble for discovery. Filesystem sessions follow `AGENTS.md` / `LIBRARY_CONTRACT.md` as installed.
+Agents: neither MCP nor filesystem sessions require a mandatory `apply-laws-of-ai` preamble. Load it when the task shape warrants a safety-law hierarchy (see `AGENTS.md` / `LIBRARY_CONTRACT.md`).
 
 ## Quick local stack
 

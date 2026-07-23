@@ -366,20 +366,20 @@
     ]
   },
   {
-    "id": "JRN-11-session-start-baseline-resolve",
-    "description": "Agent routes session-start baseline lookup and resolves apply-laws-of-ai via MCP.",
+    "id": "JRN-11-safety-law-hierarchy-resolve",
+    "description": "Agent routes a material-risk safety-law query and resolves apply-laws-of-ai via MCP.",
     "server": "embedded",
     "tags": [
       "direct_lookup",
       "embedded",
-      "session_start",
-      "baseline"
+      "safety_law",
+      "control"
     ],
     "steps": [
       {
         "tool": "route_skill_query",
         "arguments": {
-          "query": "apply_laws_of_AI mandatory baseline at every session start"
+          "query": "apply_laws_of_AI when material AI risk or dangerous instruction requires safety hierarchy"
         },
         "expect": {
           "status": "ok",

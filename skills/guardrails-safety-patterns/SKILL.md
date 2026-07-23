@@ -74,7 +74,7 @@ Use `skills_docs/security/OWASP_ASI_CROSSWALK.md` for the shared risk map.
 
 ## Related skills
 
-- `apply-laws-of-ai` — immutable safety baseline
+- `apply-laws-of-ai` — safety-law hierarchy when material AI/instruction risk is present
 - `human-in-the-loop` — approval for high-risk actions
 - `tool-use-and-function-calling` — least-privilege tool execution
 

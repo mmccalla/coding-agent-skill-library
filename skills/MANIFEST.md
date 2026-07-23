@@ -8,7 +8,7 @@ Use this command to list installed skills:
 find skills -name "SKILL.md" | sort
 ```
 
-After the agentic, control, engineering, user-experience, reliability-and-delivery, event-driven, enterprise-integration-patterns, business-architecture, solution-and-platform-architecture, data-architecture and KRAG systems skills are installed, the library should contain 113 skills (including mandatory `apply-laws-of-ai`).
+After the agentic, control, engineering, user-experience, reliability-and-delivery, event-driven, enterprise-integration-patterns, business-architecture, solution-and-platform-architecture, data-architecture and KRAG systems skills are installed, the library should contain 113 skills (including `apply-laws-of-ai`).
 
 ## Workflow spine skills
 
@@ -70,7 +70,7 @@ These skills belong to the semantic `agent-control-patterns` grouping in the fla
 
 | Skill | Use when | Avoid when |
 |---|---|---|
-| `apply-laws-of-ai` | **Mandatory first at every session.** Immutable baseline for all reasoning before any other skill, plan, or edit. | Never skip; no substitute or summary is acceptable. |
+| `apply-laws-of-ai` | Material AI/agent harm risk, unlawful or unauthorised instructions, or explicit safety-law trade-offs need an Asimov-inspired law hierarchy. | Ordinary discovery, routing, or routine implementation with no material AI/instruction risk. |
 | `cognitive-bias-review` | Reviewing plans, recommendations, prioritisation or retrospectives for judgement distortion from cognitive bias before accepting conclusions. | Purely mechanical execution; argument-structure checks (`logical-fallacy-review`). |
 | `logical-fallacy-review` | Evaluating whether premises in ADRs, reviews, security justifications or recommendations validly support their conclusions. | Judgement-bias checks (`cognitive-bias-review`); conclusions fixed by executable checks alone. |
 | `goal-setting-and-monitoring` | Objectives, success criteria, stop conditions or progress tracking are needed. | The task has a simple one-shot outcome. |

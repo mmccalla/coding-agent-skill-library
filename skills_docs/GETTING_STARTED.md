@@ -11,9 +11,9 @@ This repository defaults to **skills-kg MCP** in Cursor. Full setup for MCP-only
 **Portable filesystem (Path B)** in other tools or repositories:
 
 1. Read `AGENTS.md` (or `CLAUDE.md` for the short mirror).
-2. Follow that entrypoint’s session contract (may include safety files and `apply-laws-of-ai`).
-3. Route with `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` (Path B).
-4. Load the smallest matching `skills/<name>/SKILL.md`.
+2. Route with `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` (Path B).
+3. Load the smallest matching `skills/<name>/SKILL.md`.
+4. Load `apply-laws-of-ai` only when the task involves material AI/agent harm risk or safety-law trade-offs.
 
 To copy only the portable library into another repository, see `DROP_IN_BOOTSTRAP.md`.
 

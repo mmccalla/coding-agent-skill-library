@@ -170,7 +170,7 @@ def main() -> int:
     warnings: list[str] = []
 
     if not os.path.isfile(BASELINE_SKILL):
-        errors.append(f"missing mandatory baseline skill: {BASELINE_SKILL}")
+        errors.append(f"missing required library skill: {BASELINE_SKILL}")
 
     paths: list[str] = []
     for dirpath, _, files in os.walk(ROOT):
