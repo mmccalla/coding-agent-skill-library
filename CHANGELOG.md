@@ -4,6 +4,13 @@ Release-level changes for the portable skills library and Skills KG service.
 
 Detailed history: [`skills_docs/CHANGELOG.md`](skills_docs/CHANGELOG.md).
 
+## v0.1.11 — 2026-07-23
+
+- L3 discovery promote: aliases and description triggers for hold-out soft misses (ADR, CI, review, threat, UX/a11y, incident/obs, ontology, supply-chain, guardrails/HITL, event-driven, and related)
+- Vague-filler OOD abstention in hybrid retrieval (queries with only filler tokens abstain even with strong vector scores)
+- Paired live evidence vs `main` @ v0.1.10: hold-out B1 soft 0.875 → 1.000; Δ vs B2-lex +0.083 → +0.167; OOD empty 1.0 / false_hit 0; does **not** claim beats live Cursor IDE activation
+- Expand gitignore for local L3/Arm-B/pair experiment harnesses and design write-ups
+
 ## v0.1.10 — 2026-07-22
 
 - P1-RAG discovery surfaces: enrich `knowledge-retrieval-rag` and `evaluation-and-monitoring` metadata; narrow `krag-evaluation-governance` to KRAG/GraphRAG-scoped language

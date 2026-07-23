@@ -2,6 +2,8 @@
 name: ux-design-principles
 description: Applies UX principles for clear, task-centred journeys, navigation and forms. Use when designing new screens, workflows, information architecture, or user journeys.
 aliases:
+  - redesign-settings
+  - settings-page
   - user-experience-design
   - ux
 ---

@@ -4,6 +4,8 @@ description: Use when a request is underspecified and the user's actual goal, co
 aliases:
   - interview-me
   - requirement-discovery
+  - elicit-requirements
+  - elicit-requirement
 ---
 
 # Interview Me

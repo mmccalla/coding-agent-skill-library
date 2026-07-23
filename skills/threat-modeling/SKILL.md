@@ -4,6 +4,10 @@ description: Identifies assets, trust boundaries, threats and mitigations for sy
 aliases:
   - threat-modelling
   - stride-threat-modeling
+  - threat-model
+  - admin-api
+  - expose-api
+  - run-threat-model
 ---
 
 # Threat Modelling

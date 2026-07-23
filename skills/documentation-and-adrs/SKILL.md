@@ -2,8 +2,11 @@
 name: documentation-and-adrs
 description: Use when a change needs durable documentation, an architecture decision record or maintainership guidance.
 aliases:
+  - architecture-decision-record
   - architecture-decision-records
+  - api-change-adr
   - docs-and-adrs
+  - write-adr
 ---
 
 # Documentation and ADRs

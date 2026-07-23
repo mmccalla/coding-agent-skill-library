@@ -1,6 +1,12 @@
 ---
 name: code-review-and-quality
 description: Use when reviewing code before merge to assess correctness, tests, maintainability, security and user impact.
+aliases:
+  - pr-review
+  - pull-request-review
+  - review-pr
+  - defects
+  - maintainability
 ---
 
 # Code Review and Quality

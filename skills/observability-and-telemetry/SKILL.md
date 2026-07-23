@@ -1,6 +1,9 @@
 ---
 name: observability-and-telemetry
 description: Designs actionable logs, metrics, traces, dashboards and alerts for reliable operations. Use when instrumenting services, defining SLIs, or improving on-call signal quality.
+aliases:
+  - improve-telemetry
+  - telemetry
 ---
 
 # Observability and Telemetry

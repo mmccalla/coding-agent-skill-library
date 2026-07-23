@@ -113,28 +113,70 @@ GENERIC_DOMAIN_TOKENS = frozenset(
         "for",
         "graph",
         "guide",
+        "hmm",
         "implement",
         "implementation",
         "irrelevant",
         "knowledge",
+        "not",
         "practice",
         "probe",
         "retrieval",
         "skill",
         "skills",
+        "sure",
         "synthetic",
         "the",
         "use",
+        "whatever",
         "when",
         "with",
     }
 )
 
+# Entire-query fillers: abstain even when hybrid scores are high (OOD vague probes).
+VAGUE_QUERY_TOKENS = frozenset(
+    {
+        "a",
+        "an",
+        "and",
+        "continue",
+        "help",
+        "hmm",
+        "idk",
+        "is",
+        "it",
+        "maybe",
+        "me",
+        "not",
+        "ok",
+        "or",
+        "please",
+        "sure",
+        "thanks",
+        "the",
+        "this",
+        "to",
+        "whatever",
+    }
+)
+
+
+def _alpha_tokens(text: str) -> frozenset[str]:
+    return frozenset(re.findall(r"[a-z0-9]+", text.lower()))
+
+
+def _is_vague_filler_query(text: str) -> bool:
+    """True when every query token is a known vague filler (including short tokens like ok)."""
+
+    tokens = _alpha_tokens(text)
+    return bool(tokens) and tokens <= VAGUE_QUERY_TOKENS
+
 
 def _tokens(text: str) -> set[str]:
     return {
         token
-        for token in re.findall(r"[a-z0-9]+", text.lower())
+        for token in _alpha_tokens(text)
         if len(token) > 2 and token not in {"and", "the", "for", "with"}
     }
 
@@ -583,6 +625,30 @@ def retrieve_hybrid_skills(
     }
     min_confident_score = settings.min_confident_score
     min_top1_margin = settings.min_top1_margin
+    # Vague/OOD fillers (e.g. "hmm not sure", "ok", "thanks") — abstain even if scores look confident.
+    if _is_vague_filler_query(query_text):
+        selection_trace = {
+            "request": {"query": query_text},
+            "selected": {},
+            "rejected": tuple(
+                [
+                    *rejected_candidates,
+                    {
+                        "skill_id": ranked[0].skill_id if ranked else "",
+                        "skill_name": ranked[0].skill_name if ranked else "",
+                        "score": ranked[0].score if ranked else 0.0,
+                        "reason": "Query contained only vague filler tokens.",
+                    },
+                ]
+            ),
+        }
+        return HybridRetrievalResult(
+            query=query_text,
+            uncertain=True,
+            message="No task-specific evidence match found; provide a narrower task description.",
+            recommendations=(),
+            selection_trace=selection_trace,
+        )
     if not ranked or ranked[0].score < min_confident_score:
         selection_trace = {
             "request": {"query": query_text},
