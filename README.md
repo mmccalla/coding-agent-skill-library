@@ -25,8 +25,8 @@ The goal is simple: make agentic coding **easier, faster, and safer**, while giv
 
 | I want to… | Read |
 | --- | --- |
-| Use skills via MCP (Cursor default here) | Safety files → `apply-laws-of-ai` via MCP → [`HOW_TO_FIND_THE_RIGHT_SKILL.md`](skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md) Path A → [`CURSOR_IDE_SETUP.md`](skills_docs/CURSOR_IDE_SETUP.md) |
-| Use skills via filesystem (drop-in / other agents) | [`AGENTS.md`](AGENTS.md) → `skills/apply-laws-of-ai/SKILL.md` → [`HOW_TO_FIND_THE_RIGHT_SKILL.md`](skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md) Path B |
+| Use skills via MCP (Cursor default here) | [`HOW_TO_FIND_THE_RIGHT_SKILL.md`](skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md) Path A → [`CURSOR_IDE_SETUP.md`](skills_docs/CURSOR_IDE_SETUP.md) (no mandatory safety / `apply-laws-of-ai` preamble) |
+| Use skills via filesystem (drop-in / other agents) | [`AGENTS.md`](AGENTS.md) → [`HOW_TO_FIND_THE_RIGHT_SKILL.md`](skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md) Path B |
 | Get running locally (Docker, MCP) | [`skills_docs/GETTING_STARTED.md`](skills_docs/GETTING_STARTED.md) |
 | Configure Cursor (MCP vs filesystem) | [`skills_docs/CURSOR_IDE_SETUP.md`](skills_docs/CURSOR_IDE_SETUP.md) |
 | Copy skills into another repo | [`skills_docs/DROP_IN_BOOTSTRAP.md`](skills_docs/DROP_IN_BOOTSTRAP.md) |
@@ -48,7 +48,7 @@ skills-ui/        Inspection and agent-workflow UI
 docker-compose.yml Neo4j, API, UI, Prometheus, Grafana
 ```
 
-Agents: mandatory startup order is in `AGENTS.md` / `LIBRARY_CONTRACT.md` (safety files → `apply-laws-of-ai` → route via MCP or filesystem → smallest skill set).
+Agents: MCP Path A needs no safety/`apply-laws-of-ai` preamble for discovery. Filesystem sessions follow `AGENTS.md` / `LIBRARY_CONTRACT.md` as installed.
 
 ## Quick local stack
 

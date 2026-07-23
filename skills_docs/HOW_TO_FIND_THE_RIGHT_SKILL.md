@@ -1,27 +1,19 @@
 # How to Find the Right Skill
 
-Shortest path from a task to the right skill. Agents should use this after safety baselines and `apply-laws-of-ai`.
+Shortest path from a task to the right skill via **skills-kg MCP** or the portable filesystem library.
 
-## Mandatory startup order
-
-Before routing:
-
-1. Read `AGENTIC_CODING_GLOBAL_SAFETY.md` when present.
-2. Read `SECURE_AGENTIC_DEVELOPMENT.md` when present.
-3. **Execute `apply-laws-of-ai` in full** — immutable baseline for all reasoning.
-   - **MCP mode:** `get_skill` / `get_skill_execution_guide` with skill id `apply-laws-of-ai`.
-   - **Filesystem mode:** read `skills/apply-laws-of-ai/SKILL.md`.
-
-Then choose an access path below. Portable rules: `LIBRARY_CONTRACT.md`. Cursor mode wiring: `CURSOR_IDE_SETUP.md`.
+Portable rules: `LIBRARY_CONTRACT.md`. Cursor mode wiring: `CURSOR_IDE_SETUP.md`.
 
 ## Choose your access path
 
-| Mode | When | How agents load skills |
+| Mode | When | How skills are loaded |
 | --- | --- | --- |
-| **A — skills-kg MCP** | This repo’s Cursor default; any harness with `skills-kg` connected | MCP tools only — do **not** read `skills/**/SKILL.md` for day-to-day work |
+| **A — skills-kg MCP** | This repo’s Cursor default; any harness with `skills-kg` connected | MCP tools only — do **not** read `skills/**/SKILL.md` for day-to-day discovery |
 | **B — filesystem** | Drop-in copy, Claude Code, Codex, or MCP unavailable | Progressive disclosure via `skills/` + this guide |
 
 Do not mix modes in one session unless the user explicitly authorises filesystem fallback while MCP is down.
+
+**MCP has no mandatory safety-file or `apply-laws-of-ai` preamble.** Humans and agents may call discovery tools immediately. Load control skills (including `apply-laws-of-ai`) when the task warrants them.
 
 ---
 
@@ -52,6 +44,8 @@ Use the **task-shape** and **scenario** tables below to phrase better queries an
 
 ## Path B — filesystem (portable / drop-in)
 
+Optional for coding-agent drop-ins that still follow `AGENTS.md`: read safety baselines and `skills/apply-laws-of-ai/SKILL.md` when that contract applies. Not required to *browse* the library as a human.
+
 1. Read `skills/README.md` for the flat-library structure.
 2. Classify the task by shape (tables below), not by technology buzzwords.
 3. Choose the smallest semantic category that matches the core problem.
@@ -66,7 +60,7 @@ Use the **task-shape** and **scenario** tables below to phrase better queries an
 | If the task is mainly about… | Start with category group |
 | --- | --- |
 | Session setup, planning, specs, implementation flow, source grounding | `agentic-patterns` |
-| Safety baseline, approval, recovery, RAG, evaluation, prioritisation, threat modelling, model governance, risk | `agent-control-patterns` (`apply-laws-of-ai` first) |
+| Safety baseline, approval, recovery, RAG, evaluation, prioritisation, threat modelling, model governance, risk | `agent-control-patterns` (consider `apply-laws-of-ai` when relevant) |
 | Code quality, testing strategy, technical debt, refactoring, domain modelling, review | `engineering-practices` |
 | UI, accessibility, dashboards, interaction states, agent supervision | `user-experience` |
 | Reliability, incidents, observability, CI/CD, secure SDLC, FinOps, performance, IaC, release, launch | `reliability-and-delivery` |
@@ -81,7 +75,7 @@ Use the **task-shape** and **scenario** tables below to phrase better queries an
 
 | Scenario | Recommended starting skill(s) |
 | --- | --- |
-| Every session | `apply-laws-of-ai` (mandatory first) |
+| AI safety / laws baseline (when needed) | `apply-laws-of-ai` |
 | Ambiguous request | `skill-discovery-and-selection`, then `requirements-elicitation` if intent is still unclear |
 | Multi-step implementation | `planning-and-task-decomposition`, then `incremental-implementation` |
 | Generic document-grounded RAG | `knowledge-retrieval-rag` |
@@ -110,13 +104,13 @@ Use the **task-shape** and **scenario** tables below to phrase better queries an
 
 ## Selection rules
 
-- `apply-laws-of-ai` always runs before any other skill.
 - Prefer the smallest useful skill set.
 - Do not load a whole category when one skill is enough.
 - Prefer MCP tool results (or frontmatter) over guessing from folder names.
 - When two skills overlap, choose the more specific one.
 - When a task crosses boundaries, combine one primary skill with the smallest supporting skills.
 - Prefer abstention or clarification over inventing skill content.
+- Load `apply-laws-of-ai` when the task involves AI/agent harm, unlawful requests, or safety conflicts — not as a tax on every MCP lookup.
 
 ## Navigation map
 

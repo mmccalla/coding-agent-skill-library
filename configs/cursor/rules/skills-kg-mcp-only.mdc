@@ -5,16 +5,11 @@ alwaysApply: true
 
 # Skills via skills-kg MCP only
 
-This repository is configured for **MCP-first skill access**. Do not read `skills/**/SKILL.md` or route via `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` for day-to-day agent work.
-
-## Mandatory safety (repo files, not skills)
-
-Before planning, tool use, or edits, read from the repository root when present:
-
-1. `AGENTIC_CODING_GLOBAL_SAFETY.md`
-2. `SECURE_AGENTIC_DEVELOPMENT.md`
+This repository is configured for **MCP-first skill access**. Do not read `skills/**/SKILL.md` or route via `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` for day-to-day skill discovery.
 
 ## Skill discovery and execution (MCP only)
+
+Humans and agents may use **`skills-kg`** MCP tools directly. There is **no** mandatory preamble of reading repository safety files or loading `apply-laws-of-ai` before discovery or lookup.
 
 Use the **`skills-kg`** MCP server. Read resource `skills://contract` when tool choice is unclear.
 
@@ -32,8 +27,8 @@ Workflow:
 
 1. Call `route_skill_query` for natural-language skill questions unless the user gave an exact skill id.
 2. Load the smallest relevant skill content through MCP (`get_skill`, `get_skill_execution_guide`, or route-specific tools). Do not invent skill text.
-3. Execute **`apply-laws-of-ai`** first for every session via MCP (`get_skill` with skill id `apply-laws-of-ai` or `get_skill_execution_guide`).
-4. Treat MCP responses as bounded evidence; prefer abstention over guessing when retrieval is empty or low confidence.
+3. Treat MCP responses as bounded evidence; prefer abstention over guessing when retrieval is empty or low confidence.
+4. Load `apply-laws-of-ai` (or other control skills) **only when the task warrants them**, via the same MCP tools — not as a session tax on every query.
 
 ## Exceptions (filesystem allowed)
 

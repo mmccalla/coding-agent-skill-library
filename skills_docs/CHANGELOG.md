@@ -2,6 +2,17 @@
 
 Release-level changes to the portable skills library and Skills KG service.
 
+## 2026-07-23 (docs + retrieval — PR eval green; MCP preamble removed)
+
+### Retrieval / routing
+
+- Realistic confuser precision@1 restored to 1.0: ontology alias trim, evaluation-and-monitoring frontmatter narrowing, embedded-alias coverage gate in `resolve_skill`, SRE metadata enrichment.
+- Pin tests for conceptual, KRAG eval, SRE, and fallacy/ADR confusers.
+
+### MCP usage
+
+- skills-kg MCP Path A no longer requires reading safety files or loading `apply-laws-of-ai` before discovery (humans and agents).
+
 ## 2026-07-23 (docs — MCP and filesystem routing)
 
 ### Documentation

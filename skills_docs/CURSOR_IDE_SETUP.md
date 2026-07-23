@@ -33,7 +33,7 @@ Do **not** treat `project-context.mdc` or `skills-kg-mcp-only.mdc` as general us
 | **2. Rules, Skills, Subagents** | **Cursor → Settings → Plugins → Rules, Skills, Subagents** | **User-level** skills from `~/.cursor/skills/` — separate from committed `.cursor/rules/` project rules |
 | **3. MCP servers** | **Cursor → Settings → Plugins → Tools & MCPs** and `~/.cursor/mcp.json` | Exposes tools (`route_skill_query`, `get_skill`, …) from the read-only **skills-kg** server |
 
-Safety baselines (`AGENTIC_CODING_GLOBAL_SAFETY.md`, `SECURE_AGENTIC_DEVELOPMENT.md`) are **repository files**, not skills. Agents should read them from the repo root in either mode.
+Safety baselines (`AGENTIC_CODING_GLOBAL_SAFETY.md`, `SECURE_AGENTIC_DEVELOPMENT.md`) are **repository files**, not skills. They are **optional for MCP skill discovery**. Filesystem Mode B / `AGENTS.md` sessions may still require them before edits.
 
 ---
 
@@ -117,11 +117,10 @@ Ensure `.cursor/rules/skills-kg-mcp-only.mdc` exists with `alwaysApply: true`. S
 
 ### Expected agent workflow (MCP)
 
-1. Read safety files from repo root.
-2. Load `apply-laws-of-ai` via MCP.
-3. Follow [`HOW_TO_FIND_THE_RIGHT_SKILL.md`](HOW_TO_FIND_THE_RIGHT_SKILL.md) **Path A**: call `route_skill_query` for ambiguous tasks.
-4. Follow with route-specific tools: `resolve_skill`, `get_skill`, `recommend_skills`, `get_skill_context`, `get_skill_execution_guide`, `search_skills`.
-5. Read resource `skills://contract` when tool choice is unclear.
+1. Follow [`HOW_TO_FIND_THE_RIGHT_SKILL.md`](HOW_TO_FIND_THE_RIGHT_SKILL.md) **Path A**: call `route_skill_query` for ambiguous tasks (no mandatory safety-file or `apply-laws-of-ai` preamble).
+2. Follow with route-specific tools: `resolve_skill`, `get_skill`, `recommend_skills`, `get_skill_context`, `get_skill_execution_guide`, `search_skills`.
+3. Read resource `skills://contract` when tool choice is unclear.
+4. Load `apply-laws-of-ai` or other control skills via MCP only when the task warrants them.
 
 **Authoring exception:** agents may read `skills/**` and `skills_docs/**` when you explicitly ask to author, validate or maintain skills.
 

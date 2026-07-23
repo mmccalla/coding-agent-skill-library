@@ -6,7 +6,6 @@ aliases:
   - ontology-modeling
   - ontology
   - knowledge-graph
-  - business-concepts
   - model-ontology
   - knowledge-graph-modeling
 ---

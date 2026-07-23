@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -26,6 +28,72 @@ RELEASE_CITATION_COVERAGE = 0.95
 
 
 class RealisticE2eRetrievalTests(unittest.TestCase):
+    def _assert_realistic_case_top1(self, case_id: str, expected_skill_id: str) -> None:
+        cases = [case for case in load_cases(REALISTIC_DATASET) if case.id == case_id]
+        self.assertEqual(1, len(cases), case_id)
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / f"{case_id}.json"
+            path.write_text(
+                json.dumps(
+                    [
+                        {
+                            "id": cases[0].id,
+                            "query": cases[0].query,
+                            "expected_skill_ids": list(cases[0].expected_skill_ids),
+                            "required_skill_ids": list(cases[0].required_skill_ids),
+                            "excluded_skill_ids": list(cases[0].excluded_skill_ids),
+                            "expect_uncertain": cases[0].expect_uncertain,
+                        }
+                    ]
+                ),
+                encoding="utf-8",
+            )
+            report = evaluate_offline(
+                path,
+                limit=3,
+                recall_threshold=0.0,
+                mrr_threshold=0.0,
+                source_threshold=0.0,
+                uncertainty_threshold=0.0,
+                skills_root=REPO_ROOT / "skills",
+            )
+        self.assertEqual(1, report.cases)
+        self.assertGreaterEqual(report.precision_at_1, 1.0, report.case_results)
+        top1 = report.case_results[0].ranked_skill_ids[0]
+        self.assertEqual(expected_skill_id, top1)
+
+    def test_conceptual_data_model_precision_at_1(self) -> None:
+        """Pin confuser: conceptual modelling must not lose to ontology aliases."""
+        self._assert_realistic_case_top1(
+            "conceptual_data_model",
+            "skill:conceptual-data-modeling",
+        )
+
+    def test_krag_evaluation_cases_beat_generic_monitoring(self) -> None:
+        """Pin confuser: KRAG eval queries must not lose to evaluation-and-monitoring."""
+        self._assert_realistic_case_top1(
+            "krag_evaluation_governance",
+            "skill:krag-evaluation-governance",
+        )
+        self._assert_realistic_case_top1(
+            "krag_eval_vs_monitoring",
+            "skill:krag-evaluation-governance",
+        )
+
+    def test_sre_confuser_precision_at_1(self) -> None:
+        """Pin confuser: broad SRE task must not resolve to incident-response via alias embed."""
+        self._assert_realistic_case_top1(
+            "sre_vs_observability_confuser",
+            "skill:sre-practice",
+        )
+
+    def test_journey_harvest_11_fallacy_beats_adr_docs(self) -> None:
+        """Pin confuser: fallacy review in an ADR context must top logical-fallacy-review."""
+        self._assert_realistic_case_top1(
+            "journey_harvest_11",
+            "skill:logical-fallacy-review",
+        )
+
     @pytest.mark.eval_pr
     def test_realistic_confuser_dataset_passes(self) -> None:
         report = evaluate_offline(

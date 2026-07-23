@@ -46,11 +46,11 @@ class CursorMcpOnlyConfigTests(unittest.TestCase):
             "get_skill_context",
             "get_skill_execution_guide",
             "skills://contract",
-            "apply-laws-of-ai",
-            "AGENTIC_CODING_GLOBAL_SAFETY.md",
-            "SECURE_AGENTIC_DEVELOPMENT.md",
         ):
             self.assertIn(marker, text)
+        self.assertNotIn("Mandatory safety", text)
+        self.assertIn("mandatory preamble", text.lower())
+        self.assertIn("only when the task warrants them", text.lower())
 
     def test_getting_started_links_cursor_setup_guide(self) -> None:
         text = GETTING_STARTED.read_text(encoding="utf-8")

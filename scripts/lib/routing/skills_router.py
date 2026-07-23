@@ -122,7 +122,11 @@ def resolve_skill(plan: load_skills_neo4j.LoadPlan, name: str) -> dict[str, obje
         if normalised_name in aliases:
             return _resolved_skill_response(plan, skill, "exact")
         contained_aliases = [
-            alias for alias in aliases if alias and _contains_alias_phrase(normalised_name, alias)
+            alias
+            for alias in aliases
+            if alias
+            and _contains_alias_phrase(normalised_name, alias)
+            and _embedded_alias_covers_query(normalised_name, alias)
         ]
         if contained_aliases:
             matches.append((max(len(alias) for alias in contained_aliases), skill))
@@ -420,6 +424,46 @@ def _contains_any(text: str, candidates: frozenset[str]) -> bool:
 def _contains_alias_phrase(normalised_text: str, alias: str) -> bool:
     pattern = rf"(?:^|[-:]){re.escape(alias)}(?:$|[-:])"
     return bool(re.search(pattern, normalised_text))
+
+
+def _embedded_alias_covers_query(normalised_query: str, alias: str) -> bool:
+    """Require embedded aliases to cover enough of the query to count as a lookup.
+
+    Prevents short aliases such as ``incident-response`` from forcing direct_lookup
+    inside longer multi-skill task queries. Common instruction fillers are ignored
+    so phrases like ``how do I apply <skill>`` still resolve.
+    """
+
+    filler = frozenset(
+        {
+            "a",
+            "an",
+            "about",
+            "apply",
+            "as",
+            "do",
+            "for",
+            "how",
+            "i",
+            "me",
+            "my",
+            "of",
+            "should",
+            "tell",
+            "the",
+            "to",
+            "use",
+            "what",
+            "when",
+            "which",
+            "your",
+        }
+    )
+    query_parts = [part for part in normalised_query.split("-") if part and part not in filler]
+    alias_parts = [part for part in alias.split("-") if part]
+    if not query_parts or not alias_parts:
+        return False
+    return (len(alias_parts) / len(query_parts)) >= (1.0 / 3.0)
 
 
 def _normalise(value: str) -> str:
