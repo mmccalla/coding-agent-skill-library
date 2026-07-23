@@ -1,9 +1,17 @@
 ---
 name: guardrails-safety-patterns
-description: Use when implementing input validation, output filtering, tool restrictions, policy enforcement, secure coding controls, or safe agent behaviour.
+description: Use when implementing input validation, output filtering, tool restrictions, policy enforcement, secure coding controls, destructive-tool guardrails, approval gates, or safe agent behaviour.
 aliases:
   - safety-guardrails
   - ai-safety-controls
+  - destructive-tools
+  - tool-approval
+  - agent-guardrails
+  - without-approval
+  - destructive-tool-calls
+  - cannot-call-destructive-tools
+  - approval-before-tools
+  - destructive-tool-guardrails
 ---
 
 # Guardrails and Safety Patterns

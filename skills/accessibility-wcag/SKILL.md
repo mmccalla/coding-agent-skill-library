@@ -4,6 +4,7 @@ description: Applies WCAG 2.2 AA-aligned accessibility checks to interfaces, for
 aliases:
   - accessibility
   - wcag
+  - wcag-aa
 ---
 
 # Accessibility and WCAG Practice

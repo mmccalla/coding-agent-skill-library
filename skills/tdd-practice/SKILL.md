@@ -4,6 +4,9 @@ description: Applies TDD: failing test first, smallest passing change, refactor 
 aliases:
   - test-driven-development
   - tdd
+  - implement-with-tests
+  - implement-with-tdd
+  - then-implement-with-tests
 ---
 
 # Test-Driven Development (TDD)

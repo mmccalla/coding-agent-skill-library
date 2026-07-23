@@ -4,6 +4,11 @@ description: Designs ontology-driven knowledge graphs for explainable KG-RAG. Us
 aliases:
   - ontology-and-knowledge-graph-modelling
   - ontology-modeling
+  - ontology
+  - knowledge-graph
+  - business-concepts
+  - model-ontology
+  - knowledge-graph-modeling
 ---
 
 # Ontology, Knowledge Graph and KRAG

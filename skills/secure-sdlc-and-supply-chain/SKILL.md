@@ -6,6 +6,11 @@ aliases:
   - software-supply-chain-security
   - ssdf-practice
   - nist-800-218
+  - sbom
+  - supply-chain
+  - dependency-supply-chain
+  - harden-dependencies
+  - sbom-checks
 ---
 
 # Secure SDLC and Supply Chain

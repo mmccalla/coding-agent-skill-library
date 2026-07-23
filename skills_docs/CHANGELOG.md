@@ -2,6 +2,15 @@
 
 Release-level changes to the portable skills library and Skills KG service.
 
+## 2026-07-23 (v0.1.11 — L3 discovery proxy promote)
+
+### Skills / retrieval discovery
+
+- Alias and description discovery packs for natural hold-out soft misses (delivery, security, UX, ontology, event-driven, and related skills).
+- Vague-filler abstention: hybrid returns empty when the query has only filler tokens (keeps OOD empty=1.0 on fixture 0.2.0).
+- Paired trunk vs experiment (same fixture, live Neo4j wipe+reload): B1 soft 0.875 → 1.000; soft Δ vs B2-lex +0.083 → +0.167; OOD intact. Live Cursor Arm B soft remained 1.000 on both arms — **not** a Cursor-superiority claim.
+- Hybrid score weights unchanged.
+
 ## 2026-07-22 (v0.1.10 — P1-RAG discovery metadata)
 
 ### Skills / retrieval discovery

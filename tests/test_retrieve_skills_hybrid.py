@@ -183,6 +183,53 @@ class HybridRetrievalTests(unittest.TestCase):
             or "narrower task description" in result.message
         )
 
+    def test_vague_filler_queries_abstain_even_with_strong_vector_scores(self) -> None:
+        """OOD fillers must not become confident hits via stopword body overlap."""
+        retrieval = load_module()
+        plan = retrieval.fixture_load_plan()
+        settings = RetrievalSettings(min_confident_score=0.01, min_top1_margin=0.0)
+        strong_vector = (
+            retrieval.VectorCandidate(
+                retrieval_unit_id="retrieval:skill:knowledge-graph-rag:section:1:kg",
+                score=0.99,
+                source_path="skills/knowledge-graph-rag/SKILL.md",
+                section_id="skill:knowledge-graph-rag:section:0-objective",
+                skill_id="skill:knowledge-graph-rag",
+                text="Do not skip provenance when grounding answers.",
+                embedding_provider="deterministic-test-embedding",
+                embedding_dimensions=8,
+            ),
+        )
+        filler_queries = (
+            "hmm not sure",
+            "maybe not sure",
+            "ok",
+            "thanks",
+            "help",
+            "continue",
+        )
+
+        for query_text in filler_queries:
+            with self.subTest(query_text=query_text):
+                result = retrieval.retrieve_hybrid_skills(
+                    plan,
+                    query_text=query_text,
+                    vector_candidates=strong_vector,
+                    limit=3,
+                    retrieval_settings=settings,
+                )
+                self.assertTrue(result.uncertain, msg=query_text)
+                self.assertEqual((), result.recommendations, msg=query_text)
+                self.assertIn("task-specific", result.message.lower(), msg=query_text)
+
+    def test_task_specific_help_query_is_not_treated_as_vague_filler(self) -> None:
+        retrieval = load_module()
+
+        self.assertFalse(
+            retrieval._is_vague_filler_query("help me resolve a git merge conflict on main")
+        )
+        self.assertTrue(retrieval._is_vague_filler_query("help"))
+
     def test_results_do_not_expose_raw_vectors_or_cypher(self) -> None:
         retrieval = load_module()
         plan = retrieval.fixture_load_plan()

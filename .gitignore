@@ -23,11 +23,21 @@ skills_docs/krag/CLOSEOUT_PLAN.md
 hero_image_2.png
 # Experiment harness / write-ups (local only; not product source)
 /skills_docs/krag/experiments/
+/skills_docs/krag/L3_*.md
+/skills_docs/krag/PAIR_D19_*.md
+/skills_docs/krag/RETROSPECTIVE_*.md
 /scripts/lib/retrieval/evaluate_natural_agent_baseline.py
 /scripts/lib/retrieval/diagnose_hybrid_ranking.py
 /scripts/lib/retrieval/bge_eval_runtime.py
 /scripts/lib/retrieval/evaluate_bge_natural_baseline.py
+/scripts/lib/retrieval/evaluate_cursor_fs_baseline.py
+/scripts/lib/retrieval/evaluate_fs_description_semantic.py
+/scripts/lib/retrieval/evaluate_arm_b_live_cursor_fs.py
+/scripts/lib/retrieval/run_pair_d19_measure.py
 /tests/test_natural_agent_baseline_h0.py
 /tests/test_diagnose_hybrid_ranking.py
 /tests/test_bge_eval_runtime.py
+/tests/test_cursor_fs_baseline_h0b.py
+/tests/test_fs_description_semantic_rr1.py
+/tests/test_arm_b_live_cursor_fs.py
 /tests/fixtures/retrieval_evaluation/natural_agent_queries.json

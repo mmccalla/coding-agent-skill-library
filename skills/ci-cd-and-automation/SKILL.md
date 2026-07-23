@@ -1,6 +1,12 @@
 ---
 name: ci-cd-and-automation
 description: Use when designing or changing build, test or deployment automation that needs explicit safety, permissions and verification.
+aliases:
+  - github-actions
+  - flaky-ci
+  - ci-gate
+  - safer-ci-gate
+  - workflow-flaky
 ---
 
 # CI/CD and Automation

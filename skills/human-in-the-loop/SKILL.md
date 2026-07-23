@@ -1,6 +1,11 @@
 ---
 name: human-in-the-loop
 description: Use when a coding agent must request approval, expert judgement, clarification, review, or intervention before proceeding with high-risk or ambiguous work.
+aliases:
+  - human-approval
+  - approval-gate
+  - expert-judgement
+  - escalate-to-human
 ---
 
 # Human-in-the-Loop

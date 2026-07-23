@@ -1,6 +1,10 @@
 ---
 name: spec-driven-development
 description: Use when a feature or significant change needs a decision-complete specification before implementation begins.
+aliases:
+  - short-spec
+  - write-short-spec
+  - write-a-short-spec
 ---
 
 # Spec-Driven Development

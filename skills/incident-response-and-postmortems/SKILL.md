@@ -1,6 +1,10 @@
 ---
 name: incident-response-and-postmortems
 description: Handles incidents, recovery, postmortems and corrective actions with blameless, evidence-led practice. Use when responding to outages, writing postmortems, or defining incident runbooks.
+aliases:
+  - incident-response
+  - outage
+  - production-down
 ---
 
 # Incident Response and Postmortems
