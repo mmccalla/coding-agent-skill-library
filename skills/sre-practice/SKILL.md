@@ -1,9 +1,11 @@
 ---
 name: sre-practice
-description: Applies SRE practices for reliability, operability and resilience objectives. Use when owning production services, defining SLOs, or improving operational maturity.
+description: Applies SRE practices for production reliability, service ownership, resilience, toil reduction and operability. Use when owning production services, defining SLOs, or improving operational maturity.
 aliases:
   - site-reliability-engineering
   - service-reliability
+  - production-reliability
+  - service-ownership
 ---
 
 # SRE Practice

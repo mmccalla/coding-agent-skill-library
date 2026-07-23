@@ -5,7 +5,9 @@ from __future__ import annotations
 import json
 import unittest
 from pathlib import Path
+from unittest import mock
 
+from scripts.lib.retrieval import generate_golden_queries
 from scripts.lib.retrieval.generate_golden_queries import generate_tier
 from scripts.lib.retrieval.generate_golden_queries import main as generate_main
 from scripts.utils.ci.ci_ingest_gate import (
@@ -99,10 +101,27 @@ class CorpusGeneratorTests(unittest.TestCase):
         self.assertGreaterEqual(len(cases), 10)
 
     def test_generate_main_smoke_tier(self) -> None:
-        self.assertEqual(generate_main(["--tier", "smoke"]), 0)
+        # Write to a temp path so quality-tier tests do not mutate release fixtures.
+        out = EVAL_DIR / "smoke_queries_promoted.test.json"
+        with mock.patch.object(generate_golden_queries, "SMOKE_PATH", out):
+            try:
+                self.assertEqual(generate_main(["--tier", "smoke"]), 0)
+                self.assertTrue(out.is_file())
+                cases = json.loads(out.read_text(encoding="utf-8"))
+                self.assertGreaterEqual(len(cases), 8)
+            finally:
+                out.unlink(missing_ok=True)
 
     def test_generate_main_realistic_tier(self) -> None:
-        self.assertEqual(generate_main(["--tier", "realistic"]), 0)
+        out = EVAL_DIR / "realistic_queries.test.json"
+        with mock.patch.object(generate_golden_queries, "REALISTIC_PATH", out):
+            try:
+                self.assertEqual(generate_main(["--tier", "realistic"]), 0)
+                self.assertTrue(out.is_file())
+                cases = json.loads(out.read_text(encoding="utf-8"))
+                self.assertGreaterEqual(len(cases), 20)
+            finally:
+                out.unlink(missing_ok=True)
 
     def test_generate_coverage_tier_in_memory(self) -> None:
         cases = generate_tier("coverage", skills_root=REPO_ROOT / "skills")

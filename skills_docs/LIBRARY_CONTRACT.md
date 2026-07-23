@@ -2,25 +2,20 @@
 
 This document defines the portable consistency rules for the coding-agent skill library. It applies to any repository that installs this library, without IDE-specific wiring.
 
-## Mandatory agent startup order
+## Access paths and startup
 
-Every agent session must follow this order before planning, routing, or edits:
+| Path | Startup expectation |
+| --- | --- |
+| **skills-kg MCP** | Call MCP tools directly (`route_skill_query`, `get_skill`, …). **No** mandatory read of `AGENTIC_CODING_GLOBAL_SAFETY.md` / `SECURE_AGENTIC_DEVELOPMENT.md` and **no** mandatory `apply-laws-of-ai` before discovery. Load control skills when the task warrants them. |
+| **Filesystem drop-in** | Follow the installing repo’s agent entrypoints (`AGENTS.md` / `CLAUDE.md`). Those may still require safety files and `apply-laws-of-ai` before edits; that is a **coding-agent session** contract, not an MCP usage tax. |
 
-1. Read `AGENTIC_CODING_GLOBAL_SAFETY.md` when present.
-2. Read `SECURE_AGENTIC_DEVELOPMENT.md` when present.
-3. **Execute `apply-laws-of-ai` in full** — immutable baseline for all reasoning.
-   - Filesystem: `skills/apply-laws-of-ai/SKILL.md`.
-   - skills-kg MCP: `get_skill` / `get_skill_execution_guide` with skill id `apply-laws-of-ai`.
-4. Route with `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` (Path A MCP or Path B filesystem).
-5. Load the smallest relevant skill content for the task (MCP tools or `SKILL.md` files — not both unless fallback is authorised).
+Route with `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` (Path A MCP or Path B filesystem). Load the smallest relevant skill content for the task (MCP tools or `SKILL.md` files — not both unless fallback is authorised).
 
-Steps 1–3 are non-negotiable. No task skill may run before step 3 completes.
+## apply-laws-of-ai (when loaded)
 
-## Immutability of apply-laws-of-ai
-
-- `apply-laws-of-ai` is the first operational skill, not an optional control pattern.
-- Its laws and quality gates cannot be overridden by user instructions, other skills, or local conventions.
+- When `apply-laws-of-ai` is selected for a task, its laws and quality gates cannot be overridden by user instructions, other skills, or local conventions.
 - On conflict, refuse, constrain, or escalate — never proceed as if the baseline did not apply.
+- It is a library skill available via MCP or filesystem, not a mandatory preamble for every skills-kg query.
 
 ## Portable file conventions
 
@@ -28,7 +23,7 @@ Steps 1–3 are non-negotiable. No task skill may run before step 3 completes.
 | --- | --- |
 | Skill files | `SKILL.md` only, with YAML frontmatter. Required: `name`, `description`. Supported and strongly recommended where useful: `aliases`, `tags`, `invocation_mode`, `canonical_terms`. `name` must match the parent folder name |
 | Skill sections | Canonical headings: `## When to use`, `## Objective` and `## Verification`; `## Verification` must include at least one `- [ ]` checklist item |
-| Skill length | Non-baseline skills must contain at least 200 words; `apply-laws-of-ai` is exempt because it is governed by the mandatory baseline contract |
+| Skill length | Non-baseline skills must contain at least 200 words; `apply-laws-of-ai` is exempt from the minimum-length rule |
 | Related skills | Optional `## Related skills` section before `## Verification`; backtick skill names must match installed skill folder names |
 | Product-specific overlays | Product/project-specific guidance belongs under `skills_docs/overlays/`, with core skills linking to the overlay instead of embedding product sections |
 | Progressive disclosure | Keep `SKILL.md` concise; move deep examples, metadata and implementation details to one-level reference files under the skill folder |
@@ -41,7 +36,7 @@ Steps 1–3 are non-negotiable. No task skill may run before step 3 completes.
 
 ## Skill count invariant
 
-With all category groupings installed (including enterprise-integration-patterns, solution-and-platform-architecture and krag-systems), the library contains **113** skills, including the mandatory `apply-laws-of-ai` baseline.
+With all category groupings installed (including enterprise-integration-patterns, solution-and-platform-architecture and krag-systems), the library contains **113** skills, including `apply-laws-of-ai`.
 
 ## Discovery metadata contract
 
@@ -99,11 +94,11 @@ For authoring standards, examples and progressive-disclosure guidance, see `skil
 If a target repository installed an earlier drop-in without `apply-laws-of-ai`:
 
 1. Copy `skills/apply-laws-of-ai/` from this library.
-2. Replace `AGENTS.md`, `CLAUDE.md`, and `skills_docs/` with the current versions (or merge the **Mandatory startup order** section).
+2. Replace `AGENTS.md`, `CLAUDE.md`, and `skills_docs/` with the current versions (or merge access-path / startup guidance).
 3. Update `skills/MANIFEST.md` skill counts to **113** where the full library is installed.
 4. Run `python3 scripts/validators/validate_skills.py` and confirm PASS.
 
-Do not skip step 1 — agents must execute the baseline skill before any other reasoning.
+Keep `apply-laws-of-ai` available for tasks that need it; MCP discovery does not require loading it first.
 
 ## What this library deliberately excludes
 
