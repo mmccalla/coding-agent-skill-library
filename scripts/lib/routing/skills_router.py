@@ -431,7 +431,9 @@ def _embedded_alias_covers_query(normalised_query: str, alias: str) -> bool:
 
     Prevents short aliases such as ``incident-response`` from forcing direct_lookup
     inside longer multi-skill task queries. Common instruction fillers are ignored
-    so phrases like ``how do I apply <skill>`` still resolve.
+    so phrases like ``how do I apply <skill>`` still resolve. Coverage-style prompts
+    such as ``when should I use <alias> for this kind of work`` also resolve when the
+    leftover tokens are only generic wrappers.
     """
 
     filler = frozenset(
@@ -459,11 +461,35 @@ def _embedded_alias_covers_query(normalised_query: str, alias: str) -> bool:
             "your",
         }
     )
+    lookup_wrappers = frozenset(
+        {
+            "applying",
+            "checklist",
+            "coding",
+            "kind",
+            "need",
+            "on",
+            "practical",
+            "practice",
+            "skill",
+            "skills",
+            "sort",
+            "task",
+            "this",
+            "type",
+            "way",
+            "work",
+        }
+    )
     query_parts = [part for part in normalised_query.split("-") if part and part not in filler]
     alias_parts = [part for part in alias.split("-") if part]
     if not query_parts or not alias_parts:
         return False
-    return (len(alias_parts) / len(query_parts)) >= (1.0 / 3.0)
+    if (len(alias_parts) / len(query_parts)) >= (1.0 / 3.0):
+        return True
+    alias_token_set = set(alias_parts)
+    leftovers = [part for part in query_parts if part not in alias_token_set]
+    return bool(leftovers) and all(part in lookup_wrappers for part in leftovers)
 
 
 def _normalise(value: str) -> str:

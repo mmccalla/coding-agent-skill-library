@@ -65,6 +65,26 @@ class SkillsRouterCanonicalIdTests(unittest.TestCase):
         self.assertEqual("recommendation", routed["route"])
         self.assertIsNone(routed["resolved_skill_id"])
 
+    def test_resolve_skill_keeps_coverage_style_short_alias_lookups(self) -> None:
+        """Formulaic coverage prompts must still resolve short aliases."""
+        response = skills_router.resolve_skill(
+            self.full_plan,
+            "When should I use accessibility for this kind of work?",
+        )
+
+        self.assertEqual("ok", response["status"])
+        self.assertEqual("skill:accessibility-wcag", response["skill_id"])
+        self.assertEqual("embedded", response["match_type"])
+
+    def test_resolve_skill_keeps_skill_slug_inside_checklist_sentence(self) -> None:
+        response = skills_router.resolve_skill(
+            self.full_plan,
+            "I need a practical checklist for applying event-driven-architecture on a coding task.",
+        )
+
+        self.assertEqual("ok", response["status"])
+        self.assertEqual("skill:event-driven-architecture", response["skill_id"])
+
 
 if __name__ == "__main__":
     unittest.main()
