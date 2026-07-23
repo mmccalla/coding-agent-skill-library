@@ -20,6 +20,11 @@ updates:
       interval: weekly
       day: monday
     open-pull-requests-limit: 10
+    # typescript-eslint@8.x peers typescript ">=4.8.4 <6.1.0" — TS 7 installs fail (ERESOLVE).
+    ignore:
+      - dependency-name: typescript
+        update-types:
+          - "version-update:semver-major"
 
   - package-ecosystem: github-actions
     directory: /
