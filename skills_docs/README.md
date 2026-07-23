@@ -6,10 +6,10 @@ Documentation for agents and humans. Pick one path — you do not need every fil
 
 | Goal | Start here |
 | --- | --- |
-| **Use skills in an agent** | `HOW_TO_FIND_THE_RIGHT_SKILL.md` (after `apply-laws-of-ai`) |
+| **Use skills in an agent** | `HOW_TO_FIND_THE_RIGHT_SKILL.md` (after `apply-laws-of-ai`) — Path A MCP or Path B filesystem |
+| **Configure Cursor (MCP vs filesystem)** | `CURSOR_IDE_SETUP.md` |
 | **Copy the library to another repo** | `GETTING_STARTED.md` → `DROP_IN_BOOTSTRAP.md` |
 | **Run MCP / Docker / Neo4j locally** | `GETTING_STARTED.md` → `SKILLS_KG_MCP_RUNBOOK.md` |
-| **Configure Cursor IDE (MCP vs filesystem)** | `CURSOR_IDE_SETUP.md` |
 | **Write or change skills** | `SKILL_AUTHORING_GUIDE.md` |
 | **Domain gap-close backlog** | `GAP_CLOSE_BACKLOG.md` |
 | **KRAG roadmap and status** | `krag/STATUS.md` |
@@ -18,7 +18,7 @@ Documentation for agents and humans. Pick one path — you do not need every fil
 ## Portable library (always relevant)
 
 1. `LIBRARY_CONTRACT.md` — mandatory startup order and portable rules
-2. `HOW_TO_FIND_THE_RIGHT_SKILL.md` — route by task shape
+2. `HOW_TO_FIND_THE_RIGHT_SKILL.md` — route by task shape (MCP and filesystem)
 3. `SKILL_AUTHORING_GUIDE.md` — authoring standards
 4. `DROP_IN_BOOTSTRAP.md` — drop-in install model
 5. `CHANGELOG.md` — release-level changes
@@ -31,9 +31,12 @@ Documentation for agents and humans. Pick one path — you do not need every fil
 - `krag/CONTRACTS.md` — ingest, runtime, trust, eval gates
 - `krag/ONTOLOGY.md` — semantic model narrative
 - `krag/EVALUATION.md` — measured retrieval quality
+- `krag/CLOSEOUT_PLAN.md` — golden corpus realism and closeout waves
+- `krag/EVALUATION_CORPUS_CONTRACT.md` — tiered eval corpus schema and gates
 - `ontology/` — TTL and SHACL source (`ontology/README.md`)
-- `ontology/README.md` — TTL and SHACL layout
 - `SKILLS_KG_MCP_RUNBOOK.md` — operator runbook
+
+Local experiment write-ups (if present) live under `krag/experiments/` and are not part of the portable product docs.
 
 ## Other
 

@@ -2,6 +2,8 @@
 
 This guide explains how to configure Cursor for **skills-kg MCP only** or **filesystem skills only** when working in this repository.
 
+After wiring is correct, agents route skills with [`HOW_TO_FIND_THE_RIGHT_SKILL.md`](HOW_TO_FIND_THE_RIGHT_SKILL.md) (**Path A** for MCP, **Path B** for filesystem).
+
 The repository **defaults to MCP-only** (see committed workspace artefacts below). Switch modes deliberately — mixing both without understanding the layers causes duplicate or conflicting skill guidance.
 
 ## Project rules vs user-level Cursor settings
@@ -117,7 +119,7 @@ Ensure `.cursor/rules/skills-kg-mcp-only.mdc` exists with `alwaysApply: true`. S
 
 1. Read safety files from repo root.
 2. Load `apply-laws-of-ai` via MCP.
-3. Call `route_skill_query` for ambiguous tasks.
+3. Follow [`HOW_TO_FIND_THE_RIGHT_SKILL.md`](HOW_TO_FIND_THE_RIGHT_SKILL.md) **Path A**: call `route_skill_query` for ambiguous tasks.
 4. Follow with route-specific tools: `resolve_skill`, `get_skill`, `recommend_skills`, `get_skill_context`, `get_skill_execution_guide`, `search_skills`.
 5. Read resource `skills://contract` when tool choice is unclear.
 
@@ -201,7 +203,7 @@ You can rely on `AGENTS.md` alone without global Cursor skills if your user rule
 
 1. Read `AGENTIC_CODING_GLOBAL_SAFETY.md` and `SECURE_AGENTIC_DEVELOPMENT.md`.
 2. Execute `skills/apply-laws-of-ai/SKILL.md` in full.
-3. Route with `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`.
+3. Route with `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` **Path B**.
 4. Load the smallest matching `skills/<name>/SKILL.md`.
 
 See `AGENTS.md` for the full mandatory startup order.
@@ -220,7 +222,7 @@ In a new chat, ask for guidance on a known skill (for example TDD).
 
 | Concern | MCP only (Mode A) | Filesystem only (Mode B) |
 | --- | --- | --- |
-| Skill discovery | `route_skill_query`, `recommend_skills`, … | `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` |
+| Skill discovery | `route_skill_query`, `recommend_skills`, … (HOW_TO **Path A**) | HOW_TO **Path B** + frontmatter / `SKILL.md` |
 | Skill content | MCP tools (bounded payloads) | Direct `skills/**/SKILL.md` reads |
 | Offline | Requires MCP server process | Works with repo checkout only |
 | Usage metrics | Yes (Grafana / Prometheus) | No MCP telemetry |
@@ -274,4 +276,4 @@ Operator runbook: `SKILLS_KG_MCP_RUNBOOK.md`. Docker and API: `GETTING_STARTED.m
 | `SKILLS_KG_MCP_RUNBOOK.md` | Rebuild graph, Neo4j, observability |
 | `AGENTS.md` / `CLAUDE.md` | Filesystem mandatory startup order |
 | `DROP_IN_BOOTSTRAP.md` | Portable library copy without KG service |
-| `HOW_TO_FIND_THE_RIGHT_SKILL.md` | Task-shape routing (filesystem mode) |
+| `HOW_TO_FIND_THE_RIGHT_SKILL.md` | Task-shape routing (MCP Path A and filesystem Path B) |

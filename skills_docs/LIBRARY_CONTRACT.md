@@ -8,9 +8,11 @@ Every agent session must follow this order before planning, routing, or edits:
 
 1. Read `AGENTIC_CODING_GLOBAL_SAFETY.md` when present.
 2. Read `SECURE_AGENTIC_DEVELOPMENT.md` when present.
-3. **Execute `skills/apply-laws-of-ai/SKILL.md` in full** — immutable baseline for all reasoning.
-4. Read `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` for routing.
-5. Load the smallest relevant `SKILL.md` set for the task.
+3. **Execute `apply-laws-of-ai` in full** — immutable baseline for all reasoning.
+   - Filesystem: `skills/apply-laws-of-ai/SKILL.md`.
+   - skills-kg MCP: `get_skill` / `get_skill_execution_guide` with skill id `apply-laws-of-ai`.
+4. Route with `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` (Path A MCP or Path B filesystem).
+5. Load the smallest relevant skill content for the task (MCP tools or `SKILL.md` files — not both unless fallback is authorised).
 
 Steps 1–3 are non-negotiable. No task skill may run before step 3 completes.
 
@@ -33,7 +35,8 @@ Steps 1–3 are non-negotiable. No task skill may run before step 3 completes.
 | Skill folders | One folder per skill directly under `skills/` |
 | Categories | Nine semantic category groupings recorded in `skills/PACK_METADATA.json`; `skills/MANIFEST.md` remains the human-readable inventory |
 | Entrypoints | `AGENTS.md` (full), `CLAUDE.md` (summary mirror) |
-| Routing | `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` |
+| Routing | `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` (MCP Path A and filesystem Path B) |
+| Cursor mode wiring | `skills_docs/CURSOR_IDE_SETUP.md` (optional; does not replace this contract) |
 | Inventory | `skills/PACK_METADATA.json` for machine-readable ingestion metadata; `skills/MANIFEST.md` for human-readable inventory |
 
 ## Skill count invariant
