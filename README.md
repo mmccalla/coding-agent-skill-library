@@ -2,23 +2,24 @@
 
 ![Coding Agent Skill Library](hero_image_2.jpg)
 
-An open-source system for managing agent skills as governed, reusable, production-grade assets.
+The Coding Agent Skill Library is an open-source system for managing agent skills as governed, reusable, production-grade assets.
 
 Most skills today live in local folders, scattered repositories, or individual workflows. That works for experimentation, but it breaks down in larger teams and regulated organisations where quality, consistency, traceability, and compliance matter. This project treats skills like any other trusted organisational asset: structured, versioned, reviewable, and easy to distribute.
 
+**It supports two adoption paths:**
+
+**Drop-in skill library**
+Pull curated skills directly into local environments and use them with tools such as Codex, Claude, Cursor, Antigravity, Continue/VS Code, and similar agent frameworks.
+
+**Skills as a Service via MCP**
+Expose skills through a read-only MCP server backed by an ontology-first knowledge graph.
+
+The system is designed to retrieve the right skill for the shape of the task, not just by matching names, folders, or lightweight metadata. The graph models task intent, workflow stage, evidence anchors, skill versions, and relationships between skills to improve discoverability, consistency, and governance.
+It runs locally in Docker today and can be wired into Cursor, Antigravity, VS Code/Continue, Codex, and similar tools via stdio MCP, making it easy to adopt without changing the rest of your workflow.
+The goal is simple: make agentic coding **easier, faster, and safer**, while giving organisations a single trusted source for skill contribution, review, distribution, and reuse.
+
 **Portable library:** 113 coding-agent skills under `skills/`.
 **Optional service:** Neo4j GraphRAG stack (MCP, API, UI) for ontology-backed discovery.
-
-## Two adoption paths
-
-1. **Drop-in skill library** — pull curated skills into a local environment and use them with Codex, Claude, Cursor, Antigravity, Continue/VS Code, and similar agent frameworks.
-2. **Skills as a Service via MCP** — expose the same corpus through a read-only MCP server backed by an ontology-first knowledge graph.
-
-The system is designed to retrieve the right skill for the shape of the task, not only by matching names, folders, or lightweight metadata. The graph models task intent, workflow stage, evidence anchors, skill versions, and relationships between skills so discoverability, consistency, and governance stay linked.
-
-It runs locally in Docker today and wires into Cursor, Antigravity, VS Code/Continue, Codex, and similar tools via stdio MCP, without forcing a change to the rest of your workflow.
-
-**Goal:** make agentic coding easier, faster, and safer, while giving organisations a single trusted source for skill contribution, review, distribution, and reuse.
 
 ## Start here
 
