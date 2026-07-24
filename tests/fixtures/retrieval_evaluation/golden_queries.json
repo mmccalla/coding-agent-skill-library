@@ -179,7 +179,7 @@
   },
   {
     "id": "apply_laws_baseline",
-    "query": "execute apply laws of ai mandatory immutable baseline at every session start",
+    "query": "apply laws of ai when material AI risk or dangerous instruction requires safety hierarchy",
     "expected_skill_ids": [
       "skill:apply-laws-of-ai"
     ],
@@ -546,7 +546,7 @@
   },
   {
     "id": "apply_laws_baseline",
-    "query": "execute apply laws of ai mandatory immutable baseline at every session start",
+    "query": "apply laws of ai when material AI risk or dangerous instruction requires safety hierarchy",
     "expected_skill_ids": [
       "skill:apply-laws-of-ai"
     ],
@@ -1027,7 +1027,7 @@
   },
   {
     "id": "journey_harvest_09",
-    "query": "apply_laws_of_AI mandatory baseline at every session start",
+    "query": "apply_laws_of_AI when material AI risk or dangerous instruction requires safety hierarchy",
     "expected_skill_ids": [
       "skill:apply-laws-of-ai"
     ],
@@ -1559,7 +1559,7 @@
   },
   {
     "id": "coverage_apply_laws_of_ai_task",
-    "query": "When should I use ai-safety-laws for mandatory immutable baseline applying an asimov-inspired hierarchy of ai safety laws?",
+    "query": "When should I use ai-safety-laws for a material AI risk applying an asimov-inspired hierarchy of ai safety laws?",
     "expected_skill_ids": [
       "skill:apply-laws-of-ai"
     ],

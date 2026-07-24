@@ -7,7 +7,7 @@ This document defines the portable consistency rules for the coding-agent skill 
 | Path | Startup expectation |
 | --- | --- |
 | **skills-kg MCP** | Call MCP tools directly (`route_skill_query`, `get_skill`, …). **No** mandatory read of `AGENTIC_CODING_GLOBAL_SAFETY.md` / `SECURE_AGENTIC_DEVELOPMENT.md` and **no** mandatory `apply-laws-of-ai` before discovery. Load control skills when the task warrants them. |
-| **Filesystem drop-in** | Follow the installing repo’s agent entrypoints (`AGENTS.md` / `CLAUDE.md`). Those may still require safety files and `apply-laws-of-ai` before edits; that is a **coding-agent session** contract, not an MCP usage tax. |
+| **Filesystem drop-in** | Follow the installing repo’s agent entrypoints (`AGENTS.md` / `CLAUDE.md`). Route by task shape; load `apply-laws-of-ai` only when the task warrants a safety-law hierarchy. |
 
 Route with `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` (Path A MCP or Path B filesystem). Load the smallest relevant skill content for the task (MCP tools or `SKILL.md` files — not both unless fallback is authorised).
 

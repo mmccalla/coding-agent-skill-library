@@ -2,7 +2,7 @@
 
 ## Use the skills library in an agent
 
-1. Read [`skills/apply-laws-of-ai/SKILL.md`](../skills/apply-laws-of-ai/SKILL.md).
+1. Route via [`skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`](../skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md). Load [`skills/apply-laws-of-ai/SKILL.md`](../skills/apply-laws-of-ai/SKILL.md) only when the task warrants a safety-law hierarchy.
 2. Route with [`skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md`](../skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md).
 3. Copy the portable set from [`skills_docs/DROP_IN_BOOTSTRAP.md`](../skills_docs/DROP_IN_BOOTSTRAP.md).
 

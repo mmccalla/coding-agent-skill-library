@@ -192,20 +192,19 @@ Open **Cursor → Settings → Plugins → Rules, Skills, Subagents → Skills**
 
 | Skill | Action | Reason |
 | --- | --- | --- |
-| **`apply-laws-of-ai`** | **Keep** | Mandatory baseline before other skills |
+| **`apply-laws-of-ai`** | **Optional** | Load when the task involves material AI/agent harm risk or safety-law trade-offs |
 | **`discover-local-skills`** | **Keep** (optional) | Helps agents search `skills/` before planning |
 | **`github-workflow-best-practices`** | **Keep** (optional) | GitHub Actions guidance outside the library |
 
-You can rely on `AGENTS.md` alone without global Cursor skills if your user rules already mandate the startup order.
+You can rely on `AGENTS.md` alone without global Cursor skills.
 
 ### Expected agent workflow (filesystem)
 
-1. Read `AGENTIC_CODING_GLOBAL_SAFETY.md` and `SECURE_AGENTIC_DEVELOPMENT.md`.
-2. Execute `skills/apply-laws-of-ai/SKILL.md` in full.
-3. Route with `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` **Path B**.
-4. Load the smallest matching `skills/<name>/SKILL.md`.
+1. Route with `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` **Path B**.
+2. Load the smallest matching `skills/<name>/SKILL.md`.
+3. Load `skills/apply-laws-of-ai/SKILL.md` only when the task shape warrants it.
 
-See `AGENTS.md` for the full mandatory startup order.
+See `AGENTS.md` for the startup order.
 
 ### Verify filesystem mode
 
@@ -244,7 +243,7 @@ In a new chat, ask for guidance on a known skill (for example TDD).
 - [ ] `chat.agentSkillsLocations` → repo `skills/` **true**
 - [ ] Disable or remove **skills-kg-mcp-only** rule
 - [ ] **skills-kg** MCP **Off** (recommended)
-- [ ] Keep **`apply-laws-of-ai`** in Cursor Skills or enforce via `AGENTS.md`
+- [ ] Treat **`apply-laws-of-ai`** as optional — load when the task shape warrants it
 
 After any switch, **start a new chat** — existing sessions retain prior context and behaviour.
 

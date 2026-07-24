@@ -99,10 +99,11 @@ skills:task-intent-code-review a skills:TaskShape ;
     skos:definition "Use when reviewing code before merge for correctness, tests and security." ;
     skos:inScheme skills:TaskShapeScheme .
 
-skills:task-intent-session-baseline a skills:TaskShape ;
-    skos:prefLabel "Session safety baseline" ;
+skills:task-intent-safety-law-hierarchy a skills:TaskShape ;
+    skos:prefLabel "AI safety law hierarchy" ;
     skos:altLabel "apply laws of ai" ;
-    skos:definition "Use at session start for mandatory safety baseline before other skills." ;
+    skos:altLabel "session safety baseline" ;
+    skos:definition "Use when material AI/agent harm risk, unlawful or unauthorised instructions, or safety-law trade-offs need an explicit law hierarchy." ;
     skos:inScheme skills:TaskShapeScheme .
 
 skills:task-intent-out-of-domain a skills:TaskShape ;

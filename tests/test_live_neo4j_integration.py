@@ -21,7 +21,7 @@ SKILLS_ROOT = REPO_ROOT / "skills"
 # Skill nodes until the live test purges ids absent from the current load plan.
 EXPECTED_LIBRARY_SKILL_COUNT = 113
 FULL_LIBRARY_RETRIEVAL_QUERY = (
-    "When should I use apply-laws-of-ai as the mandatory session safety baseline?"
+    "When should I use apply-laws-of-ai for material AI risk or a dangerous instruction?"
 )
 
 

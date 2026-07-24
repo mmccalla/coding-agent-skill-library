@@ -2,15 +2,12 @@
 
 This repository uses a **flat one-level coding-agent skills library**.
 
-## Mandatory startup order
+## Startup order
 
 Before planning, routing, tool use, or edits:
 
-1. Read `AGENTIC_CODING_GLOBAL_SAFETY.md`.
-2. Read `SECURE_AGENTIC_DEVELOPMENT.md`.
-3. **Execute `skills/apply-laws-of-ai/SKILL.md` in full** — immutable baseline for all reasoning.
-4. Use `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` as the routing guide, `skills/README.md` as the flat-library index, and `skills/MANIFEST.md` as the full inventory.
-5. Load only the smallest relevant skill or combination of skills for the task.
+1. Use `skills_docs/HOW_TO_FIND_THE_RIGHT_SKILL.md` as the routing guide, `skills/README.md` as the flat-library index, and `skills/MANIFEST.md` as the full inventory.
+2. Load only the smallest relevant skill or combination of skills for the task.
 
 See `skills_docs/LIBRARY_CONTRACT.md` for portable consistency rules.
 
@@ -45,8 +42,8 @@ Use these skills when the task shape matches:
 - `solid-principles` when refactoring modules, services, classes, tools, agents or dependency boundaries.
 - `dry-principle` when repeated knowledge, rules, schemas or validation create maintenance risk.
 - `skill-discovery-and-selection`, `requirements-elicitation`, `idea-refinement`, `spec-driven-development`, `incremental-implementation`, `context-engineering`, `source-driven-development` and `uncertainty-driven-development` for the workflow spine from session start through spec and implementation.
-- **`apply-laws-of-ai` first at every session** — mandatory immutable baseline before any other skill.
 - Agentic workflow and control skills when building or modifying agents, tools, MCP servers, A2A integrations, RAG systems, guardrails, memory, evaluation, recovery or monitoring.
+- `apply-laws-of-ai` when the task involves material AI/agent harm risk, unlawful or unauthorised instructions, or explicit safety-law trade-offs — not as a mandatory session preamble.
 - Architecture skills when working on capabilities, value streams, processes, operating models, solution/platform architecture, data models, data products, data contracts, metadata, governance, quality, lineage, event-driven architecture, CDC, streams, real-time data or message-based enterprise integration (EIP).
 - `threat-modeling`, `secure-sdlc-and-supply-chain`, `ai-model-governance` and `risk-management` for security design, supply chain, model governance and risk registers.
 - `api-design-and-lifecycle`, `solution-architecture` and `cloud-platform-architecture` for APIs, solution options/NFRs and landing zones.
